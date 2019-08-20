@@ -1,5 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');?>
-<?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
+<?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php');?>
 <main id="main-area" class="main" role="main">
     <div class="content-wrapper content-space">
         <div class="content-header  row justify-content-between mb-3">
@@ -37,16 +37,21 @@
                                             $fld->setFieldTagAttribute('data-selprodid', $selProdId);
                                             $fld->setFieldTagAttribute('data-splpriceid', $splPriceId);
                                         }
+                                        $startDateFld = $frm->getField('splprice_start_date');
+                                        $startDateFld->setFieldTagAttribute('class', 'start_date_js');
+
+                                        $endDateFld = $frm->getField('splprice_end_date');
+                                        $endDateFld->setFieldTagAttribute('class', 'end_date_js');
                                         switch ($key) {
                                             case 'product_name':
                                                 if (!empty($value[$key])) {
-                                                    $productName = $frm->getField('product_name');
+                                                    $productName = $frm->getField($key);
                                                     $productName->setFieldTagAttribute('readonly', 'readonly');
                                                 }
                                                 $td->appendElement('plaintext', array(), $frm->getFieldHtml($key), true);
                                                 break;
                                             case 'splprice_price':
-                                                $splprice_price = $frm->getField('splprice_price');
+                                                $splprice_price = $frm->getField($key);
                                                 $splprice_price->setFieldTagAttribute('data-selprodid', $selProdId);
                                                 $splprice_price->setFieldTagAttribute('data-splpriceid', $splPriceId);
                                                 $td->appendElement('plaintext', array(), $frm->getFieldHtml($key), true);

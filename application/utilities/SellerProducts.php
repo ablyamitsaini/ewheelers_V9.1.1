@@ -917,13 +917,20 @@ trait SellerProducts
         if (!$selprod_id) {
             FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Request', $this->siteLangId));
         }
-        $sellerProductRow = SellerProduct::getAttributesById($selprod_id);
-        if ($sellerProductRow['selprod_user_id'] != UserAuthentication::getLoggedUserId()) {
-            FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
+        $prodSrch = new ProductSearch($this->siteLangId);
+        $prodSrch->joinSellerProducts();
+        $prodSrch->addCondition('selprod_id', '=', $selprod_id);
+        $prodSrch->addMultipleFields(array('product_min_selling_price', 'selprod_price', 'selprod_user_id'));
+        $prodSrch->setPageSize(1);
+        $rs = $prodSrch->getResultSet();
+        $product = FatApp::getDb()->fetch($rs);
+
+        if ($post['splprice_price'] < $product['product_min_selling_price'] || $post['splprice_price'] >= $product['selprod_price']) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Special_price_must_between_min_selling_price_and_selling_price', $this->siteLangId));
         }
 
-        if ($sellerProductRow['selprod_price'] <= $post['splprice_price']) {
-            FatUtility::dieJsonError(Labels::getLabel('MSG_Special_price_can_not_be_greater_than_or_equal_to_the_product_price', $this->siteLangId));
+        if ($product['selprod_user_id'] != UserAuthentication::getLoggedUserId()) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
         }
 
         $frm = $this->getSellerProductSpecialPriceForm();

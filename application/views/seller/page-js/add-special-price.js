@@ -1,3 +1,6 @@
+$(document).ready(function(){
+	setCurrDateFordatePicker();
+});
 $(document).on('keyup', "input[name='product_name']", function(){
     var currObj = $(this);
     var selProdId = currObj.data('selprodid');

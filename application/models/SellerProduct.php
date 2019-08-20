@@ -739,7 +739,7 @@ class SellerProduct extends MyAppModel
         $prodSrch->addCondition('selprod_id', '=', $selprod_id);
         $prodSrch->addMultipleFields(array('product_id','product_identifier', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title'));
         $productRs = $prodSrch->getResultSet();
-        
+
         $products = FatApp::getDb()->fetch($productRs);
 
         $variantStr = (!empty($products['product_name'])) ? $products['product_name'] : $products['selprod_title'];
