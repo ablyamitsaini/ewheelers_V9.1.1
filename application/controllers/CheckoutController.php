@@ -796,7 +796,12 @@ class CheckoutController extends MyAppController
 
         $orderData = array();
         /* add Order Data[ */
-        $order_id = isset($_SESSION['shopping_cart']["order_id"]) ? $_SESSION['shopping_cart']["order_id"] : false;
+        if (true ===  MOBILE_APP_API_CALL) {
+            $order_id = FatApp::getPostedData('orderId', Fatutility::VAR_STRING, false);
+        } else {
+            $order_id = isset($_SESSION['shopping_cart']["order_id"]) ? $_SESSION['shopping_cart']["order_id"] : false;
+        }
+        
 
         /* if($order_id){
         $orderObj =  new Orders();
