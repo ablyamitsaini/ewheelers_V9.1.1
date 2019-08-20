@@ -898,6 +898,7 @@ class GuestUserController extends MyAppController
         $db->commitTransaction();
 
         if (true ===  MOBILE_APP_API_CALL) {
+            $this->set('msg', Labels::getLabel('LBL_Registeration_Successfull', $this->siteLangId));
             $this->_template->render();
         }
 
