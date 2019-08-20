@@ -94,7 +94,7 @@ class WalletPayController extends MyAppController
 
     public function Recharge($orderId, $appParam = '', $appLang = '1', $appCurrency = '1')
     {
-        if ($appParam == 'api') {
+        if ($appParam == 'api' && false ===  MOBILE_APP_API_CALL) {
             $langId =  FatUtility::int($appLang);
             if (0 < $langId) {
                 $languages = Language::getAllNames();
@@ -118,14 +118,22 @@ class WalletPayController extends MyAppController
         $isAjaxCall = FatUtility::isAjaxCall();
 
         if (!UserAuthentication::isUserLogged()) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Your_Session_seems_to_be_expired.', $this->siteLangId));
+            $message = Labels::getLabel('MSG_Your_Session_seems_to_be_expired', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             if ($isAjaxCall) {
                 FatUtility::dieWithError(Message::getHtml());
             }
             CommonHelper::redirectUserReferer();
         }
         if ($orderId == '' || ((isset($_SESSION['wallet_recharge_cart']) && !empty($_SESSION['wallet_recharge_cart']) && $orderId != $_SESSION['wallet_recharge_cart']["order_id"]))) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
+            $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
             /* if( $isAjaxCall ){
             FatUtility::dieWithError( Message::getHtml() );
@@ -145,7 +153,11 @@ class WalletPayController extends MyAppController
         $rs = $srch->getResultSet();
         $orderInfo = FatApp::getDb()->fetch($rs);
         if (!$orderInfo) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
+            $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             if ($isAjaxCall) {
                 FatUtility::dieWithError(Message::getHtml());
             }
@@ -165,6 +177,10 @@ class WalletPayController extends MyAppController
         $this->set('paymentMethods', $paymentMethods);
         $this->set('excludePaymentGatewaysArr', $excludePaymentGatewaysArr);
         $this->set('headerData', $headerData);
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
         $this->_template->render(true, true);
     }
 
