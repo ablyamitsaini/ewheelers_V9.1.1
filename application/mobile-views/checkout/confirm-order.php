@@ -1,3 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 
-$data = array('orderPayment' => $orderPayment);
+$data = array(
+    'sendToWeb' => $sendToWeb,
+    'orderPayment' => $orderPayment
+);
