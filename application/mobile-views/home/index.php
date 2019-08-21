@@ -20,16 +20,17 @@ foreach ($collections as $collectionIndex => $collectionData) {
         foreach ($collectionData['categories'] as $index => $category) {
             $collections[$collectionIndex]['categories'][$index]['prodcat_name'] = html_entity_decode($category['prodcat_name'], ENT_QUOTES, 'utf-8');
             $collections[$collectionIndex]['categories'][$index]['prodcat_description'] = strip_tags(html_entity_decode($category['prodcat_description'], ENT_QUOTES, 'utf-8'));
-            $collections[$collectionIndex]['categories'][$index]['category_image_url'] = CommonHelper::generateFullUrl('Category', 'banner', array($category['prodcat_id'] , $siteLangId));
+
+            $collections[$collectionIndex]['categories'][$index]['category_image_url'] = CommonHelper::generateFullUrl('Category', 'banner', array($category['prodcat_id'] , $siteLangId, 'MOBILE', applicationConstants::SCREEN_MOBILE));
         }
     } elseif (array_key_exists('shops', $collectionData)) {
         foreach ($collectionData['shops'] as $index => $shop) {
             $collections[$collectionIndex]['shops'][$index]['shop_logo'] = CommonHelper::generateFullUrl('image', 'shopLogo', array($shop['shop_id'], $siteLangId));
-            $collections[$collectionIndex]['shops'][$index]['shop_banner'] = CommonHelper::generateFullUrl('image', 'shopBanner', array($shop['shop_id'], $siteLangId));
+            $collections[$collectionIndex]['shops'][$index]['shop_banner'] = CommonHelper::generateUrl('image', 'shopBanner', array($shop['shop_id'], $siteLangId, 'MOBILE', 0, applicationConstants::SCREEN_MOBILE));
         }
     } elseif (array_key_exists('brands', $collectionData)) {
         foreach ($collectionData['brands'] as $index => $shop) {
-            $collections[$collectionIndex]['brands'][$index]['brand_image'] = CommonHelper::generateFullUrl('image', 'brand', array($shop['brand_id'], $siteLangId));
+            $collections[$collectionIndex]['brands'][$index]['brand_image'] = CommonHelper::generateUrl('Image', 'BrandImage', array($shop['brand_id'], $siteLangId, 'MOBILE', 0, applicationConstants::SCREEN_MOBILE));
         }
     }
 }
