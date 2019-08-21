@@ -55,6 +55,7 @@ foreach ($arrListing as $sn => $row) {
     $tr = $tbl->appendElement('tr', array());
 
     foreach ($arr_flds as $key => $val) {
+        $tr->setAttribute('id', 'row-'.$row['voldiscount_id']);
         $td = $tr->appendElement('td');
         switch ($key) {
             case 'select_all':
@@ -71,20 +72,13 @@ foreach ($arrListing as $sn => $row) {
                 $td->appendElement('plaintext', array(), $row['product_name'], true);
                 break;
             case 'voldiscount_min_qty':
-                $td->appendElement('plaintext', array(), "<span class='js--editCol' data-id='".$row['voldiscount_id']."' data-attribute='voldiscount_min_qty' data-selprodid='".$row['selprod_id']."'>".$row[$key]."</span>", true);
+                $td->appendElement('div', array("class" => 'js--editCol', "data-id" => $row['voldiscount_id'], "data-attribute" => 'voldiscount_min_qty', "data-selprodid" => $row['selprod_id']), $row[$key], true);
                 break;
             case 'voldiscount_percentage':
-                $td->appendElement('plaintext', array(), "<span class='js--editCol' data-id='".$row['voldiscount_id']."' data-attribute='voldiscount_percentage' data-selprodid='".$row['selprod_id']."'>".$row[$key]."</span>%", true);
+                $td->appendElement('div', array("class" => 'js--editCol', "data-id" => $row['voldiscount_id'], "data-attribute" => 'voldiscount_percentage', "data-selprodid" => $row['selprod_id']), $row[$key], true);
                 break;
             case 'action':
                 $ul = $td->appendElement("ul", array("class"=>"actions actions--centered"), '', true);
-                $li = $ul->appendElement('li');
-                $li->appendElement(
-                    'a',
-                    array('href' => 'javascript:void(0)', 'class'=>'', 'title'=>Labels::getLabel('LBL_Edit', $siteLangId), "onclick"=>"sellerProductVolumeDiscountForm(".$row['selprod_id'].", ".$row['voldiscount_id'].")"),
-                    '<i class="fa fa-edit"></i>',
-                    true
-                );
 
                 $li = $ul->appendElement('li');
                 $li->appendElement(

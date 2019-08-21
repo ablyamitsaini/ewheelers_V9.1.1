@@ -86,7 +86,7 @@ $(document).on('blur', "input[name='voldiscount_percentage']", function(e){
 		return false;
     };
 
-    remove = function(obj, volDiscountId, selProdId){
+    deleteSellerProductVolumeDiscount = function(volDiscountId, obj, selProdId){
 		if( !confirm(langLbl.confirmDelete) ){
             return false;
         }

@@ -2373,7 +2373,16 @@ trait SellerProducts
         }
         $edit = FatApp::getPostedData('edit', FatUtility::VAR_INT, 0);
 
-        $post['product_name'] = SellerProduct::getProductDisplayTitle($post['voldiscount_selprod_id'], $this->siteLangId);
+        $productName = SellerProduct::getProductDisplayTitle($post['voldiscount_selprod_id'], $this->siteLangId);
+        $options = SellerProduct::getSellerProductOptions($post['voldiscount_selprod_id'], true, $this->siteLangId);
+
+        $prodOptName = $productName.'<br/>';
+        if (is_array($options) && count($options)) {
+            foreach ($options as $op) {
+                $prodOptName .= $op['option_name'].': '.$op['optionvalue_name'].'<br/>';
+            }
+        }
+        $post['product_name'] = $prodOptName . $productName;
         $this->set('edit', $edit);
         $this->set('post', $post);
         $this->set('insertId', $insertId);
@@ -2386,7 +2395,7 @@ trait SellerProducts
         FatUtility::dieJsonSuccess($json);
     }
 
-    private function getVolumeDiscountRow($volDiscountId, $att = '')
+    private function getVolumeDiscountRow($volDiscountId, $att = array())
     {
         if (1 > $volDiscountId) {
             FatUtility::dieWithError(Labels::getLabel('MSG_Invalid_Request', $this->siteLangId));
@@ -2461,18 +2470,12 @@ trait SellerProducts
             'voldiscount_selprod_id' => $selProdId,
             $attribute => $value
         );
-
-        $recordObj = new TableRecord(SellerProductVolumeDiscount::DB_TBL);
-        $recordObj->assignValues($data_to_save);
-        $flds_update_on_duplicate = $data_to_save;
-        unset($flds_update_on_duplicate['voldiscount_id']);
-        unset($flds_update_on_duplicate['voldiscount_selprod_id']);
-
-        $db->startTransaction();
-        if (!$recordObj->addNew(array(), $flds_update_on_duplicate)) {
-            $db->rollbackTransaction();
-            FatUtility::dieJsonError($recordObj->getError());
+        $record = new TableRecord(SellerProductVolumeDiscount::DB_TBL);
+        $record->assignValues($data_to_save);
+        if (!$record->addNew(array(), $data_to_save)) {
+            FatUtility::dieJsonError($record->getError());
         }
+
         FatUtility::dieJsonSuccess(Labels::getLabel('MSG_Success', $this->siteLangId));
     }
 }
