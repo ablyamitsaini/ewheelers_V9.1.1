@@ -58,7 +58,7 @@ $(document).on('blur', "input[name='voldiscount_percentage']", function(e){
     edit = function(obj, volDiscountId, selProdId){
         if (0 < $('tr.selProdId-0-0').length) {
             $.ajax({
-                url: fcom.makeUrl('Seller', 'editVolumeDiscount'),
+                url: fcom.makeUrl('Seller', 'getVolumeDiscount'),
                 data: {fIsAjax:1,voldiscount_id:volDiscountId},
                 dataType: 'json',
                 type: 'post',

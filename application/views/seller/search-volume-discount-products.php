@@ -1,29 +1,66 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
+
+$addVolDiscountfrm->setFormTagAttribute('id', 'frmAddVolumeDiscount');
+$addVolDiscountfrm->setFormTagAttribute('name', 'frmAddVolumeDiscount');
+$addVolDiscountfrm->setFormTagAttribute('onsubmit', 'updateVolumeDiscount(this); return(false);');
+$addVolDiscountfrm->addHiddenField('', 'selector', 1);
+
 $arr_flds = array(
-    'listserial' => Labels::getLabel('LBL_Sr.', $siteLangId),
-    'name' => Labels::getLabel('LBL_Name', $siteLangId),
-    'volumeDiscountCount' => Labels::getLabel('LBL_Volume_Discounts', $siteLangId),
-    'selprod_price' => Labels::getLabel('LBL_Price', $siteLangId),
+    'select_all'=>Labels::getLabel('LBL_Select_all', $siteLangId),
+    'product_name' => Labels::getLabel('LBL_Name', $siteLangId),
+    'voldiscount_min_qty' => Labels::getLabel('LBL_Minimum_Quantity', $siteLangId),
+    'voldiscount_percentage' => Labels::getLabel('LBL_Percentage', $siteLangId),
+    'action' => Labels::getLabel('LBL_Action', $siteLangId),
 );
 
-$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table-responsive table--hovered'));
-$th = $tbl->appendElement('thead')->appendElement('tr', array('class' => 'hide--mobile'));
+$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table-responsive table--hovered volDiscountList-js'));
+$thead = $tbl->appendElement('thead');
+$th = $thead->appendElement('tr', array('class' => 'hide--mobile'));
+$trForm = $thead->appendElement('tr', array());
+
 foreach ($arr_flds as $key => $val) {
-    $e = $th->appendElement('th', array(), $val);
+    $thForm = $trForm->appendElement('th');
+    if ('select_all' == $key) {
+        $th->appendElement('th')->appendElement('plaintext', array(), '<label class="checkbox"><input title="'.$val.'" type="checkbox" onclick="selectAll($(this))" class="selectAll-js"><i class="input-helper"></i></label>', true);
+    } else {
+        $th->appendElement('th', array(), $val);
+        if ('action' != $key) {
+            switch ($key) {
+                case 'product_name':
+                    $productName = $addVolDiscountfrm->getField($key);
+                    $productName->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Select_Product', $siteLangId));
+                    $thForm->appendElement('plaintext', array(), $addVolDiscountfrm->getFieldHtml($key), true);
+                    break;
+                case 'voldiscount_min_qty':
+                    $minQty = $addVolDiscountfrm->getField($key);
+                    $minQty->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Add_Minimum_Quantity', $siteLangId));
+                    $thForm->appendElement('plaintext', array(), $addVolDiscountfrm->getFieldHtml($key), true);
+                    break;
+                case 'voldiscount_percentage':
+                    $minQty = $addVolDiscountfrm->getField($key);
+                    $minQty->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Add_Discount_Percentage', $siteLangId));
+                    $thForm->appendElement('plaintext', array(), $addVolDiscountfrm->getFieldHtml($key), true);
+                    break;
+                case 'action':
+                    /*$btnUpdate = $addVolDiscountfrm->getField('btn_update');
+                    $btnUpdate->setFieldTagAttribute('class', 'invisible');
+                    $thForm->appendElement('plaintext', array(), $addVolDiscountfrm->getFieldHtml('btn_update'), true);*/
+                    break;
+            }
+        }
+    }
 }
 
-$sr_no = ($page == 1) ? 0 : ($pageSize*($page-1));
 foreach ($arrListing as $sn => $row) {
-    $sr_no++;
     $tr = $tbl->appendElement('tr', array());
 
     foreach ($arr_flds as $key => $val) {
         $td = $tr->appendElement('td');
         switch ($key) {
-            case 'listserial':
-                $td->appendElement('plaintext', array(), $sr_no);
+            case 'select_all':
+                $td->appendElement('plaintext', array(), '<label class="checkbox"><input class="selectItem--js" type="checkbox" name="selprod_ids['.$row['voldiscount_id'].']" value='.$row['selprod_id'].'><i class="input-helper"></i></label>', true);
                 break;
-            case 'name':
+            case 'product_name':
                 $variantStr = ($row['selprod_title'] != '') ? $row['selprod_title'].'<br/>' : '';
                 if (is_array($row['options']) && count($row['options'])) {
                     foreach ($row['options'] as $op) {
@@ -33,14 +70,30 @@ foreach ($arrListing as $sn => $row) {
                 $td->appendElement('plaintext', array(), $variantStr, true);
                 $td->appendElement('plaintext', array(), $row['product_name'], true);
                 break;
-            case 'selprod_price':
-                $td->appendElement('plaintext', array(), CommonHelper::displayMoneyFormat($row[$key], true, true), true);
+            case 'voldiscount_min_qty':
+                $td->appendElement('plaintext', array(), "<span class='js--editCol' data-id='".$row['voldiscount_id']."' data-attribute='voldiscount_min_qty' data-selprodid='".$row['selprod_id']."'>".$row[$key]."</span>", true);
                 break;
-            case 'volumeDiscountCount':
-                $td->appendElement('a', array('href' => CommonHelper::generateUrl('Seller', 'volumeDiscountList', array($row['selprod_id'])), 'target' => '_blank'), $row[$key], true);
+            case 'voldiscount_percentage':
+                $td->appendElement('plaintext', array(), "<span class='js--editCol' data-id='".$row['voldiscount_id']."' data-attribute='voldiscount_percentage' data-selprodid='".$row['selprod_id']."'>".$row[$key]."</span>%", true);
                 break;
-            case 'selprod_available_from':
-                $td->appendElement('plaintext', array(), FatDate::format($row[$key], false), true);
+            case 'action':
+                $ul = $td->appendElement("ul", array("class"=>"actions actions--centered"), '', true);
+                $li = $ul->appendElement('li');
+                $li->appendElement(
+                    'a',
+                    array('href' => 'javascript:void(0)', 'class'=>'', 'title'=>Labels::getLabel('LBL_Edit', $siteLangId), "onclick"=>"sellerProductVolumeDiscountForm(".$row['selprod_id'].", ".$row['voldiscount_id'].")"),
+                    '<i class="fa fa-edit"></i>',
+                    true
+                );
+
+                $li = $ul->appendElement('li');
+                $li->appendElement(
+                    'a',
+                    array('href'=>'javascript:void(0)', 'class'=>'',
+                    'title'=>Labels::getLabel('LBL_Delete', $siteLangId),"onclick"=>"deleteSellerProductVolumeDiscount(".$row['voldiscount_id'].")"),
+                    '<i class="fa fa-trash"></i>',
+                    true
+                );
                 break;
             default:
                 $td->appendElement('plaintext', array(), $row[$key], true);
@@ -56,7 +109,13 @@ if (count($arrListing) == 0) {
     );
 }
 
-$frm = new Form('frmSelProdListing', array('id'=>'frmSelProdListing'));
+echo $addVolDiscountfrm->getFormTag();
+echo $addVolDiscountfrm->getFieldHtml('voldiscount_selprod_id');
+echo $addVolDiscountfrm->getFieldHtml('selector'); ?>
+</form>
+<?php
+
+$frm = new Form('frmVolDiscountListing', array('id'=>'frmVolDiscountListing'));
 $frm->setFormTagAttribute('class', 'web_form last_td_nowrap');
 
 echo $frm->getFormTag();

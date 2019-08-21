@@ -395,7 +395,7 @@ trait SellerProducts
             FatUtility::dieJsonError(Message::getHtml());
         }
 
-        /* 	$url =  $tabsArr[$metaType]['controller'].'/'.$tabsArr[$metaType]['action'].'/'.$selprod_id;
+        /*     $url =  $tabsArr[$metaType]['controller'].'/'.$tabsArr[$metaType]['action'].'/'.$selprod_id;
         $urlRewriteData_Save['urlrewrite_original'] = trim($url, '/\\');
         $urlRewriteData_Save['urlrewrite_custom'] = trim(CommonHelper::seoUrl($url_keyword), '/\\');
         if($selprod_id){
@@ -949,8 +949,8 @@ trait SellerProducts
         'splprice_start_date'    =>    $post['splprice_start_date'],
         'splprice_end_date'    =>    $post['splprice_end_date'],
         'splprice_price'        =>    $post['splprice_price'],
-        /* 'splprice_display_dis_type' =>	$post['splprice_display_dis_type'],
-        'splprice_display_dis_val' =>	$post['splprice_display_dis_val'],
+        /* 'splprice_display_dis_type' =>    $post['splprice_display_dis_type'],
+        'splprice_display_dis_val' =>    $post['splprice_display_dis_val'],
         'splprice_display_list_price' =>$post['splprice_display_list_price'], */
         );
         $sellerProdObj = new SellerProduct();
@@ -1178,7 +1178,7 @@ trait SellerProducts
         $fld1->attachField($fld2);
         return $frm;
     }
-    /*	]	*/
+    /*    ]    */
 
     /* Seller Product Seo [ */
     public function productSeo($selprod_id = 0)
@@ -1355,7 +1355,7 @@ trait SellerProducts
                 /* if(!$row = MetaTag::getAttributesByLangId($langId,$metaId)){
                 $newTabLangId = $langId;
                 break;
-                }	 */
+                }     */
                 $newTabLangId = $langId;
                 break;
             }
@@ -2229,7 +2229,6 @@ trait SellerProducts
             unset($post['btn_submit'], $post['btn_clear']);
             $srchFrm->fill($post);
         }
-
         $this->set("frmSearch", $srchFrm);
         $this->_template->render();
     }
@@ -2245,10 +2244,14 @@ trait SellerProducts
         $srch->joinTable(Product::DB_TBL, 'INNER JOIN', 'p.product_id = sp.selprod_product_id', 'p');
         $srch->joinTable(SellerProductVolumeDiscount::DB_TBL, 'INNER JOIN', 'vd.voldiscount_selprod_id = sp.selprod_id', 'vd');
         $srch->joinTable(Product::DB_LANG_TBL, 'LEFT OUTER JOIN', 'p.product_id = p_l.productlang_product_id AND p_l.productlang_lang_id = '.$this->siteLangId, 'p_l');
-        $srch->addMultipleFields(
+        /*$srch->addMultipleFields(
             array(
             'selprod_id', 'selprod_price', 'selprod_product_id',
             'selprod_active', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title', "count('voldiscount_id') as volumeDiscountCount")
+        );*/
+        $srch->addMultipleFields(
+            array(
+            'selprod_id', 'voldiscount_min_qty', 'voldiscount_percentage', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title', 'voldiscount_id')
         );
 
         $keyword = FatApp::getPostedData('keyword', FatUtility::VAR_STRING, '');
@@ -2263,16 +2266,18 @@ trait SellerProducts
         $srch->setPageSize($pageSize);
         $srch->addOrder('selprod_active', 'DESC');
         $srch->addOrder('selprod_added_on', 'DESC');
-        $srch->addGroupBy('vd.voldiscount_selprod_id');
+        // $srch->addGroupBy('vd.voldiscount_selprod_id');
 
         $db = FatApp::getDb();
         $rs = $srch->getResultSet();
         $arrListing = $db->fetchAll($rs);
         if (count($arrListing)) {
-            foreach ($arrListing as & $arr) {
+            foreach ($arrListing as &$arr) {
                 $arr['options'] = SellerProduct::getSellerProductOptions($arr['selprod_id'], true, $this->siteLangId);
             }
         }
+        $addVolDiscountfrm = $this->volumeDiscountFormElements();
+        $this->set("addVolDiscountfrm", $addVolDiscountfrm);
 
         $this->set("arrListing", $arrListing);
 
@@ -2355,6 +2360,7 @@ trait SellerProducts
 
         $selprod_id = FatUtility::int($post['voldiscount_selprod_id']);
         $voldiscount_id = FatUtility::int($post['voldiscount_id']);
+        $selector = FatApp::getPostedData('selector', FatUtility::VAR_INT, 0);
 
         if (1 > $selprod_id) {
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Request', $this->siteLangId));
@@ -2371,6 +2377,7 @@ trait SellerProducts
         $this->set('edit', $edit);
         $this->set('post', $post);
         $this->set('insertId', $insertId);
+        $this->set('selector', $selector);
         $json = array(
             'status'=> true,
             'msg'=>Labels::getLabel('LBL_Volume_Discount_Setup_Successful', $this->siteLangId),
@@ -2379,44 +2386,93 @@ trait SellerProducts
         FatUtility::dieJsonSuccess($json);
     }
 
-    public function editVolumeDiscount()
+    private function getVolumeDiscountRow($volDiscountId, $att = '')
     {
-        $volDiscountId = FatApp::getPostedData('voldiscount_id', FatUtility::VAR_INT, 0);
         if (1 > $volDiscountId) {
             FatUtility::dieWithError(Labels::getLabel('MSG_Invalid_Request', $this->siteLangId));
         }
-        $row = SellerProductVolumeDiscount::getAttributesById($volDiscountId);
+        return SellerProductVolumeDiscount::getAttributesById($volDiscountId, $att);
+    }
+
+    public function getVolumeDiscount()
+    {
+        $volDiscountId = FatApp::getPostedData('voldiscount_id', FatUtility::VAR_INT, 0);
+        $row = $this->getVolumeDiscountRow($volDiscountId);
         $row['product_name'] = SellerProduct::getProductDisplayTitle($row['voldiscount_selprod_id'], $this->siteLangId);
         $row['voldiscount_min_qty'] = $row['voldiscount_min_qty'];
         $row['voldiscount_percentage'] = $row['voldiscount_percentage'];
         die(json_encode($row));
     }
 
-    public function volumeDiscountList($selprod_id)
+    public function editVolumeDiscount()
     {
-        $selprod_id = FatUtility::int($selprod_id);
-        if (1 > $selprod_id) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Request', $this->siteLangId));
-            FatApp::redirectUser(CommonHelper::generateUrl('SellerProducts', 'volumeDiscount'));
+        $volDiscountId = FatApp::getPostedData('voldiscount_id', FatUtility::VAR_INT, 0);
+        $attribute = FatApp::getPostedData('attribute', FatUtility::VAR_STRING, '');
+        $selProdId = FatApp::getPostedData('selProdId', FatUtility::VAR_INT, 0);
+        $value = $this->getVolumeDiscountRow($volDiscountId, $attribute);
+        $this->set('volDiscountId', $volDiscountId);
+        $this->set('value', $value);
+        $this->set('selProdId', $selProdId);
+        $this->set('attribute', $attribute);
+        $json = array(
+            'status'=> true,
+            'data'=>$this->_template->render(false, false, 'seller/edit-volume-discount.php', true)
+        );
+        FatUtility::dieJsonSuccess($json);
+    }
+
+    public function updateVolumeDiscountValue()
+    {
+        $userId = UserAuthentication::getLoggedUserId();
+        $volDiscountId = FatApp::getPostedData('voldiscount_id', FatUtility::VAR_INT, 0);
+        $attribute = FatApp::getPostedData('attribute', FatUtility::VAR_STRING, '');
+        $selProdId = FatApp::getPostedData('selProdId', FatUtility::VAR_INT, 0);
+        $value = FatApp::getPostedData('value');
+
+        $db = FatApp::getDb();
+
+        if ('voldiscount_min_qty' == $attribute) {
+            $value = FatUtility::int($value);
+        } else if ('voldiscount_percentage' == $attribute) {
+            $value = FatUtility::float($value);
         }
 
-        $sellerProductRow = SellerProduct::getAttributesById($selprod_id, array('selprod_id'));
-        if (1 > count($sellerProductRow)) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Response', $this->siteLangId));
-            FatApp::redirectUser(CommonHelper::generateUrl('SellerProducts', 'volumeDiscount'));
+        if (1 > $value) {
+            FatUtility::dieWithError(Labels::getLabel('MSG_Invalid_Request', $this->siteLangId));
         }
 
-        $srch = new SellerProductVolumeDiscountSearch();
-        $srch->doNotCalculateRecords();
-        $srch->doNotLimitRecords();
-        $srch->addCondition('voldiscount_selprod_id', '=', $selprod_id);
+        $tblRecord = new TableRecord(SellerProductVolumeDiscount::DB_TBL);
+        if ($tblRecord->loadFromDb(array('smt' => 'voldiscount_selprod_id = ? AND '.$attribute.' = ?', 'vals' => array($selProdId, $value)))) {
+            $volDiscountRow = $tblRecord->getFlds();
+            if ($volDiscountRow['voldiscount_id'] != $volDiscountId) {
+                FatUtility::dieJsonError(Labels::getLabel('MSG_Volume_discount_for_this_quantity_already_added', $this->siteLangId));
+            }
+        }
+
+        $srch = SellerProductVolumeDiscountSearch::getSearchObject($volDiscountId, $selProdId, $userId, 'voldiscount_id');
         $rs = $srch->getResultSet();
-        $arrListing = FatApp::getDb()->fetchAll($rs);
+        $row = $db->fetch($rs);
+        if (1 > count($row)) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Request', $this->siteLangId));
+        }
 
-        $this->set('product_name', SellerProduct::getProductDisplayTitle($selprod_id, $this->siteLangId));
-        $this->set('arrListing', $arrListing);
-        $this->set('selprod_id', $selprod_id);
+        $data_to_save = array(
+            'voldiscount_id' => $volDiscountId,
+            'voldiscount_selprod_id' => $selProdId,
+            $attribute => $value
+        );
 
-        $this->_template->render();
+        $recordObj = new TableRecord(SellerProductVolumeDiscount::DB_TBL);
+        $recordObj->assignValues($data_to_save);
+        $flds_update_on_duplicate = $data_to_save;
+        unset($flds_update_on_duplicate['voldiscount_id']);
+        unset($flds_update_on_duplicate['voldiscount_selprod_id']);
+
+        $db->startTransaction();
+        if (!$recordObj->addNew(array(), $flds_update_on_duplicate)) {
+            $db->rollbackTransaction();
+            FatUtility::dieJsonError($recordObj->getError());
+        }
+        FatUtility::dieJsonSuccess(Labels::getLabel('MSG_Success', $this->siteLangId));
     }
 }

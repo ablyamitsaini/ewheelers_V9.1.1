@@ -1,5 +1,11 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <tr>
+    <?php if (0 < $selector) { ?>
+        <td>
+            <label class="checkbox">
+                <input class="selectItem--js" type="checkbox" name="selprod_ids[<?php echo $insertId; ?>]" value="<?php echo $post['voldiscount_selprod_id']; ?>"><i class="input-helper"></i></label>
+        </td>
+    <?php } ?>
     <td>
         <?php echo $post['product_name']; ?>
     </td>
@@ -7,7 +13,7 @@
         <?php echo $post['voldiscount_min_qty']; ?>
     </td>
     <td>
-        <?php echo $post['voldiscount_percentage'].'%'; ?>
+        <?php echo number_format((float)$post['voldiscount_percentage'], 2, '.', '').'%'; ?>
     </td>
     <td>
         <ul class="actions">
