@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 
 foreach ($slides as $index => $slideDetail) {
-    $slides[$index]['slide_image_url'] = CommonHelper::generateFullUrl('Image', 'slide', array($slideDetail['slide_id'],0,$siteLangId));
+    $slides[$index]['slide_image_url'] = CommonHelper::generateFullUrl('Image', 'slide', array($slideDetail['slide_id'], applicationConstants::SCREEN_MOBILE, $siteLangId, 'MOBILE'));
 }
 foreach ($sponsoredProds as $index => $product) {
     $sponsoredProds[$index]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($product['product_id'], "CLAYOUT3", $product['selprod_id'], 0, $siteLangId));
