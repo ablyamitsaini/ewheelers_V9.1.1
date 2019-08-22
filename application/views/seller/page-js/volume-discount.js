@@ -37,11 +37,11 @@ $(document).on('mouseover', 'table.volDiscountList-js tr', function(){
     $('input[type="text"]', this).fadeIn();
 });
 
-$(document).on('mouseout', 'table.volDiscountList-js tr', function(){
+/*$(document).on('mouseout', 'table.volDiscountList-js tr', function(){
     $('input[type="text"]', this).hide();
     $('div', this).fadeIn();
 });
-
+*/
 $(document).on('blur', ".js--volDiscountCol", function(){
     var currObj = $(this);
     updateVDValue(currObj);
