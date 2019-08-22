@@ -18,6 +18,24 @@
     $cancelBtnFld->setFieldTagAttribute('class', 'btn--block btn btn--primary-border');
     $cancelBtnFld->developerTags['col'] = 2;
     $cancelBtnFld->developerTags['noCaptionTag'] = true;
+
+    $addVolDiscountfrm->setFormTagAttribute('class', 'web_form last_td_nowrap');
+    $addVolDiscountfrm->setFormTagAttribute('id', 'frmAddVolumeDiscount');
+    $addVolDiscountfrm->setFormTagAttribute('onsubmit', 'updateVolumeDiscount(this); return(false);');
+
+    $updateBtnFld = $addVolDiscountfrm->getField('btn_update');
+    $updateBtnFld->setFieldTagAttribute('class', 'btn--block btn btn--primary');
+
+    $addVolDiscountfrm->addHiddenField('', 'selector', 1);
+
+    $prodName = $addVolDiscountfrm->getField('product_name');
+    $prodName->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Select_Product', $siteLangId));
+
+    $minQty = $addVolDiscountfrm->getField('voldiscount_min_qty');
+    $minQty->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Add_Minimum_Quantity', $siteLangId));
+
+    $disPerc = $addVolDiscountfrm->getField('voldiscount_percentage');
+    $disPerc->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Add_Discount_Percentage', $siteLangId));
 ?>
 <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
@@ -50,6 +68,48 @@
                 <div class="col-lg-12">
                     <div class="cards">
                         <div class="cards-content pl-4 pr-4 pt-4">
+                            <div class="replaced">
+                                <?php
+                                    echo $addVolDiscountfrm->getFormTag();
+                                    echo $addVolDiscountfrm->getFieldHtml('voldiscount_selprod_id');
+                                    echo $addVolDiscountfrm->getFieldHtml('selector');
+                                ?>
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4">
+                                            <div class="field-set">
+                                                <div class="field-wraper">
+                                                    <?php echo $addVolDiscountfrm->getFieldHtml('product_name'); ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3">
+                                            <div class="field-set">
+                                                <div class="field-wraper">
+                                                    <?php echo $addVolDiscountfrm->getFieldHtml('voldiscount_min_qty'); ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3">
+                                            <div class="field-set">
+                                                <div class="field-wraper">
+                                                    <?php echo $addVolDiscountfrm->getFieldHtml('voldiscount_percentage'); ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2">
+                                            <div class="field-set">
+                                                <div class="field-wraper">
+                                                    <div class="field_cover">
+                                                        <?php echo $addVolDiscountfrm->getFieldHtml('btn_update'); ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <span class="gap"></span>
+                            <div class="divider"></div>
                             <div id="listing">
                                 <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?>
                             </div>
