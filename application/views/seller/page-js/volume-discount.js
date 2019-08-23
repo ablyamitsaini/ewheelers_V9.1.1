@@ -32,9 +32,12 @@ $(document).on('keyup', "#frmAddVolumeDiscount input[name='product_name']", func
 });*/
 
 
-$(document).on('mouseover', 'table.volDiscountList-js tr', function(){
-    $('div', this).hide();
-    $('input[type="text"]', this).fadeIn();
+$(document).on('click', 'table.volDiscountList-js tr td .js--editCol', function(){
+    $(this).hide();
+    var input = $(this).siblings('input[type="text"]');
+    var value = input.val();
+    input.fadeIn();
+    input.val('').focus().val(value);
 });
 
 /*$(document).on('mouseout', 'table.volDiscountList-js tr', function(){
