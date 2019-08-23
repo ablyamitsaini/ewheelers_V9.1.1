@@ -1796,7 +1796,7 @@ input:checked + .slider:before {
 	font-size: 0.875rem;
 	line-height: 1.8;
 	margin-bottom: 1rem;
-	word-break:break-word;
+	word-break: break-word;
 }
 
 .cms .space {
@@ -15588,7 +15588,7 @@ main.main {
 	line-height: 1.2;
 	position: fixed;
 	right: 15px;
-	top:18%;
+	top: 18%;
 	z-index: 10;
 	background: var(--first-color);
 	border-radius: 2px 2px 0px 0px;
@@ -16388,4 +16388,24 @@ div.faqanswer p {
 
 #st_gdpr_iframe {
 	display: none;
+}
+
+.edit-hover {
+	border-radius: 4px;
+	padding: 0 10px;
+	font-size: 0.9em;
+	height: 2.5rem;
+	line-height: 2.5rem;
+	display: block;
+	width: 100%;
+	max-width: 70px;
+	border: solid 1px transparent;
+}
+
+.edit-hover:hover { 
+	border-color: var(--border-color);
+}
+
+.vd-input {
+	max-width: 70px;
 }
