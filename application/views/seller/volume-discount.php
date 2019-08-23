@@ -6,6 +6,7 @@
 
     $keywordFld = $frmSearch->getField('keyword');
     $keywordFld->setWrapperAttribute('class', 'col-lg-4');
+    $keywordFld->addFieldTagAttribute('placeholder', Labels::getLabel('LBL_Search_by_keyword', $siteLangId));
     $keywordFld->developerTags['col'] = 4;
     $keywordFld->developerTags['noCaptionTag'] = true;
 

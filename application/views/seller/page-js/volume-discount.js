@@ -27,11 +27,6 @@ $(document).on('keyup', "#frmAddVolumeDiscount input[name='product_name']", func
     }
 });
 
-/*$(document).on('blur', "#frmAddVolumeDiscount input[name='voldiscount_percentage']", function(){
-    $("#frmAddVolumeDiscount").submit();
-});*/
-
-
 $(document).on('click', 'table.volDiscountList-js tr td .js--editCol', function(){
     $(this).hide();
     var input = $(this).siblings('input[type="text"]');
@@ -40,44 +35,35 @@ $(document).on('click', 'table.volDiscountList-js tr td .js--editCol', function(
     input.val('').focus().val(value);
 });
 
-/*$(document).on('mouseout', 'table.volDiscountList-js tr', function(){
-    $('input[type="text"]', this).hide();
-    $('div', this).fadeIn();
-});
-*/
 $(document).on('blur', ".js--volDiscountCol", function(){
     var currObj = $(this);
-    updateVDValue(currObj);
+    var value = currObj.val();
+    var oldValue = currObj.attr('data-val');
+    var attribute = currObj.attr('name');
+    var id = currObj.data('id');
+    var selProdId = currObj.data('selprodid');
+    if ('' != value && parseFloat(value) != parseFloat(oldValue)) {
+        var data = 'attribute='+attribute+"&voldiscount_id="+id+"&selProdId="+selProdId+"&value="+value;
+        fcom.ajax(fcom.makeUrl('Seller', 'updateVolumeDiscountValue'), data, function(t) {
+            var ans = $.parseJSON(t);
+            if( ans.status != 1 ){
+                $.systemMessage(ans.msg, 'alert--danger');
+                value = oldValue;
+            } else {
+                value = ans.data.value;
+                currObj.attr('data-val', value);
+            }
+            currObj.val(value);
+            showElement(currObj, value);
+        });
+    } else {
+        showElement(currObj, oldValue);
+        currObj.val(oldValue);
+    }
     return false;
 });
 
 (function() {
-    updateVDValue = function(currObj){
-        var value = currObj.val();
-        var oldValue = currObj.attr('data-val');
-        var attribute = currObj.attr('name');
-        var id = currObj.data('id');
-        var selProdId = currObj.data('selprodid');
-        if ('' != value && parseFloat(value) != parseFloat(oldValue)) {
-            var data = 'attribute='+attribute+"&voldiscount_id="+id+"&selProdId="+selProdId+"&value="+value;
-            fcom.ajax(fcom.makeUrl('Seller', 'updateVolumeDiscountValue'), data, function(t) {
-                var ans = $.parseJSON(t);
-                if( ans.status != 1 ){
-                    $.systemMessage(ans.msg, 'alert--danger');
-                    value = oldValue;
-    			} else {
-                    value = ans.data.value;
-                    currObj.attr('data-val', value);
-                }
-                currObj.val(value);
-                showElement(currObj, value);
-            });
-        } else {
-            showElement(currObj, oldValue);
-            currObj.val(oldValue);
-        }
-    }
-
     showElement = function(currObj, value){
         currObj.siblings('div').text(value).fadeIn();
         currObj.hide();
@@ -155,7 +141,6 @@ $(document).on('blur', ".js--volDiscountCol", function(){
                 frm.reset();
                 document.getElementById('frmVolDiscountListing').reset()
                 $('table.volDiscountList-js tbody').prepend(t.data);
-                $("input[name='product_name']").focus();
             }
 			$(document).trigger('close.facebox');
 		});
