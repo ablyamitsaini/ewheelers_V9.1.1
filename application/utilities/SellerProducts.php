@@ -2221,16 +2221,30 @@ trait SellerProducts
     public function volumeDiscount()
     {
         $srchFrm = $this->getVolumeDiscountSearchForm();
-        $post = $srchFrm->getFormDataFromArray(FatApp::getPostedData());
+        $selProdIdsArr = FatApp::getPostedData('selprod_ids', FatUtility::VAR_INT, 0);
 
-        if (false === $post) {
-            FatUtility::dieJsonError(current($frm->getValidationErrors()));
+        $dataToUpdate = array();
+        if (!empty($selProdIdsArr)) {
+            foreach ($selProdIdsArr as $volDiscountId => $selProdId) {
+                $product_name = SellerProduct::getProductDisplayTitle($selProdId, $this->siteLangId);
+                $dataToUpdate[] = array(
+                    'product_name' => html_entity_decode($product_name, ENT_QUOTES, 'UTF-8'),
+                    'voldiscount_selprod_id' => $selProdId
+                );
+            }
         } else {
-            unset($post['btn_submit'], $post['btn_clear']);
-            $srchFrm->fill($post);
+            $post = $srchFrm->getFormDataFromArray(FatApp::getPostedData());
+
+            if (false === $post) {
+                FatUtility::dieJsonError(current($frm->getValidationErrors()));
+            } else {
+                unset($post['btn_submit'], $post['btn_clear']);
+                $srchFrm->fill($post);
+            }
         }
-        $addVolDiscountfrm = $this->volumeDiscountFormElements();
-        $this->set("addVolDiscountfrm", $addVolDiscountfrm);
+        $addVolDiscountFrm = $this->volumeDiscountFormElements();
+        $this->set("addVolDiscountFrm", $addVolDiscountFrm);
+        $this->set("dataToUpdate", $dataToUpdate);
         $this->set("frmSearch", $srchFrm);
         $this->_template->render();
     }

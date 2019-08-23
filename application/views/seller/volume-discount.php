@@ -20,23 +20,24 @@
     $cancelBtnFld->developerTags['col'] = 2;
     $cancelBtnFld->developerTags['noCaptionTag'] = true;
 
-    $addVolDiscountfrm->setFormTagAttribute('class', 'form');
-    $addVolDiscountfrm->setFormTagAttribute('id', 'frmAddVolumeDiscount');
-    $addVolDiscountfrm->setFormTagAttribute('onsubmit', 'updateVolumeDiscount(this); return(false);');
-
-    $updateBtnFld = $addVolDiscountfrm->getField('btn_update');
+    $updateBtnFld = $addVolDiscountFrm->getField('btn_update');
     $updateBtnFld->setFieldTagAttribute('class', 'btn--block btn btn--primary');
 
-    $addVolDiscountfrm->addHiddenField('', 'selector', 1);
+    $addVolDiscountFrm->addHiddenField('', 'selector', 1);
 
-    $prodName = $addVolDiscountfrm->getField('product_name');
+    $prodName = $addVolDiscountFrm->getField('product_name');
     $prodName->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Select_Product', $siteLangId));
 
-    $minQty = $addVolDiscountfrm->getField('voldiscount_min_qty');
+    $minQty = $addVolDiscountFrm->getField('voldiscount_min_qty');
     $minQty->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Add_Minimum_Quantity', $siteLangId));
 
-    $disPerc = $addVolDiscountfrm->getField('voldiscount_percentage');
+    $disPerc = $addVolDiscountFrm->getField('voldiscount_percentage');
     $disPerc->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Add_Discount_Percentage', $siteLangId));
+
+    $addVolDiscountFrm->setFormTagAttribute('class', 'form');
+    $addVolDiscountFrm->setFormTagAttribute('id', 'frmAddVolumeDiscount');
+    $addVolDiscountFrm->setFormTagAttribute('name', 'frmAddVolumeDiscount');
+    $addVolDiscountFrm->setFormTagAttribute('onsubmit', 'updateVolumeDiscount(this); return(false);');
 ?>
 <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
@@ -46,7 +47,7 @@
                 <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
                 <h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Manage_Volume_Discount', $siteLangId); ?></h2>
             </div>
-            
+
         </div>
         <div class="content-body">
             <div class="row mb-4">
@@ -63,65 +64,38 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="cards">
-                        <div class="cards-content pt-4 pl-4 pr-4 pb-0">
-                            <div class="replaced">
-                                <?php
-                                    echo $addVolDiscountfrm->getFormTag();
-                                    echo $addVolDiscountfrm->getFieldHtml('voldiscount_selprod_id');
-                                    echo $addVolDiscountfrm->getFieldHtml('selector');
-                                ?>
-                                    <div class="row">
-                                        <div class="col-lg-4 col-md-4">
-                                            <div class="field-set">
-                                                <div class="field-wraper">
-                                                    <?php echo $addVolDiscountfrm->getFieldHtml('product_name'); ?>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-md-3">
-                                            <div class="field-set">
-                                                <div class="field-wraper">
-                                                    <?php echo $addVolDiscountfrm->getFieldHtml('voldiscount_min_qty'); ?>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-md-3">
-                                            <div class="field-set">
-                                                <div class="field-wraper">
-                                                    <?php echo $addVolDiscountfrm->getFieldHtml('voldiscount_percentage'); ?>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-2 col-md-2">
-                                            <div class="field-set">
-                                                <div class="field-wraper">
-                                                    <div class="field_cover">
-                                                        <?php echo $addVolDiscountfrm->getFieldHtml('btn_update'); ?>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                         <div class="divider"></div>
-					<div class="cards-content pl-4 pr-4">
-						
+                        <?php
+                        $clone = clone $addVolDiscountFrm;
+
+                        foreach ($dataToUpdate as $key => $value) {
+                            $addVolDiscountFrm->fill($value);
+                            $addVolDiscountFrm->setFormTagAttribute('class', 'form');
+                            $addVolDiscountFrm->setFormTagAttribute('id', 'frmAddVolumeDiscount-'.$key);
+                            $addVolDiscountFrm->setFormTagAttribute('name', 'frmAddVolumeDiscount-'.$key);
+                            $addVolDiscountFrm->setFormTagAttribute('onsubmit', 'updateVolumeDiscount(this); return(false);');
+                            $productName = $addVolDiscountFrm->getField('product_name');
+                            $productName->setFieldTagAttribute('readonly', 'readonly');
+                            $this->includeTemplate('seller/add-volume-discount-form.php', array('addVolDiscountFrm'=>$addVolDiscountFrm, 'addMultiple' => 1), false);
+                        }
+                        $this->includeTemplate('seller/add-volume-discount-form0.php', array('addVolDiscountFrmClone'=>$clone), false);
+
+
+                        ?>
+                        <div class="cards-content pl-4 pr-4">
                             <div class="row justify-content-between">
-								<div class="col-auto"></div>
-                            	 <div class="col-auto">
-                <div class="action">
-                    <a class="btn btn--primary-border btn--sm formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Remove_Volume_Discount', $siteLangId); ?>" onclick="deleteVolumeDiscount()" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Remove_Volume_Discount', $siteLangId); ?></a>
-                    
-                </div>
-            </div>                           	
+                                <div class="col-auto"></div>
+                                 <div class="col-auto">
+                                    <div class="action">
+                                        <a class="btn btn--primary-border btn--sm formActionBtn-js formActions-css" title="<?php echo Labels::getLabel('LBL_Remove_Volume_Discount', $siteLangId); ?>" onclick="deleteVolumeDiscount()" href="javascript:void(0)"><?php echo Labels::getLabel('LBL_Remove_Volume_Discount', $siteLangId); ?></a>
+
+                                    </div>
+                                </div>
                             </div>
                             <div id="listing">
                                 <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?>
                             </div>
                             <span class="gap"></span>
-					</div>
+                        </div>
                     </div>
                 </div>
             </div>

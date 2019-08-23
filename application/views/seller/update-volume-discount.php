@@ -10,12 +10,12 @@
         <?php echo html_entity_decode($post['product_name']); ?>
     </td>
     <td>
-        <div class="js--editCol"><?php echo $post['voldiscount_min_qty']; ?></div>
-        <input type="text" data-id="<?php echo $insertId; ?>" value="<?php echo $post['voldiscount_min_qty']; ?>" data-selprodid="<?php echo $post['voldiscount_selprod_id']; ?>" name="voldiscount_min_qty" class="js--volDiscountCol hidden" data-val="<?php echo $post['voldiscount_min_qty']; ?>"/>
+        <div class="js--editCol edit-hover"><?php echo $post['voldiscount_min_qty']; ?></div>
+        <input type="text" data-id="<?php echo $insertId; ?>" value="<?php echo $post['voldiscount_min_qty']; ?>" data-selprodid="<?php echo $post['voldiscount_selprod_id']; ?>" name="voldiscount_min_qty" class="js--volDiscountCol hidden vd-input" data-val="<?php echo $post['voldiscount_min_qty']; ?>"/>
     </td>
     <td>
-        <?php echo number_format((float)$post['voldiscount_percentage'], 2, '.', ''); ?>
-        <input type="text" data-id="<?php echo $insertId; ?>" value="<?php echo $post['voldiscount_min_qty']; ?>" data-selprodid="<?php echo $post['voldiscount_selprod_id']; ?>" name="voldiscount_percentage" class="js--volDiscountCol hidden" data-val="<?php echo $post['voldiscount_min_qty']; ?>"/>
+        <div class="js--editCol edit-hover"><?php echo number_format((float)$post['voldiscount_percentage'], 2, '.', ''); ?></div>
+        <input type="text" data-id="<?php echo $insertId; ?>" value="<?php echo $post['voldiscount_min_qty']; ?>" data-selprodid="<?php echo $post['voldiscount_selprod_id']; ?>" name="voldiscount_percentage" class="js--volDiscountCol hidden vd-input" data-val="<?php echo $post['voldiscount_min_qty']; ?>"/>
     </td>
     <td>
         <ul class="actions">
