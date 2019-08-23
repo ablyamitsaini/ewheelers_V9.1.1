@@ -36,6 +36,33 @@ foreach ($optionRows as $key => $option) {
     }
 }
 
+if (!empty($product)) {
+    if (!empty($product['selprod_return_policies'])) {
+        $product['productPolicies'][] = array(
+            'title' => $product['selprod_return_policies']['ppoint_title']
+        );
+    }
+    if (!empty($product['selprod_warranty_policies'])) {
+        $product['productPolicies'][] = array(
+            'title' => $product['selprod_warranty_policies']['ppoint_title']
+        );
+    }
+    if (isset($shippingDetails['ps_free']) && $shippingDetails['ps_free'] == applicationConstants::YES) {
+        $product['productPolicies'][] = array(
+            'title' => Labels::getLabel('LBL_Free_Shipping_on_this_Order', $siteLangId)
+        );
+    } else if (count($shippingRates) > 0) {
+        $product['productPolicies'][] = array(
+            'title' => Labels::getLabel('LBL_Shipping_Rates', $siteLangId),
+        );
+    }
+    if (0 < $codEnabled) {
+        $product['productPolicies'][] = array(
+            'title' => Labels::getLabel('LBL_Cash_on_delivery_is_available', $siteLangId)
+        );
+    }
+}
+
 $product['selprod_return_policies'] = !empty($product['selprod_return_policies']) ? $product['selprod_return_policies'] : (object)array();
 $product['selprod_warranty_policies'] = !empty($product['selprod_warranty_policies']) ? $product['selprod_warranty_policies'] : (object)array();
 $product['product_description'] = strip_tags(html_entity_decode($product['product_description'], ENT_QUOTES, 'utf-8'));
