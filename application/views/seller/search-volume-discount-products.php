@@ -7,9 +7,9 @@ $arr_flds = array(
     'action' => Labels::getLabel('LBL_Action', $siteLangId),
 );
 
-$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table-responsive table--hovered volDiscountList-js'));
+$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table--orders table--hovered volDiscountList-js'));
 $thead = $tbl->appendElement('thead');
-$th = $thead->appendElement('tr', array('class' => 'hide--mobile'));
+$th = $thead->appendElement('tr', array('class' => ''));
 
 foreach ($arr_flds as $key => $val) {
     if ('select_all' == $key) {
@@ -41,8 +41,8 @@ foreach ($arrListing as $sn => $row) {
                 break;
             case 'voldiscount_min_qty':
             case 'voldiscount_percentage':
-                $input = '<input type="text" data-id="'.$row['voldiscount_id'].'" value="'.$row[$key].'" data-selprodid="'.$row['selprod_id'].'" name="'.$key.'" class="js--volDiscountCol hidden" data-val="'.$row[$key].'"/>';
-                $td->appendElement('div', array("class" => 'js--editCol'), $row[$key], true);
+                $input = '<input type="text" data-id="'.$row['voldiscount_id'].'" value="'.$row[$key].'" data-selprodid="'.$row['selprod_id'].'" name="'.$key.'" class="js--volDiscountCol hidden vd-input" data-val="'.$row[$key].'"/>';
+                $td->appendElement('div', array("class" => 'js--editCol edit-hover', "title" => Labels::getLabel('LBL_Click_To_Edit', $siteLangId)), $row[$key], true);
                 $td->appendElement('plaintext', array(), $input, true);
                 break;
             case 'action':
@@ -72,7 +72,7 @@ if (count($arrListing) == 0) {
 }
 
 $frm = new Form('frmVolDiscountListing', array('id'=>'frmVolDiscountListing'));
-$frm->setFormTagAttribute('class', 'web_form last_td_nowrap');
+$frm->setFormTagAttribute('class', 'form');
 
 echo $frm->getFormTag();
 echo $tbl->getHtml(); ?>
