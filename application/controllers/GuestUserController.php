@@ -362,7 +362,7 @@ class GuestUserController extends MyAppController
         unset($_SESSION['fb_'.FatApp::getConfig("CONF_FACEBOOK_APP_ID").'_user_id']);
 
         $cartObj = new Cart();
-        if ($cartObj->hasProducts()) {
+        if ($cartObj->hasProducts() && false ===  MOBILE_APP_API_CALL) {
             $url = CommonHelper::generateFullUrl('cart');
             $this->set('url', $url);
             $this->set('msg', Labels::getLabel('MSG_LoggedIn_SUCCESSFULLY', $this->siteLangId));
