@@ -99,7 +99,7 @@ class Cart extends FatModel
         return;
     }
 
-    public function add($selprod_id, $qty = 1, $prodgroup_id = 0)
+    public function add($selprod_id, $qty = 1, $prodgroup_id = 0, $returnUserId = false)
     {
         $this->products = array();
         $selprod_id = FatUtility::int($selprod_id);
@@ -135,6 +135,10 @@ class Cart extends FatModel
         }
 
         $this->updateUserCart();
+        
+        if ($returnUserId) {
+            return $this->cart_user_id;
+        }
         return true;
     }
 
