@@ -106,7 +106,7 @@ class HomeController extends MyAppController
         }
     }
 
-    public function languageLabels()
+    public function languageLabels($download = 0)
     {
         $srch = Labels::getSearchObject();
         $srch->joinTable('tbl_languages', 'inner join', 'label_lang_id = language_id and language_active = ' .applicationConstants::ACTIVE);
@@ -115,9 +115,22 @@ class HomeController extends MyAppController
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
         $srch->addCondition('lbl.label_lang_id', '=', $this->siteLangId);
+
         $rs = $srch->getResultSet();
         $records = FatApp::getDb()->fetchAll($rs);
-
+        if (true ===  MOBILE_APP_API_CALL && 0 < $download) {
+            $labels = array();
+            foreach ($records as $row) {
+                $labels[$row['label_key']] = $row['label_caption'];
+            }
+            if (0 < count($labels)) {
+                if (CommonHelper::updateLangLabelsToFile($labels)) {
+                    $name = 'language-labels-'.$this->siteLangId.'.json';
+                    $file = CommonHelper::LANGUAGE_LABELS_FILE_LOCATION . $name;
+                    AttachedFile::downloadAttachment($file, $name);
+                }
+            }
+        }
         $this->set('languageLabels', $records);
         $this->_template->render();
     }
