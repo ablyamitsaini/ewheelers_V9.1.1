@@ -5,7 +5,9 @@ if (UserAuthentication::isUserLogged()) {
 }
 if ($user_is_buyer > 0 || (!UserAuthentication::isUserLogged())) { ?>
     <a href="javascript:void(0)">
-        <span class="icn"> </span>
+        <span class="icn"><svg class="svg">
+         <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#main-cart" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#main-cart"></use>
+        </svg></span>
         <span class="icn-txt"><strong><?php echo Labels::getLabel("LBL_Cart", $siteLangId); ?></strong>
             <span class="cartQuantity"><?php echo $totalCartItems.' '; ?></span>
             <?php /* if (0 < $cartSummary['cartTotal']) { */ ?>

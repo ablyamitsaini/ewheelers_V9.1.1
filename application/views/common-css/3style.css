@@ -1553,12 +1553,20 @@ body.fixed .top-bar {
 }
 
 .toggle--search .icn {
-	background: url(../images/retina/magni-black.svg) no-repeat center;
-	vertical-align: top;
-	background-size: 20px 20px;
-	display: inline-block;
+	/*background: url(../images/retina/magni-black.svg) no-repeat center;
+	background-size: 20px 20px;*/
+	vertical-align: top;	
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	width: 20px;
 	height: 20px;
+}
+
+.toggle--search .icn svg {
+	width: 20px;
+	height: 20px;
+	fill: var(--first-color);
 }
 
 .toggle--search .icn-txt {
@@ -1733,15 +1741,23 @@ body.fixed .top-bar {
 }
 
 .cart span.icn {
-	background: url(../images/retina/cart.svg) no-repeat center;
+	/*background: url(../images/retina/cart.svg) no-repeat center;
+	background-size: 28px;*/
 	vertical-align: top;
-	background-size: 28px;
-	display: inline-block;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	width: 48px;
 	height: 48px;
 	border-radius: 50%;
 	border: solid 1px var(--first-color);
 	margin-inline-end: 10px;
+}
+
+.cart span.icn svg {
+	width: 28px;
+	height: 28px;
+	fill: var(--first-color);
 }
 
 .cart .icn-txt {
@@ -8765,6 +8781,7 @@ form.custom-form input[type="submit"] {
 	transition: all 0.3s ease-in-out 0s;
 	border-radius: 4px;
 }
+
 /* added on 21 june 2018 */
 .btn-inline {
 	display: inline-block;
