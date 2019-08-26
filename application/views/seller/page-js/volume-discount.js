@@ -138,11 +138,21 @@ $(document).on('blur', ".js--volDiscountCol", function(){
 		fcom.updateWithAjax(fcom.makeUrl('Seller', 'updateVolumeDiscount'), data, function(t) {
             if(t.status == true){
                 $("input[name='voldiscount_selprod_id']").val('');
-                frm.reset();
+                if (1 > frm.addMultiple.value) {
+                    frm.reset();
+                }
                 document.getElementById('frmVolDiscountListing').reset()
                 $('table.volDiscountList-js tbody').prepend(t.data);
             }
 			$(document).trigger('close.facebox');
+            if (0 < $('.defaultForm.hidden').length && '' != frm.lastRow.value && 0 < frm.lastRow.value) {
+                $('.defaultForm.hidden').removeClass('defaultForm hidden');
+            }
+            if (0 < frm.addMultiple.value) {
+                var volDisRow = $("#"+frm.id).parent().parent();
+                volDisRow.siblings('.divider:first').remove();
+                volDisRow.remove();
+            }
 		});
 		return false;
 	};

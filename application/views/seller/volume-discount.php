@@ -38,6 +38,7 @@
     $addVolDiscountFrm->setFormTagAttribute('id', 'frmAddVolumeDiscount');
     $addVolDiscountFrm->setFormTagAttribute('name', 'frmAddVolumeDiscount');
     $addVolDiscountFrm->setFormTagAttribute('onsubmit', 'updateVolumeDiscount(this); return(false);');
+    $addVolDiscountFrm->addHiddenField('', 'lastRow', 0);
 ?>
 <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
@@ -65,21 +66,24 @@
                 <div class="col-lg-12">
                     <div class="cards">
                         <?php
-                        $clone = clone $addVolDiscountFrm;
-
+                        $defaultForm = !empty($dataToUpdate) && 0 < count($dataToUpdate) ? 1 : 0;
+                        $this->includeTemplate('seller/add-volume-discount-form.php', array('addVolDiscountFrm'=>$addVolDiscountFrm, 'defaultForm' => $defaultForm), false);
                         foreach ($dataToUpdate as $key => $value) {
-                            $addVolDiscountFrm->fill($value);
-                            $addVolDiscountFrm->setFormTagAttribute('class', 'form');
-                            $addVolDiscountFrm->setFormTagAttribute('id', 'frmAddVolumeDiscount-'.$key);
-                            $addVolDiscountFrm->setFormTagAttribute('name', 'frmAddVolumeDiscount-'.$key);
-                            $addVolDiscountFrm->setFormTagAttribute('onsubmit', 'updateVolumeDiscount(this); return(false);');
-                            $productName = $addVolDiscountFrm->getField('product_name');
+                            $cloneFrm = clone $addVolDiscountFrm;
+                            $cloneFrm->fill($value);
+                            $cloneFrm->setFormTagAttribute('class', 'form');
+                            $cloneFrm->setFormTagAttribute('id', 'frmAddVolumeDiscount-'.$key);
+                            $cloneFrm->setFormTagAttribute('name', 'frmAddVolumeDiscount-'.$key);
+                            $cloneFrm->setFormTagAttribute('onsubmit', 'updateVolumeDiscount(this); return(false);');
+                            $productName = $cloneFrm->getField('product_name');
                             $productName->setFieldTagAttribute('readonly', 'readonly');
-                            $this->includeTemplate('seller/add-volume-discount-form.php', array('addVolDiscountFrm'=>$addVolDiscountFrm, 'addMultiple' => 1), false);
+                            if ($value === end($dataToUpdate)) {
+                                $cloneFrm->addHiddenField('', 'lastRow', 1);
+                            }
+                            $this->includeTemplate('seller/add-volume-discount-form.php', array('addVolDiscountFrm'=>$cloneFrm, 'addMultiple' => 1), false);
                         }
-                        $this->includeTemplate('seller/add-volume-discount-form0.php', array('addVolDiscountFrmClone'=>$clone), false);
-
-
+                        // CommonHelper::printArray($addVolDiscountFrm, true);
+                        /*$this->includeTemplate('seller/add-volume-discount-form.php', array('addVolDiscountFrm'=>$addVolDiscountFrm, 'lastRow' => 0), false);*/
                         ?>
                         <div class="cards-content pl-4 pr-4">
                             <div class="row justify-content-between">

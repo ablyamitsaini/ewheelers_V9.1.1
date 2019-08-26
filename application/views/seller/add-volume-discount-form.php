@@ -1,20 +1,21 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
-<div class="cards-content pt-4 pl-4 pr-4 pb-0">
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.');
+$class = (!empty($defaultForm) && 1 === $defaultForm) ? 'defaultForm hidden' : '';
+?>
+<div class="cards-content pt-4 pl-4 pr-4 pb-0 <?php echo $class; ?>">
     <div class="replaced">
         <?php
-        if (empty($addMultiple)) {
-            $addVolDiscountFrmClone->fill(array());
-            $addVolDiscountFrm = $addVolDiscountFrmClone;
-        }
-            echo $addVolDiscountFrm->getFormTag();
-            echo $addVolDiscountFrm->getFieldHtml('voldiscount_selprod_id');
-            echo $addVolDiscountFrm->getFieldHtml('selector');
+        echo $addVolDiscountFrm->getFormTag();
+        echo $addVolDiscountFrm->getFieldHtml('voldiscount_selprod_id');
+        echo $addVolDiscountFrm->getFieldHtml('selector');
 
         if (!empty($addMultiple) && 1 == $addMultiple) {
             $addVolDiscountFrm->addHiddenField('', 'addMultiple', $addMultiple);
             echo $addVolDiscountFrm->getFieldHtml('addMultiple');
         }
 
+        if ($addVolDiscountFrm->getField('lastRow')) {
+            echo $addVolDiscountFrm->getFieldHtml('lastRow');
+        }
         ?>
             <div class="row">
                 <div class="col-lg-4 col-md-4">
