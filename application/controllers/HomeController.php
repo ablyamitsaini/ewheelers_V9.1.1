@@ -133,6 +133,7 @@ class HomeController extends MyAppController
             AttachedFile::downloadAttachment(CommonHelper::LANGUAGE_LABELS_FILE_LOCATION . $name, $name);
         }
         $data = array(
+            'languageId'=>$this->siteLangId,
             'downloadUrl' => CommonHelper::generateFullUrl('Home', 'languageLabels', array(1)),
             'langLabelUpdatedAt' => $langLabelUpdatedAt
         );
