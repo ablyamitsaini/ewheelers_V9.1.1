@@ -113,8 +113,8 @@ class HomeController extends MyAppController
         $langLabelUpdatedAt = FatApp::getConfig('CONF_LANG_LABELS_UPDATED_AT', FatUtility::VAR_INT, 0);
         if (1 > $langLabelUpdatedAt) {
             $langLabelUpdatedAt = time();
-            $configurationObj = new Configurations();
-            $configurationObj->update(array('CONF_LANG_LABELS_UPDATED_AT' => $langLabelUpdatedAt));
+            $assignValues = array('conf_name'=>'CONF_LANG_LABELS_UPDATED_AT','conf_val'=>$langLabelUpdatedAt);
+            FatApp::getDb()->insertFromArray('tbl_configurations', $assignValues, false, array(), $assignValues);
         }
         if (0 < $download) {
             $records = Labels::getAll($this->siteLangId, array('label_caption', 'label_key'));
