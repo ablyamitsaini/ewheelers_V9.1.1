@@ -154,6 +154,7 @@ $(document).on('change','.selprodoption_optionvalue_id',function(){
 	        $.systemMessage(langLbl.atleastOneRecord, 'alert--danger');
 	        return false;
 	    }
-		$("#frmSellerProductsListing").attr('action', fcom.makeUrl('Seller','volumeDiscount')).removeAttr('onsubmit').submit();
+		$("#frmSellerProductsListing").attr({'action': fcom.makeUrl('Seller','volumeDiscount'), 'target':"_blank"}).removeAttr('onsubmit').submit();
+		loadSellerProducts(document.frmSearchSellerProducts);
 	};
 })();

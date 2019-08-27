@@ -7,7 +7,7 @@
     <div class="cards-header p-4">
         <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Volume_Discount', $siteLangId);?></h5>
         <div class="action">
-            <a class="btn btn--primary btn--sm" href="<?php echo CommonHelper::generateUrl('Seller', 'volumeDiscountList', array($selprod_id)); ?>" target="_blank"><?php echo Labels::getLabel('LBL_Manage_Volume_Discount', $siteLangId)?></a>
+            <a class="btn btn--primary btn--sm" href="<?php echo CommonHelper::generateUrl('Seller', 'volumeDiscount', array($selprod_id)); ?>" target="_blank"><?php echo Labels::getLabel('LBL_Manage_Volume_Discount', $siteLangId)?></a>
         </div>
     </div>
 <?php } ?>
