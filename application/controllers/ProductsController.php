@@ -180,6 +180,9 @@ class ProductsController extends MyAppController
         //var_dump($brandsCheckedArr);
 
         if (!empty($brandsCheckedArr)) {
+            if (true ===  MOBILE_APP_API_CALL) {
+                $brandsCheckedArr = json_decode($brandsCheckedArr, true);
+            }
             $brandSrch->addFld('IF(FIND_IN_SET(brand_id, "'.implode(',', $brandsCheckedArr).'"), 1, 0) as priority');
             $brandSrch->addOrder('priority', 'desc');
         }

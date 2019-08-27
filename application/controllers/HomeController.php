@@ -106,19 +106,39 @@ class HomeController extends MyAppController
         }
     }
 
-    public function languageLabels()
+    public function languageLabels($download = 0)
     {
-        $srch = Labels::getSearchObject();
-        $srch->joinTable('tbl_languages', 'inner join', 'label_lang_id = language_id and language_active = ' .applicationConstants::ACTIVE);
-        $srch->addOrder('lbl.' . Labels::DB_TBL_PREFIX . 'lang_id', 'ASC');
-        $srch->addGroupBy('lbl.' . Labels::DB_TBL_PREFIX . 'key');
-        $srch->doNotCalculateRecords();
-        $srch->doNotLimitRecords();
-        $srch->addCondition('lbl.label_lang_id', '=', $this->siteLangId);
-        $rs = $srch->getResultSet();
-        $records = FatApp::getDb()->fetchAll($rs);
+        $download = FatUtility::int($download);
 
-        $this->set('languageLabels', $records);
+        $langLabelUpdatedAt = FatApp::getConfig('CONF_LANG_LABELS_UPDATED_AT', FatUtility::VAR_INT, 0);
+        if (1 > $langLabelUpdatedAt) {
+            $langLabelUpdatedAt = time();
+            $assignValues = array('conf_name'=>'CONF_LANG_LABELS_UPDATED_AT','conf_val'=>$langLabelUpdatedAt);
+            FatApp::getDb()->insertFromArray('tbl_configurations', $assignValues, false, array(), $assignValues);
+        }
+        if (0 < $download) {
+            $records = Labels::getAll($this->siteLangId, array('label_caption', 'label_key'));
+            $name = 'language-labels-'.$this->siteLangId.'.json';
+
+            $updateFile = (!file_exists(CommonHelper::LANGUAGE_LABELS_FILE_PATH.$name)) ? true :
+                            (filemtime(CommonHelper::LANGUAGE_LABELS_FILE_PATH.$name) < $langLabelUpdatedAt ? true : false);
+            if ($updateFile) {
+                $labels = array_column($records, 'label_caption', 'label_key');
+                if (!CommonHelper::updateLangLabelsToFile($labels)) {
+                    $message = Labels::getLabel('MSG_Unable_to_update_file', $this->siteLangId);
+                    FatUtility::dieJsonError($message);
+                }
+            }
+
+            AttachedFile::downloadAttachment(CommonHelper::LANGUAGE_LABELS_FILE_LOCATION . $name, $name);
+        }
+        $data = array(
+            'languageId'=>$this->siteLangId,
+            'downloadUrl' => CommonHelper::generateFullUrl('Home', 'languageLabels', array(1)),
+            'langLabelUpdatedAt' => $langLabelUpdatedAt
+        );
+
+        $this->set('data', $data);
         $this->_template->render();
     }
 

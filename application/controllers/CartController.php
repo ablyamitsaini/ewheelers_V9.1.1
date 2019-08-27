@@ -18,7 +18,8 @@ class CartController extends MyAppController
         $templateName = 'cart/listing.php';
         $products['groups'] = array();
         $products['single'] = array();
-        $cartObj = new Cart();
+        $loggedUserId = UserAuthentication::getLoggedUserId(true);
+        $cartObj = new Cart($loggedUserId, $this->siteLangId, $this->app_user['temp_user_id']);
         $productsArr = $cartObj->getProducts($this->siteLangId);
         $prodGroupIds = array();
 
@@ -126,14 +127,11 @@ class CartController extends MyAppController
         $productsToAdd  = isset($post['addons'])?$post['addons']:array();
         $productsToAdd[$selprod_id] = $quantity;
 
-        $this->app_user['temp_user_id'] = $this->getAppTempUserId();
-
         $this->addProductToCart($productsToAdd, $selprod_id);
 
         if (true ===  MOBILE_APP_API_CALL) {
             $cartObj = new Cart();
             $this->set('cartItemsCount', $cartObj->countProducts());
-            $this->set('tempUserId', $this->app_user['temp_user_id']);
             $this->_template->render();
         }
         $this->set('success_msg', CommonHelper::renderHtml(Message::getHtml()));
@@ -269,7 +267,8 @@ class CartController extends MyAppController
             /* ] */
 
             /* product availability date check covered in product search model[ ] */
-            $cartObj = new Cart();
+            $loggedUserId = UserAuthentication::getLoggedUserId(true);
+            $cartObj = new Cart($loggedUserId, $this->siteLangId, $this->app_user['temp_user_id']);
 
             /* cannot add quantity more than stock of the product[ */
             $selprod_stock = $sellerProductRow['selprod_stock'] - Product::tempHoldStockCount($productId);
@@ -290,7 +289,11 @@ class CartController extends MyAppController
             }
             /* ] */
             if ($productAdd) {
-                $cartObj->add($productId, $quantity);
+                $returnUserId = (true ===  MOBILE_APP_API_CALL) ? true : false;
+                $cartUserId = $cartObj->add($productId, $quantity, 0, $returnUserId);
+                if (true ===  MOBILE_APP_API_CALL) {
+                    $this->set('tempUserId', $cartUserId);
+                }
                 $ProductAdded = true;
             }
         }
