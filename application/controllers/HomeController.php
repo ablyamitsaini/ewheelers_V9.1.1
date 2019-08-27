@@ -108,30 +108,36 @@ class HomeController extends MyAppController
 
     public function languageLabels($download = 0)
     {
-        $srch = Labels::getSearchObject();
-        $srch->joinTable('tbl_languages', 'inner join', 'label_lang_id = language_id and language_active = ' .applicationConstants::ACTIVE);
-        $srch->addOrder('lbl.' . Labels::DB_TBL_PREFIX . 'lang_id', 'ASC');
-        $srch->addGroupBy('lbl.' . Labels::DB_TBL_PREFIX . 'key');
-        $srch->doNotCalculateRecords();
-        $srch->doNotLimitRecords();
-        $srch->addCondition('lbl.label_lang_id', '=', $this->siteLangId);
+        $download = FatUtility::int($download);
 
-        $rs = $srch->getResultSet();
-        $records = FatApp::getDb()->fetchAll($rs);
-        if (true ===  MOBILE_APP_API_CALL && 0 < $download) {
-            $labels = array();
-            foreach ($records as $row) {
-                $labels[$row['label_key']] = $row['label_caption'];
-            }
-            if (0 < count($labels)) {
-                if (CommonHelper::updateLangLabelsToFile($labels)) {
-                    $name = 'language-labels-'.$this->siteLangId.'.json';
-                    $file = CommonHelper::LANGUAGE_LABELS_FILE_LOCATION . $name;
-                    AttachedFile::downloadAttachment($file, $name);
+        $langLabelUpdatedAt = FatApp::getConfig('CONF_LANG_LABELS_UPDATED_AT', FatUtility::VAR_INT, 0);
+        if (1 > $langLabelUpdatedAt) {
+            $langLabelUpdatedAt = time();
+            $configurationObj = new Configurations();
+            $configurationObj->update(array('CONF_LANG_LABELS_UPDATED_AT' => $langLabelUpdatedAt));
+        }
+        if (0 < $download) {
+            $records = Labels::getAll($this->siteLangId, array('label_caption', 'label_key'));
+            $name = 'language-labels-'.$this->siteLangId.'.json';
+
+            $updateFile = (!file_exists(CommonHelper::LANGUAGE_LABELS_FILE_PATH.$name)) ? true :
+                            (filemtime(CommonHelper::LANGUAGE_LABELS_FILE_PATH.$name) < $langLabelUpdatedAt ? true : false);
+            if ($updateFile) {
+                $labels = array_column($records, 'label_caption', 'label_key');
+                if (!CommonHelper::updateLangLabelsToFile($labels)) {
+                    $message = Labels::getLabel('MSG_Unable_to_update_file', $this->siteLangId);
+                    FatUtility::dieJsonError($message);
                 }
             }
+
+            AttachedFile::downloadAttachment(CommonHelper::LANGUAGE_LABELS_FILE_LOCATION . $name, $name);
         }
-        $this->set('languageLabels', $records);
+        $data = array(
+            'downloadUrl' => CommonHelper::generateFullUrl('Home', 'languageLabels', array(1)),
+            'langLabelUpdatedAt' => $langLabelUpdatedAt
+        );
+
+        $this->set('data', $data);
         $this->_template->render();
     }
 
