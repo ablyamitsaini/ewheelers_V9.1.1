@@ -335,7 +335,6 @@ class SellerProduct extends MyAppModel
     public static function getAttributesById($recordId, $attr = null, $fetchOptions = true)
     {
         $row = parent::getAttributesById($recordId, $attr);
-
         /* get seller product options[ */
         if ($fetchOptions) {
             $op = static::getSellerProductOptions($recordId, false);
@@ -811,7 +810,7 @@ class SellerProduct extends MyAppModel
     {
         return $this->rewriteUrl($keyword, 'moresellers');
     }
-    
+
     public static function getActiveCount($userId, $selprodId = 0)
     {
         $selprodId = FatUtility::int($selprodId);

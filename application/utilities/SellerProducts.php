@@ -1096,12 +1096,16 @@ trait SellerProducts
         }
         /* ] */
 
+        if ($voldiscount_id > 0) {
+            $data_to_save['voldiscount_id'] = $voldiscount_id;
+        }
+
         $data_to_save = array(
-        'voldiscount_id'    =>    $voldiscount_id,
         'voldiscount_selprod_id'    =>    $selprod_id,
         'voldiscount_min_qty'    =>    $minQty,
         'voldiscount_percentage'    =>    $perc
         );
+
         $record = new TableRecord(SellerProductVolumeDiscount::DB_TBL);
         $record->assignValues($data_to_save);
         if (!$record->addNew(array(), $data_to_save)) {
@@ -2339,13 +2343,12 @@ trait SellerProducts
         }
 
         $selprod_id = FatUtility::int($post['voldiscount_selprod_id']);
-        $voldiscount_id = FatUtility::int($post['voldiscount_id']);
 
         if (1 > $selprod_id) {
             FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Request', $this->siteLangId));
         }
 
-        $insertId = $this->updateSelProdVolDiscount($selprod_id, $voldiscount_id, $post['voldiscount_min_qty'], $post['voldiscount_percentage']);
+        $insertId = $this->updateSelProdVolDiscount($selprod_id, 0, $post['voldiscount_min_qty'], $post['voldiscount_percentage']);
         if (!$insertId) {
             FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Response', $this->siteLangId));
         }
@@ -2370,7 +2373,7 @@ trait SellerProducts
         FatUtility::dieJsonSuccess($json);
     }
 
-    public function updateVolumeDiscountValue()
+    public function updateVolumeDiscountColValue()
     {
         $userId = UserAuthentication::getLoggedUserId();
         $volDiscountId = FatApp::getPostedData('voldiscount_id', FatUtility::VAR_INT, 0);
@@ -2383,7 +2386,7 @@ trait SellerProducts
         $invalidRequest = false;
         if ('voldiscount_min_qty' == $attribute) {
             $value = FatUtility::int($value);
-            $stock = SellerProduct::getAttributesById($selProdId, 'selprod_stock');
+            $stock = SellerProduct::getAttributesById($selProdId, 'selprod_stock', false);
             $invalidRequest = ($value >= $stock || 1 > $value) ? true : false;
             $label = Labels::getLabel('LBL_Minimum_Quantity._It_Should_Be_Less_Than_', $this->siteLangId).$stock;
         } else if ('voldiscount_percentage' == $attribute) {
@@ -2407,7 +2410,7 @@ trait SellerProducts
         $srch = SellerProductVolumeDiscountSearch::getSearchObject($volDiscountId, $selProdId, $userId, 'voldiscount_id');
         $rs = $srch->getResultSet();
         $row = $db->fetch($rs);
-        if (1 > count($row)) {
+        if (!empty($row) && 1 > count($row)) {
             FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Request', $this->siteLangId));
         }
 

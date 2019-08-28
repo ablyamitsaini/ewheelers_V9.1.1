@@ -17,7 +17,7 @@
     </td>
     <td>
         <ul class="actions">
-            <li><a title="Delete" href="javascript:void(0);" onclick="deleteSellerProductVolumeDiscount(<?php echo $insertId; ?>, $(this), <?php echo $post['voldiscount_selprod_id']; ?>)"><i class="fa fa-trash"></i></a></li>
+            <li><a title="Delete" href="javascript:void(0);" onclick="deleteSellerProductVolumeDiscount(<?php echo $insertId; ?>)"><i class="fa fa-trash"></i></a></li>
         </ul>
     </td>
 </tr>

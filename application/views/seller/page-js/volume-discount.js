@@ -44,7 +44,7 @@ $(document).on('blur', ".js--volDiscountCol", function(){
     var selProdId = currObj.data('selprodid');
     if ('' != value && parseFloat(value) != parseFloat(oldValue)) {
         var data = 'attribute='+attribute+"&voldiscount_id="+id+"&selProdId="+selProdId+"&value="+value;
-        fcom.ajax(fcom.makeUrl('Seller', 'updateVolumeDiscountValue'), data, function(t) {
+        fcom.ajax(fcom.makeUrl('Seller', 'updateVolumeDiscountColValue'), data, function(t) {
             var ans = $.parseJSON(t);
             if( ans.status != 1 ){
                 $.systemMessage(ans.msg, 'alert--danger');
@@ -106,9 +106,6 @@ $(document).on('blur', ".js--volDiscountCol", function(){
 		var frm = document.frmSearch;
 		searchVolumeDiscountProducts(frm);
 	}
-	addVolumeDiscount = function() {
-		window.open(fcom.makeUrl('Seller','addVolumeDiscount'), '_blank');
-	}
     deleteSellerProductVolumeDiscount = function( voldiscount_id ){
 		var agree = confirm(langLbl.confirmDelete);
 		if( !agree ){
@@ -118,7 +115,7 @@ $(document).on('blur', ".js--volDiscountCol", function(){
             $('tr#row-'+voldiscount_id).remove();
 		});
 	}
-    deleteVolumeDiscount = function(){
+    deleteVolumeDiscountRows = function(){
         if (typeof $(".selectItem--js:checked").val() === 'undefined') {
 	        $.systemMessage(langLbl.atleastOneRecord, 'alert--danger');
 	        return false;
@@ -159,16 +156,6 @@ $(document).on('blur', ".js--volDiscountCol", function(){
                 volDisRow.siblings('.divider:first').remove();
                 volDisRow.remove();
             }
-		});
-		return false;
-	};
-
-    setUpSellerProductVolumeDiscount = function(frm){
-		if (!$(frm).validate()) return;
-		var data = fcom.frmData(frm);
-		fcom.updateWithAjax(fcom.makeUrl('Seller', 'setUpSellerProductVolumeDiscount'), data, function(t) {
-			$(document).trigger('close.facebox');
-            searchVolumeDiscountProducts(document.frmSearch);
 		});
 		return false;
 	};

@@ -474,7 +474,7 @@ $(document).ready(function(){
 	        $.systemMessage(langLbl.atleastOneRecord, 'alert--danger');
 	        return false;
 	    }
-		$("#frmSelProdListing").attr('action', fcom.makeUrl('SellerProducts','addVolumeDiscount')).removeAttr('onsubmit').submit();
+		$("#frmSelProdListing").attr({'action': fcom.makeUrl('SellerProducts','volumeDiscount'), 'target':"_blank"}).removeAttr('onsubmit').submit();
+		searchProducts(document.frmSearch);
 	};
-
 })();
