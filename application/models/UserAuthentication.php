@@ -369,6 +369,7 @@ class UserAuthentication extends FatModel
 
     private function setSession($data)
     {
+        session_regenerate_id();
         $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME] = array(
         'user_id' => $data['user_id'],
         'user_name' => $data['user_name'],
