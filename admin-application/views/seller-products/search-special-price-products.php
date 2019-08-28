@@ -1,31 +1,34 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 $arr_flds = array(
-    'listserial' => Labels::getLabel('LBL_Sr.', $adminLangId),
+    'select_all'=>Labels::getLabel('LBL_Select_all', $adminLangId),
+    'product_name' => Labels::getLabel('LBL_Name', $adminLangId),
+    'splprice_start_date' => Labels::getLabel('LBL_Start_Date', $adminLangId),
+    'splprice_end_date' => Labels::getLabel('LBL_End_Date', $adminLangId),
+    'splprice_price' => Labels::getLabel('LBL_Special_Price', $adminLangId),
+    'action' => Labels::getLabel('LBL_Action', $adminLangId),
 );
-/* if( count($arrListing) && is_array($arrListing) && is_array($arrListing[0]['options']) && count($arrListing[0]['options']) ){ */
-    $arr_flds['name'] = Labels::getLabel('LBL_Name', $adminLangId);
-/* } */
-$arr_flds['specialPriceCount'] = Labels::getLabel('LBL_Special_Prices', $adminLangId);
-$arr_flds['selprod_price'] = Labels::getLabel('LBL_Price', $adminLangId);
 
-$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table-responsive table--hovered'));
+$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table-responsive table--hovered splPriceList-js'));
 $th = $tbl->appendElement('thead')->appendElement('tr', array('class' => 'hide--mobile'));
 foreach ($arr_flds as $key => $val) {
-    $e = $th->appendElement('th', array(), $val);
+    if ('select_all' == $key) {
+        $th->appendElement('th')->appendElement('plaintext', array(), '<label class="checkbox"><input title="'.$val.'" type="checkbox" onclick="selectAll($(this))" class="selectAll-js"><i class="input-helper"></i></label>', true);
+    } else {
+        $th->appendElement('th', array(), $val);
+    }
 }
 
-$sr_no = ($page == 1) ? 0 : ($pageSize*($page-1));
 foreach ($arrListing as $sn => $row) {
-    $sr_no++;
     $tr = $tbl->appendElement('tr', array());
 
     foreach ($arr_flds as $key => $val) {
+        $tr->setAttribute('id', 'row-'.$row['splprice_id']);
         $td = $tr->appendElement('td');
         switch ($key) {
-            case 'listserial':
-                $td->appendElement('plaintext', array(), $sr_no);
+            case 'select_all':
+                $td->appendElement('plaintext', array(), '<label class="checkbox"><input class="selectItem--js" type="checkbox" name="selprod_ids['.$row['splprice_id'].']" value='.$row['selprod_id'].'><i class="input-helper"></i></label>', true);
                 break;
-            case 'name':
+            case 'product_name':
                 $variantStr = ($row['selprod_title'] != '') ? $row['selprod_title'].'<br/>' : '';
                 if (is_array($row['options']) && count($row['options'])) {
                     foreach ($row['options'] as $op) {
@@ -33,20 +36,40 @@ foreach ($arrListing as $sn => $row) {
                     }
                 }
                 $td->appendElement('plaintext', array(), $variantStr, true);
-                if ($canViewSellerProducts) {
-                    $td->appendElement('a', array('href' => 'javascript:void(0)', 'onClick' => 'redirectfunc("'.CommonHelper::generateUrl('Products').'", '.$row['selprod_product_id'].')'), $row['product_name'], true);
-                } else {
-                    $td->appendElement('plaintext', array(), $row['product_name'], true);
+                $td->appendElement('plaintext', array(), $row['product_name'], true);
+                break;
+            case 'splprice_start_date':
+            case 'splprice_end_date':
+                $input = '<input readonly="readonly" data-id="'.$row['splprice_id'].'"  data-selprodid="'.$row['selprod_id'].'"  placeholder="'.$val.'" class="date_js fld-date js--splPriceCol hidden sp-input" title="'.$val.'"  data-val="'.$row[$key].'" data-fatdateformat="yy-mm-dd" type="text" name="'.$key.'" value="'.$row[$key].'">';
+
+                $td->appendElement('div', array("class" => 'js--editCol edit-hover', "title" => Labels::getLabel('LBL_Click_To_Edit', $adminLangId)), $row[$key], true);
+                $td->appendElement('plaintext', array(), $input, true);
+                break;
+            case 'splprice_price':
+                $input = '<input type="text" data-id="'.$row['splprice_id'].'" value="'.$row[$key].'" data-selprodid="'.$row['selprod_id'].'" name="'.$key.'" class="js--splPriceCol hidden sp-input" data-val="'.$row[$key].'"/>';
+                $td->appendElement('div', array("class" => 'js--editCol edit-hover', "title" => Labels::getLabel('LBL_Click_To_Edit', $adminLangId)), $row[$key], true);
+                $td->appendElement('plaintext', array(), $input, true);
+                break;
+            case 'action':
+                $ul = $td->appendElement("ul", array("class"=>"actions actions--centered"));
+
+                $li = $ul->appendElement("li", array('class'=>'droplink'));
+
+
+                $li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green','title'=>Labels::getLabel('LBL_Edit', $adminLangId)), '<i class="ion-android-more-horizontal icon"></i>', true);
+                  $innerDiv=$li->appendElement('div', array('class'=>'dropwrap'));
+                  $innerUl=$innerDiv->appendElement('ul', array('class'=>'linksvertical'));
+
+                if ($canEdit) {
+                    $innerLiEdit = $innerUl->appendElement("li");
+                    $innerLiEdit->appendElement(
+                        'a',
+                        array('href'=>'javascript:void(0)', 'class'=>'',
+                        'title'=>Labels::getLabel('LBL_Delete', $adminLangId),"onclick"=>"deleteSellerProductSpecialPrice(".$row['splprice_id'].")"),
+                        Labels::getLabel('LBL_Remove', $adminLangId),
+                        true
+                    );
                 }
-                break;
-            case 'selprod_price':
-                $td->appendElement('plaintext', array(), CommonHelper::displayMoneyFormat($row[$key], true, true), true);
-                break;
-            case 'specialPriceCount':
-                $td->appendElement('a', array('href' => CommonHelper::generateUrl('SellerProducts', 'specialPriceList', array($row['selprod_id'])), 'target' => '_blank'), $row[$key], true);
-                break;
-            case 'selprod_available_from':
-                $td->appendElement('plaintext', array(), FatDate::format($row[$key], false), true);
                 break;
             default:
                 $td->appendElement('plaintext', array(), $row[$key], true);
@@ -62,9 +85,8 @@ if (count($arrListing) == 0) {
     );
 }
 
-$frm = new Form('frmSelProdListing', array('id'=>'frmSelProdListing'));
+$frm = new Form('frmSplPriceListing', array('id'=>'frmSplPriceListing'));
 $frm->setFormTagAttribute('class', 'web_form last_td_nowrap');
-// $frm->setFormTagAttribute('onsubmit', 'formAction(this, reloadList); return(false);');
 
 echo $frm->getFormTag();
 echo $tbl->getHtml(); ?>
