@@ -85,9 +85,13 @@ $(document).on('blur', ".js--volDiscountCol", function(){
 			$("#listing").html(res);
 		});
 	};
-    clearSearch = function(){
-		document.frmSearch.reset();
-		searchVolumeDiscountProducts(document.frmSearch);
+    clearSearch = function(selProd_id){
+        if (0 < selProd_id) {
+            location.href = fcom.makeUrl('Seller','volumeDiscount');
+        } else {
+    		document.frmSearch.reset();
+    		searchVolumeDiscountProducts(document.frmSearch);
+        }
 	};
     goToSearchPage = function(page) {
 		if(typeof page==undefined || page == null){
@@ -133,12 +137,14 @@ $(document).on('blur', ".js--volDiscountCol", function(){
             searchVolumeDiscountProducts(document.frmSearch);
         });
 	};
-    updateVolumeDiscount = function(frm){
+    updateVolumeDiscount = function(frm, selProd_id){
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('Seller', 'updateVolumeDiscount'), data, function(t) {
             if(t.status == true){
-                if (1 > frm.addMultiple.value) {
-                    $("input[name='voldiscount_selprod_id']").val('');
+                if ((1 > frm.addMultiple.value && 1 > frm.lastRow.value) || 0 < selProd_id) {
+                    if (1 > selProd_id) {
+                        $("input[name='voldiscount_selprod_id']").val('');
+                    }
                     frm.reset();
                 }
                 document.getElementById('frmVolDiscountListing').reset()
@@ -148,7 +154,7 @@ $(document).on('blur', ".js--volDiscountCol", function(){
             if (0 < $('.defaultForm.hidden').length && 0 < frm.lastRow.value) {
                 $('.defaultForm.hidden').removeClass('defaultForm hidden');
             }
-            if (0 < frm.addMultiple.value) {
+            if (0 < frm.addMultiple.value && 1 > selProd_id) {
                 var volDisRow = $("#"+frm.id).parent().parent();
                 volDisRow.siblings('.divider:first').remove();
                 volDisRow.remove();

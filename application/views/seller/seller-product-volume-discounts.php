@@ -3,11 +3,12 @@
     <?php require_once('sellerCatalogProductTop.php');?>
 </div>
 <div class="cards">
-<?php if(count($arrListing) > 0) { ?>
+<?php if (count($arrListing) > 0) { ?>
     <div class="cards-header p-4">
         <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Volume_Discount', $siteLangId);?></h5>
         <div class="action">
             <a class="btn btn--primary btn--sm" href="<?php echo CommonHelper::generateUrl('Seller', 'volumeDiscount', array($selprod_id)); ?>" target="_blank"><?php echo Labels::getLabel('LBL_Manage_Volume_Discount', $siteLangId)?></a>
+            <!-- <a class="btn btn--primary btn--sm" href="javascript:void(0); " onClick="sellerProductVolumeDiscountForm(<?php echo $selprod_id; ?>, 0);"><?php echo Labels::getLabel('LBL_Add_New_Volume_Discount', $siteLangId)?></a> -->
         </div>
     </div>
 <?php } ?>

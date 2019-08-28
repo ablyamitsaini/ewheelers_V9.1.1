@@ -10,13 +10,15 @@
     $keywordFld->developerTags['col'] = 4;
     $keywordFld->developerTags['noCaptionTag'] = true;
 
+    $class = (0 < $selProd_id) ? 'hidden' : '';
     $submitBtnFld = $frmSearch->getField('btn_submit');
-    $submitBtnFld->setFieldTagAttribute('class', 'btn--block btn btn--primary');
+    $submitBtnFld->setFieldTagAttribute('class', 'btn--block btn btn--primary '.$class);
     $submitBtnFld->developerTags['col'] = 2;
     $submitBtnFld->developerTags['noCaptionTag'] = true;
 
     $cancelBtnFld = $frmSearch->getField('btn_clear');
-    $cancelBtnFld->setFieldTagAttribute('class', 'btn--block btn btn--primary-border');
+    $cancelBtnFld->setFieldTagAttribute('class', 'btn--block btn btn--primary-border '.$class);
+    $cancelBtnFld->setFieldTagAttribute('onclick', 'clearSearch('.$selProd_id.');');
     $cancelBtnFld->developerTags['col'] = 2;
     $cancelBtnFld->developerTags['noCaptionTag'] = true;
 
@@ -35,7 +37,8 @@
     $addVolDiscountFrm->setFormTagAttribute('class', 'form');
     $addVolDiscountFrm->setFormTagAttribute('id', 'frmAddVolumeDiscount');
     $addVolDiscountFrm->setFormTagAttribute('name', 'frmAddVolumeDiscount');
-    $addVolDiscountFrm->setFormTagAttribute('onsubmit', 'updateVolumeDiscount(this); return(false);');
+    $addVolDiscountFrm->setFormTagAttribute('onsubmit', 'updateVolumeDiscount(this, '.$selProd_id.'); return(false);');
+
     $addVolDiscountFrm->addHiddenField('', 'lastRow', 0);
     $addVolDiscountFrm->addHiddenField('', 'addMultiple', 0);
 ?>
@@ -47,7 +50,6 @@
                 <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
                 <h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Manage_Volume_Discount', $siteLangId); ?></h2>
             </div>
-
         </div>
         <div class="content-body">
             <div class="row mb-4">
@@ -69,16 +71,14 @@
                         $this->includeTemplate('seller/add-volume-discount-form.php', array('addVolDiscountFrm'=>$addVolDiscountFrm, 'class' => $class), false);
                         foreach ($dataToUpdate as $key => $value) {
                             $cloneFrm = clone $addVolDiscountFrm;
-                            if ($value === end($dataToUpdate)) {
+                            if ($value === end($dataToUpdate) && 1 > $selProd_id) {
                                 $value['lastRow'] = 1;
                             }
                             $value['addMultiple'] = 1;
 
                             $cloneFrm->fill($value);
-                            $cloneFrm->setFormTagAttribute('class', 'form');
                             $cloneFrm->setFormTagAttribute('id', 'frmAddVolumeDiscount-'.$key);
                             $cloneFrm->setFormTagAttribute('name', 'frmAddVolumeDiscount-'.$key);
-                            $cloneFrm->setFormTagAttribute('onsubmit', 'updateVolumeDiscount(this); return(false);');
                             $productName = $cloneFrm->getField('product_name');
                             $productName->setFieldTagAttribute('readonly', 'readonly');
 

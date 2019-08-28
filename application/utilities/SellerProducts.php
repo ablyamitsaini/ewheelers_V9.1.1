@@ -1014,6 +1014,7 @@ trait SellerProducts
         $this->set('product_type', $productRow['product_type']);
         $this->set('activeTab', 'VOLUME_DISCOUNT');
 
+
         $productLangRow = Product::getAttributesByLangId($this->siteLangId, $sellerProductRow['selprod_product_id'], array('product_name'));
         $this->set('productCatalogName', $productLangRow['product_name']);
 
@@ -2218,14 +2219,16 @@ trait SellerProducts
         }
     }
 
-    public function volumeDiscount($selProdId = 0)
+    public function volumeDiscount($selProd_id = 0)
     {
+        $selProd_id = FatUtility::int($selProd_id);
         $srchFrm = $this->getVolumeDiscountSearchForm();
         $selProdIdsArr = FatApp::getPostedData('selprod_ids', FatUtility::VAR_INT, 0);
 
         $dataToUpdate = array();
-        if (!empty($selProdIdsArr)) {
-            foreach ($selProdIdsArr as $volDiscountId => $selProdId) {
+        if (!empty($selProdIdsArr) || 0 < $selProd_id) {
+            $selProdIdsArr = (0 < $selProd_id) ? array($selProd_id) : $selProdIdsArr;
+            foreach ($selProdIdsArr as $selProdId) {
                 $product_name = SellerProduct::getProductDisplayTitle($selProdId, $this->siteLangId);
                 $dataToUpdate[] = array(
                     'product_name' => html_entity_decode($product_name, ENT_QUOTES, 'UTF-8'),
@@ -2242,19 +2245,25 @@ trait SellerProducts
                 $srchFrm->fill($post);
             }
         }
+        if (0 < $selProd_id) {
+            $product_name = SellerProduct::getProductDisplayTitle($selProd_id, $this->siteLangId);
+            $srchFrm->addHiddenField('', 'selprod_id', $selProd_id);
+            $srchFrm->fill(array('keyword'=>$product_name));
+        }
         $addVolDiscountFrm = $this->volumeDiscountFormElements();
         $this->set("addVolDiscountFrm", $addVolDiscountFrm);
         $this->set("dataToUpdate", $dataToUpdate);
         $this->set("frmSearch", $srchFrm);
+        $this->set("selProd_id", $selProd_id);
         $this->_template->render();
     }
 
     public function searchVolumeDiscountProducts()
     {
         $userId = UserAuthentication::getLoggedUserId();
-        $post = FatApp::getPostedData();
         $page = FatApp::getPostedData('page', FatUtility::VAR_INT, 1);
         $pageSize = FatApp::getConfig('CONF_PAGE_SIZE', FatUtility::VAR_INT, 10);
+        $selProdId = FatApp::getPostedData('selprod_id', FatUtility::VAR_INT, 0);
 
         $srch = SellerProduct::getSearchObject($this->siteLangId);
         $srch->joinTable(Product::DB_TBL, 'INNER JOIN', 'p.product_id = sp.selprod_product_id', 'p');
@@ -2270,6 +2279,10 @@ trait SellerProducts
             $cnd = $srch->addCondition('product_name', 'like', "%$keyword%");
             $cnd->attachCondition('selprod_title', 'LIKE', '%'. $keyword . '%', 'OR');
         }
+        if (0 < $selProdId) {
+            $srch->addCondition('selprod_id', '=', $selProdId);
+        }
+
         $srch->addCondition('selprod_user_id', '=', $userId);
         $srch->addCondition('selprod_active', '=', applicationConstants::ACTIVE);
         $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
@@ -2291,7 +2304,7 @@ trait SellerProducts
 
         $this->set('page', $page);
         $this->set('pageCount', $srch->pages());
-        $this->set('postedData', $post);
+        $this->set('postedData', FatApp::getPostedData());
         $this->set('recordCount', $srch->recordCount());
         $this->set('pageSize', $pageSize);
         $this->_template->render(false, false);
