@@ -2370,24 +2370,6 @@ trait SellerProducts
         FatUtility::dieJsonSuccess($json);
     }
 
-    private function getVolumeDiscountRow($volDiscountId, $att = array())
-    {
-        if (1 > $volDiscountId) {
-            FatUtility::dieWithError(Labels::getLabel('MSG_Invalid_Request', $this->siteLangId));
-        }
-        return SellerProductVolumeDiscount::getAttributesById($volDiscountId, $att);
-    }
-
-    public function getVolumeDiscount()
-    {
-        $volDiscountId = FatApp::getPostedData('voldiscount_id', FatUtility::VAR_INT, 0);
-        $row = $this->getVolumeDiscountRow($volDiscountId);
-        $row['product_name'] = SellerProduct::getProductDisplayTitle($row['voldiscount_selprod_id'], $this->siteLangId);
-        $row['voldiscount_min_qty'] = $row['voldiscount_min_qty'];
-        $row['voldiscount_percentage'] = $row['voldiscount_percentage'];
-        die(json_encode($row));
-    }
-
     public function updateVolumeDiscountValue()
     {
         $userId = UserAuthentication::getLoggedUserId();
