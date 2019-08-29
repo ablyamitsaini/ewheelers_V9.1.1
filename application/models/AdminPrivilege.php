@@ -103,8 +103,6 @@ class AdminPrivilege
     const SECTION_IMPORT_INSTRUCTIONS = 99;
     const SECTION_UPLOAD_BULK_IMAGES = 100;
 
-    const SECTION_VOLUME_DISCOUNT = 102;
-
     const PRIVILEGE_NONE = 0;
     const PRIVILEGE_READ = 1;
     const PRIVILEGE_WRITE = 2;
@@ -238,7 +236,6 @@ class AdminPrivilege
         static::SECTION_PRODUCT_TEMP_IMAGES => Labels::getLabel('MSG_Products_Temp_Images', CommonHelper::getLangId()),
         static::SECTION_IMPORT_INSTRUCTIONS => Labels::getLabel('MSG_Import_Instructions', CommonHelper::getLangId()),
         static::SECTION_UPLOAD_BULK_IMAGES => Labels::getLabel('MSG_Bulk_Upload', CommonHelper::getLangId()),
-        static::SECTION_VOLUME_DISCOUNT => Labels::getLabel('MSG_Volume_Discount', CommonHelper::getLangId()),
 
         /* static::SECTION_Languages => Labels::getLabel('MSG_Languages',CommonHelper::getLangId()),
         static::SECTION_Languages => Labels::getLabel('MSG_Order_Status',CommonHelper::getLangId()), */
@@ -1368,15 +1365,5 @@ class AdminPrivilege
     public function canEditUserRequests($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_USER_REQUESTS, static::PRIVILEGE_WRITE, $returnResult);
-    }
-
-    public function canViewVolumeDiscount($adminId = 0, $returnResult = false)
-    {
-        return $this->checkPermission($adminId, static::SECTION_VOLUME_DISCOUNT, static::PRIVILEGE_READ, $returnResult);
-    }
-
-    public function canEditVolumeDiscount($adminId = 0, $returnResult = false)
-    {
-        return $this->checkPermission($adminId, static::SECTION_VOLUME_DISCOUNT, static::PRIVILEGE_WRITE, $returnResult);
     }
 }

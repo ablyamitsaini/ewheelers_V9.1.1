@@ -5,12 +5,16 @@
     $frmSearch->developerTags['fld_default_col'] = 4;
     $fld_active = $frmSearch->getField('active');
 
-    $class = (0 < $selProd_id) ? 'hidden' : '';
+$class = '';
+if (0 < $selProd_id) {
+    $class = 'hide';
+    $keywordFld = $frmSearch->getField('keyword');
+    $keywordFld->setFieldTagAttribute('readonly', 'readonly');
+}
     $submitBtnFld = $frmSearch->getField('btn_submit');
     $submitBtnFld->setFieldTagAttribute('class', $class);
 
     $cancelBtnFld = $frmSearch->getField('btn_clear');
-    $cancelBtnFld->setFieldTagAttribute('class', $class);
     $cancelBtnFld->setFieldTagAttribute('onclick', 'clearSearch('.$selProd_id.');');
 
     $prodName = $addVolDiscountFrm->getField('product_name');
@@ -71,7 +75,7 @@
                     </div>
                     <div class="sectionbody">
                         <?php
-                        $class = !empty($dataToUpdate) && 0 < count($dataToUpdate) ? 'defaultForm hidden' : '';
+                        $class = !empty($dataToUpdate) && 0 < count($dataToUpdate) ? 'defaultForm hide' : '';
                         $this->includeTemplate('seller-products/add-volume-discount-form.php', array('addVolDiscountFrm'=>$addVolDiscountFrm, 'class' => $class), false);
                         foreach ($dataToUpdate as $key => $value) {
                             $cloneFrm = clone $addVolDiscountFrm;

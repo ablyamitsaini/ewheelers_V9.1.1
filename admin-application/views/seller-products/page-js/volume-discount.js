@@ -28,10 +28,10 @@ $(document).on('keyup', "#frmAddVolumeDiscount input[name='product_name']", func
 });
 
 $(document).on('click', 'table.volDiscountList-js tr td .js--editCol', function(){
-    $(this).hide();
+    $(this).addClass('hide');
     var input = $(this).siblings('input[type="text"]');
     var value = input.val();
-    input.fadeIn();
+    input.removeClass('hide');
     input.val('').focus().val(value);
 });
 
@@ -64,8 +64,8 @@ $(document).on('blur', ".js--volDiscountCol", function(){
 });
 (function() {
     showElement = function(currObj, value){
-        currObj.siblings('div').text(value).fadeIn();
-        currObj.hide();
+        currObj.siblings('div').text(value).removeClass('hide');
+        currObj.addClass('hide');
     };
 
 	var dv = '#listing';
@@ -147,8 +147,8 @@ $(document).on('blur', ".js--volDiscountCol", function(){
                 $('table.volDiscountList-js tbody').prepend(t.data);
             }
 			$(document).trigger('close.facebox');
-            if (0 < $('.defaultForm.hidden').length && 0 < frm.lastRow.value) {
-                $('.defaultForm.hidden').removeClass('defaultForm hidden');
+            if (0 < $('.defaultForm.hide').length && 0 < frm.lastRow.value) {
+                $('.defaultForm.hide').removeClass('defaultForm hide');
             }
             if (0 < frm.addMultiple.value && 1 > selProd_id) {
                 var volDisRow = $("#"+frm.id).parent().parent();

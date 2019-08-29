@@ -41,7 +41,7 @@ foreach ($arrListing as $sn => $row) {
                 break;
             case 'voldiscount_min_qty':
             case 'voldiscount_percentage':
-                $input = '<input type="text" data-id="'.$row['voldiscount_id'].'" value="'.$row[$key].'" data-selprodid="'.$row['selprod_id'].'" name="'.$key.'" class="js--volDiscountCol hidden vd-input" data-val="'.$row[$key].'"/>';
+                $input = '<input type="text" data-id="'.$row['voldiscount_id'].'" value="'.$row[$key].'" data-selprodid="'.$row['selprod_id'].'" name="'.$key.'" class="js--volDiscountCol hide vd-input" data-val="'.$row[$key].'"/>';
                 $td->appendElement('div', array("class" => 'js--editCol edit-hover', "title" => Labels::getLabel('LBL_Click_To_Edit', $adminLangId)), $row[$key], true);
                 $td->appendElement('plaintext', array(), $input, true);
                 break;

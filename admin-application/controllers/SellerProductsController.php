@@ -1165,7 +1165,6 @@ class SellerProductsController extends AdminBaseController
 
     public function deleteVolumeDiscountArr()
     {
-        $this->objPrivilege->canEditVolumeDiscount();
         $splpriceIdArr = FatApp::getPostedData('selprod_ids');
         $splpriceIds = FatUtility::int($splpriceIdArr);
         foreach ($splpriceIds as $voldiscount_id => $selProdId) {
@@ -2273,7 +2272,6 @@ class SellerProductsController extends AdminBaseController
 
     public function volumeDiscount($selProd_id = 0)
     {
-        $this->objPrivilege->canViewVolumeDiscount();
         $selProd_id = FatUtility::int($selProd_id);
         $srchFrm = $this->getVolumeDiscountSearchForm();
         $selProdIdsArr = FatApp::getPostedData('selprod_ids', FatUtility::VAR_INT, 0);
@@ -2313,8 +2311,6 @@ class SellerProductsController extends AdminBaseController
 
     public function searchVolumeDiscountProducts()
     {
-        $this->objPrivilege->canViewVolumeDiscount();
-        $userId = UserAuthentication::getLoggedUserId();
         $page = FatApp::getPostedData('page', FatUtility::VAR_INT, 1);
         $pageSize = FatApp::getConfig('CONF_PAGE_SIZE', FatUtility::VAR_INT, 10);
         $selProdId = FatApp::getPostedData('selprod_id', FatUtility::VAR_INT, 0);
@@ -2424,7 +2420,6 @@ class SellerProductsController extends AdminBaseController
 
     public function updateVolumeDiscountColValue()
     {
-        $this->objPrivilege->canEditVolumeDiscount();
         $volDiscountId = FatApp::getPostedData('voldiscount_id', FatUtility::VAR_INT, 0);
         $attribute = FatApp::getPostedData('attribute', FatUtility::VAR_STRING, '');
         $selProdId = FatApp::getPostedData('selProdId', FatUtility::VAR_INT, 0);
