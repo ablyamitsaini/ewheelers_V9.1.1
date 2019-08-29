@@ -1003,12 +1003,12 @@ class SellerProductsController extends AdminBaseController
         }
 
         $sellerProdObj = new SellerProduct();
-        $resp = $sellerProdObj->addUpdateSellerProductSpecialPrice($data_to_save, $return);
-        if (false === $resp) {
+        $splPriceId = $sellerProdObj->addUpdateSellerProductSpecialPrice($data_to_save, $return);
+        if (false === $splPriceId) {
             FatUtility::dieJsonError(Labels::getLabel($sellerProdObj->getError(), $this->adminLangId));
         }
 
-        return $resp;
+        return $splPriceId;
     }
 
     public function deleteSellerProductSpecialPrice()
@@ -1135,7 +1135,7 @@ class SellerProductsController extends AdminBaseController
         );
 
         if ($voldiscount_id > 1) {
-            $data_to_save['voldiscount_id']	=	$voldiscount_id;
+            $data_to_save['voldiscount_id'] = $voldiscount_id;
         }
 
         $record = new TableRecord(SellerProductVolumeDiscount::DB_TBL);
@@ -2259,17 +2259,16 @@ class SellerProductsController extends AdminBaseController
 
     public function specialPrice($selProd_id = 0)
     {
-        $this->objPrivilege->canViewSpecialPrices();
         $selProd_id = FatUtility::int($selProd_id);
         $srchFrm = $this->getSpecialPriceSearchForm();
         $selProdIdsArr = FatApp::getPostedData('selprod_ids', FatUtility::VAR_INT, 0);
 
-        $dataToUpdate = array();
+        $dataToEdit = array();
         if (!empty($selProdIdsArr) || 0 < $selProd_id) {
             $selProdIdsArr = (0 < $selProd_id) ? array($selProd_id) : $selProdIdsArr;
             foreach ($selProdIdsArr as $selProdId) {
                 $product_name = SellerProduct::getProductDisplayTitle($selProdId, $this->adminLangId);
-                $dataToUpdate[] = array(
+                $dataToEdit[] = array(
                     'product_name' => html_entity_decode($product_name, ENT_QUOTES, 'UTF-8'),
                     'voldiscount_selprod_id' => $selProdId
                 );
@@ -2285,13 +2284,12 @@ class SellerProductsController extends AdminBaseController
             }
         }
         if (0 < $selProd_id) {
-            $product_name = SellerProduct::getProductDisplayTitle($selProd_id, $this->adminLangId);
             $srchFrm->addHiddenField('', 'selprod_id', $selProd_id);
             $srchFrm->fill(array('keyword'=>$product_name));
         }
         $addSpecialPriceFrm = $this->specialPriceFormElements();
         $this->set("addSpecialPriceFrm", $addSpecialPriceFrm);
-        $this->set("dataToUpdate", $dataToUpdate);
+        $this->set("dataToEdit", $dataToEdit);
         $this->set("frmSearch", $srchFrm);
         $this->set("selProd_id", $selProd_id);
         $this->_template->render();
@@ -2299,7 +2297,6 @@ class SellerProductsController extends AdminBaseController
 
     public function searchSpecialPriceProducts()
     {
-        $this->objPrivilege->canViewSpecialPrices();
         $post = FatApp::getPostedData();
         $page = FatApp::getPostedData('page', FatUtility::VAR_INT, 1);
         $pageSize = FatApp::getConfig('CONF_PAGE_SIZE', FatUtility::VAR_INT, 10);
@@ -2308,14 +2305,10 @@ class SellerProductsController extends AdminBaseController
         $srch->joinTable(Product::DB_TBL, 'INNER JOIN', 'p.product_id = sp.selprod_product_id', 'p');
         $srch->joinTable(SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE, 'INNER JOIN', 'spp.splprice_selprod_id = sp.selprod_id', 'spp');
         $srch->joinTable(Product::DB_LANG_TBL, 'LEFT OUTER JOIN', 'p.product_id = p_l.productlang_product_id AND p_l.productlang_lang_id = '.$this->adminLangId, 'p_l');
-        /*$srch->addMultipleFields(
-            array(
-            'selprod_id', 'selprod_price', 'selprod_stock', 'selprod_product_id',
-            'selprod_active', 'selprod_available_from', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title', "count('splprice_id') as specialPriceCount")
-        );*/
+
         $srch->addMultipleFields(
             array(
-            'selprod_id', 'selprod_price', 'splprice_start_date', 'splprice_end_date', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title', 'splprice_id', 'splprice_price')
+            'selprod_id', 'selprod_price', 'date(splprice_start_date) as splprice_start_date', 'splprice_end_date', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title', 'splprice_id', 'splprice_price')
         );
 
         $keyword = FatApp::getPostedData('keyword', FatUtility::VAR_STRING, '');
@@ -2360,50 +2353,6 @@ class SellerProductsController extends AdminBaseController
         return $frm;
     }
 
-    public function addSpecialPrice()
-    {
-        $this->objPrivilege->canEditSpecialPrices();
-        $frm = $this->specialPriceFormElements();
-        $selProdIdsArr = FatApp::getPostedData('selprod_ids', FatUtility::VAR_INT, 0);
-        $edit = FatApp::getPostedData('edit', FatUtility::VAR_INT, 0);
-
-        $flds = array(
-            'product_name' => Labels::getLabel('LBL_Product', $this->adminLangId),
-            'splprice_start_date' => Labels::getLabel('LBL_Start_Date', $this->adminLangId),
-            'splprice_end_date' => Labels::getLabel('LBL_End_Date', $this->adminLangId),
-            'splprice_price' => Labels::getLabel('LBL_Special_Price', $this->adminLangId),
-            'action' => Labels::getLabel('LBL_Action', $this->adminLangId),
-        );
-        $product = array_fill_keys(array_keys($flds), null);
-
-        if (!empty($selProdIdsArr)) {
-            foreach ($selProdIdsArr as $splpriceId => $selProdId) {
-                $splpriceId = 0 < $edit ? $splpriceId : 0;
-                if (0 < $splpriceId) {
-                    $row = SellerProduct::getSellerProductSpecialPriceById($splpriceId, true);
-                    $product['splprice_start_date'] = date('Y-m-d', strtotime($row['splprice_start_date']));
-                    $product['splprice_end_date'] = date('Y-m-d', strtotime($row['splprice_end_date']));
-                    $product['splprice_price'] = $row['splprice_price'];
-                    $product['splprice_id'] = $splpriceId;
-                }
-
-                $product_name = SellerProduct::getProductDisplayTitle($selProdId, $this->adminLangId);
-                $product['product_name']  = html_entity_decode($product_name, ENT_QUOTES, 'UTF-8');
-                $product['splprice_selprod_id']  = $selProdId;
-                $data[] = $product;
-            }
-        } else {
-            $data = array($product);
-        }
-
-        $this->set('frm', $frm);
-        $this->set('edit', $edit);
-        $this->set('arrFlds', $flds);
-        $this->set('data', $data);
-
-        $this->_template->render();
-    }
-
     private function specialPriceFormElements()
     {
         $frm = $this->getSellerProductSpecialPriceForm();
@@ -2413,17 +2362,16 @@ class SellerProductsController extends AdminBaseController
         return $frm;
     }
 
-    public function updateSpecialPrice()
+    public function updateSpecialPriceRow()
     {
-        $this->objPrivilege->canEditSpecialPrices();
         $frm = $this->specialPriceFormElements();
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
 
         if (false === $post) {
             FatUtility::dieJsonError(current($frm->getValidationErrors()));
         }
-        $insertId = $this->updateSelProdSplPrice($post, true);
-        if (!$insertId) {
+        $splPriceId = $this->updateSelProdSplPrice($post, true);
+        if (!$splPriceId) {
             FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Request', $this->adminLangId));
         }
         $edit = FatApp::getPostedData('edit', FatUtility::VAR_INT, 0);
@@ -2440,11 +2388,11 @@ class SellerProductsController extends AdminBaseController
         $post['product_name'] = $prodOptName . $productName;
         $this->set('edit', $edit);
         $this->set('post', $post);
-        $this->set('insertId', $insertId);
+        $this->set('splPriceId', $splPriceId);
         $json = array(
             'status'=> true,
             'msg'=>Labels::getLabel('LBL_Special_Price_Setup_Successful', $this->adminLangId),
-            'data'=>$this->_template->render(false, false, 'seller-products/update-special-price.php', true)
+            'data'=>$this->_template->render(false, false, 'seller-products/update-special-price-row.php', true)
         );
         FatUtility::dieJsonSuccess($json);
     }

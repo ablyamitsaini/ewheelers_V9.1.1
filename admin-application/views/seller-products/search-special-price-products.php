@@ -40,13 +40,13 @@ foreach ($arrListing as $sn => $row) {
                 break;
             case 'splprice_start_date':
             case 'splprice_end_date':
-                $input = '<input readonly="readonly" data-id="'.$row['splprice_id'].'"  data-selprodid="'.$row['selprod_id'].'"  placeholder="'.$val.'" class="date_js fld-date js--splPriceCol hidden sp-input" title="'.$val.'"  data-val="'.$row[$key].'" data-fatdateformat="yy-mm-dd" type="text" name="'.$key.'" value="'.$row[$key].'">';
+                $input = '<input readonly="readonly" data-id="'.$row['splprice_id'].'"  data-selprodid="'.$row['selprod_id'].'"  placeholder="'.$val.'" class="date_js fld-date js--splPriceCol hide sp-input" title="'.$val.'"  data-val="'.$row[$key].'" data-fatdateformat="yy-mm-dd" type="text" name="'.$key.'" value="'.$row[$key].'">';
 
-                $td->appendElement('div', array("class" => 'js--editCol edit-hover', "title" => Labels::getLabel('LBL_Click_To_Edit', $adminLangId)), $row[$key], true);
+                $td->appendElement('div', array("class" => 'js--editCol edit-hover', "title" => Labels::getLabel('LBL_Click_To_Edit', $adminLangId)), FatDate::format($row[$key], false), true);
                 $td->appendElement('plaintext', array(), $input, true);
                 break;
             case 'splprice_price':
-                $input = '<input type="text" data-id="'.$row['splprice_id'].'" value="'.$row[$key].'" data-selprodid="'.$row['selprod_id'].'" name="'.$key.'" class="js--splPriceCol hidden sp-input" data-val="'.$row[$key].'"/>';
+                $input = '<input type="text" data-id="'.$row['splprice_id'].'" value="'.$row[$key].'" data-selprodid="'.$row['selprod_id'].'" name="'.$key.'" class="js--splPriceCol hide sp-input" data-val="'.$row[$key].'"/>';
                 $td->appendElement('div', array("class" => 'js--editCol edit-hover', "title" => Labels::getLabel('LBL_Click_To_Edit', $adminLangId)), $row[$key], true);
                 $td->appendElement('plaintext', array(), $input, true);
                 break;

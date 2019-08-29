@@ -5,14 +5,17 @@
     $frmSearch->developerTags['fld_default_col'] = 4;
     $fld_active = $frmSearch->getField('active');
 
-    $class = (0 < $selProd_id) ? 'hidden' : '';
+    $class = (0 < $selProd_id) ? 'hide' : '';
     $submitBtnFld = $frmSearch->getField('btn_submit');
     $submitBtnFld->setFieldTagAttribute('class', $class);
 
     $cancelBtnFld = $frmSearch->getField('btn_clear');
-    $cancelBtnFld->setFieldTagAttribute('class', $class);
     $cancelBtnFld->setFieldTagAttribute('onclick', 'clearSearch('.$selProd_id.');');
 
+if (0 < $selProd_id) {
+    $keywordFld = $frmSearch->getField('keyword');
+    $keywordFld->setFieldTagAttribute('readonly', 'readonly');
+}
     $prodName = $addSpecialPriceFrm->getField('product_name');
     $prodName->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Select_Product', $adminLangId));
 
@@ -28,7 +31,7 @@
     $addSpecialPriceFrm->setFormTagAttribute('class', 'web_form');
     $addSpecialPriceFrm->setFormTagAttribute('id', 'frmAddSpecialPrice');
     $addSpecialPriceFrm->setFormTagAttribute('name', 'frmAddSpecialPrice');
-    $addSpecialPriceFrm->setFormTagAttribute('onsubmit', 'updateSpecialPrice(this, '.$selProd_id.'); return(false);');
+    $addSpecialPriceFrm->setFormTagAttribute('onsubmit', 'updateSpecialPriceRow(this, '.$selProd_id.'); return(false);');
 
     $addSpecialPriceFrm->addHiddenField('', 'lastRow', 0);
     $addSpecialPriceFrm->addHiddenField('', 'addMultiple', 0);
@@ -73,11 +76,11 @@
                     </div>
                     <div class="sectionbody">
                         <?php
-                        $class = !empty($dataToUpdate) && 0 < count($dataToUpdate) ? 'defaultForm hidden' : '';
+                        $class = !empty($dataToEdit) && 0 < count($dataToEdit) ? 'defaultForm hide' : '';
                         $this->includeTemplate('seller-products/add-special-price-form.php', array('addSpecialPriceFrm'=>$addSpecialPriceFrm, 'class' => $class), false);
-                        foreach ($dataToUpdate as $key => $value) {
+                        foreach ($dataToEdit as $key => $value) {
                             $cloneFrm = clone $addSpecialPriceFrm;
-                            if ($value === end($dataToUpdate) && 1 > $selProd_id) {
+                            if ($value === end($dataToEdit) && 1 > $selProd_id) {
                                 $value['lastRow'] = 1;
                             }
                             $value['addMultiple'] = 1;

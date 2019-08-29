@@ -33,7 +33,7 @@ $(document).on('click', 'table.splPriceList-js tr td .js--editCol', function(){
     $(this).hide();
     var input = $(this).siblings('input[type="text"]');
     var value = input.val();
-    input.fadeIn();
+    input.removeClass('hide');
     input.val('').focus().val(value);
 });
 
@@ -67,7 +67,7 @@ $(document).on('blur', ".js--splPriceCol", function(){
 (function() {
     showElement = function(currObj, value){
         currObj.siblings('div').text(value).fadeIn();
-        currObj.hide();
+        currObj.addClass('hide');
     };
 
 	var dv = '#listing';
@@ -86,10 +86,14 @@ $(document).on('blur', ".js--splPriceCol", function(){
 			$("#listing").html(res);
 		});
 	};
-    clearSearch = function(){
-		document.frmSearch.reset();
-		searchSpecialPriceProducts(document.frmSearch);
-	};
+    clearSearch = function(selProd_id){
+       if (0 < selProd_id) {
+           location.href = fcom.makeUrl('SellerProducts','specialPrice');
+       } else {
+           document.frmSearch.reset();
+           searchSpecialPriceProducts(document.frmSearch);
+       }
+    };
     goToSearchPage = function(page) {
 		if(typeof page==undefined || page == null){
 			page =1;
@@ -131,9 +135,9 @@ $(document).on('blur', ".js--splPriceCol", function(){
             searchSpecialPriceProducts(document.frmSearch);
         });
 	};
-    updateSpecialPrice = function(frm, selProd_id){
+    updateSpecialPriceRow = function(frm, selProd_id){
 		var data = fcom.frmData(frm);
-		fcom.updateWithAjax(fcom.makeUrl('SellerProducts', 'updateSpecialPrice'), data, function(t) {
+		fcom.updateWithAjax(fcom.makeUrl('SellerProducts', 'updateSpecialPriceRow'), data, function(t) {
             if(t.status == true){
                 if ((1 > frm.addMultiple.value && 1 > frm.lastRow.value) || 0 < selProd_id) {
                     if (1 > selProd_id) {
@@ -145,8 +149,8 @@ $(document).on('blur', ".js--splPriceCol", function(){
                 $('table.splPriceList-js tbody').prepend(t.data);
             }
 			$(document).trigger('close.facebox');
-            if (0 < $('.defaultForm.hidden').length && 0 < frm.lastRow.value) {
-                $('.defaultForm.hidden').removeClass('defaultForm hidden');
+            if (0 < $('.defaultForm.hide').length && 0 < frm.lastRow.value) {
+                $('.defaultForm.hide').removeClass('defaultForm hide');
             }
             if (0 < frm.addMultiple.value && 1 > selProd_id) {
                 var splPriceRow = $("#"+frm.id).parent().parent();

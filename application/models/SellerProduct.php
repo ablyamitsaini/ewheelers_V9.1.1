@@ -484,7 +484,7 @@ class SellerProduct extends MyAppModel
             $this->error = $db->getError();
             return false;
         }
-        return false;
+        return true;
     }
 
     public function addUpdateSellerProductSpecialPrice($data, $return = false)
