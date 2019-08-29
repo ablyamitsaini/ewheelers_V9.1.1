@@ -3,6 +3,7 @@
 if (1 > $opId) {
     $childOrderDetail = array_values($childOrderDetail);
 }
+
 $orderDetail['charges'] = !empty($orderDetail['charges']) ? $orderDetail['charges'] : (object)array();
 $orderDetail['billingAddress'] = !empty($orderDetail['billingAddress']) ? $orderDetail['billingAddress'] : (object)array();
 $orderDetail['shippingAddress'] = !empty($orderDetail['shippingAddress']) ? $orderDetail['shippingAddress'] : (object)array();
@@ -83,12 +84,31 @@ foreach ($childArr as $index => $childOrder) {
         $paymentMethodName .= Labels::getLabel("LBL_Wallet", $siteLangId);
     }
     $childArr[$index]['pmethod_name'] = $paymentMethodName;
+
+    $orderObj = new Orders($childOrder['order_id']);
+    if ($childOrder['pmethod_code'] == 'CashOnDelivery') {
+        $processingStatuses = $orderObj->getAdminAllowedUpdateOrderStatuses(true);
+    } else {
+        $processingStatuses = $orderObj->getAdminAllowedUpdateOrderStatuses(false, $childOrder['op_product_type']);
+    }
+    // $orderStatusArr = Orders::getOrderProductStatusArr($siteLangId, $processingStatuses, $childOrder['op_status_id']);
+    $orderStatusArr = Orders::getOrderProductStatusArr($siteLangId, $processingStatuses, 0);
+    $orderProgress = array();
+    $active = 1;
+    foreach ($orderStatusArr as $orderStatusId => $orderStatusLabel) {
+        $orderProgress[] = array(
+            'title' => $orderStatusLabel,
+            'active' => $active
+        );
+        $active = $orderStatusId == $childOrder['orderstatus_id'] ? 0 : 1;
+    }
+    $childArr[$index]['orderProgress'] = $orderProgress;
 }
 
 $data = array(
     'orderDetail' => $orderDetail,
     'childOrderDetail' => $childArr,
-    'orderStatuses' => !empty($orderStatuses) ? $orderStatuses : (object)array()    ,
+    // 'orderStatuses' => !empty($orderStatuses) ? $orderStatuses : (object)array(),
     'primaryOrder' => $primaryOrder,
     'digitalDownloads' => !empty($digitalDownloads) ? $digitalDownloads : (object)array(),
     'digitalDownloadLinks' => !empty($digitalDownloadLinks) ? $digitalDownloadLinks : (object)array(),

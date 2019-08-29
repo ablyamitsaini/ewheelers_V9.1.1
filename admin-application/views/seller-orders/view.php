@@ -359,12 +359,14 @@ if ($order['order_reward_point_used'] > 0) {
                             <h4><?php echo Labels::getLabel('LBL_Assign_to_shipping_company_user', $adminLangId); ?></h4>
                         </div>
                         <div class="sectionbody space">
-                        <?php
-                            $shippingUserFrm->setFormTagAttribute('onsubmit', 'updateShippingCompany(this); return(false);');
-                                        $shippingUserFrm->setFormTagAttribute('class', 'web_form form_horizontal');
-                                        $shippingUserFrm->developerTags['colClassPrefix'] = 'col-md-';
-                                        $shippingUserFrm->developerTags['fld_default_col'] = 12;
-                                        echo $shippingUserFrm->getFormHtml(); ?> </div>
+                            <?php
+                                $shippingUserFrm->setFormTagAttribute('onsubmit', 'updateShippingCompany(this); return(false);');
+                                $shippingUserFrm->setFormTagAttribute('class', 'web_form form_horizontal');
+                                $shippingUserFrm->developerTags['colClassPrefix'] = 'col-md-';
+                                $shippingUserFrm->developerTags['fld_default_col'] = 12;
+                                echo $shippingUserFrm->getFormHtml();
+                            ?>
+                        </div>
                     </section>
                 <?php } if ($displayForm && !$print) { ?>
                     <section class="section no-print">
