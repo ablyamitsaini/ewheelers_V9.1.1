@@ -9592,3 +9592,23 @@ body.page--front .page__cell #footer {
 		transform: scale3d(1, 1, 1);
 	}
 }
+
+.edit-hover {
+	border-radius: 4px;
+	padding: 0 10px;
+	font-size: 0.9em;
+	height: 2.5rem;
+	line-height: 2.5rem;
+	display: block;
+	width: 100%;
+	max-width: 70px;
+	border: solid 1px transparent;
+}
+
+.edit-hover:hover { 
+	border-color: var(--border-color);
+}
+
+.vd-input, .sp-input {
+	max-width: 70px;
+}
