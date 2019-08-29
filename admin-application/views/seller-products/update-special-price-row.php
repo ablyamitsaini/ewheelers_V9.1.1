@@ -8,12 +8,14 @@
         <?php echo html_entity_decode($post['product_name']); ?>
     </td>
     <td>
-       <div class="js--editCol edit-hover"><?php echo FatDate::format($post['splprice_start_date'], false); ?></div>
-       <input type="text" data-id="<?php echo $splPriceId; ?>" value="<?php echo $post['splprice_start_date']; ?>" data-selprodid="<?php echo $post['splprice_selprod_id']; ?>" name="splprice_start_date" class="js--splPriceCol hide sp-input" data-val="<?php echo $post['splprice_start_date']; ?>"/>
+        <?php $startDate = date('Y-m-d', strtotime($post['splprice_start_date'])); ?>
+        <div class="js--editCol edit-hover"><?php echo $startDate; ?></div>
+        <input type="text" data-id="<?php echo $splPriceId; ?>" value="<?php echo $startDate; ?>" data-selprodid="<?php echo $post['splprice_selprod_id']; ?>" name="splprice_start_date" class="js--splPriceCol hide sp-input" data-val="<?php echo $startDate; ?>"/>
     </td>
     <td>
-       <div class="js--editCol edit-hover"><?php echo FatDate::format($post['splprice_end_date'], false); ?></div>
-       <input type="text" data-id="<?php echo $splPriceId; ?>" value="<?php echo $post['splprice_end_date']; ?>" data-selprodid="<?php echo $post['splprice_selprod_id']; ?>" name="splprice_end_date" class="js--splPriceCol hide sp-input" data-val="<?php echo $post['splprice_end_date']; ?>"/>
+        <?php $endDate = date('Y-m-d', strtotime($post['splprice_end_date'])); ?>
+        <div class="js--editCol edit-hover"><?php echo $endDate; ?></div>
+        <input type="text" data-id="<?php echo $splPriceId; ?>" value="<?php echo $endDate; ?>" data-selprodid="<?php echo $post['splprice_selprod_id']; ?>" name="splprice_end_date" class="js--splPriceCol hide sp-input" data-val="<?php echo $endDate; ?>"/>
     </td>
     <td>
         <?php echo CommonHelper::displayMoneyFormat($post['splprice_price']); ?>

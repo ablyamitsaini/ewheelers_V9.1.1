@@ -40,9 +40,10 @@ foreach ($arrListing as $sn => $row) {
                 break;
             case 'splprice_start_date':
             case 'splprice_end_date':
-                $input = '<input readonly="readonly" data-id="'.$row['splprice_id'].'"  data-selprodid="'.$row['selprod_id'].'"  placeholder="'.$val.'" class="date_js fld-date js--splPriceCol hide sp-input" title="'.$val.'"  data-val="'.$row[$key].'" data-fatdateformat="yy-mm-dd" type="text" name="'.$key.'" value="'.$row[$key].'">';
+                $date = date('Y-m-d', strtotime($row[$key]));
+                $input = '<input readonly="readonly" data-id="'.$row['splprice_id'].'"  data-selprodid="'.$row['selprod_id'].'"  placeholder="'.$val.'" class="date_js fld-date js--splPriceCol hide sp-input" title="'.$val.'"  data-val="'.$date.'" data-fatdateformat="yy-mm-dd" type="text" name="'.$key.'" value="'.$date.'">';
 
-                $td->appendElement('div', array("class" => 'js--editCol edit-hover', "title" => Labels::getLabel('LBL_Click_To_Edit', $adminLangId)), FatDate::format($row[$key], false), true);
+                $td->appendElement('div', array("class" => 'js--editCol edit-hover', "title" => Labels::getLabel('LBL_Click_To_Edit', $adminLangId)), $date, true);
                 $td->appendElement('plaintext', array(), $input, true);
                 break;
             case 'splprice_price':
