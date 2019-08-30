@@ -91,24 +91,12 @@ foreach ($childArr as $index => $childOrder) {
     } else {
         $processingStatuses = $orderObj->getAdminAllowedUpdateOrderStatuses(false, $childOrder['op_product_type']);
     }
-    // $orderStatusArr = Orders::getOrderProductStatusArr($siteLangId, $processingStatuses, $childOrder['op_status_id']);
-    $orderStatusArr = Orders::getOrderProductStatusArr($siteLangId, $processingStatuses, 0);
-    $orderProgress = array();
-    $active = 1;
-    foreach ($orderStatusArr as $orderStatusId => $orderStatusLabel) {
-        $orderProgress[] = array(
-            'title' => $orderStatusLabel,
-            'active' => $active
-        );
-        $active = $orderStatusId == $childOrder['orderstatus_id'] ? 0 : 1;
-    }
-    $childArr[$index]['orderProgress'] = $orderProgress;
 }
 
 $data = array(
     'orderDetail' => $orderDetail,
     'childOrderDetail' => $childArr,
-    // 'orderStatuses' => !empty($orderStatuses) ? $orderStatuses : (object)array(),
+    'orderStatuses' => !empty($orderStatuses) ? $orderStatuses : (object)array(),
     'primaryOrder' => $primaryOrder,
     'digitalDownloads' => !empty($digitalDownloads) ? $digitalDownloads : (object)array(),
     'digitalDownloadLinks' => !empty($digitalDownloadLinks) ? $digitalDownloadLinks : (object)array(),
