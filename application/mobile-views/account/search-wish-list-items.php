@@ -8,7 +8,7 @@ foreach ($products as $key => $product) {
             $optionTitle .= $op['option_name'].': '.$op['optionvalue_name'].', ';
         }
     }
-    $products[$key]['options'] = rtrim($optionTitle, ', ');
+    $products[$key]['optionsTitle'] = rtrim($optionTitle, ', ');
 }
 
 $data = array(
