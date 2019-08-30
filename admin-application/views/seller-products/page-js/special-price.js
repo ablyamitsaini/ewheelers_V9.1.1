@@ -1,7 +1,6 @@
 $(document).ready(function(){
     searchSpecialPriceProducts(document.frmSearch);
-    $('.start_date_js').datepicker('option', {minDate: new Date()});
-    $('.end_date_js').datepicker('option', {minDate: new Date()});
+    $('.date_js').datepicker('option', {minDate: new Date()});
 });
 $(document).on('keyup', "#frmAddSpecialPrice input[name='product_name']", function(){
     var currObj = $(this);
@@ -37,10 +36,10 @@ $(document).on('click', 'table.splPriceList-js tr td .js--editCol', function(){
     input.val('').focus().val(value);
 });
 
-$(document).on('blur', ".js--splPriceCol", function(){
+$(document).on('change', ".js--splPriceCol", function(){
     var currObj = $(this);
     var value = currObj.val();
-    var oldValue = currObj.attr('data-val');
+    var oldValue = currObj.attr('data-oldval');
     var attribute = currObj.attr('name');
     var id = currObj.data('id');
     var selProdId = currObj.data('selprodid');
@@ -53,7 +52,7 @@ $(document).on('blur', ".js--splPriceCol", function(){
                 value = oldValue;
             } else {
                 value = ans.data.value;
-                currObj.attr('data-val', value);
+                currObj.attr('data-oldval', value);
             }
             currObj.val(value);
             showElement(currObj, value);
@@ -64,6 +63,7 @@ $(document).on('blur', ".js--splPriceCol", function(){
     }
     return false;
 });
+
 (function() {
     showElement = function(currObj, value){
         currObj.siblings('div').text(value).fadeIn();

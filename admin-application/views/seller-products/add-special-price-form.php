@@ -7,11 +7,11 @@
         echo $addSpecialPriceFrm->getFieldHtml('addMultiple');
 
         $startDateFld = $addSpecialPriceFrm->getField('splprice_start_date');
-        $startDateFld->setFieldTagAttribute('class', 'start_date_js');
+        $startDateFld->setFieldTagAttribute('class', 'date_js');
         $startDateFld->setFieldTagAttribute('id', 'splprice_start_date'.$selProdId);
 
         $endDateFld = $addSpecialPriceFrm->getField('splprice_end_date');
-        $endDateFld->setFieldTagAttribute('class', 'end_date_js');
+        $endDateFld->setFieldTagAttribute('class', 'date_js');
         $endDateFld->setFieldTagAttribute('id', 'splprice_end_date'.$selProdId);
 
         $productName = $addSpecialPriceFrm->getField('product_name');

@@ -75,11 +75,11 @@ if (0 < $selProd_id) {
                     </div>
                     <div class="sectionbody">
                         <?php
-                        foreach ($dataToEdit as $selProdId => $value) {
+                        foreach ($dataToEdit as $value) {
+                            $selProdId = $value['splprice_selprod_id'];
                             $cloneFrm = clone $addSpecialPriceFrm;
                             $value['addMultiple'] = 1;
-
-                            $cloneFrm->fill($value);
+                            $cloneFrm->fill($value, true);
                             $cloneFrm->setFormTagAttribute('id', 'frmAddSpecialPrice-'.$selProdId);
                             $cloneFrm->setFormTagAttribute('name', 'frmAddSpecialPrice-'.$selProdId);
                             $productName = $cloneFrm->getField('product_name');

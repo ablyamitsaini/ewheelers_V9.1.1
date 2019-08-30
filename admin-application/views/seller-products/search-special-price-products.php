@@ -1,4 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
+$editListingFrm = new Form('editListingFrm', array('id'=>'editListingFrm'));
+
 $arr_flds = array(
     'select_all'=>Labels::getLabel('LBL_Select_all', $adminLangId),
     'product_name' => Labels::getLabel('LBL_Name', $adminLangId),
@@ -41,10 +43,21 @@ foreach ($arrListing as $sn => $row) {
             case 'splprice_start_date':
             case 'splprice_end_date':
                 $date = date('Y-m-d', strtotime($row[$key]));
-                $input = '<input readonly="readonly" data-id="'.$row['splprice_id'].'"  data-selprodid="'.$row['selprod_id'].'"  placeholder="'.$val.'" class="date_js fld-date js--splPriceCol hide sp-input" title="'.$val.'"  data-val="'.$date.'" data-fatdateformat="yy-mm-dd" type="text" name="'.$key.'" value="'.$date.'">';
+                $attr = array(
+                    'readonly' => 'readonly',
+                    'placeholder' => $val,
+                    'data-selprodid' => $row['selprod_id'],
+                    'data-id' => $row['splprice_id'],
+                    'data-oldval' => $date,
+                    'id' => $key.'-'.$row['splprice_id'],
+                    'class' => 'date_js js--splPriceCol hide sp-input',
+                );
+                $editListingFrm->addDateField($val, $key, $date, $attr);
+
+                /*$input = '<input readonly="readonly" data-id="'.$row['splprice_id'].'"  data-selprodid="'.$row['selprod_id'].'"  placeholder="'.$val.'" id="'.$key.'-'.$row['splprice_id'].'" class="date_js fld-date js--splPriceCol hide sp-input" title="'.$val.'"  data-val="'.$date.'" data-fatdateformat="yy-mm-dd" type="text" name="'.$key.'" value="'.$date.'">';*/
 
                 $td->appendElement('div', array("class" => 'js--editCol edit-hover', "title" => Labels::getLabel('LBL_Click_To_Edit', $adminLangId)), $date, true);
-                $td->appendElement('plaintext', array(), $input, true);
+                $td->appendElement('plaintext', array(), $editListingFrm->getFieldHtml($key), true);
                 break;
             case 'splprice_price':
                 $input = '<input type="text" data-id="'.$row['splprice_id'].'" value="'.$row[$key].'" data-selprodid="'.$row['selprod_id'].'" name="'.$key.'" class="js--splPriceCol hide sp-input" data-val="'.$row[$key].'"/>';
@@ -94,7 +107,7 @@ echo $tbl->getHtml(); ?>
 </form>
 <?php
 $postedData['page'] = $page;
-echo FatUtility::createHiddenFormFromData($postedData, array ('name' => 'frmSearchSpecialPricePaging'));
+echo FatUtility::createHiddenFormFromData($postedData, array('name' => 'frmSearchSpecialPricePaging'));
 
 $pagingArr=array('pageCount'=>$pageCount,'page'=>$page,'recordCount'=>$recordCount,'callBackJsFunc' => 'goToSearchPage','adminLangId'=>$adminLangId);
 $this->includeTemplate('_partial/pagination.php', $pagingArr, false);
