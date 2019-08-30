@@ -1,17 +1,24 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');?>
-<div class="cards-content pt-4 pl-4 pr-4 pb-0 <?php echo $class; ?>">
+<div class="cards-content pt-4 pl-4 pr-4 pb-0">
     <div class="replaced">
         <?php
         echo $addSpecialPriceFrm->getFormTag();
         echo $addSpecialPriceFrm->getFieldHtml('splprice_selprod_id');
         echo $addSpecialPriceFrm->getFieldHtml('addMultiple');
-        echo $addSpecialPriceFrm->getFieldHtml('lastRow');
 
         $startDateFld = $addSpecialPriceFrm->getField('splprice_start_date');
         $startDateFld->setFieldTagAttribute('class', 'start_date_js');
+        $startDateFld->setFieldTagAttribute('id', 'splprice_start_date'.$selProdId);
 
         $endDateFld = $addSpecialPriceFrm->getField('splprice_end_date');
         $endDateFld->setFieldTagAttribute('class', 'end_date_js');
+        $endDateFld->setFieldTagAttribute('id', 'splprice_end_date'.$selProdId);
+
+        $productName = $addSpecialPriceFrm->getField('product_name');
+        if (0 < $selProdId) {
+            $productName->setFieldTagAttribute('readonly', 'readonly');
+        }
+
         ?>
             <div class="row">
                 <div class="col-lg-3 col-md-3">

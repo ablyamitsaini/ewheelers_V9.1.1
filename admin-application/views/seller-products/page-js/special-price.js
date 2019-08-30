@@ -139,7 +139,7 @@ $(document).on('blur', ".js--splPriceCol", function(){
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('SellerProducts', 'updateSpecialPriceRow'), data, function(t) {
             if(t.status == true){
-                if ((1 > frm.addMultiple.value && 1 > frm.lastRow.value) || 0 < selProd_id) {
+                if (1 > frm.addMultiple.value || 0 < selProd_id) {
                     if (1 > selProd_id) {
                         $("input[name='splprice_selprod_id']").val('');
                     }
@@ -149,9 +149,6 @@ $(document).on('blur', ".js--splPriceCol", function(){
                 $('table.splPriceList-js tbody').prepend(t.data);
             }
 			$(document).trigger('close.facebox');
-            if (0 < $('.defaultForm.hide').length && 0 < frm.lastRow.value) {
-                $('.defaultForm.hide').removeClass('defaultForm hide');
-            }
             if (0 < frm.addMultiple.value && 1 > selProd_id) {
                 var splPriceRow = $("#"+frm.id).parent().parent();
                 splPriceRow.siblings('.divider:first').remove();

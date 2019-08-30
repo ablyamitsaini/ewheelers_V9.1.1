@@ -2270,7 +2270,7 @@ class SellerProductsController extends AdminBaseController
                 $product_name = SellerProduct::getProductDisplayTitle($selProdId, $this->adminLangId);
                 $dataToEdit[] = array(
                     'product_name' => html_entity_decode($product_name, ENT_QUOTES, 'UTF-8'),
-                    'voldiscount_selprod_id' => $selProdId
+                    'splprice_selprod_id' => $selProdId
                 );
             }
         } else {

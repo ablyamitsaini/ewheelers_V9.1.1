@@ -33,7 +33,6 @@ if (0 < $selProd_id) {
     $addSpecialPriceFrm->setFormTagAttribute('name', 'frmAddSpecialPrice');
     $addSpecialPriceFrm->setFormTagAttribute('onsubmit', 'updateSpecialPriceRow(this, '.$selProd_id.'); return(false);');
 
-    $addSpecialPriceFrm->addHiddenField('', 'lastRow', 0);
     $addSpecialPriceFrm->addHiddenField('', 'addMultiple', 0);
 ?>
 <div class='page'>
@@ -76,24 +75,18 @@ if (0 < $selProd_id) {
                     </div>
                     <div class="sectionbody">
                         <?php
-                        $class = !empty($dataToEdit) && 0 < count($dataToEdit) ? 'defaultForm hide' : '';
-                        $this->includeTemplate('seller-products/add-special-price-form.php', array('addSpecialPriceFrm'=>$addSpecialPriceFrm, 'class' => $class), false);
-                        foreach ($dataToEdit as $key => $value) {
+                        foreach ($dataToEdit as $selProdId => $value) {
                             $cloneFrm = clone $addSpecialPriceFrm;
-                            if ($value === end($dataToEdit) && 1 > $selProd_id) {
-                                $value['lastRow'] = 1;
-                            }
                             $value['addMultiple'] = 1;
 
                             $cloneFrm->fill($value);
-                            $cloneFrm->setFormTagAttribute('id', 'frmAddSpecialPrice-'.$key);
-                            $cloneFrm->setFormTagAttribute('name', 'frmAddSpecialPrice-'.$key);
+                            $cloneFrm->setFormTagAttribute('id', 'frmAddSpecialPrice-'.$selProdId);
+                            $cloneFrm->setFormTagAttribute('name', 'frmAddSpecialPrice-'.$selProdId);
                             $productName = $cloneFrm->getField('product_name');
-                            $productName->setFieldTagAttribute('readonly', 'readonly');
-
-                            // CommonHelper::printArray($cloneFrm, true);
-                            $this->includeTemplate('seller-products/add-special-price-form.php', array('addSpecialPriceFrm'=>$cloneFrm, 'class' => ''), false);
+                            $this->includeTemplate('seller-products/add-special-price-form.php', array('addSpecialPriceFrm'=>$cloneFrm, 'selProdId' => $selProdId), false);
                         }
+                        $addSpecialPriceFrm->fill(array('product_name'=>'', 'splprice_selprod_id'=> ''));
+                        $this->includeTemplate('seller-products/add-special-price-form.php', array('addSpecialPriceFrm'=>$addSpecialPriceFrm, 'selProdId' => 0), false);
                         ?>
                         <div class="tablewrap" >
                             <div id="listing"> <?php echo Labels::getLabel('LBL_Processing...', $adminLangId); ?></div>
