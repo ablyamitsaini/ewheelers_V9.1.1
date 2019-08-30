@@ -1668,7 +1668,11 @@ class AccountController extends LoggedUserController
         $rs = $srch->getResultSet();
         /* echo $srch->getQuery(); die; */
         $products = $db->fetchAll($rs);
-
+        if (count($products)) {
+            foreach ($products as &$arr) {
+                $arr['options'] = SellerProduct::getSellerProductOptions($arr['selprod_id'], true, $this->siteLangId);
+            }
+        }
         /* $prodSrchObj = new ProductSearch();
         if( $products ){
         foreach($products as &$product){
