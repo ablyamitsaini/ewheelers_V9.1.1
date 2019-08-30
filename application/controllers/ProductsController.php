@@ -1621,7 +1621,7 @@ class ProductsController extends MyAppController
     {
         $post = FatApp::getPostedData();
         $userId = UserAuthentication::getLoggedUserId(true);
-
+        $post['join_price'] = 1;
         $page = 1;
         if (array_key_exists('page', $post)) {
             $page = FatUtility::int($post['page']);
