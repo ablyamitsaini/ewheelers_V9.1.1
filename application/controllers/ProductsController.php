@@ -167,6 +167,9 @@ class ProductsController extends MyAppController
 
         $brandsCheckedArr = array();
         if (array_key_exists('brand', $headerFormParamsAssocArr)) {
+            if (true ===  MOBILE_APP_API_CALL) {
+                $headerFormParamsAssocArr['brand'] = json_decode($headerFormParamsAssocArr['brand'], true);
+            }
             $brandsCheckedArr = $headerFormParamsAssocArr['brand'];
         }
 
@@ -180,9 +183,6 @@ class ProductsController extends MyAppController
         //var_dump($brandsCheckedArr);
 
         if (!empty($brandsCheckedArr)) {
-            if (true ===  MOBILE_APP_API_CALL) {
-                $brandsCheckedArr = json_decode($brandsCheckedArr, true);
-            }
             $brandSrch->addFld('IF(FIND_IN_SET(brand_id, "'.implode(',', $brandsCheckedArr).'"), 1, 0) as priority');
             $brandSrch->addOrder('priority', 'desc');
         }
@@ -1621,7 +1621,7 @@ class ProductsController extends MyAppController
     {
         $post = FatApp::getPostedData();
         $userId = UserAuthentication::getLoggedUserId(true);
-
+        $post['join_price'] = 1;
         $page = 1;
         if (array_key_exists('page', $post)) {
             $page = FatUtility::int($post['page']);

@@ -143,7 +143,9 @@ class Orders extends MyAppModel
         $srch = new SearchBase(Orders::DB_TBL_ORDERS_STATUS, 'ostatus');
         $srch->addCondition('orderstatus_type', '=', Orders::ORDER_PRODUCT);
         $srchOrderStatus = clone $srch;
-        $srchOrderStatus->addCondition('orderstatus_id', '=', $current);
+        if (0 < $current) {
+            $srchOrderStatus->addCondition('orderstatus_id', '=', $current);
+        }
         $srchOrderStatus->addCondition('orderstatus_type', '=', Orders::ORDER_PRODUCT);
         $srchOrderStatus->doNotCalculateRecords();
         $srchOrderStatus->doNotLimitRecords();
@@ -560,7 +562,7 @@ class Orders extends MyAppModel
 
     private function addUpdateSubscriptionOrder($data = array(), $langId = 1)
     {
-        $db  = FatApp::getDb(); 
+        $db  = FatApp::getDb();
         $ordersLangData = $data['orderLangData'];
         unset($data['orderLangData']);
         $subscriptions = $data['subscriptions'];

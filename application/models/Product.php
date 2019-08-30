@@ -1260,6 +1260,9 @@ class Product extends MyAppModel
         }
 
         if (array_key_exists('prodcat', $criteria)) {
+            if (true ===  MOBILE_APP_API_CALL) {
+                $criteria['prodcat'] = json_decode($criteria['prodcat'], true);
+            }
             $srch->addCategoryCondition($criteria['prodcat']);
         }
 
@@ -1294,22 +1297,27 @@ END,   special_price_found ) as special_price_found'
 
         if (array_key_exists('brand', $criteria)) {
             if (!empty($criteria['brand'])) {
+                if (true ===  MOBILE_APP_API_CALL) {
+                    $criteria['brand'] = json_decode($criteria['brand'], true);
+                }
                 $srch->addBrandCondition($criteria['brand']);
             }
         }
 
         if (array_key_exists('optionvalue', $criteria)) {
             if (!empty($criteria['optionvalue'])) {
+                if (true ===  MOBILE_APP_API_CALL) {
+                    $criteria['optionvalue'] = json_decode($criteria['optionvalue'], true);
+                }
                 $srch->addOptionCondition($criteria['optionvalue']);
             }
         }
 
         if (array_key_exists('condition', $criteria)) {
+            if (true ===  MOBILE_APP_API_CALL) {
+                $criteria['condition'] = json_decode($criteria['condition'], true);
+            }
             $condition = is_array($criteria['condition']) ? array_filter($criteria['condition']) : $criteria['condition'];
-        } else {
-            $condition = FatApp::getPostedData('condition', null, '');
-        }
-        if (!empty($condition)) {
             $srch->addConditionCondition($condition);
         }
 

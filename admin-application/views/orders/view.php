@@ -44,10 +44,11 @@ if ($order['order_reward_point_used'] > 0) {
                               <td><strong><?php echo Labels::getLabel('LBL_Order/Invoice_ID', $adminLangId); ?>:</strong> <?php echo $order["order_id"]; ?></td>
                               <td><strong><?php echo Labels::getLabel('LBL_Order_Date', $adminLangId); ?>: </strong> <?php echo FatDate::format($order['order_date_added'], true, true, FatApp::getConfig('CONF_TIMEZONE', FatUtility::VAR_STRING, date_default_timezone_get())); ?></td>
                               <td><strong><?php echo Labels::getLabel('LBL_Payment_Status', $adminLangId); ?>:</strong> <?php echo Orders::getOrderPaymentStatusArr($adminLangId)[$order['order_is_paid']];
-                              if ('' != $order['pmethod_name'] && 'CashOnDelivery' == $order['pmethod_code']) {
+                                if ('' != $order['pmethod_name'] && 'CashOnDelivery' == $order['pmethod_code']) {
                                   echo ' ('.$order['pmethod_name'].' )';
-                              }
-                              ?></td>
+                                }
+                                ?>
+                                </td>
                             </tr>
                             <tr>
                               <td><strong><?php echo Labels::getLabel('LBL_Customer', $adminLangId); ?>: </strong> <?php echo $order["buyer_user_name"]?></td>
@@ -131,8 +132,8 @@ if ($order['order_reward_point_used'] > 0) {
 
                                  <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($total, true, true); ?></td>
                             </tr>
-                            <?php
-                            $k++;
+                                <?php
+                                $k++;
                             } ?>
                             <tr>
                                 <td colspan="8" class="text-right"><?php echo Labels::getLabel('LBL_Cart_Total', $adminLangId); ?></td>
@@ -261,7 +262,7 @@ if ($order['order_reward_point_used'] > 0) {
                         </section>
                     </div>
                 </div>
-                <?php if (count($order["comments"])>0) {?>
+                <?php if (count($order["comments"])>0) { ?>
                 <section class="section">
                     <div class="sectionhead">
                         <h4><?php echo Labels::getLabel('LBL_Order_Status_History', $adminLangId); ?></h4>
@@ -275,7 +276,7 @@ if ($order['order_reward_point_used'] > 0) {
                                     <th width="15%"><?php echo Labels::getLabel('LBL_Payment_Status', $adminLangId); ?></th>
                                     <th width="60%"><?php echo Labels::getLabel('LBL_Comments', $adminLangId); ?></th>
                                 </tr>
-                                <?php foreach ($order["comments"] as $key=>$row) {?>
+                                <?php foreach ($order["comments"] as $key => $row) {?>
                                 <tr>
                                     <td><?php echo FatDate::format($row['oshistory_date_added']);?></td>
                                     <td><?php echo $yesNoArr[$row['oshistory_customer_notified']];?></td>
