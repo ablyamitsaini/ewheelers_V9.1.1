@@ -7,11 +7,9 @@ class CustomRouter
         if ('mobile-app-api' == $controller) {
             define('MOBILE_APP_API_CALL', true);
             define('MOBILE_APP_API_VERSION', '1.0');
-            define('CONF_THEME_PATH', CONF_APPLICATION_PATH . 'mobile-views/');
         } elseif ('app-api' == $controller) {
             define('MOBILE_APP_API_CALL', true);
             define('MOBILE_APP_API_VERSION', str_replace('v', '', $action));
-            define('CONF_THEME_PATH', CONF_APPLICATION_PATH . 'mobile-views/');
 
             if (MOBILE_APP_API_VERSION <= '1.2') {
                 $controller = 'mobile-app-api';
@@ -50,7 +48,6 @@ class CustomRouter
         } else {
             define('MOBILE_APP_API_CALL', false);
             define('MOBILE_APP_API_VERSION', '');
-            define('CONF_THEME_PATH', CONF_APPLICATION_PATH . 'views/');
         }
         define('MOBILE_APP_USER_TYPE', $userType);
 

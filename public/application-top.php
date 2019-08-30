@@ -50,5 +50,6 @@ if ((!isset($_SERVER['HTTP_X_FORWARDED_PROTO']) || $_SERVER['HTTP_X_FORWARDED_PR
 /* --- Redirect SSL --- */
 $_SESSION['WYSIWYGFileManagerRequirements'] = CONF_INSTALLATION_PATH . 'public/WYSIWYGFileManagerRequirements.php';
 
+
 define('SYSTEM_INIT', true);
 define('CONF_WEB_APP_VERSION', 'RV-9.0.0');
