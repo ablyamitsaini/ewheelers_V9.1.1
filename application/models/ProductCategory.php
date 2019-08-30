@@ -268,7 +268,7 @@ class ProductCategory extends MyAppModel
                 unset($tree[$categoryId]);
                 $return[$categoryId] = $category;
                 $child = static::parseTree($tree, $categoryId);
-                $return[$categoryId]['isLastChildren'] = (0 < count($child)) ? 0 : 1;
+                $return[$categoryId]['isLastChildCategory'] = (0 < count($child)) ? 0 : 1;
                 $return[$categoryId]['children'] = (true ===  MOBILE_APP_API_CALL) ? array_values($child) : $child;
             }
         }
