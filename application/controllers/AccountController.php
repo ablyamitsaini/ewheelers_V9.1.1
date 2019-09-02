@@ -488,7 +488,19 @@ class AccountController extends LoggedUserController
             FatUtility::dieWithError(Message::getHtml());
         }
         if (true ===  MOBILE_APP_API_CALL) {
+            /* Payment Methods[ */
+            $pmSrch = PaymentMethods::getSearchObject($this->siteLangId);
+            $pmSrch->doNotCalculateRecords();
+            $pmSrch->doNotLimitRecords();
+            $pmSrch->addMultipleFields(array('pmethod_id', 'IFNULL(pmethod_name, pmethod_identifier) as pmethod_name', 'pmethod_code', 'pmethod_description'));
+            $pmSrch->addCondition('pmethod_code', '!=', 'CashOnDelivery');
+
+            $pmRs = $pmSrch->getResultSet();
+            $paymentMethods = FatApp::getDb()->fetchAll($pmRs);
+            /* ] */
+            $this->set('paymentMethods', $paymentMethods);
             $this->set('order_id', $order_id);
+            $this->set('orderType', Orders::ORDER_WALLET_RECHARGE);
             $this->_template->render();
         }
         $this->set('redirectUrl', CommonHelper::generateUrl('WalletPay', 'Recharge', array($order_id)));

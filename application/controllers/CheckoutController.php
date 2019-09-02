@@ -10,9 +10,10 @@ class CheckoutController extends MyAppController
         if (true ===  MOBILE_APP_API_CALL) {
             UserAuthentication::checkLogin();
         }
-        if (!UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()){
+        if (!UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()) {
             FatApp::redirectUser(CommonHelper::generateUrl('Cart'));
         }
+
         if (UserAuthentication::isGuestUserLogged()) {
             $user_is_buyer = User::getAttributesById(UserAuthentication::getLoggedUserId(), 'user_is_buyer');
             if (!$user_is_buyer) {
@@ -801,7 +802,7 @@ class CheckoutController extends MyAppController
         } else {
             $order_id = isset($_SESSION['shopping_cart']["order_id"]) ? $_SESSION['shopping_cart']["order_id"] : false;
         }
-        
+
 
         /* if($order_id){
         $orderObj =  new Orders();
