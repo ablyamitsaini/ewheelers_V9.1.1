@@ -979,14 +979,33 @@ class SellerProductsController extends AdminBaseController
         if (strtotime($post['splprice_start_date']) > strtotime($post['splprice_end_date'])) {
             FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Dates', $this->adminLangId));
         }
-        $sellerProductRow = SellerProduct::getAttributesById($selprod_id);
+
+        $prodSrch = new ProductSearch($this->adminLangId);
+        $prodSrch->joinSellerProducts();
+        $prodSrch->addCondition('selprod_id', '=', $selprod_id);
+        $prodSrch->addMultipleFields(array('product_min_selling_price', 'selprod_price'));
+        $prodSrch->setPageSize(1);
+        $rs = $prodSrch->getResultSet();
+        $product = FatApp::getDb()->fetch($rs);
+
+        if ($post['splprice_price'] < $product['product_min_selling_price'] || $post['splprice_price'] >= $product['selprod_price']) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Special_price_must_between_min_selling_price_and_selling_price', $this->adminLangId));
+        }
+
         /* Check if same date already exists [ */
         $tblRecord = new TableRecord(SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE);
 
+        $smt = 'splprice_selprod_id = ? AND ((splprice_start_date between ? AND ?) OR (splprice_end_date between ? AND ?)) ';
+        $smtValues = array($selprod_id, $post['splprice_start_date'], $post['splprice_end_date'], $post['splprice_start_date'], $post['splprice_end_date']);
+        if (0 < $splprice_id) {
+            $smt .= 'AND splprice_id != ?';
+            $smtValues[] = $splprice_id;
+        }
         $condition = array(
-            'smt' => 'splprice_selprod_id = ? and splprice_start_date =? and splprice_end_date = ?',
-            'vals' => array($selprod_id, $post['splprice_start_date'], $post['splprice_end_date'])
+            'smt' => $smt,
+            'vals' => $smtValues
         );
+        // CommonHelper::printArray($condition, true);
         if ($tblRecord->loadFromDb($condition)) {
             $specialPriceRow = $tblRecord->getFlds();
             if ($specialPriceRow['splprice_id'] != $post['splprice_id']) {
@@ -2401,11 +2420,14 @@ class SellerProductsController extends AdminBaseController
         }
 
         $attribute = FatApp::getPostedData('attribute', FatUtility::VAR_STRING, '');
-        if ('splprice_start_date' == $attribute) {
-            $otherColumns = array('splprice_end_date', 'splprice_price');
-        } else if ('splprice_end_date' == $attribute) {
-            $otherColumns = array('splprice_start_date', 'splprice_price');
+
+        $columns = array('splprice_start_date', 'splprice_end_date', 'splprice_price');
+        if (!in_array($attribute, $columns)) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Request', $this->adminLangId));
         }
+
+        $otherColumns = array_values(array_diff($columns, [$attribute]));
+
         $otherColumnsValue = SellerProductSpecialPrice::getAttributesById($splPriceId, $otherColumns);
         if (empty($otherColumnsValue)) {
             FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Request', $this->adminLangId));

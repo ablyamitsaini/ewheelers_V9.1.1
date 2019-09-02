@@ -22,13 +22,13 @@ foreach ($arr_flds as $key => $val) {
 
 foreach ($arrListing as $sn => $row) {
     $tr = $tbl->appendElement('tr', array());
-
+    $splPriceID = $row['splprice_id'];
     foreach ($arr_flds as $key => $val) {
-        $tr->setAttribute('id', 'row-'.$row['splprice_id']);
+        $tr->setAttribute('id', 'row-'.$splPriceID);
         $td = $tr->appendElement('td');
         switch ($key) {
             case 'select_all':
-                $td->appendElement('plaintext', array(), '<label class="checkbox"><input class="selectItem--js" type="checkbox" name="selprod_ids['.$row['splprice_id'].']" value='.$row['selprod_id'].'><i class="input-helper"></i></label>', true);
+                $td->appendElement('plaintext', array(), '<label class="checkbox"><input class="selectItem--js" type="checkbox" name="selprod_ids['.$splPriceID.']" value='.$row['selprod_id'].'><i class="input-helper"></i></label>', true);
                 break;
             case 'product_name':
                 // last Param of getProductDisplayTitle function used to get title in html form.
@@ -42,21 +42,21 @@ foreach ($arrListing as $sn => $row) {
                     'readonly' => 'readonly',
                     'placeholder' => $val,
                     'data-selprodid' => $row['selprod_id'],
-                    'data-id' => $row['splprice_id'],
+                    'data-id' => $splPriceID,
                     'data-oldval' => $date,
-                    'id' => $key.'-'.$row['splprice_id'],
+                    'id' => $key.'-'.$splPriceID,
                     'class' => 'date_js js--splPriceCol hide sp-input',
                 );
                 $editListingFrm->addDateField($val, $key, $date, $attr);
 
-                /*$input = '<input readonly="readonly" data-id="'.$row['splprice_id'].'"  data-selprodid="'.$row['selprod_id'].'"  placeholder="'.$val.'" id="'.$key.'-'.$row['splprice_id'].'" class="date_js fld-date js--splPriceCol hide sp-input" title="'.$val.'"  data-val="'.$date.'" data-fatdateformat="yy-mm-dd" type="text" name="'.$key.'" value="'.$date.'">';*/
+                /*$input = '<input readonly="readonly" data-id="'.$splPriceID.'"  data-selprodid="'.$row['selprod_id'].'"  placeholder="'.$val.'" id="'.$key.'-'.$splPriceID.'" class="date_js fld-date js--splPriceCol hide sp-input" title="'.$val.'"  data-val="'.$date.'" data-fatdateformat="yy-mm-dd" type="text" name="'.$key.'" value="'.$date.'">';*/
 
                 $td->appendElement('div', array("class" => 'js--editCol edit-hover', "title" => Labels::getLabel('LBL_Click_To_Edit', $adminLangId)), $date, true);
                 $td->appendElement('plaintext', array(), $editListingFrm->getFieldHtml($key), true);
                 break;
             case 'splprice_price':
-                $input = '<input type="text" data-id="'.$row['splprice_id'].'" value="'.$row[$key].'" data-selprodid="'.$row['selprod_id'].'" name="'.$key.'" class="js--splPriceCol hide sp-input" data-val="'.$row[$key].'"/>';
-                $td->appendElement('div', array("class" => 'js--editCol edit-hover', "title" => Labels::getLabel('LBL_Click_To_Edit', $adminLangId)), $row[$key], true);
+                $input = '<input type="text" data-id="'.$splPriceID.'" value="'.$row[$key].'" data-selprodid="'.$row['selprod_id'].'" name="'.$key.'" class="js--splPriceCol hide sp-input" data-val="'.$row[$key].'"/>';
+                $td->appendElement('div', array("class" => 'js--editCol edit-hover', "title" => Labels::getLabel('LBL_Click_To_Edit', $adminLangId)), CommonHelper::displayMoneyFormat($row[$key]), true);
                 $td->appendElement('plaintext', array(), $input, true);
                 break;
             case 'action':
@@ -74,7 +74,7 @@ foreach ($arrListing as $sn => $row) {
                     $innerLiEdit->appendElement(
                         'a',
                         array('href'=>'javascript:void(0)', 'class'=>'',
-                        'title'=>Labels::getLabel('LBL_Delete', $adminLangId),"onclick"=>"deleteSellerProductSpecialPrice(".$row['splprice_id'].")"),
+                        'title'=>Labels::getLabel('LBL_Delete', $adminLangId),"onclick"=>"deleteSellerProductSpecialPrice(".$splPriceID.")"),
                         Labels::getLabel('LBL_Remove', $adminLangId),
                         true
                     );

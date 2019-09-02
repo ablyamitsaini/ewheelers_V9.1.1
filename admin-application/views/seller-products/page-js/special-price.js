@@ -36,45 +36,20 @@ $(document).on('click', 'table.splPriceList-js tr td .js--editCol', function(){
     input.val('').focus().val(value);
 });
 
-$(document).on('blur', ".js--splPriceCol", function(){
+$(document).on('blur', ".js--splPriceCol.date_js", function(){
     var currObj = $(this);
     var oldValue = currObj.attr('data-oldval');
     showElement(currObj, oldValue);
 });
-$(document).on('change', ".js--splPriceCol", function(){
-    var currObj = $(this);
-    var value = currObj.val();
-    var oldValue = currObj.attr('data-oldval');
-    var attribute = currObj.attr('name');
-    var id = currObj.data('id');
-    var selProdId = currObj.data('selprodid');
-    if ('' != value && value != oldValue) {
-        var data = 'attribute='+attribute+"&splprice_id="+id+"&selProdId="+selProdId+"&value="+value;
-        fcom.ajax(fcom.makeUrl('SellerProducts', 'updateSpecialPriceColValue'), data, function(t) {
-            var ans = $.parseJSON(t);
-            if( ans.status != 1 ){
-                $.systemMessage(ans.msg, 'alert--danger');
-                value = oldValue;
-            } else {
-                value = ans.data.value;
-                currObj.attr('data-oldval', value);
-            }
-            currObj.val(value);
-            showElement(currObj, value);
-        });
-    } else {
-        showElement(currObj, oldValue);
-        currObj.val(oldValue);
-    }
-    return false;
+$(document).on('change', ".js--splPriceCol.date_js", function(){
+    updateValues($(this));
+});
+
+$(document).on('blur', ".js--splPriceCol:not(.date_js)", function(){
+    updateValues($(this));
 });
 
 (function() {
-    showElement = function(currObj, value){
-        currObj.siblings('div').text(value).fadeIn();
-        currObj.addClass('hide');
-    };
-
 	var dv = '#listing';
 	searchSpecialPriceProducts = function(frm){
 
@@ -162,4 +137,33 @@ $(document).on('change', ".js--splPriceCol", function(){
 		});
 		return false;
 	};
+    updateValues = function(currObj) {
+        var value = currObj.val();
+        var oldValue = currObj.attr('data-oldval');
+        var attribute = currObj.attr('name');
+        var id = currObj.data('id');
+        var selProdId = currObj.data('selprodid');
+        if ('' != value && value != oldValue) {
+            var data = 'attribute='+attribute+"&splprice_id="+id+"&selProdId="+selProdId+"&value="+value;
+            fcom.ajax(fcom.makeUrl('SellerProducts', 'updateSpecialPriceColValue'), data, function(t) {
+                var ans = $.parseJSON(t);
+                if( ans.status != 1 ){
+                    $.systemMessage(ans.msg, 'alert--danger');
+                    value = oldValue;
+                } else {
+                    value = ans.data.value;
+                    currObj.attr('data-oldval', value);
+                }
+                currObj.val(value);
+                showElement(currObj, value);
+            });
+        } else {
+            showElement(currObj, oldValue);
+            currObj.val(oldValue);
+        }
+    };
+    showElement = function(currObj, value){
+        currObj.siblings('div').text(value).fadeIn();
+        currObj.addClass('hide');
+    };
 })();
