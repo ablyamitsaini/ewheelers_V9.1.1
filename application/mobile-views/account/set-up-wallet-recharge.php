@@ -5,7 +5,7 @@ foreach ($paymentMethods as $key => $val) {
 }
 
 $data = array(
-    'order_id' => $order_id,
+    'orderId' => $order_id,
     'orderType' => $orderType,
     'paymentMethods' => $paymentMethods,
 );
