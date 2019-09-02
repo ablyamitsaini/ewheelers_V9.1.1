@@ -39,26 +39,31 @@ foreach ($optionRows as $key => $option) {
 if (!empty($product)) {
     if (!empty($product['selprod_return_policies'])) {
         $product['productPolicies'][] = array(
-            'title' => $product['selprod_return_policies']['ppoint_title']
+            'title' => $product['selprod_return_policies']['ppoint_title'],
+            'icon' => CONF_WEBROOT_URL.'images/retina/sprite.svg#easyreturns'
         );
     }
     if (!empty($product['selprod_warranty_policies'])) {
         $product['productPolicies'][] = array(
-            'title' => $product['selprod_warranty_policies']['ppoint_title']
+            'title' => $product['selprod_warranty_policies']['ppoint_title'],
+            'icon' => CONF_WEBROOT_URL.'images/retina/sprite.svg#yearswarranty'
         );
     }
     if (isset($shippingDetails['ps_free']) && $shippingDetails['ps_free'] == applicationConstants::YES) {
         $product['productPolicies'][] = array(
-            'title' => Labels::getLabel('LBL_Free_Shipping_on_this_Order', $siteLangId)
+            'title' => Labels::getLabel('LBL_Free_Shipping_on_this_Order', $siteLangId),
+            'icon' => CONF_WEBROOT_URL.'images/retina/sprite.svg#freeshipping'
         );
     } else if (count($shippingRates) > 0) {
         $product['productPolicies'][] = array(
             'title' => Labels::getLabel('LBL_Shipping_Rates', $siteLangId),
+            'icon' => CONF_WEBROOT_URL.'images/retina/sprite.svg#shipping-policies'
         );
     }
     if (0 < $codEnabled) {
         $product['productPolicies'][] = array(
-            'title' => Labels::getLabel('LBL_Cash_on_delivery_is_available', $siteLangId)
+            'title' => Labels::getLabel('LBL_Cash_on_delivery_is_available', $siteLangId),
+            'icon' => CONF_WEBROOT_URL.'images/retina/sprite.svg#safepayments'
         );
     }
 }
