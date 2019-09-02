@@ -31,14 +31,9 @@ foreach ($arrListing as $sn => $row) {
                 $td->appendElement('plaintext', array(), '<label class="checkbox"><input class="selectItem--js" type="checkbox" name="selprod_ids['.$row['splprice_id'].']" value='.$row['selprod_id'].'><i class="input-helper"></i></label>', true);
                 break;
             case 'product_name':
-                $variantStr = ($row['selprod_title'] != '') ? $row['selprod_title'].'<br/>' : '';
-                if (is_array($row['options']) && count($row['options'])) {
-                    foreach ($row['options'] as $op) {
-                        $variantStr .= $op['option_name'].': '.$op['optionvalue_name'].'<br/>';
-                    }
-                }
-                $td->appendElement('plaintext', array(), $variantStr, true);
-                $td->appendElement('plaintext', array(), $row['product_name'], true);
+                // last Param of getProductDisplayTitle function used to get title in html form.
+                $productName = SellerProduct::getProductDisplayTitle($row['selprod_id'], $adminLangId, true);
+                $td->appendElement('plaintext', array(), $productName, true);
                 break;
             case 'splprice_start_date':
             case 'splprice_end_date':

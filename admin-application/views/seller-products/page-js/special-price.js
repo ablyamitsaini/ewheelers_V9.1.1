@@ -36,6 +36,11 @@ $(document).on('click', 'table.splPriceList-js tr td .js--editCol', function(){
     input.val('').focus().val(value);
 });
 
+$(document).on('blur', ".js--splPriceCol", function(){
+    var currObj = $(this);
+    var oldValue = currObj.attr('data-oldval');
+    showElement(currObj, oldValue);
+});
 $(document).on('change', ".js--splPriceCol", function(){
     var currObj = $(this);
     var value = currObj.val();
