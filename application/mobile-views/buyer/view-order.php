@@ -45,6 +45,8 @@ foreach ($childArr as $index => $childOrder) {
     $shippingCharges = $shippingCharges + CommonHelper::orderProductAmount($childOrder, 'shipping');
     $volumeDiscount = CommonHelper::orderProductAmount($childOrder, 'VOLUME_DISCOUNT');
     $rewardPointDiscount = CommonHelper::orderProductAmount($childOrder, 'REWARDPOINT');
+    $orderDiscountTotal = CommonHelper::orderProductAmount($childOrder, 'DISCOUNT');
+
     $childArr[$index]['priceDetail'] = array(
         array(
             'key' => Labels::getLabel('LBL_Quantity', $siteLangId),
@@ -67,9 +69,13 @@ foreach ($childArr as $index => $childOrder) {
             'value' => CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrder, 'tax')),
         ),
         array(
+            'key' => Labels::getLabel('LBL_Discount', $siteLangId),
+            'value' => CommonHelper::displayMoneyFormat($orderDiscountTotal),
+        ),
+        array(
             'key' => Labels::getLabel('LBL_Reward_Point_Discount', $siteLangId),
             'value' => CommonHelper::displayMoneyFormat($rewardPointDiscount),
-        )
+        ),
     );
     $childArr[$index]['totalAmount'] = array(
         'key' => Labels::getLabel('LBL_Total', $siteLangId),
