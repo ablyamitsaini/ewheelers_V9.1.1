@@ -2409,6 +2409,7 @@ class AccountController extends LoggedUserController
         $this->set('messageId', $insertId);
         $this->set('msg', Labels::getLabel('MSG_Message_Submitted_Successfully!', $this->siteLangId));
         if (true ===  MOBILE_APP_API_CALL) {
+            $this->set('data', $data);
             $this->_template->render();
         }
         $this->_template->render(false, false, 'json-success.php');

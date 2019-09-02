@@ -3,4 +3,5 @@
 $data = array(
     'threadId' => $threadId,
     'messageId' => $messageId,
+    'data' => $data,
 );
