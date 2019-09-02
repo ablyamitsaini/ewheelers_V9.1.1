@@ -198,7 +198,7 @@ class Cart extends FatModel
                     }
                 }
             } else {
-                if ($product['is_physical_product']) {
+                if (!empty($product['is_physical_product'])) {
                     $isPhysical = true;
                     break;
                 }
@@ -852,7 +852,7 @@ class Cart extends FatModel
                     $cartTotal += $product['prodgroup_total'];
                 } else {
                     //$cartTotalNonBatch += $product['total'];
-                    $cartTotal += $product['total'];
+                    $cartTotal += !empty($product['total']) ? $product['total'] : 0;
                 }
                 $cartVolumeDiscount += $product['volume_discount_total'];
                 $cartTaxTotal += $product['tax'];
