@@ -19,6 +19,9 @@
     $cancelBtnFld->developerTags['col'] = 2;
     $cancelBtnFld->developerTags['noCaptionTag'] = true;
 
+    $updateBtnFld = $addSpecialPriceFrm->getField('btn_update');
+    $updateBtnFld->setFieldTagAttribute('class', 'btn--block btn btn--primary');
+
 if (0 < $selProd_id) {
     $keywordFld = $frmSearch->getField('keyword');
     $keywordFld->setFieldTagAttribute('readonly', 'readonly');

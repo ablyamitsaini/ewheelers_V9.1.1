@@ -1,48 +1,75 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
-$arr_flds = array(
-    'listserial' => Labels::getLabel('LBL_Sr.', $siteLangId),
-);
-/* if( count($arrListing) && is_array($arrListing) && is_array($arrListing[0]['options']) && count($arrListing[0]['options']) ){ */
-    $arr_flds['name'] = Labels::getLabel('LBL_Name', $siteLangId);
-/* } */
-$arr_flds['specialPriceCount'] = Labels::getLabel('LBL_Special_Prices', $siteLangId);
-$arr_flds['selprod_price'] = Labels::getLabel('LBL_Price', $siteLangId);
+$editListingFrm = new Form('editListingFrm', array('id'=>'editListingFrm'));
 
-$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table-responsive table--hovered'));
+$arr_flds = array(
+    'select_all'=>Labels::getLabel('LBL_Select_all', $siteLangId),
+    'product_name' => Labels::getLabel('LBL_Name', $siteLangId),
+    'splprice_start_date' => Labels::getLabel('LBL_Start_Date', $siteLangId),
+    'splprice_end_date' => Labels::getLabel('LBL_End_Date', $siteLangId),
+    'splprice_price' => Labels::getLabel('LBL_Special_Price', $siteLangId),
+    'action' => Labels::getLabel('LBL_Action', $siteLangId),
+);
+
+$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table-responsive table--hovered splPriceList-js'));
 $th = $tbl->appendElement('thead')->appendElement('tr', array('class' => 'hide--mobile'));
 foreach ($arr_flds as $key => $val) {
-    $e = $th->appendElement('th', array(), $val);
+    if ('select_all' == $key) {
+        $th->appendElement('th')->appendElement('plaintext', array(), '<label class="checkbox"><input title="'.$val.'" type="checkbox" onclick="selectAll($(this))" class="selectAll-js"><i class="input-helper"></i></label>', true);
+    } else {
+        $th->appendElement('th', array(), $val);
+    }
 }
 
-$sr_no = ($page == 1) ? 0 : ($pageSize*($page-1));
 foreach ($arrListing as $sn => $row) {
-    $sr_no++;
     $tr = $tbl->appendElement('tr', array());
-
+    $splPriceID = $row['splprice_id'];
     foreach ($arr_flds as $key => $val) {
+        $tr->setAttribute('id', 'row-'.$splPriceID);
         $td = $tr->appendElement('td');
         switch ($key) {
-            case 'listserial':
-                $td->appendElement('plaintext', array(), $sr_no);
+            case 'select_all':
+                $td->appendElement('plaintext', array(), '<label class="checkbox"><input class="selectItem--js" type="checkbox" name="selprod_ids['.$splPriceID.']" value='.$row['selprod_id'].'><i class="input-helper"></i></label>', true);
                 break;
-            case 'name':
-                $variantStr = ($row['selprod_title'] != '') ? $row['selprod_title'].'<br/>' : '';
-                if (is_array($row['options']) && count($row['options'])) {
-                    foreach ($row['options'] as $op) {
-                        $variantStr .= $op['option_name'].': '.$op['optionvalue_name'].'<br/>';
-                    }
-                }
-                $td->appendElement('plaintext', array(), $variantStr, true);
-                $td->appendElement('plaintext', array(), $row['product_name'], true);
+            case 'product_name':
+                // last Param of getProductDisplayTitle function used to get title in html form.
+                $productName = SellerProduct::getProductDisplayTitle($row['selprod_id'], $siteLangId, true);
+                $td->appendElement('plaintext', array(), $productName, true);
                 break;
-            case 'selprod_price':
-                $td->appendElement('plaintext', array(), CommonHelper::displayMoneyFormat($row[$key], true, true), true);
+            case 'splprice_start_date':
+            case 'splprice_end_date':
+                $date = date('Y-m-d', strtotime($row[$key]));
+                $attr = array(
+                    'readonly' => 'readonly',
+                    'placeholder' => $val,
+                    'data-selprodid' => $row['selprod_id'],
+                    'data-id' => $splPriceID,
+                    'data-oldval' => $date,
+                    'id' => $key.'-'.$splPriceID,
+                    'class' => 'date_js js--splPriceCol hidden sp-input',
+                );
+                $editListingFrm->addDateField($val, $key, $date, $attr);
+
+                /*$input = '<input readonly="readonly" data-id="'.$splPriceID.'"  data-selprodid="'.$row['selprod_id'].'"  placeholder="'.$val.'" id="'.$key.'-'.$splPriceID.'" class="date_js fld-date js--splPriceCol hidden sp-input" title="'.$val.'"  data-val="'.$date.'" data-fatdateformat="yy-mm-dd" type="text" name="'.$key.'" value="'.$date.'">';*/
+
+                $td->appendElement('div', array("class" => 'js--editCol edit-hover', "title" => Labels::getLabel('LBL_Click_To_Edit', $siteLangId)), $date, true);
+                $td->appendElement('plaintext', array(), $editListingFrm->getFieldHtml($key), true);
                 break;
-            case 'specialPriceCount':
-                $td->appendElement('a', array('href' => CommonHelper::generateUrl('Seller', 'specialPriceList', array($row['selprod_id'])), 'target' => '_blank'), $row[$key], true);
+            case 'splprice_price':
+                $input = '<input type="text" data-id="'.$splPriceID.'" value="'.$row[$key].'" data-selprodid="'.$row['selprod_id'].'" name="'.$key.'" class="js--splPriceCol hidden sp-input" data-val="'.$row[$key].'"/>';
+                $td->appendElement('div', array("class" => 'js--editCol edit-hover', "title" => Labels::getLabel('LBL_Click_To_Edit', $siteLangId)), CommonHelper::displayMoneyFormat($row[$key]), true);
+                $td->appendElement('plaintext', array(), $input, true);
                 break;
-            case 'selprod_available_from':
-                $td->appendElement('plaintext', array(), FatDate::format($row[$key], false), true);
+            case 'action':
+                $ul = $td->appendElement("ul", array("class"=>"actions actions--centered"), '', true);
+
+                $li = $ul->appendElement('li');
+                $li->appendElement(
+                    'a',
+                    array('href'=>'javascript:void(0)', 'class'=>'',
+                    'title'=>Labels::getLabel('LBL_Delete', $siteLangId),"onclick"=>"deleteSellerProductSpecialPrice(".$splPriceID.")"),
+                    '<i class="fa fa-trash"></i>',
+                    true
+                );
                 break;
             default:
                 $td->appendElement('plaintext', array(), $row[$key], true);
@@ -58,16 +85,15 @@ if (count($arrListing) == 0) {
     );
 }
 
-$frm = new Form('frmSelProdListing', array('id'=>'frmSelProdListing'));
+$frm = new Form('frmSplPriceListing', array('id'=>'frmSplPriceListing'));
 $frm->setFormTagAttribute('class', 'web_form last_td_nowrap');
-// $frm->setFormTagAttribute('onsubmit', 'formAction(this, reloadList); return(false);');
 
 echo $frm->getFormTag();
 echo $tbl->getHtml(); ?>
 </form>
 <?php
 $postedData['page'] = $page;
-echo FatUtility::createHiddenFormFromData($postedData, array ('name' => 'frmSearchSpecialPricePaging'));
+echo FatUtility::createHiddenFormFromData($postedData, array('name' => 'frmSearchSpecialPricePaging'));
 
 $pagingArr=array('pageCount'=>$pageCount,'page'=>$page,'recordCount'=>$recordCount,'callBackJsFunc' => 'goToSearchPage','adminLangId'=>$siteLangId);
 $this->includeTemplate('_partial/pagination.php', $pagingArr, false);

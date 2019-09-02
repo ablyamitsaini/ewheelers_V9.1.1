@@ -7,7 +7,7 @@ $(document).on('keyup', "#frmAddSpecialPrice input[name='product_name']", functi
     if('' != currObj.val()){
         currObj.autocomplete({'source': function(request, response) {
         		$.ajax({
-        			url: fcom.makeUrl('SellerProducts', 'autoCompleteProducts'),
+        			url: fcom.makeUrl('Seller', 'autoCompleteProducts'),
         			data: {keyword: request,fIsAjax:1,keyword:currObj.val()},
         			dataType: 'json',
         			type: 'post',
@@ -32,7 +32,7 @@ $(document).on('click', 'table.splPriceList-js tr td .js--editCol', function(){
     $(this).hide();
     var input = $(this).siblings('input[type="text"]');
     var value = input.val();
-    input.removeClass('hide');
+    input.removeClass('hidden');
     input.val('').focus().val(value);
 });
 
@@ -89,7 +89,7 @@ $(document).on('blur', ".js--splPriceCol:not(.date_js)", function(){
 		if( !agree ){
 			return false;
 		}
-		fcom.updateWithAjax(fcom.makeUrl('SellerProducts', 'deleteSellerProductSpecialPrice'), 'splprice_id=' + splPrice_id, function(t) {
+		fcom.updateWithAjax(fcom.makeUrl('Seller', 'deleteSellerProductSpecialPrice'), 'splprice_id=' + splPrice_id, function(t) {
             $('tr#row-'+splPrice_id).remove();
 		});
 	}
@@ -101,7 +101,7 @@ $(document).on('blur', ".js--splPriceCol:not(.date_js)", function(){
         var agree = confirm(langLbl.confirmDelete);
 		if( !agree ){ return false; }
         var data = fcom.frmData(document.getElementById('frmSplPriceListing'));
-        fcom.ajax(fcom.makeUrl('SellerProducts', 'deleteSpecialPriceRows'), data, function(t) {
+        fcom.ajax(fcom.makeUrl('Seller', 'deleteSpecialPriceRows'), data, function(t) {
             var ans = $.parseJSON(t);
 			if( ans.status == 1 ){
 				$.systemMessage(ans.msg, 'alert--success');
@@ -114,7 +114,7 @@ $(document).on('blur', ".js--splPriceCol:not(.date_js)", function(){
 	};
     updateSpecialPriceRow = function(frm, selProd_id){
 		var data = fcom.frmData(frm);
-		fcom.updateWithAjax(fcom.makeUrl('SellerProducts', 'updateSpecialPriceRow'), data, function(t) {
+		fcom.updateWithAjax(fcom.makeUrl('Seller', 'updateSpecialPriceRow'), data, function(t) {
             if(t.status == true){
                 if (1 > frm.addMultiple.value || 0 < selProd_id) {
                     if (1 > selProd_id) {
@@ -143,7 +143,7 @@ $(document).on('blur', ".js--splPriceCol:not(.date_js)", function(){
         var selProdId = currObj.data('selprodid');
         if ('' != value && value != oldValue) {
             var data = 'attribute='+attribute+"&splprice_id="+id+"&selProdId="+selProdId+"&value="+value;
-            fcom.ajax(fcom.makeUrl('SellerProducts', 'updateSpecialPriceColValue'), data, function(t) {
+            fcom.ajax(fcom.makeUrl('Seller', 'updateSpecialPriceColValue'), data, function(t) {
                 var ans = $.parseJSON(t);
                 if( ans.status != 1 ){
                     $.systemMessage(ans.msg, 'alert--danger');
@@ -162,6 +162,6 @@ $(document).on('blur', ".js--splPriceCol:not(.date_js)", function(){
     };
     showElement = function(currObj, value){
         currObj.siblings('div').text(value).fadeIn();
-        currObj.addClass('hide');
+        currObj.addClass('hidden');
     };
 })();
