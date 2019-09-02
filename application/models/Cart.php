@@ -135,7 +135,7 @@ class Cart extends FatModel
         }
 
         $this->updateUserCart();
-        
+
         if ($returnUserId) {
             return $this->cart_user_id;
         }
@@ -262,6 +262,7 @@ class Cart extends FatModel
                 $this->products[$key]['volume_discount'] = 0;
                 $this->products[$key]['volume_discount_total'] = 0;
 
+                $selProdCost = $shopId = '';
                 /* seller products[ */
                 if ($selprod_id > 0) {
                     $sellerProductRow = $this->getSellerProductData($selprod_id, $quantity, $siteLangId, $loggedUserId);
@@ -342,6 +343,8 @@ class Cart extends FatModel
                         $affiliateCommission = ROUND($affiliateCommissionCostValue * $affiliateCommissionPercentage/100, 2);
                     }
                     /* ] */
+                    $selProdCost = $sellerProductRow['selprod_cost'];
+                    $shopId = $sellerProductRow['shop_id'];
                 } else {
                     $is_cod_enabled = false;
                 }
@@ -370,7 +373,7 @@ class Cart extends FatModel
             foreach ($this->products as $cartkey => $cartval) {
                 $this->products[$cartkey]['shop_eligible_for_free_shipping'] = 0;
 
-                if (array_key_exists($cartval['selprod_user_id'], $sellerPrice)) {
+                if (!empty($cartval['selprod_user_id']) && array_key_exists($cartval['selprod_user_id'], $sellerPrice)) {
                     $this->products[$cartkey]['totalPrice'] = $sellerPrice[$cartval['selprod_user_id']]['totalPrice'];
                     if ($cartval['shop_free_ship_upto'] > 0 && $cartval['shop_free_ship_upto'] < $sellerPrice[$cartval['selprod_user_id']]['totalPrice']) {
                         $this->products[$cartkey]['shop_eligible_for_free_shipping'] = 1;
@@ -1631,11 +1634,11 @@ class Cart extends FatModel
         if (is_array($cartProducts) && count($cartProducts)) {
             foreach ($cartProducts as $selprod) {
                 $shipBy = 0;
-                if ($selprod['psbs_user_id']) {
+                if (!empty($selprod['psbs_user_id'])) {
                     $shipBy = $selprod['psbs_user_id'];
                 }
 
-                if (!array_key_exists($selprod['selprod_user_id'], $sellerPrice) || $shipBy == 0) {
+                if (!empty($selprod['selprod_user_id']) && (!array_key_exists($selprod['selprod_user_id'], $sellerPrice) || $shipBy == 0)) {
                     $sellerPrice[$selprod['selprod_user_id']]['totalPrice'] = 0;
                 }
 
