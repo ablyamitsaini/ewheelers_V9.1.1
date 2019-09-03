@@ -109,8 +109,8 @@ class Labels extends MyAppModel
 
             FatApp::getDB()->insertFromArray(static::DB_TBL, $assignValues, false, array(), $assignValues);
 
-            $labelsUpdatedAt = array('CONF_LANG_LABELS_UPDATED_AT' => time());
-            FatApp::getDB()->insertFromArray('tbl_configurations', $labelsUpdatedAt, false, array(), $labelsUpdatedAt);
+            $labelsUpdatedAt = array('conf_name'=>'CONF_LANG_LABELS_UPDATED_AT','conf_val'=>time());
+            FatApp::getDb()->insertFromArray('tbl_configurations', $labelsUpdatedAt, false, array(), $labelsUpdatedAt);
         }
 
         if ($cacheAvailable) {
@@ -126,14 +126,17 @@ class Labels extends MyAppModel
     public function addUpdateData($data = array())
     {
         $assignValues = array(
-        static::DB_TBL_PREFIX . 'key' => $data['label_key'],
-        static::DB_TBL_PREFIX . 'caption' => $data['label_caption'],
-        static::DB_TBL_PREFIX . 'lang_id' => $data['label_lang_id']
+            static::DB_TBL_PREFIX . 'key' => $data['label_key'],
+            static::DB_TBL_PREFIX . 'caption' => $data['label_caption'],
+            static::DB_TBL_PREFIX . 'lang_id' => $data['label_lang_id']
         );
 
         if (!FatApp::getDB()->insertFromArray(static::DB_TBL, $assignValues, false, array(), $assignValues)) {
             return false;
         }
+
+        $labelsUpdatedAt = array('conf_name'=>'CONF_LANG_LABELS_UPDATED_AT','conf_val'=>time());
+        FatApp::getDb()->insertFromArray('tbl_configurations', $labelsUpdatedAt, false, array(), $labelsUpdatedAt);
 
         $cacheAvailable = static::isAPCUcacheAvailable();
         if ($cacheAvailable) {
@@ -154,15 +157,37 @@ class Labels extends MyAppModel
         return $cacheKey = $_SERVER['SERVER_NAME'] . '_' . $key . '_' . $langId;
     }
 
-    public static function getAll($langId, $attr = '')
+    public static function updateDataToFile($langId, $langCode = '')
+    {
+        if (empty($langCode)) {
+            $langCode = Language::getAttributesById($langId, 'language_code', false);
+        }
+
+        $lastLabelsUpdatedAt = FatApp::getConfig('CONF_LANG_LABELS_UPDATED_AT', FatUtility::VAR_INT, time());
+
+        $path = CONF_UPLOADS_PATH.'language-labels/';
+        if (!file_exists($path)) {
+            mkdir($path, 0777);
+        }
+
+        $jsonFile = $path . $langCode.'.json';
+        if (!file_exists($jsonFile) || (filemtime($jsonFile) < $lastLabelsUpdatedAt)) {
+            $records = static::fetchAllAssoc($langId, array('label_key','label_caption'));
+            if (!file_put_contents($jsonFile, json_encode($records))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    public static function fetchAllAssoc($langId, $attr = '')
     {
         $srch = static::getSearchObject($langId, $attr);
         $srch->joinTable('tbl_languages', 'inner join', 'label_lang_id = language_id and language_active = ' .applicationConstants::ACTIVE);
-        $srch->addOrder('lbl.' . Labels::DB_TBL_PREFIX . 'lang_id', 'ASC');
-        $srch->addGroupBy('lbl.' . Labels::DB_TBL_PREFIX . 'key');
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
         $rs = $srch->getResultSet();
-        return FatApp::getDb()->fetchAll($rs);
+        return FatApp::getDb()->fetchAllAssoc($rs);
     }
 }

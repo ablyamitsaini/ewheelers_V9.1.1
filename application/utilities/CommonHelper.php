@@ -14,9 +14,6 @@ class CommonHelper extends FatUtility
     private static $_default_currency_symbol_right;
     private static $appToken;
 
-    const LANGUAGE_LABELS_FILE_LOCATION = 'language-labels/';
-    const LANGUAGE_LABELS_FILE_PATH = CONF_UPLOADS_PATH . self::LANGUAGE_LABELS_FILE_LOCATION;
-
     public static function initCommonVariables($isAdmin = false)
     {
         self::$_ip = self::getClientIp();
@@ -1881,14 +1878,5 @@ class CommonHelper extends FatUtility
             return $maxValue.'+';
         }
         return $totalCount;
-    }
-
-    public static function updateLangLabelsToFile($data)
-    {
-        if (!file_exists(self::LANGUAGE_LABELS_FILE_PATH)) {
-            mkdir(self::LANGUAGE_LABELS_FILE_PATH, 0777);
-        }
-        $file = self::LANGUAGE_LABELS_FILE_PATH . 'language-labels-'.self::$_lang_id.'.json';
-        return file_put_contents($file, json_encode($data));
     }
 }
