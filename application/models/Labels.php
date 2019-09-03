@@ -108,8 +108,9 @@ class Labels extends MyAppModel
             );
 
             FatApp::getDB()->insertFromArray(static::DB_TBL, $assignValues, false, array(), $assignValues);
-            $configurationObj = new Configurations();
-            $configurationObj->update(array('CONF_LANG_LABELS_UPDATED_AT' => time()));
+
+            $labelsUpdatedAt = array('CONF_LANG_LABELS_UPDATED_AT' => time());
+            FatApp::getDB()->insertFromArray('tbl_configurations', $labelsUpdatedAt, false, array(), $labelsUpdatedAt);
         }
 
         if ($cacheAvailable) {
