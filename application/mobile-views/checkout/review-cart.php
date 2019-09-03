@@ -2,7 +2,7 @@
 
 foreach ($products as $key => $product) {
     $products[$key]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($product['product_id'], "CLAYOUT3", $product['selprod_id'], 0, $siteLangId));
-    $products[$key]['selectedProductShippingMethod'] = $selectedProductShippingMethod['product'][$product['selprod_id']];
+    $products[$key]['selectedProductShippingMethod'] = !empty($selectedProductShippingMethod['product'][$product['selprod_id']]) ? $selectedProductShippingMethod['product'][$product['selprod_id']] : (object)array();
 }
 
 $data = array(
