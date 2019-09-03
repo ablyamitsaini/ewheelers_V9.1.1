@@ -689,21 +689,48 @@ class CheckoutController extends MyAppController
                 Message::addErrorMessage(Labels::getLabel('MSG_Something_went_wrong,_please_try_after_some_time.', $this->siteLangId));
                 $errMsg = Message::getHtml();
             }
+
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($errMsg));
+            }
             FatUtility::dieWithError($errMsg);
         }
         $cartHasDigitalProduct = $this->cartObj->hasDigitalProduct();
         $cartHasPhysicalProduct = $this->cartObj->hasPhysicalProduct();
         $cart_products = $this->cartObj->getProducts($this->siteLangId);
-        if (count($cart_products)==0) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Your_Cart_is_empty.', $this->siteLangId));
+        // CommonHelper::printArray($this->cartObj, true);
+        if (1 > count($cart_products)) {
+            $message = Labels::getLabel('MSG_Your_Cart_is_empty', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
+
         $this->set('cartHasDigitalProduct', $cartHasDigitalProduct);
         $this->set('cartHasPhysicalProduct', $cartHasPhysicalProduct);
         $this->set('products', $cart_products);
 
         $this->set('cartSummary', $this->cartObj->getCartFinancialSummary($this->siteLangId));
         $this->set('selectedProductShippingMethod', $this->cartObj->getProductShippingMethod());
+        if (true ===  MOBILE_APP_API_CALL) {
+            $loggedUserId = UserAuthentication::getLoggedUserId();
+            $billingAddressDetail = array();
+            $billingAddressId = $this->cartObj->getCartBillingAddress();
+            if (0 < $billingAddressId) {
+                $billingAddressDetail = UserAddress::getUserAddresses($loggedUserId, 0, 0, $billingAddressId);
+            }
+            $shippingddressDetail = array();
+            $shippingAddressId = $this->cartObj->getCartShippingAddress();
+            if ($shippingAddressId > 0) {
+                $shippingddressDetail = UserAddress::getUserAddresses($loggedUserId, 0, 0, $shippingAddressId);
+            }
+
+            $this->set('billingAddress', $billingAddressDetail);
+            $this->set('shippingAddress', $shippingddressDetail);
+            $this->_template->render();
+        }
         $this->_template->render(false, false);
     }
 
