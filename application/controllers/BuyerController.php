@@ -2418,6 +2418,7 @@ class BuyerController extends BuyerBaseController
         $cartObj = new Cart();
         $cartInfo = unserialize($orderDetail['order_cart_data']);
         unset($cartInfo['shopping_cart']);
+        $outOfStock = false;
         foreach ($cartInfo as $key => $quantity) {
             $keyDecoded = unserialize(base64_decode($key));
 
@@ -2426,8 +2427,24 @@ class BuyerController extends BuyerBaseController
             if (strpos($keyDecoded, Cart::CART_KEY_PREFIX_PRODUCT) !== false) {
                 $selprod_id = FatUtility::int(str_replace(Cart::CART_KEY_PREFIX_PRODUCT, '', $keyDecoded));
             }
-
+            $selProdStock = SellerProduct::getAttributesById($selprod_id, 'selprod_stock', false);
+            if (!$selProdStock && $selProdStock <= 0) {
+                $outOfStock = true;
+                continue;
+            }
             $cartObj->add($selprod_id, $quantity);
+        }
+
+        if ($outOfStock) {
+            $message = Labels::getLabel('MSG_Product_not_available_or_out_of_stock_so_removed_from_cart_listing', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                $error['status'] = 0;
+                $error['msg'] = strip_tags($message);
+                $error['cartItemsCount'] = $this->cartItemsCount;
+                FatUtility::dieJsonError($error);
+            }
+            Message::addErrorMessage($message);
+            return false;
         }
 
         $cartObj->removeUsedRewardPoints();
