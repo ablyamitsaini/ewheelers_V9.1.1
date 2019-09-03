@@ -34,7 +34,7 @@ class Navigation
         if ($isUserLogged) {
             $template->set('userName', ucfirst(CommonHelper::getUserFirstName(UserAuthentication::getLoggedUserAttribute('user_name'))));
         }
-        
+
         $headerTopNavigationCache =  FatCache::get('headerTopNavigation_'.$siteLangId, CONF_HOME_PAGE_CACHE_TIME, '.txt');
 
         if ($headerTopNavigationCache) {
@@ -44,7 +44,7 @@ class Navigation
             FatCache::set('headerTopNavigationCache_'.$siteLangId, serialize($headerTopNavigation), '.txt');
         }
         $template->set('top_header_navigation', $headerTopNavigation);
-        
+
         $template->set('isUserLogged', $isUserLogged);
         $template->set('headerNavigation', $headerNavigation);
     }

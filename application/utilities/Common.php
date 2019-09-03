@@ -22,7 +22,7 @@ class Common
         $productsArr = $cartObj->getProducts($siteLangId);
 
         $cartSummary = $cartObj->getCartFinancialSummary($siteLangId);
-        
+
         $template->set('siteLangId', $siteLangId);
         $template->set('products', $productsArr);
         $template->set('cartSummary', $cartSummary);

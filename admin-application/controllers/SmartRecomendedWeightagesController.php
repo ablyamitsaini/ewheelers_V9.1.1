@@ -74,7 +74,7 @@ class SmartRecomendedWeightagesController extends AdminBaseController
         }
 
         $obj = new SmartWeightageSettings($swsetting_key);
-        
+
         $obj->assignValues(
             array(
             SmartWeightageSettings::tblFld('weightage') => $weightage,

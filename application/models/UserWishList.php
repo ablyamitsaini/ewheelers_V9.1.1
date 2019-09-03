@@ -83,7 +83,7 @@ class UserWishList extends MyAppModel
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
         $srch->addOrder('uwlist_title');
-        //die($srch->getquery());
+
         $rs = $srch->getResultSet();
         $wishLists = array();
         if ($fetchProducts) {

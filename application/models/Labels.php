@@ -17,20 +17,23 @@ class Labels extends MyAppModel
         return self::$_instance;
     }
 
-    public static function getSearchObject($langId = 0)
+    public static function getSearchObject($langId = 0, $attr = '')
     {
         $langId =  FatUtility::int($langId);
 
         $srch = new SearchBase(static::DB_TBL, 'lbl');
         $srch->addOrder('lbl.' . static::DB_TBL_PREFIX . 'id', 'DESC');
-        $srch->addMultipleFields(
-            array(
+
+        $columns = array(
             'lbl.' . static::DB_TBL_PREFIX . 'id',
             'lbl.' . static::DB_TBL_PREFIX . 'lang_id',
             'lbl.' . static::DB_TBL_PREFIX . 'key',
             'lbl.' . static::DB_TBL_PREFIX . 'caption',
-            )
         );
+
+        $attr = (!empty($attr) && is_array($attr)) ? $attr : $columns;
+
+        $srch->addMultipleFields($attr);
 
         if ($langId > 0) {
             $srch->addCondition('lbl.' . static::DB_TBL_PREFIX . 'lang_id', '=', $langId);
@@ -65,11 +68,11 @@ class Labels extends MyAppModel
 
             if (isset($lang_array[$lblKey][$langId])) {
                 if ($lang_array[$lblKey][$langId]!='') {
-                    return $lang_array[$lblKey][$langId];
+                    return strip_tags($lang_array[$lblKey][$langId]);
                 } else {
                     $arr = explode(' ', ucwords(str_replace('_', ' ', strtolower($lblKey))));
                     array_shift($arr);
-                    return $str = implode(' ', $arr);
+                    return $str = strip_tags(implode(' ', $arr));
                 }
             }
         }
@@ -99,12 +102,14 @@ class Labels extends MyAppModel
 
             $str = implode(' ', $arr);
             $assignValues = array(
-             static::DB_TBL_PREFIX . 'key' => $lblKey,
-             static::DB_TBL_PREFIX . 'caption' => $str,
-             static::DB_TBL_PREFIX . 'lang_id' => $langId
-                            );
+                static::DB_TBL_PREFIX . 'key' => $lblKey,
+                static::DB_TBL_PREFIX . 'caption' => $str,
+                static::DB_TBL_PREFIX . 'lang_id' => $langId
+            );
 
             FatApp::getDB()->insertFromArray(static::DB_TBL, $assignValues, false, array(), $assignValues);
+            $configurationObj = new Configurations();
+            $configurationObj->update(array('CONF_LANG_LABELS_UPDATED_AT' => time()));
         }
 
         if ($cacheAvailable) {
@@ -114,7 +119,7 @@ class Labels extends MyAppModel
             $lang_array[$lblKey][$langId] = $str;
         }
 
-        return $str;
+        return strip_tags($str);
     }
 
     public function addUpdateData($data = array())
@@ -146,5 +151,17 @@ class Labels extends MyAppModel
     public static function getAPCUcacheKey($key, $langId)
     {
         return $cacheKey = $_SERVER['SERVER_NAME'] . '_' . $key . '_' . $langId;
+    }
+
+    public static function getAll($langId, $attr = '')
+    {
+        $srch = static::getSearchObject($langId, $attr);
+        $srch->joinTable('tbl_languages', 'inner join', 'label_lang_id = language_id and language_active = ' .applicationConstants::ACTIVE);
+        $srch->addOrder('lbl.' . Labels::DB_TBL_PREFIX . 'lang_id', 'ASC');
+        $srch->addGroupBy('lbl.' . Labels::DB_TBL_PREFIX . 'key');
+        $srch->doNotCalculateRecords();
+        $srch->doNotLimitRecords();
+        $rs = $srch->getResultSet();
+        return FatApp::getDb()->fetchAll($rs);
     }
 }

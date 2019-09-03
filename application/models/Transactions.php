@@ -215,11 +215,11 @@ class Transactions extends MyAppModel
 
         $srch = static::getSearchObject();
         $srch->joinTable('(' . $qryUserPointsBalance . ')', 'JOIN', 'tqupb.utxn_id <= utxn.utxn_id', 'tqupb');
-        $srch->addMultipleFields(array('utxn.*',"SUM(tqupb.bal) balance"));
+
+        $srch->addMultipleFields(array('utxn.*', "SUM(tqupb.bal) balance", "IF(utxn.utxn_credit > 0, ".static::CREDIT_TYPE.", ".static::DEBIT_TYPE.") as txnPaymentType"));
         $srch->addCondition('utxn.utxn_user_id', '=', $userId);
         $srch->addGroupBy('utxn.utxn_id');
         $srch->addOrder('utxn_id', 'DESC');
-
         return $srch;
     }
 }

@@ -45,6 +45,21 @@ class ProductCategorySearch extends SearchBase
         $this->addCondition('prodcat_parent', '=', $parentId);
     }
 
+    public function addProductsCountField()
+    {
+        $prodSrchObj = new ProductSearch($this->langId);
+        $prodSrchObj->setDefinedCriteria();
+        $prodSrchObj->joinProductToCategory();
+        $prodSrchObj->doNotCalculateRecords();
+        $prodSrchObj->doNotLimitRecords();
+        $prodSrchObj->addGroupBy('c.prodcat_id');
+        $prodSrchObj->addMultipleFields(array('count(selprod_id) as productCounts', 'c.prodcat_id as qryProducts_prodcat_id'));
+        $prodSrchObj->addCondition('selprod_deleted', '=', applicationConstants::NO);
+        $this->joinTable('('.$prodSrchObj->getQuery().')', 'LEFT OUTER JOIN', 'qryProducts.qryProducts_prodcat_id = c.prodcat_id', 'qryProducts');
+        $this->addFld(array('IFNULL(productCounts, 0) as productCounts'));
+        return $this;
+    }
+
     /* public function getSearchObject($includeChildCount = false) {
     $srch = new SearchBase(static::DB_TBL, 'm');
     $srch->addOrder('m.prodcat_active', 'DESC');

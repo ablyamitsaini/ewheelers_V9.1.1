@@ -272,7 +272,7 @@ class SellerProduct extends MyAppModel
         return true;
     }
 
-    public function getUpsellProducts($sellProdId, $lang_id)
+    public function getUpsellProducts($sellProdId, $lang_id, $userId = 0)
     {
         $sellProdId = FatUtility::convertToType($sellProdId, FatUtility::VAR_INT);
         $lang_id = FatUtility::convertToType($lang_id, FatUtility::VAR_INT);
@@ -317,6 +317,17 @@ class SellerProduct extends MyAppModel
         $srch->addMultipleFields(array(
             'selprod_id', 'product_id', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title','selprod_price','selprod_stock', 'IFNULL(product_identifier ,product_name) as product_name','product_identifier','selprod_product_id','CASE WHEN m.splprice_selprod_id IS NULL THEN 0 ELSE 1 END AS special_price_found',
         'IFNULL(m.splprice_price, selprod_price) AS theprice'));
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            if (FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO) {
+                $this->joinFavouriteProducts($srch, $userId);
+                $srch->addFld('ufp_id');
+            } else {
+                $this->joinUserWishListProducts($srch, $userId);
+                $srch->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
+            }
+        }
+
         $srch->addCondition(Product::DB_TBL_PREFIX . 'active', '=', applicationConstants::YES);
         $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
         $srch->addCondition('product_deleted', '=', applicationConstants::NO);
@@ -811,7 +822,7 @@ class SellerProduct extends MyAppModel
     {
         return $this->rewriteUrl($keyword, 'moresellers');
     }
-    
+
     public static function getActiveCount($userId, $selprodId = 0)
     {
         $selprodId = FatUtility::int($selprodId);
@@ -831,5 +842,20 @@ class SellerProduct extends MyAppModel
         $rs = $srch->getResultSet();
         $records = $db->fetchAll($rs);
         return $srch->recordCount();
+    }
+    public function joinUserWishListProducts($srch, $user_id)
+    {
+        $wislistPSrchObj = new UserWishListProductSearch();
+        $wislistPSrchObj->joinWishLists();
+        $wislistPSrchObj->doNotCalculateRecords();
+        $wislistPSrchObj->doNotLimitRecords();
+        $wislistPSrchObj->addCondition('uwlist_user_id', '=', $user_id);
+        $wislistPSrchObj->addMultipleFields(array('uwlp_selprod_id', 'uwlp_uwlist_id'));
+        $wishListSubQuery = $wislistPSrchObj->getQuery();
+        $srch->joinTable('(' . $wishListSubQuery . ')', 'LEFT OUTER JOIN', 'uwlp.uwlp_selprod_id = selprod_id', 'uwlp');
+    }
+    public function joinFavouriteProducts($srch, $user_id)
+    {
+        $srch->joinTable(Product::DB_TBL_PRODUCT_FAVORITE, 'LEFT OUTER JOIN', 'ufp.ufp_selprod_id = selprod_id and ufp.ufp_user_id = '.$user_id, 'ufp');
     }
 }

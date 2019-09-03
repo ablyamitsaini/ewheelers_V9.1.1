@@ -1,9 +1,6 @@
 <?php
 class MobileAppApiController extends MyAppController
 {
-    public $app_user = array();
-    public $appToken = '';
-
     public function __construct($action)
     {
         parent::__construct($action);
@@ -264,7 +261,7 @@ class MobileAppApiController extends MyAppController
                             $rs = $tempObj->getResultSet();
 
                             if (!$productIds = $this->db->fetchAll($rs, 'ctsp_selprod_id')) {
-                                continue;
+                                continue 2;
                             }
 
                             /* fetch Products data[ */
@@ -314,7 +311,7 @@ class MobileAppApiController extends MyAppController
 
                         case Collections::COLLECTION_TYPE_CATEGORY:
                             if ($collection['collection_layout_type'] == Collections::TYPE_CATEGORY_LAYOUT1) {
-                                continue;
+                                continue 2;
                             }
                             $tempObj = clone $collectionObj;
                             $tempObj->addCondition('collection_id', '=', $collection_id);
@@ -325,7 +322,7 @@ class MobileAppApiController extends MyAppController
                             $rs = $tempObj->getResultSet();
 
                             if (!$categoryIds = $this->db->fetchAll($rs, 'ctpc_prodcat_id')) {
-                                continue;
+                                continue 2;
                             }
 
                             /* fetch Categories data[ */
@@ -364,7 +361,7 @@ class MobileAppApiController extends MyAppController
                             $rs = $tempObj->getResultSet();
                             /* echo $tempObj->getQuery(); die; */
                             if (!$shopIds = $this->db->fetchAll($rs, 'ctps_shop_id')) {
-                                continue;
+                                continue 2;
                             }
                             $shopObj = clone $shopSearchObj;
                             $shopObj->joinSellerSubscription();
@@ -392,7 +389,6 @@ class MobileAppApiController extends MyAppController
                                 $productShopSrchTempObj->setPageSize($pageSize);
 
                                 $Prs = $productShopSrchTempObj->getResultSet();
-
 
                                 if (!FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) {
                                     $rating = 0;
@@ -968,7 +964,7 @@ class MobileAppApiController extends MyAppController
             $srch->addFld('if(selprod_title LIKE '.FatApp::getDb()->quoteVariable('%'.$keyword.'%').',  IFNULL(splprice_price, selprod_price),   theprice ) as theprice');
             $srch->addFld(
                 'if(selprod_title LIKE '.FatApp::getDb()->quoteVariable('%'.$keyword.'%').',  CASE WHEN splprice_selprod_id IS NULL THEN 0 ELSE 1
-END,   special_price_found ) as special_price_found'
+                END,   special_price_found ) as special_price_found'
             );
         } else {
             $srch->addFld('theprice');
@@ -3402,7 +3398,7 @@ END,   special_price_found ) as special_price_found'
                         'mshipapi_id'    =>    $shipping_type,
                         'mshipcompany_id'    =>    $shipOption['scompanylang_scompany_id'],
                         'mshipcompany_name'    =>    $shipOption['scompany_name'],
-                        'shipped_by_seller'    =>    CommonHelper::isShippedBySeller($cartval['selprod_user_id'], $product['product_seller_id'], $product['shippedBySellerId']),
+                        'shipped_by_seller'    =>    Product::isShippedBySeller($cartval['selprod_user_id'], $product['product_seller_id'], $product['shippedBySellerId']),
                         'mshipapi_cost' =>  ($free_shipping_options == 0)? ($shipOption['pship_charges'] + ($shipOption['pship_additional_charges'] * ($cartval['quantity'] -1))) : 0 ,
                         );
                     }
@@ -3416,7 +3412,7 @@ END,   special_price_found ) as special_price_found'
                  'mshipapi_cost' =>  $carrier_price ,
                  'mshipapi_key' =>  $shipping_service ,
                  'mshipapi_label' =>  str_replace("_", " ", $shipping_service) ,
-                 'shipped_by_seller'    =>    CommonHelper::isShippedBySeller($cartval['selprod_user_id'], $product['product_seller_id'], $product['shippedBySellerId']),
+                 'shipped_by_seller'    =>    Product::isShippedBySeller($cartval['selprod_user_id'], $product['product_seller_id'], $product['shippedBySellerId']),
                 );
             } else {
                 FatUtility::dieJsonError(sprintf(Labels::getLabel('M_Shipping_Info_Required_for_%s', $this->siteLangId), htmlentities($cartval['product_name'])));
@@ -7145,22 +7141,5 @@ END,   special_price_found ) as special_price_found'
     private function getAppLoggedUserId()
     {
         return isset($this->app_user["user_id"])?$this->app_user["user_id"]:0;
-    }
-
-    private function getAppTempUserId()
-    {
-        if (array_key_exists('temp_user_id', $this->app_user) && !empty($this->app_user["temp_user_id"])) {
-            return $this->app_user["temp_user_id"];
-        }
-
-        if ($this->appToken && UserAuthentication::isUserLogged('', $this->appToken)) {
-            $userId = UserAuthentication::getLoggedUserId();
-            if ($userId > 0) {
-                return $userId;
-            }
-        }
-
-        $generatedTempId = substr(md5(rand(1, 99999) . microtime()), 0, UserAuthentication::TOKEN_LENGTH);
-        return $this->app_user['temp_user_id'] = $generatedTempId;
     }
 }

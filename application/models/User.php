@@ -408,7 +408,7 @@ class User extends MyAppModel
         return $srch;
     }
 
-    public function getUserInfo($attr = null, $isActive = true, $isVerified = true)
+    public function getUserInfo($attr = null, $isActive = true, $isVerified = true, $joinUserCredentials = false)
     {
         if (($this->mainTableRecordId < 1)) {
             $this->error = Labels::getLabel('ERR_INVALID_REQUEST_USER_NOT_INITIALIZED', $this->commonLangId);
@@ -422,9 +422,18 @@ class User extends MyAppModel
         if ($isVerified) {
             $srch->addCondition('uc.'.static::DB_TBL_CRED_PREFIX.'verified', '=', 1);
         }
+
+        if ($joinUserCredentials) {
+            $srch->joinTable(static::DB_TBL_CRED, 'LEFT OUTER JOIN', 'uc.'.static::DB_TBL_CRED_PREFIX.'user_id = u.user_id', 'uc');
+        }
+
         $rs = $srch->getResultSet();
         $record = FatApp::getDb()->fetch($rs);
+
         if (!empty($record)) {
+            // if (!empty($record['credential_password'])) {
+            //     unset($record['credential_password']);
+            // }
             return $record;
         }
         return false;

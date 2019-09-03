@@ -1217,6 +1217,10 @@ class Product extends MyAppModel
 
         $includeRating = false;
 
+        if (true ===  MOBILE_APP_API_CALL) {
+            $includeRating = true;
+        }
+
         if (array_key_exists('top_products', $criteria)) {
             $includeRating = true;
             $srch->addHaving('prod_rating', '>=', 3);
@@ -1256,6 +1260,9 @@ class Product extends MyAppModel
         }
 
         if (array_key_exists('prodcat', $criteria)) {
+            if (true ===  MOBILE_APP_API_CALL) {
+                $criteria['prodcat'] = json_decode($criteria['prodcat'], true);
+            }
             $srch->addCategoryCondition($criteria['prodcat']);
         }
 
@@ -1290,23 +1297,27 @@ END,   special_price_found ) as special_price_found'
 
         if (array_key_exists('brand', $criteria)) {
             if (!empty($criteria['brand'])) {
+                if (true ===  MOBILE_APP_API_CALL) {
+                    $criteria['brand'] = json_decode($criteria['brand'], true);
+                }
                 $srch->addBrandCondition($criteria['brand']);
             }
         }
 
         if (array_key_exists('optionvalue', $criteria)) {
             if (!empty($criteria['optionvalue'])) {
+                if (true ===  MOBILE_APP_API_CALL) {
+                    $criteria['optionvalue'] = json_decode($criteria['optionvalue'], true);
+                }
                 $srch->addOptionCondition($criteria['optionvalue']);
             }
         }
 
         if (array_key_exists('condition', $criteria)) {
-            $condition = $criteria['condition'];
-        } else {
-            $condition = FatApp::getPostedData('condition', null, '');
-        }
-
-        if (!empty($condition)) {
+            if (true ===  MOBILE_APP_API_CALL) {
+                $criteria['condition'] = json_decode($criteria['condition'], true);
+            }
+            $condition = is_array($criteria['condition']) ? array_filter($criteria['condition']) : $criteria['condition'];
             $srch->addConditionCondition($condition);
         }
 
@@ -1422,5 +1433,25 @@ END,   special_price_found ) as special_price_found'
         $rs = $srch->getResultSet();
         $records = FatApp::getDb()->fetchAll($rs);
         return $srch->recordCount();
+    }
+
+    public static function isShippedBySeller($selprodUserId = 0, $productSellerId = 0, $shippedBySellerId = false)
+    {
+        $productSellerId = FatUtility::int($productSellerId);
+        $selprodUserId = FatUtility::int($selprodUserId);
+        /* if(FatApp::getConfig('CONF_SHIPPED_BY_ADMIN',FatUtility::VAR_INT,0)){
+            return false;
+        } */
+
+        if ($productSellerId > 0 && $selprodUserId == $productSellerId) {
+            /* Catalog-Product Added By Seller so also shipped by seller */
+            return $selprodUserId;
+        } else {
+            $shippedBySellerId = FatUtility::int($shippedBySellerId);
+            if ($shippedBySellerId > 0 && $selprodUserId == $shippedBySellerId) {
+                return $shippedBySellerId;
+            }
+        }
+        return false;
     }
 }

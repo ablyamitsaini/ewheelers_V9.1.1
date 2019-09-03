@@ -20,14 +20,14 @@
                 echo $redeemRewardFrm->getExternalJs(); ?>
                 </form>
                 <p class="note">
-                <strong><?php 
+                <strong><?php
                 $canBeUsed = min(min($rewardPoints, CommonHelper::convertCurrencyToRewardPoint($cartSummary['cartTotal']-$cartSummary["cartDiscounts"]["coupon_discount_total"])), FatApp::getConfig('CONF_MAX_REWARD_POINT', FatUtility::VAR_INT, 0));
                 echo $canBeUsed; ?></strong>
                 <?php echo Labels::getLabel('LBL_of', $siteLangId); ?>
                 <strong>
                     <?php echo $rewardPoints; ?>
                 </strong>
-                <?php echo Labels::getLabel('LBL_reward_points_available_for_this_order', $siteLangId); ?>                        
+                <?php echo Labels::getLabel('LBL_reward_points_available_for_this_order', $siteLangId); ?>
                 (<?php echo CommonHelper::displayMoneyFormat(CommonHelper::convertRewardPointToCurrency($canBeUsed)); ?>)
                 </p>
             </div>

@@ -49,7 +49,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                 </div>
                                 <?php } ?>
 
-                           
+
                         </div>
 						</div>
                         <div class="col-lg-5 col-details-right">
