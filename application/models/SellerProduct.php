@@ -472,15 +472,24 @@ class SellerProduct extends MyAppModel
         return $db->fetch($rs);
     }
 
-    public function deleteSellerProductSpecialPrice($splprice_id, $splprice_selprod_id)
+    public function deleteSellerProductSpecialPrice($splprice_id, $splprice_selprod_id, $userId = 0)
     {
         $splprice_id = FatUtility::int($splprice_id);
         $splprice_selprod_id = FatUtility::int($splprice_selprod_id);
         if (!$splprice_id || !$splprice_selprod_id) {
             trigger_error(Labels::getLabel('ERR_Invalid_Arguments', CommonHelper::getLangId()), E_USER_ERROR);
         }
+        if (0 < $userId) {
+            $selProdUserId = SellerProduct::getAttributesById($splprice_selprod_id, 'selprod_user_id', false);
+            if ($selProdUserId != $userId) {
+                $this->error = Labels::getLabel('ERR_Invalid_Request', CommonHelper::getLangId());
+                return false;
+            }
+        }
         $db = FatApp::getDb();
-        if (!$db->deleteRecords(static::DB_TBL_SELLER_PROD_SPCL_PRICE, array( 'smt' => 'splprice_id = ? AND splprice_selprod_id = ?', 'vals' => array($splprice_id, $splprice_selprod_id) ))) {
+        $smt = 'splprice_id = ? AND splprice_selprod_id = ? ';
+        $smtValues = array($splprice_id, $splprice_selprod_id);
+        if (!$db->deleteRecords(static::DB_TBL_SELLER_PROD_SPCL_PRICE, array( 'smt' => $smt, 'vals' => $smtValues))) {
             $this->error = $db->getError();
             return false;
         }

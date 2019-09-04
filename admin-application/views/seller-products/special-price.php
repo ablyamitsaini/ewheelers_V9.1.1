@@ -50,6 +50,7 @@ if (0 < $selProd_id) {
                             $innerDiv=$li->appendElement('div', array('class'=>'dropwrap'));
                             $li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green','title'=>Labels::getLabel('LBL_Edit', $adminLangId)), '<i class="ion-android-more-horizontal icon"></i>', true);
                             $innerUl=$innerDiv->appendElement('ul', array('class'=>'linksvertical'));
+                            
                             $innerLi=$innerUl->appendElement('li');
                             $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Delete_Special_Price', $adminLangId),"onclick"=>"deleteSpecialPriceRows()"), Labels::getLabel('LBL_Delete_Special_Price', $adminLangId), true);
                             echo $ul->getHtml();

@@ -151,10 +151,10 @@ $(document).on('change','.selprodoption_optionvalue_id',function(){
 	};
 	addSpecialPrice = function(){
 		if (typeof $(".selectItem--js:checked").val() === 'undefined') {
-	        $.systemMessage(langLbl.atleastOneRecord, 'alert--danger');
+	        $.mbsmessage(langLbl.atleastOneRecord, 'alert--danger');
 	        return false;
 	    }
-		$("#frmSellerProductsListing").attr('action', fcom.makeUrl('Seller','addSpecialPrice')).removeAttr('onsubmit').submit();
+		$("#frmSellerProductsListing").attr({'action': fcom.makeUrl('Seller','specialPrice'), 'target':"_blank"}).removeAttr('onsubmit').submit();
+		loadSellerProducts(document.frmSearch);
 	};
-
 })();

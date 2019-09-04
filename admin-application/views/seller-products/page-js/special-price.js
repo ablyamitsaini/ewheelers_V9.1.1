@@ -64,6 +64,7 @@ $(document).on('blur', ".js--splPriceCol:not(.date_js)", function(){
 
 		fcom.ajax(fcom.makeUrl('SellerProducts','searchSpecialPriceProducts'),data,function(res){
 			$("#listing").html(res);
+            $('.date_js').datepicker('option', {minDate: new Date()});
 		});
 	};
     clearSearch = function(selProd_id){

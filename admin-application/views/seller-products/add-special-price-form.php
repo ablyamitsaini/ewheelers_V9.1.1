@@ -31,7 +31,7 @@
 
 if (!empty($data) && 0 < count($data)) {
     $prodName->setFieldTagAttribute('readonly', 'readonly');
-    $frm->fill($data, true);
+    $frm->fill($data);
 }
 ?>
 <div class="cards-content pt-4 pl-4 pr-4 pb-0">

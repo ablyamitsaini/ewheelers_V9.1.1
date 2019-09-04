@@ -58,7 +58,7 @@
                 <div class="dropwrap">
                     <ul class="linksvertical">
                         <li>
-                            <a href="javascript:void(0)" title="<?php echo Labels::getLabel('LBL_Remove', $adminLangId); ?>" onclick="deleteSellerProductSpecialPrice(<?php echo $splPriceId; ?>)"><?php echo Labels::getLabel('LBL_Remove', $adminLangId); ?></a>
+                            <a href="javascript:void(0)" title="<?php echo Labels::getLabel('LBL_Delete', $adminLangId); ?>" onclick="deleteSellerProductSpecialPrice(<?php echo $splPriceId; ?>)"><?php echo Labels::getLabel('LBL_Delete', $adminLangId); ?></a>
                         </li>
                     </ul>
                 </div>

@@ -1,6 +1,4 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
-$editListingFrm = new Form('editListingFrm', array('id'=>'editListingFrm'));
-
 $arr_flds = array(
     'select_all'=>Labels::getLabel('LBL_Select_all', $siteLangId),
     'product_name' => Labels::getLabel('LBL_Name', $siteLangId),
@@ -12,51 +10,51 @@ $arr_flds = array(
 
 $tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table-responsive table--hovered splPriceList-js'));
 $th = $tbl->appendElement('thead')->appendElement('tr', array('class' => 'hide--mobile'));
-foreach ($arr_flds as $key => $val) {
-    if ('select_all' == $key) {
-        $th->appendElement('th')->appendElement('plaintext', array(), '<label class="checkbox"><input title="'.$val.'" type="checkbox" onclick="selectAll($(this))" class="selectAll-js"><i class="input-helper"></i></label>', true);
+foreach ($arr_flds as $column => $lblTitle) {
+    if ('select_all' == $column) {
+        $th->appendElement('th')->appendElement('plaintext', array(), '<label class="checkbox"><input title="'.$lblTitle.'" type="checkbox" onclick="selectAll($(this))" class="selectAll-js"><i class="input-helper"></i></label>', true);
     } else {
-        $th->appendElement('th', array(), $val);
+        $th->appendElement('th', array(), $lblTitle);
     }
 }
 
 foreach ($arrListing as $sn => $row) {
     $tr = $tbl->appendElement('tr', array());
-    $splPriceID = $row['splprice_id'];
-    foreach ($arr_flds as $key => $val) {
-        $tr->setAttribute('id', 'row-'.$splPriceID);
+    $splPriceId = $row['splprice_id'];
+    $selProdId = $row['selprod_id'];
+    $editListingFrm = new Form('editListingFrm-'.$splPriceId, array('id'=>'editListingFrm-'.$splPriceId));
+    foreach ($arr_flds as $column => $lblTitle) {
+        $tr->setAttribute('id', 'row-'.$splPriceId);
         $td = $tr->appendElement('td');
-        switch ($key) {
+        switch ($column) {
             case 'select_all':
-                $td->appendElement('plaintext', array(), '<label class="checkbox"><input class="selectItem--js" type="checkbox" name="selprod_ids['.$splPriceID.']" value='.$row['selprod_id'].'><i class="input-helper"></i></label>', true);
+                $td->appendElement('plaintext', array(), '<label class="checkbox"><input class="selectItem--js" type="checkbox" name="selprod_ids['.$splPriceId.']" value='.$selProdId.'><i class="input-helper"></i></label>', true);
                 break;
             case 'product_name':
                 // last Param of getProductDisplayTitle function used to get title in html form.
-                $productName = SellerProduct::getProductDisplayTitle($row['selprod_id'], $siteLangId, true);
+                $productName = SellerProduct::getProductDisplayTitle($selProdId, $siteLangId, true);
                 $td->appendElement('plaintext', array(), $productName, true);
                 break;
             case 'splprice_start_date':
             case 'splprice_end_date':
-                $date = date('Y-m-d', strtotime($row[$key]));
+                $date = date('Y-m-d', strtotime($row[$column]));
                 $attr = array(
                     'readonly' => 'readonly',
-                    'placeholder' => $val,
-                    'data-selprodid' => $row['selprod_id'],
-                    'data-id' => $splPriceID,
+                    'placeholder' => $lblTitle,
+                    'data-selprodid' => $selProdId,
+                    'data-id' => $splPriceId,
                     'data-oldval' => $date,
-                    'id' => $key.'-'.$splPriceID,
+                    'id' => $column.'-'.$splPriceId,
                     'class' => 'date_js js--splPriceCol hidden sp-input',
                 );
-                $editListingFrm->addDateField($val, $key, $date, $attr);
-
-                /*$input = '<input readonly="readonly" data-id="'.$splPriceID.'"  data-selprodid="'.$row['selprod_id'].'"  placeholder="'.$val.'" id="'.$key.'-'.$splPriceID.'" class="date_js fld-date js--splPriceCol hidden sp-input" title="'.$val.'"  data-val="'.$date.'" data-fatdateformat="yy-mm-dd" type="text" name="'.$key.'" value="'.$date.'">';*/
+                $editListingFrm->addDateField($lblTitle, $column, $date, $attr);
 
                 $td->appendElement('div', array("class" => 'js--editCol edit-hover', "title" => Labels::getLabel('LBL_Click_To_Edit', $siteLangId)), $date, true);
-                $td->appendElement('plaintext', array(), $editListingFrm->getFieldHtml($key), true);
+                $td->appendElement('plaintext', array(), $editListingFrm->getFieldHtml($column), true);
                 break;
             case 'splprice_price':
-                $input = '<input type="text" data-id="'.$splPriceID.'" value="'.$row[$key].'" data-selprodid="'.$row['selprod_id'].'" name="'.$key.'" class="js--splPriceCol hidden sp-input" data-val="'.$row[$key].'"/>';
-                $td->appendElement('div', array("class" => 'js--editCol edit-hover', "title" => Labels::getLabel('LBL_Click_To_Edit', $siteLangId)), CommonHelper::displayMoneyFormat($row[$key]), true);
+                $input = '<input type="text" data-id="'.$splPriceId.'" value="'.$row[$column].'" data-selprodid="'.$selProdId.'" name="'.$column.'" data-oldval="'.$row[$column].'" class="js--splPriceCol hidden sp-input"/>';
+                $td->appendElement('div', array("class" => 'js--editCol edit-hover', "title" => Labels::getLabel('LBL_Click_To_Edit', $siteLangId)), CommonHelper::displayMoneyFormat($row[$column]), true);
                 $td->appendElement('plaintext', array(), $input, true);
                 break;
             case 'action':
@@ -66,13 +64,13 @@ foreach ($arrListing as $sn => $row) {
                 $li->appendElement(
                     'a',
                     array('href'=>'javascript:void(0)', 'class'=>'',
-                    'title'=>Labels::getLabel('LBL_Delete', $siteLangId),"onclick"=>"deleteSellerProductSpecialPrice(".$splPriceID.")"),
+                    'title'=>Labels::getLabel('LBL_Delete', $siteLangId),"onclick"=>"deleteSellerProductSpecialPrice(".$splPriceId.")"),
                     '<i class="fa fa-trash"></i>',
                     true
                 );
                 break;
             default:
-                $td->appendElement('plaintext', array(), $row[$key], true);
+                $td->appendElement('plaintext', array(), $row[$column], true);
                 break;
         }
     }

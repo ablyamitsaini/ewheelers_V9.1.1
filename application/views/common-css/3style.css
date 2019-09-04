@@ -16398,7 +16398,7 @@ div.faqanswer p {
 	line-height: 2.5rem;
 	display: block;
 	width: 100%;
-	max-width: 70px;
+	max-width: 110px;
 	border: solid 1px transparent;
 }
 
@@ -16407,5 +16407,5 @@ div.faqanswer p {
 }
 
 .vd-input, .sp-input {
-	max-width: 70px;
+	max-width: 110px;
 }
