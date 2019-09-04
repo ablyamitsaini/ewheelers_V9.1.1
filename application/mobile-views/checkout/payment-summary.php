@@ -68,12 +68,9 @@ if (0 < $shippingTotal) {
     );
 }
 
-$netChargeAmt = $cartTotal + ($cartTaxTotal - ((0 < $cartVolumeDiscount) ? $cartVolumeDiscount : 0)) + $shippingTotal;
-$netChargeAmt = $netChargeAmt - ((0 < $coupon_discount_total) ? $coupon_discount_total : 0);
-
 $data['netPayable'] = array(
     'key' => Labels::getLabel('LBL_Net_Payable', $siteLangId),
-    'value' => CommonHelper::displayMoneyFormat($netChargeAmt)
+    'value' => CommonHelper::displayMoneyFormat($cartSummary['orderNetAmount'])
 );
 
 if ($userWalletBalance > 0 && $cartSummary['orderNetAmount'] > 0 && $cartSummary["cartWalletSelected"]) {
