@@ -859,4 +859,30 @@ class SellerProduct extends MyAppModel
         $records = $db->fetchAll($rs);
         return $srch->recordCount();
     }
+
+    public static function specialPriceForm($langId)
+    {
+        $frm = new Form('frmSellerProductSpecialPrice');
+        $fld = $frm->addFloatField(Labels::getLabel('LBL_Special_Price', $langId).CommonHelper::concatCurrencySymbolWithAmtLbl(), 'splprice_price');
+        $fld->requirements()->setPositive();
+        $fld = $frm->addDateField(Labels::getLabel('LBL_Price_Start_Date', $langId), 'splprice_start_date', '', array('readonly' => 'readonly'));
+        $fld->requirements()->setRequired();
+
+        $fld = $frm->addDateField(Labels::getLabel('LBL_Price_End_Date', $langId), 'splprice_end_date', '', array('readonly' => 'readonly'));
+        $fld->requirements()->setRequired();
+        $fld->requirements()->setCompareWith('splprice_start_date', 'ge', Labels::getLabel('LBL_Price_Start_Date', $langId));
+
+        $frm->addHiddenField('', 'splprice_selprod_id');
+        $frm->addHiddenField('', 'splprice_id');
+
+        /* $frm->addHtml( '', 'discountHtmlHeading', Labels::getLabel('LBL_Optional_Discount_Fields', $langId). ' Below String will appear as:<br/>[[Save XX (XX% Off)]]' );
+        $frm->addTextBox( Labels::getLabel( 'LBL_Save' ,$langId), 'splprice_display_list_price' );
+        $frm->addTextBox( Labels::getLabel( 'LBL_Amount' ,$langId), 'splprice_display_dis_val' );
+        $frm->addSelectBox( Labels::getLabel('LBL_Discount_Type', $langId), 'splprice_display_dis_type', applicationConstants::getPercentageFlatArr($langId), '', array() ); */
+
+        $fld1 = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $langId));
+        $fld2 = $frm->addButton('', 'btn_cancel', Labels::getLabel('LBL_Cancel', $langId), array('onClick' => 'javascript:$("#sellerProductsForm").html(\'\')'));
+        $fld1->attachField($fld2);
+        return $frm;
+    }
 }

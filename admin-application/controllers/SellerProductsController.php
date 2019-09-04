@@ -925,28 +925,7 @@ class SellerProductsController extends AdminBaseController
 
     private function getSellerProductSpecialPriceForm()
     {
-        $frm = new Form('frmSellerProductSpecialPrice');
-        $fld = $frm->addFloatField(Labels::getLabel('LBL_Special_Price', $this->adminLangId).CommonHelper::concatCurrencySymbolWithAmtLbl(), 'splprice_price');
-        $fld->requirements()->setPositive();
-        $fld = $frm->addDateField(Labels::getLabel('LBL_Price_Start_Date', $this->adminLangId), 'splprice_start_date', '', array('readonly' => 'readonly'));
-        $fld->requirements()->setRequired();
-
-        $fld = $frm->addDateField(Labels::getLabel('LBL_Price_End_Date', $this->adminLangId), 'splprice_end_date', '', array('readonly' => 'readonly'));
-        $fld->requirements()->setRequired();
-        $fld->requirements()->setCompareWith('splprice_start_date', 'ge', Labels::getLabel('LBL_Price_Start_Date', $this->adminLangId));
-
-        $frm->addHiddenField('', 'splprice_selprod_id');
-        $frm->addHiddenField('', 'splprice_id');
-
-        /* $frm->addHtml( '', 'discountHtmlHeading', Labels::getLabel('LBL_Optional_Discount_Fields', $this->adminLangId). ' Below String will appear as:<br/>[[Save XX (XX% Off)]]' );
-        $frm->addTextBox( Labels::getLabel( 'LBL_Save' ,$this->adminLangId), 'splprice_display_list_price' );
-        $frm->addTextBox( Labels::getLabel( 'LBL_Amount' ,$this->adminLangId), 'splprice_display_dis_val' );
-        $frm->addSelectBox( Labels::getLabel('LBL_Discount_Type', $this->adminLangId), 'splprice_display_dis_type', applicationConstants::getPercentageFlatArr($this->adminLangId), '', array() ); */
-
-        $fld1 = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $this->adminLangId));
-        $fld2 = $frm->addButton('', 'btn_cancel', Labels::getLabel('LBL_Cancel', $this->adminLangId), array('onClick' => 'javascript:$("#sellerProductsForm").html(\'\')'));
-        $fld1->attachField($fld2);
-        return $frm;
+        return SellerProduct::specialPriceForm($this->adminLangId);
     }
 
     public function setUpSellerProductSpecialPrice()
@@ -969,8 +948,8 @@ class SellerProductsController extends AdminBaseController
 
     private function updateSelProdSplPrice($post, $return = false)
     {
-        $selprod_id = FatUtility::int($post['splprice_selprod_id']);
-        $splprice_id = FatUtility::int($post['splprice_id']);
+        $selprod_id = !empty($post['splprice_selprod_id']) ? FatUtility::int($post['splprice_selprod_id']) : 0;
+        $splprice_id = !empty($post['splprice_id']) ? FatUtility::int($post['splprice_id']) : 0;
 
         if (1 > $selprod_id) {
             FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Request', $this->adminLangId));
@@ -1008,7 +987,7 @@ class SellerProductsController extends AdminBaseController
         // CommonHelper::printArray($condition, true);
         if ($tblRecord->loadFromDb($condition)) {
             $specialPriceRow = $tblRecord->getFlds();
-            if ($specialPriceRow['splprice_id'] != $post['splprice_id']) {
+            if ($specialPriceRow['splprice_id'] != $splprice_id) {
                 FatUtility::dieJsonError(Labels::getLabel('MSG_Special_price_for_this_date_already_added', $this->adminLangId));
             }
         }
@@ -2312,8 +2291,7 @@ class SellerProductsController extends AdminBaseController
             $srchFrm->addHiddenField('', 'selprod_id', $selProd_id);
             $srchFrm->fill(array('keyword'=>$productsTitle[$selProd_id]));
         }
-        $addSpecialPriceFrm = $this->specialPriceFormElements();
-        $this->set("addSpecialPriceFrm", $addSpecialPriceFrm);
+
         $this->set("dataToEdit", $dataToEdit);
         $this->set("frmSearch", $srchFrm);
         $this->set("selProd_id", $selProd_id);
@@ -2378,23 +2356,10 @@ class SellerProductsController extends AdminBaseController
         return $frm;
     }
 
-    private function specialPriceFormElements()
-    {
-        $frm = $this->getSellerProductSpecialPriceForm();
-        $fld = $frm->addTextBox(Labels::getLabel('LBL_Product', $this->adminLangId), 'product_name', '', array('class'=>'selProd--js'));
-        $fld->requirements()->setRequired();
-        $frm->addSubmitButton('', 'btn_update', Labels::getLabel('LBL_Save_Changes', $this->adminLangId));
-        return $frm;
-    }
-
     public function updateSpecialPriceRow()
     {
-        $frm = $this->specialPriceFormElements();
-        $data = $frm->getFormDataFromArray(FatApp::getPostedData());
+        $data = FatApp::getPostedData();
 
-        if (false === $data) {
-            FatUtility::dieJsonError(current($frm->getValidationErrors()));
-        }
         $splPriceId = $this->updateSelProdSplPrice($data, true);
         if (!$splPriceId) {
             FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Request', $this->adminLangId));
@@ -2447,6 +2412,9 @@ class SellerProductsController extends AdminBaseController
             FatUtility::dieJsonError(Labels::getLabel('MSG_Something_went_wrong._Please_Try_Again.', $this->adminLangId));
         }
 
+        if ('splprice_price' == $attribute) {
+            $value = CommonHelper::displayMoneyFormat($value);
+        }
         $json = array(
             'status'=> true,
             'msg'=>Labels::getLabel('MSG_Success', $this->adminLangId),

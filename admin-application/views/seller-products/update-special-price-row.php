@@ -1,4 +1,6 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.');
+    $editListingFrm = new Form('editListingFrm-'.$splPriceId, array('id'=>'editListingFrm-'.$splPriceId));
+?>
 <tr id='row-<?php echo $splPriceId; ?>'>
     <td>
         <label class="checkbox">
@@ -10,16 +12,42 @@
     <td>
         <?php $startDate = date('Y-m-d', strtotime($data['splprice_start_date'])); ?>
         <div class="js--editCol edit-hover"><?php echo $startDate; ?></div>
-        <input type="text" data-id="<?php echo $splPriceId; ?>" value="<?php echo $startDate; ?>" data-selprodid="<?php echo $data['splprice_selprod_id']; ?>" name="splprice_start_date" class="js--splPriceCol hide sp-input" data-val="<?php echo $startDate; ?>"/>
+        <?php
+        $lbl = Labels::getLabel('LBL_Start_Date', $adminLangId);
+        $attr = array(
+            'readonly' => 'readonly',
+            'placeholder' => $lbl,
+            'data-selprodid' => $data['splprice_selprod_id'],
+            'data-id' => $splPriceId,
+            'data-oldval' => $startDate,
+            'id' => 'splprice_start_date-'.$splPriceId,
+            'class' => 'date_js js--splPriceCol hide sp-input',
+        );
+        $editListingFrm->addDateField($lbl, 'splprice_start_date', $startDate, $attr);
+        echo $editListingFrm->getFieldHtml('splprice_start_date');
+        ?>
     </td>
     <td>
         <?php $endDate = date('Y-m-d', strtotime($data['splprice_end_date'])); ?>
         <div class="js--editCol edit-hover"><?php echo $endDate; ?></div>
-        <input type="text" data-id="<?php echo $splPriceId; ?>" value="<?php echo $endDate; ?>" data-selprodid="<?php echo $data['splprice_selprod_id']; ?>" name="splprice_end_date" class="js--splPriceCol hide sp-input" data-val="<?php echo $endDate; ?>"/>
+        <?php
+        $lbl = Labels::getLabel('LBL_End_Date', $adminLangId);
+        $attr = array(
+            'readonly' => 'readonly',
+            'placeholder' => $lbl,
+            'data-selprodid' => $data['splprice_selprod_id'],
+            'data-id' => $splPriceId,
+            'data-oldval' => $endDate,
+            'id' => 'splprice_end_date-'.$splPriceId,
+            'class' => 'date_js js--splPriceCol hide sp-input',
+        );
+        $editListingFrm->addDateField($lbl, 'splprice_end_date', $endDate, $attr);
+        echo $editListingFrm->getFieldHtml('splprice_end_date');
+        ?>
     </td>
     <td>
         <div class="js--editCol edit-hover"><?php echo CommonHelper::displayMoneyFormat($data['splprice_price']); ?></div>
-        <input type="text" data-id="<?php echo $splPriceId; ?>" value="<?php echo $data['splprice_price']; ?>" data-selprodid="<?php echo $data['splprice_selprod_id']; ?>" name="splprice_price" class="js--splPriceCol hide sp-input edit-hover" data-val="<?php echo $data['splprice_price']; ?>"/>
+        <input type="text" data-id="<?php echo $splPriceId; ?>" value="<?php echo $data['splprice_price']; ?>" data-selprodid="<?php echo $data['splprice_selprod_id']; ?>" data-oldval="<?php echo $data['splprice_price']; ?>" name="splprice_price" class="js--splPriceCol hide sp-input"/>
     </td>
     <td>
         <ul class="actions actions--centered">
