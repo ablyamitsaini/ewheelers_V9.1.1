@@ -46,19 +46,26 @@ foreach ($products as $index => $product) {
     if (2 > sizeof($shipping_options)) {
         unset($newShippingMethods[SHIPPINGMETHODS::MANUAL_SHIPPING]);
     }
-    $i = 0;
-    foreach ($newShippingMethods as $key => $value) {
-        $products[$index]['shippingMethods'][$i]['title'] = $value;
-        $products[$index]['shippingMethods'][$i]['value'] = $key;
-        switch ($key) {
+
+    $products[$index]['shippingMethods'][] = [
+        'title' => Labels::getLabel('LBL_Select_Shipping_Method', $siteLangId),
+        'value' => 0,
+        'rates' => []
+    ];
+    foreach ($newShippingMethods as $shippingMethodType => $shipingMethodtitle) {
+        $shippinhMethodArr = [
+            'title' => $shipingMethodtitle,
+            'value' => $shippingMethodType
+        ];
+        switch ($shippingMethodType) {
             case ShippingMethods::MANUAL_SHIPPING:
-                $products[$index]['shippingMethods'][$i]['rates'] = $shipping_options;
+                $shippinhMethodArr['rates'] = $shipping_options;
                 break;
             case ShippingMethods::SHIPSTATION_SHIPPING:
-                $products[$index]['shippingMethods'][$i]['rates'] = $shipStation;
+                $shippinhMethodArr['rates'] = $shipStation;
                 break;
         }
-        $i++;
+        $products[$index]['shippingMethods'][] = $shippinhMethodArr;
     }
 }
 
