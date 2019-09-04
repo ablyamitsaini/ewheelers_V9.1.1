@@ -1453,7 +1453,9 @@ class CheckoutController extends MyAppController
         }
 
         $cartObj = new Cart($loggedUserId, $this->siteLangId, $this->app_user['temp_user_id']);
+
         // $cartObj = new Cart();
+
         $cartSummary = $cartObj->getCartFinancialSummary($this->siteLangId);
 
         $cartTotalWithoutDiscount = $cartSummary['cartTotal'] - $cartSummary["cartDiscounts"]["coupon_discount_total"];
@@ -1467,7 +1469,6 @@ class CheckoutController extends MyAppController
             $msg = str_replace('{MAX}', FatApp::getConfig('CONF_MAX_REWARD_POINT'), $msg);
             FatUtility::dieJsonError(strip_tags($msg));
         }
-
         if (!$cartObj->updateCartUseRewardPoints($rewardPoints)) {
             $message = Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
@@ -1479,6 +1480,7 @@ class CheckoutController extends MyAppController
 
         $this->set('msg', Labels::getLabel("MSG_Used_Reward_point", $this->siteLangId).'-'.$rewardPoints);
         if (true ===  MOBILE_APP_API_CALL) {
+            $cartSummary = $cartObj->getCartFinancialSummary($this->siteLangId);
             $cartProducts = $cartObj->getProducts($this->siteLangId);
             $userWalletBalance = User::getUserBalance($loggedUserId, true);
             $totalRewardPoints = UserRewardBreakup::rewardPointBalance($loggedUserId);
