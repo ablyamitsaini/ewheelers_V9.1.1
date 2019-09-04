@@ -1,4 +1,5 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.');
+?>
 <div class="section-head">
     <div class="section__heading">
         <h2><?php echo Labels::getLabel('LBL_Payment_Summary', $siteLangId); ?></h2>
