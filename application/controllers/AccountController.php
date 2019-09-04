@@ -2858,7 +2858,7 @@ class AccountController extends LoggedUserController
         $srch->joinMessageAdmin();
         $srch->joinOrderProducts();
         $srch->addCondition('orrmsg_orrequest_id', '=', $orrequest_id);
-        //$srch->addCondition( 'orrequest_user_id', '=', $user_id );
+        $srch->addCondition('orrequest_user_id', '=', $user_id);
         $srch->setPageNumber($page);
         $srch->setPageSize($pageSize);
         $srch->addOrder('orrmsg_id', 'DESC');
