@@ -24,6 +24,7 @@ $shippingTotal = isset($cartSummary['shippingTotal']) ? $cartSummary['shippingTo
 $cartTaxTotal = isset($cartSummary['cartTaxTotal']) ? $cartSummary['cartTaxTotal'] : 0;
 $cartVolumeDiscount = isset($cartSummary['cartVolumeDiscount']) ? $cartSummary['cartVolumeDiscount'] : 0;
 $coupon_discount_total = isset($cartSummary['cartDiscounts']['coupon_discount_total']) ? $cartSummary['cartDiscounts']['coupon_discount_total'] : 0;
+$appliedRewardPointsDiscount = isset($cartSummary['cartRewardPoints']) ? $cartSummary['cartRewardPoints'] : 0;
 
 $data['priceDetail'] = array(
     array(
@@ -40,6 +41,12 @@ if (0 < $cartTaxTotal) {
     $data['priceDetail'][] = array(
         'key' => Labels::getLabel('LBL_Tax', $siteLangId),
         'value' => CommonHelper::displayMoneyFormat($cartTaxTotal)
+    );
+}
+if (0 < $appliedRewardPointsDiscount) {
+    $data['priceDetail'][] = array(
+        'key' => Labels::getLabel('LBL_Reward_point_discount', $siteLangId),
+        'value' => CommonHelper::convertRewardPointToCurrency($appliedRewardPointsDiscount)
     );
 }
 if (0 < $cartVolumeDiscount) {
