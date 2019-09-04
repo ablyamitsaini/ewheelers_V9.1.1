@@ -25,7 +25,7 @@ class CheckoutController extends MyAppController
                 FatApp::redirectUser(CommonHelper::generateUrl('Cart'));
             }
         }
-        
+
         $this->cartObj = new Cart(UserAuthentication::getLoggedUserId(), $this->siteLangId, $this->app_user['temp_user_id']);
 
         if (1 > $this->cartObj->getCartBillingAddress()) {
@@ -1477,11 +1477,24 @@ class CheckoutController extends MyAppController
             FatUtility::dieWithError(Message::getHtml());
         }
 
+        $this->set('msg', Labels::getLabel("MSG_Used_Reward_point", $this->siteLangId).'-'.$rewardPoints);
         if (true ===  MOBILE_APP_API_CALL) {
+            $cartProducts = $cartObj->getProducts($this->siteLangId);
+            $userWalletBalance = User::getUserBalance($loggedUserId, true);
+            $totalRewardPoints = UserRewardBreakup::rewardPointBalance($loggedUserId);
+
+            $canBeUse = min(min($totalRewardPoints, CommonHelper::convertCurrencyToRewardPoint($cartSummary['cartTotal']-$cartSummary["cartDiscounts"]["coupon_discount_total"])), FatApp::getConfig('CONF_MAX_REWARD_POINT', FatUtility::VAR_INT, 0));
+            $canBeUseRPAmt = CommonHelper::displayMoneyFormat(CommonHelper::convertRewardPointToCurrency($canBeUse));
+
+            $this->set('userWalletBalance', $userWalletBalance);
+            $this->set('cartSummary', $cartSummary);
+            $this->set('products', $cartProducts);
+            $this->set('totalRewardPoints', $totalRewardPoints);
+            $this->set('canBeUse', $canBeUse);
+            $this->set('canBeUseRPAmt', $canBeUseRPAmt);
             $this->_template->render();
         }
 
-        $this->set('msg', Labels::getLabel("MSG_Used_Reward_point", $this->siteLangId).'-'.$rewardPoints);
         $this->_template->render(false, false, 'json-success.php');
     }
 
