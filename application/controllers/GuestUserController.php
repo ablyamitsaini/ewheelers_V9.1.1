@@ -129,6 +129,21 @@ class GuestUserController extends MyAppController
         $this->_template->render(false, false, 'json-success.php');
     }
 
+    public function setUserPushNotificationToken()
+    {
+        $fcmDeviceId = FatApp::getPostedData('deviceToken', FatUtility::VAR_STRING, '');
+        if (empty($fcmDeviceId)) {
+            FatUtility::dieJSONError(Labels::getLabel('Msg_Invalid_Request', $this->siteLangId));
+        }
+        $userId = UserAuthentication::getLoggedUserId();
+        $uObj= new User($userId);
+        if (!$uObj->setPushNotificationToken($this->appToken, $fcmDeviceId)) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
+        }
+        $this->set('msg', Labels::getLabel('Msg_Successfully_Updated', $this->siteLangId));
+        $this->_template->render();
+    }
+
     public function guestLogin()
     {
         $frm = $this->getGuestUserForm($this->siteLangId);
