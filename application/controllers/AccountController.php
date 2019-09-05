@@ -811,6 +811,7 @@ class AccountController extends LoggedUserController
             $personalInfo['userImage'] = CommonHelper::generateFullUrl('image', 'user', array(UserAuthentication::getLoggedUserId(),'thumb',1)).'?'.time();
             $this->set('personalInfo', empty($personalInfo) ? (object)array() : $personalInfo);
             $this->set('bankInfo', empty($bankInfo) ? (object)array() : $bankInfo);
+            $this->set('privacyPolicyLink', FatApp::getConfig('CONF_PRIVACY_POLICY_PAGE', FatUtility::VAR_STRING, ''));
             $this->_template->render();
         }
 
