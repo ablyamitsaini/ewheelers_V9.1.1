@@ -80,5 +80,5 @@ if ($userWalletBalance > 0 && $cartSummary['orderNetAmount'] > 0 && $cartSummary
     $priceDetail['remainingWalletBalance'] = CommonHelper::displayMoneyFormat($remainingWalletBalance);
 }
 
-$data['cartSummary']['cartDiscounts'] = !empty($data['cartSummary']['cartDiscounts']) ? $data['cartSummary']['cartDiscounts'] : [];
+$data['cartSummary']['cartDiscounts'] = !empty($data['cartSummary']['cartDiscounts']) ? $data['cartSummary']['cartDiscounts'] : (object)array();
 $data = !empty($data) ? array_merge($data, $priceDetail) : $priceDetail;
