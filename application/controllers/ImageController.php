@@ -880,11 +880,6 @@ class ImageController extends FatController
         $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_HOME_PAGE_BANNER, $slide_id, 0, $lang_id, $displayUniversalImage, $screen);
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
-        $cacheKey = $_SERVER['REQUEST_URI'];
-        $str = FatCache::get($cacheKey, null, '.jpg');
-        if (false == $str && !CONF_USE_FAT_CACHE) {
-            $cacheKey = false;
-        }
         if ($sizeType) {
             switch (strtoupper($sizeType)) {
                 case 'THUMB':

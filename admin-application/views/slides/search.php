@@ -55,7 +55,7 @@ foreach ($arrListing as $sn => $row) {
             /* case 'slide_image':
                 if( $languages ){
                     foreach($languages as $lang_id=>$lang_name){
-                        $img = "<strong>".$lang_name.'</strong><br/><img src="'.CommonHelper::generateFullUrl('Image','slide',array($row['slide_id'],$lang_id,'THUMB',time()),CONF_WEBROOT_FRONT_URL).'" /><br/>';
+                        $img = "<strong>".$lang_name.'</strong><br/><img src="'.CommonHelper::generateFullUrl('Image','slide',array($row['slide_id'],$lang_id,'THUMB'),CONF_WEBROOT_FRONT_URL).'" /><br/>';
                         $td->appendElement('plaintext', array(), $img ,true);
                     }
                 }

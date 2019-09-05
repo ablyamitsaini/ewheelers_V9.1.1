@@ -1884,7 +1884,7 @@ class MobileAppApiController extends MyAppController
         if (!empty($user)) {
             $arr = array(
             'user_id'=>$user['user_id'],
-            'user_image'=>CommonHelper::generateFullUrl('Image', 'user', array($user['user_id'],'ORIGINAL')).'?'.time(),
+            'user_image'=>CommonHelper::generateFullUrl('Image', 'user', array($user['user_id'],'ORIGINAL')),
             'name'=>$user['user_name'],
             'email'=>$user['credential_email'],
             'username'=>$user['credential_username'],
@@ -1962,7 +1962,7 @@ class MobileAppApiController extends MyAppController
                 )
             );
 
-            $imageUrl = CommonHelper::generateFullUrl('Image', 'user', array($userId,'ORIGINAL')).'?'.time();
+            $imageUrl = CommonHelper::generateFullUrl('Image', 'user', array($userId,'ORIGINAL'));
         }
 
         if ($post['action'] == "avatar") {
@@ -1977,7 +1977,7 @@ class MobileAppApiController extends MyAppController
 
             $data = json_decode(stripslashes($post['img_data']));
             CommonHelper::crop($data, CONF_UPLOADS_PATH .$res, $this->siteLangId);
-            $imageUrl = FatUtility::generateFullUrl('Image', 'user', array($userId,'croped',true)).'?'.time();
+            $imageUrl = FatUtility::generateFullUrl('Image', 'user', array($userId,'croped',true));
         }
 
         $res=array('status'=>1,'msg'=>Labels::getLabel('MSG_File_uploaded_successfully', $this->siteLangId),'image'=>$imageUrl);
@@ -2183,7 +2183,7 @@ class MobileAppApiController extends MyAppController
         'token'=>$generatedToken,
         'user_name'=>$userInfo["user_name"],
         'user_id'=>$userInfo["user_id"],
-        'user_image'=>CommonHelper::generateFullUrl('image', 'user', array($userInfo['user_id'],'thumb',1)).'?'.time()
+        'user_image'=>CommonHelper::generateFullUrl('image', 'user', array($userInfo['user_id'],'thumb',1))
         );
         die($this->json_encode_unicode($arr));
     }
@@ -2342,8 +2342,7 @@ class MobileAppApiController extends MyAppController
         }
         $userInfo = $userObj->getUserInfo(array('user_id','user_name'), true, true);
         $arr=array('status'=>1,'token'=>$token, 'user_name'=>$userInfo["user_name"],'user_id'=>$userInfo["user_id"],
-        'user_image'=>CommonHelper::generateFullUrl('image', 'user', array($userInfo['user_id'],'ORIGINAL')).'?'.time()
-                    );
+        'user_image'=>CommonHelper::generateFullUrl('image', 'user', array($userInfo['user_id'],'ORIGINAL')));
         die($this->json_encode_unicode($arr));
     }
 
@@ -2422,8 +2421,7 @@ class MobileAppApiController extends MyAppController
                     }
                     $userInfo = $userObj->getUserInfo(array('user_id','user_name'), true, true);
                     $arr=array('status'=>1,'token'=>$token, 'user_name'=>$userInfo["user_name"],'user_id'=>$userInfo["user_id"],
-                    'user_image'=>CommonHelper::generateFullUrl('image', 'user', array($userInfo['user_id'],'ORIGINAL')).'?'.time()
-                    );
+                    'user_image'=>CommonHelper::generateFullUrl('image', 'user', array($userInfo['user_id'],'ORIGINAL')));
                     die($this->json_encode_unicode($arr));
                 }
             } else {

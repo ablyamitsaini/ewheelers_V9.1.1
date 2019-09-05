@@ -23,7 +23,7 @@ foreach ($arr_listing as $sn=>$row){
 	$tr = $tbl->appendElement('tr');
 	$tr->setAttribute ("id",$row['brand_id']);
 
-	
+
 	foreach ($arr_flds as $key=>$val){
 		if( $key == "brand_logo" ){
 			$td = $tr->appendElement('td', array('style' => 'text-align:center;'));
@@ -38,8 +38,8 @@ foreach ($arr_listing as $sn=>$row){
 				$td->appendElement('plaintext', array(), $row[$key]);
 			break;
 			case 'brand_logo':
-				$td->appendElement('plaintext', array('style' => 'text-align:center'), 
-				'<img  class="max-img"  src="'.CommonHelper::generateUrl('image','brand',array($row['brand_id'], $adminLangId, 'MINITHUMB', '?'.time() ),CONF_WEBROOT_FRONT_URL).'">',true);
+				$td->appendElement('plaintext', array('style' => 'text-align:center'),
+				'<img  class="max-img"  src="'.CommonHelper::generateUrl('image','brand',array($row['brand_id'], $adminLangId, 'MINITHUMB'),CONF_WEBROOT_FRONT_URL).'">',true);
 			break;
 			case 'brand_identifier':
 				if($row['brand_name']!=''){
@@ -58,7 +58,7 @@ foreach ($arr_listing as $sn=>$row){
 					$statucAct = ($canEdit === true) ? 'toggleStatus(this)' : '';
 					$str = '<div class="checkbox-switch"><input '.$active.' type="checkbox" id="switch'.$row['brand_id'].'" value="'.$row['brand_id'].'" onclick="'.$statucAct.'"/><label for="switch'.$row['brand_id'].'">Toggle</label></div>';
 					$td->appendElement('plaintext', array(), $str,true);
-			break;			
+			break;
 			case 'action':
 				$ul = $td->appendElement("ul",array("class"=>"actions actions--centered"));
 				$li = $ul->appendElement("li",array('class'=>'droplink'));
@@ -69,7 +69,7 @@ foreach ($arr_listing as $sn=>$row){
 					$innerLiEdit = $innerUl->appendElement("li");
 					$innerLiEdit->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green', 'title'=>Labels::getLabel('LBL_Edit',$adminLangId),"onclick"=>"addBrandRequestForm(".$row['brand_id'].")"),Labels::getLabel('LBL_Edit',$adminLangId), true);
 
-					
+
 				}
 			break;
 			default:

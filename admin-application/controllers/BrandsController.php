@@ -661,7 +661,7 @@ class BrandsController extends AdminBaseController
         );
         $htmlAfterField = '<span id="input-field"></span>
         <span class = "uploadimage--info" >It will be displayed in 192 × 82 pixels</span>
-        <div class="uploaded--image"><img src="'.CommonHelper::generateUrl('image','brand',array($brand_id, $lang_id, '?'.time()),CONF_WEBROOT_FRONT_URL).'">';
+        <div class="uploaded--image"><img src="'.CommonHelper::generateUrl('image','brand',array($brand_id, $lang_id),CONF_WEBROOT_FRONT_URL).'">';
         if( AttachedFile::getAttachment( AttachedFile::FILETYPE_BRAND_LOGO, $brand_id, 0, $lang_id ) ){
             $htmlAfterField .= '<a href="javascript:void(0);" onclick="removeBrandLogo('.$brand_id.', '.$lang_id.')" class="remove--img"><i class="ion-close-round"></i></a>';
         }

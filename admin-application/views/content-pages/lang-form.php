@@ -10,11 +10,11 @@ if($cpage_layout == ContentPage::CONTENT_PAGE_LAYOUT1_TYPE)
 
 	$preferredDimensionsStr = '<small class="text--small"> '.Labels::getLabel('LBL_This_will_be_displayed_on_your_cms_Page.',$adminLangId).' '.sprintf(Labels::getLabel('LBL_Preferred_Dimensions',$adminLangId),'1300*400').'</small>';
 
-	$htmlAfterField = $preferredDimensionsStr; 
+	$htmlAfterField = $preferredDimensionsStr;
 	if( !empty($bgImages) ){
 		$htmlAfterField .= '<ul class="image-listing grids--onethird">';
 		foreach($bgImages as $bgImage){
-		$htmlAfterField .= '<li>'.$bannerTypeArr[$bgImage['afile_lang_id']].'<div class="uploaded--image"><img src="'.CommonHelper::generateFullUrl('image','cpageBackgroundImage',array($bgImage['afile_record_id'],$bgImage['afile_lang_id'],'THUMB'),CONF_WEBROOT_FRONT_URL).'?'.time().'"> <a href="javascript:void(0);" onClick="removeBgImage('.$bgImage['afile_record_id'].','.$bgImage['afile_lang_id'].','.$cpage_layout.')" class="remove--img"><i class="ion-close-round"></i></a></div>';
+		$htmlAfterField .= '<li>'.$bannerTypeArr[$bgImage['afile_lang_id']].'<div class="uploaded--image"><img src="'.CommonHelper::generateFullUrl('image','cpageBackgroundImage',array($bgImage['afile_record_id'],$bgImage['afile_lang_id'],'THUMB'),CONF_WEBROOT_FRONT_URL).'"> <a href="javascript:void(0);" onClick="removeBgImage('.$bgImage['afile_record_id'].','.$bgImage['afile_lang_id'].','.$cpage_layout.')" class="remove--img"><i class="ion-close-round"></i></a></div>';
 		}
 		$htmlAfterField.='</li></ul>';
 	} else {
@@ -35,10 +35,10 @@ if($cpage_layout == ContentPage::CONTENT_PAGE_LAYOUT1_TYPE)
 				<div class="tabs_nav_container responsive flat">
 					<ul class="tabs_nav">
 						<li><a href="javascript:void(0);" onclick="addForm(<?php echo $cpage_id ?>);"><?php echo Labels::getLabel('LBL_General',$adminLangId); ?></a></li>
-						<?php 
+						<?php
 						if ($cpage_id > 0) {
 							foreach($languages as $langId => $langName){?>
-								<li><a class="<?php echo ($cpage_lang_id == $langId)?'active':''?>" href="javascript:void(0);" 
+								<li><a class="<?php echo ($cpage_lang_id == $langId)?'active':''?>" href="javascript:void(0);"
 								onclick="addLangForm(<?php echo $cpage_id ?>, <?php echo $langId;?>, <?php echo $cpage_layout;?>);"><?php echo Labels::getLabel('LBL_'.$langName,$adminLangId);?></a></li>
 							<?php }
 							}
@@ -46,14 +46,14 @@ if($cpage_layout == ContentPage::CONTENT_PAGE_LAYOUT1_TYPE)
 					</ul>
 					<div class="tabs_panel_wrap">
 						<div class="tabs_panel">
-							<?php 
+							<?php
 								echo $blockLangFrm->getFormTag();
 								echo $blockLangFrm->getFormHtml(false);
 								echo '</form>';
-							?>				
+							?>
 						</div>
 					</div>
-				</div>	
+				</div>
 			</div>
 		</div>
 	</div>

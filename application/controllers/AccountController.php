@@ -808,7 +808,7 @@ class AccountController extends LoggedUserController
         if (true ===  MOBILE_APP_API_CALL) {
             $bankInfo = $this->bankInfo();
             $personalInfo = $this->personalInfo();
-            $personalInfo['userImage'] = CommonHelper::generateFullUrl('image', 'user', array(UserAuthentication::getLoggedUserId(),'thumb',1)).'?'.time();
+            $personalInfo['userImage'] = CommonHelper::generateFullUrl('image', 'user', array(UserAuthentication::getLoggedUserId(),'thumb',1));
             $this->set('personalInfo', empty($personalInfo) ? (object)array() : $personalInfo);
             $this->set('bankInfo', empty($bankInfo) ? (object)array() : $bankInfo);
             $this->_template->render();
@@ -951,9 +951,9 @@ class AccountController extends LoggedUserController
             }
 
             if (false ===  MOBILE_APP_API_CALL) {
-                $this->set('file', CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId)).'?'.time());
+                $this->set('file', CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId)));
             } else {
-                $this->set('file', CommonHelper::generateFullUrl('image', 'user', array($userId,'thumb',1)).'?'.time());
+                $this->set('file', CommonHelper::generateFullUrl('image', 'user', array($userId,'thumb',1)));
             }
         }
 
@@ -977,9 +977,9 @@ class AccountController extends LoggedUserController
             }
 
             if (false ===  MOBILE_APP_API_CALL) {
-                $this->set('file', CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId,'croped',true)).'?'.time());
+                $this->set('file', CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId,'croped',true)));
             } else {
-                $this->set('file', CommonHelper::generateFullUrl('image', 'user', array($userId,'thumb',1)).'?'.time());
+                $this->set('file', CommonHelper::generateFullUrl('image', 'user', array($userId,'thumb',1)));
             }
         }
 
