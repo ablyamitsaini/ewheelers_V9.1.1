@@ -116,7 +116,7 @@ class HomeController extends MyAppController
                 FatUtility::dieJsonError(Labels::getLabel('MSG_Unable_to_update_file', $langId));
             }
             $fileName = $langCode.'.json';
-            AttachedFile::downloadAttachment('language-labels/' . $fileName, $fileName);
+            AttachedFile::downloadAttachment(Labels::JSON_FILE_DIR_NAME.'/' . $fileName, $fileName);
         }
 
         $data = array(

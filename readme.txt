@@ -6,3 +6,4 @@ msg-1018591-Download language label file for APP
 > Update labels updated time to cofiguration in case of import label file, admin update any individual label and new insertion
 > Admin can manually update labels json file.
 > Maintenance mode handling for API.
+> Performance optimization : Used labels from json file.
