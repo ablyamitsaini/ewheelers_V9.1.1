@@ -26,7 +26,9 @@ $selectedOptionsArr = $product['selectedOptionValues'];
 foreach ($optionRows as $key => $option) {
     foreach ($option['values'] as $index => $opVal) {
         $optionRows[$key]['values'][$index]['isAvailable'] = 1;
+        $optionRows[$key]['values'][$index]['isSelected'] = 1;
         if (!in_array($opVal['optionvalue_id'], $product['selectedOptionValues'])) {
+            $optionRows[$key]['values'][$index]['isSelected'] = 0;
             $optionUrl = Product::generateProductOptionsUrl($product['selprod_id'], $selectedOptionsArr, $option['option_id'], $opVal['optionvalue_id'], $product['product_id']);
             $optionUrlArr = explode("::", $optionUrl);
             if (is_array($optionUrlArr) && count($optionUrlArr) == 2) {

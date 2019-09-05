@@ -811,6 +811,7 @@ class AccountController extends LoggedUserController
             $personalInfo['userImage'] = CommonHelper::generateFullUrl('image', 'user', array(UserAuthentication::getLoggedUserId(),'thumb',1));
             $this->set('personalInfo', empty($personalInfo) ? (object)array() : $personalInfo);
             $this->set('bankInfo', empty($bankInfo) ? (object)array() : $bankInfo);
+            $this->set('privacyPolicyLink', FatApp::getConfig('CONF_PRIVACY_POLICY_PAGE', FatUtility::VAR_STRING, ''));
             $this->_template->render();
         }
 
@@ -2858,7 +2859,7 @@ class AccountController extends LoggedUserController
         $srch->joinMessageAdmin();
         $srch->joinOrderProducts();
         $srch->addCondition('orrmsg_orrequest_id', '=', $orrequest_id);
-        //$srch->addCondition( 'orrequest_user_id', '=', $user_id );
+        $srch->addCondition('orrequest_user_id', '=', $user_id);
         $srch->setPageNumber($page);
         $srch->setPageSize($pageSize);
         $srch->addOrder('orrmsg_id', 'DESC');
@@ -3281,6 +3282,52 @@ class AccountController extends LoggedUserController
             FatUtility::dieJsonError($uObj->getError());
         }
         $this->set('tempToken', $tempToken);
+        $this->_template->render();
+    }
+
+    public function notifications()
+    {
+        $userId = UserAuthentication::getLoggedUserId();
+        $page = FatApp::getPostedData('page', FatUtility::VAR_INT, 1);
+        $defaultPageSize = FatApp::getConfig('conf_page_size', FatUtility::VAR_INT, 10);
+        $pageSize = FatApp::getPostedData('pagesize', FatUtility::VAR_INT, $defaultPageSize);
+        $srch = Notifications::getSearchObject();
+        $srch->addCondition('unt.unotification_user_id', '=', $userId);
+        $srch->addOrder('unt.unotification_id', 'DESC');
+        $srch->addMultipleFields(array('unt.*'));
+        $srch->setPageNumber($page);
+        $srch->setPageSize($pageSize);
+        $rs = $srch->getResultSet();
+        $records = FatApp::getDb()->fetchAll($rs);
+
+        $this->set('notifications', $records);
+        $this->set('total_pages', $srch->pages());
+        $this->set('total_records', $srch->recordCount());
+        $this->_template->render();
+    }
+
+    public function markNotificationRead($notificationId)
+    {
+        $notificationId = FatUtility::int($notificationId);
+        if (1 > $notificationId) {
+            FatUtility::dieJSONError(Labels::getLabel('Msg_Invalid_Request', $this->siteLangId));
+        }
+        $userId = UserAuthentication::getLoggedUserId();
+
+        $srch = Notifications::getSearchObject();
+        $srch->addCondition('unt.unotification_user_id', '=', $userId);
+        $srch->addCondition('unt.unotification_id', '=', $notificationId);
+        $srch->setPageSize(1);
+        $rs = $srch->getResultSet();
+        $notification = FatApp::getDb()->fetch($rs);
+        if (!($notification)) {
+            FatUtility::dieJSONError(Labels::getLabel('Msg_Invalid_Request', $this->siteLangId));
+        }
+        $nObj = new Notifications();
+        if (!$nObj->readUserNotification($notificationId, $userId)) {
+            FatUtility::dieJsonError($nObj->getError());
+        }
+        $this->set('msg', Labels::getLabel('Msg_Successfully_Updated', $this->siteLangId));
         $this->_template->render();
     }
 }

@@ -14,6 +14,7 @@ class Cart extends FatModel
         parent::__construct();
 
         $user_id = FatUtility::int($user_id);
+
         $langId = FatUtility::int($langId);
 
         $this->cart_lang_id = $langId;
@@ -22,7 +23,13 @@ class Cart extends FatModel
         }
 
         if (empty($tempCartUserId)) {
-            $tempCartUserId = (true ===  MOBILE_APP_API_CALL && 0 < $user_id ? $user_id : session_id());
+            $tempCartUserId = session_id();
+            if (true ===  MOBILE_APP_API_CALL) {
+                $tempCartUserId = $user_id;
+                if (1 > $user_id) {
+                    $user_id = $tempCartUserId = UserAuthentication::getLoggedUserId(true);
+                }
+            }
         }
 
         $this->cart_user_id = $tempCartUserId;
