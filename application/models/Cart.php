@@ -27,7 +27,7 @@ class Cart extends FatModel
             if (true ===  MOBILE_APP_API_CALL) {
                 $tempCartUserId = $user_id;
                 if (1 > $user_id) {
-                    $user_id = $tempCartUserId = UserAuthentication::getLoggedUserId();
+                    $user_id = $tempCartUserId = UserAuthentication::getLoggedUserId(true);
                 }
             }
         }
