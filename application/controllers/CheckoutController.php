@@ -27,7 +27,6 @@ class CheckoutController extends MyAppController
         }
 
         $this->cartObj = new Cart(UserAuthentication::getLoggedUserId(), $this->siteLangId, $this->app_user['temp_user_id']);
-
         if (1 > $this->cartObj->getCartBillingAddress()) {
             $this->cartObj->setCartBillingAddress();
         }
@@ -1482,18 +1481,9 @@ class CheckoutController extends MyAppController
         if (true ===  MOBILE_APP_API_CALL) {
             $cartSummary = $cartObj->getCartFinancialSummary($this->siteLangId);
             $cartProducts = $cartObj->getProducts($this->siteLangId);
-            $userWalletBalance = User::getUserBalance($loggedUserId, true);
-            $totalRewardPoints = UserRewardBreakup::rewardPointBalance($loggedUserId);
 
-            $canBeUse = min(min($totalRewardPoints, CommonHelper::convertCurrencyToRewardPoint($cartSummary['cartTotal']-$cartSummary["cartDiscounts"]["coupon_discount_total"])), FatApp::getConfig('CONF_MAX_REWARD_POINT', FatUtility::VAR_INT, 0));
-            $canBeUseRPAmt = CommonHelper::displayMoneyFormat(CommonHelper::convertRewardPointToCurrency($canBeUse));
-
-            $this->set('userWalletBalance', $userWalletBalance);
             $this->set('cartSummary', $cartSummary);
             $this->set('products', $cartProducts);
-            $this->set('totalRewardPoints', $totalRewardPoints);
-            $this->set('canBeUse', $canBeUse);
-            $this->set('canBeUseRPAmt', $canBeUseRPAmt);
             $this->_template->render();
         }
 
@@ -1502,7 +1492,7 @@ class CheckoutController extends MyAppController
 
     public function removeRewardPoints()
     {
-        $cartObj = new Cart();
+        $cartObj = new Cart(UserAuthentication::getLoggedUserId(true), $this->siteLangId, $this->app_user['temp_user_id']);
         if (!$cartObj->removeUsedRewardPoints()) {
             $message = Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
@@ -1511,10 +1501,15 @@ class CheckoutController extends MyAppController
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
-        if (true ===  MOBILE_APP_API_CALL) {
-            $this->_template->render();
-        }
         $this->set('msg', Labels::getLabel("MSG_used_reward_point_removed", $this->siteLangId));
+        if (true ===  MOBILE_APP_API_CALL) {
+            $cartSummary = $cartObj->getCartFinancialSummary($this->siteLangId);
+            $cartProducts = $cartObj->getProducts($this->siteLangId);
+
+            $this->set('cartSummary', $cartSummary);
+            $this->set('products', $cartProducts);
+            $this->_template->render(true, true, 'checkout/use-reward-points.php');
+        }
         $this->_template->render(false, false, 'json-success.php');
     }
 
