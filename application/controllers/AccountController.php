@@ -3284,4 +3284,25 @@ class AccountController extends LoggedUserController
         $this->set('tempToken', $tempToken);
         $this->_template->render();
     }
+
+    public function notifications()
+    {
+        $userId = UserAuthentication::getLoggedUserId();
+        $page = FatApp::getPostedData('page', FatUtility::VAR_INT, 1);
+        $defaultPageSize = FatApp::getConfig('conf_page_size', FatUtility::VAR_INT, 10);
+        $pageSize = FatApp::getPostedData('pagesize', FatUtility::VAR_INT, $defaultPageSize);
+        $srch = Notifications::getSearchObject();
+        $srch->addCondition('unt.unotification_user_id', '=', $userId);
+        $srch->addOrder('unt.unotification_id', 'DESC');
+        $srch->addMultipleFields(array('unt.*'));
+        $srch->setPageNumber($page);
+        $srch->setPageSize($pageSize);
+        $rs = $srch->getResultSet();
+        $records = FatApp::getDb()->fetchAll($rs);
+
+        $this->set('notifications', $records);
+        $this->set('total_pages', $srch->pages());
+        $this->set('total_records', $srch->recordCount());
+        $this->_template->render();
+    }
 }
