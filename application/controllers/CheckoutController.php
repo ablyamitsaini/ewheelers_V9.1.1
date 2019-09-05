@@ -720,12 +720,12 @@ class CheckoutController extends MyAppController
             $billingAddressDetail = array();
             $billingAddressId = $this->cartObj->getCartBillingAddress();
             if (0 < $billingAddressId) {
-                $billingAddressDetail = UserAddress::getUserAddresses($loggedUserId, 0, 0, $billingAddressId);
+                $billingAddressDetail = UserAddress::getUserAddresses($loggedUserId, $this->siteLangId, 0, $billingAddressId);
             }
             $shippingddressDetail = array();
             $shippingAddressId = $this->cartObj->getCartShippingAddress();
             if ($shippingAddressId > 0) {
-                $shippingddressDetail = UserAddress::getUserAddresses($loggedUserId, 0, 0, $shippingAddressId);
+                $shippingddressDetail = UserAddress::getUserAddresses($loggedUserId, $this->siteLangId, 0, $shippingAddressId);
             }
 
             $this->set('billingAddress', $billingAddressDetail);
