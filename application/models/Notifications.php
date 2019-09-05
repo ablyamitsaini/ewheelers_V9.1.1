@@ -87,10 +87,13 @@ class Notifications extends MyAppModel
 
     public function readUserNotification($notificationId, $userId)
     {
-        if (!FatApp::getDb()->updateFromArray(static::DB_TBL, array(static::DB_TBL_PREFIX.'is_read'=>1), array('smt' => static::DB_TBL_PREFIX . 'id = ? AND '.static::DB_TBL_PREFIX . 'user_id = ?', 'vals' => array((int)$notificationId,(int)$userId)))) {
+        $smt = array(
+            'smt' => static::DB_TBL_PREFIX . 'id = ? AND '.static::DB_TBL_PREFIX . 'user_id = ?',
+            'vals' => array((int)$notificationId, (int)$userId)
+        );
+        if (!FatApp::getDb()->updateFromArray(static::DB_TBL, array(static::DB_TBL_PREFIX.'is_read'=>1), $smt)) {
             $this->error = FatApp::getDb()->getError();
-            echo $this->error;
-            die;
+            return false;
         }
         return true;
     }

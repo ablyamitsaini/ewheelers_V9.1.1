@@ -3305,4 +3305,29 @@ class AccountController extends LoggedUserController
         $this->set('total_records', $srch->recordCount());
         $this->_template->render();
     }
+
+    public function markNotificationRead($notificationId)
+    {
+        $notificationId = FatUtility::int($notificationId);
+        if (1 > $notificationId) {
+            FatUtility::dieJSONError(Labels::getLabel('Msg_Invalid_Request', $this->siteLangId));
+        }
+        $userId = UserAuthentication::getLoggedUserId();
+
+        $srch = Notifications::getSearchObject();
+        $srch->addCondition('unt.unotification_user_id', '=', $userId);
+        $srch->addCondition('unt.unotification_id', '=', $notificationId);
+        $srch->setPageSize(1);
+        $rs = $srch->getResultSet();
+        $notification = FatApp::getDb()->fetch($rs);
+        if (!($notification)) {
+            FatUtility::dieJSONError(Labels::getLabel('Msg_Invalid_Request', $this->siteLangId));
+        }
+        $nObj = new Notifications();
+        if (!$nObj->readUserNotification($notificationId, $userId)) {
+            FatUtility::dieJsonError($nObj->getError());
+        }
+        $this->set('msg', Labels::getLabel('Msg_Successfully_Updated', $this->siteLangId));
+        $this->_template->render();
+    }
 }

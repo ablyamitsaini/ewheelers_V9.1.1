@@ -7005,7 +7005,7 @@ class MobileAppApiController extends MyAppController
         if ($nObj->readUserNotification($notificationId, $userId)) {
             die(json_encode(array('status'=>1, 'msg'=>Labels::getLabel('Msg_Successfully_Updated', $this->siteLangId))));
         } else {
-            dieJsonError(Utilities::getLabel('M_ERROR_INVALID_REQUEST'));
+            FatUtility::dieJsonError(Labels::getLabel('M_ERROR_INVALID_REQUEST', $this->siteLangId));
         }
     }
 
