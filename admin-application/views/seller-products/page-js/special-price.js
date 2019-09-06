@@ -31,7 +31,7 @@ $(document).on('keyup', "input[name='product_name']", function(){
 $(document).on('click', 'table.splPriceList-js tr td .js--editCol', function(){
     $(this).hide();
     var input = $(this).siblings('input[type="text"]');
-    var value = input.val();
+    var value = input.attr('value');
     input.removeClass('hide');
     input.val('').focus().val(value);
 });
@@ -128,6 +128,7 @@ $(document).on('blur', ".js--splPriceCol:not(.date_js)", function(){
                 }
                 document.getElementById('frmSplPriceListing').reset()
                 $('table.splPriceList-js tbody').prepend(t.data);
+                $('.date_js').datepicker('option', {minDate: new Date()});
             }
 			$(document).trigger('close.facebox');
             if (0 < frm.addMultiple.value) {
