@@ -68,6 +68,12 @@ if (!empty($product)) {
             'icon' => CONF_WEBROOT_URL.'images/retina/sprite.svg#safepayments'
         );
     }
+    $product['youtubeUrlThumbnail'] = '';
+    if (!empty($product['product_youtube_video'])) {
+        $youtubeVideoUrl = $product['product_youtube_video'];
+        $videoCode = CommonHelper::parseYouTubeurl($youtubeVideoUrl);
+        $product['youtubeUrlThumbnail'] = 'https://img.youtube.com/vi/'.$videoCode.'/hqdefault.jpg';
+    }
 }
 
 $product['selprod_return_policies'] = !empty($product['selprod_return_policies']) ? $product['selprod_return_policies'] : (object)array();
