@@ -6,7 +6,7 @@ class CheckoutController extends MyAppController
     public function __construct($action)
     {
         parent::__construct($action);
-        $user_id = 0;
+
         if (true ===  MOBILE_APP_API_CALL) {
             UserAuthentication::checkLogin();
         }
@@ -24,9 +24,9 @@ class CheckoutController extends MyAppController
                 }
                 FatApp::redirectUser(CommonHelper::generateUrl('Cart'));
             }
-            $user_id = UserAuthentication::getLoggedUserId();
         }
-        $this->cartObj = new Cart($user_id, $this->siteLangId);
+
+        $this->cartObj = new Cart(UserAuthentication::getLoggedUserId(), $this->siteLangId, $this->app_user['temp_user_id']);
         if (1 > $this->cartObj->getCartBillingAddress()) {
             $this->cartObj->setCartBillingAddress();
         }
@@ -719,12 +719,12 @@ class CheckoutController extends MyAppController
             $billingAddressDetail = array();
             $billingAddressId = $this->cartObj->getCartBillingAddress();
             if (0 < $billingAddressId) {
-                $billingAddressDetail = UserAddress::getUserAddresses($loggedUserId, 0, 0, $billingAddressId);
+                $billingAddressDetail = UserAddress::getUserAddresses($loggedUserId, $this->siteLangId, 0, $billingAddressId);
             }
             $shippingddressDetail = array();
             $shippingAddressId = $this->cartObj->getCartShippingAddress();
             if ($shippingAddressId > 0) {
-                $shippingddressDetail = UserAddress::getUserAddresses($loggedUserId, 0, 0, $shippingAddressId);
+                $shippingddressDetail = UserAddress::getUserAddresses($loggedUserId, $this->siteLangId, 0, $shippingAddressId);
             }
 
             $this->set('billingAddress', $billingAddressDetail);
@@ -802,7 +802,6 @@ class CheckoutController extends MyAppController
         }
 
         $cartSummary = $this->cartObj->getCartFinancialSummary($this->siteLangId);
-
         $userId = UserAuthentication::getLoggedUserId();
 
         /* Payment Methods[ */
@@ -1435,8 +1434,15 @@ class CheckoutController extends MyAppController
             FatUtility::dieWithError(Message::getHtml());
         }
 
+        $orderId = isset($_SESSION['order_id']) ? $_SESSION['order_id'] : '';
+        if (true ===  MOBILE_APP_API_CALL) {
+            if (empty($post['orderId'])) {
+                FatUtility::dieJsonError(Labels::getLabel('LBL_Order_Id_Is_Required', $this->siteLangId));
+            }
+            $orderId = $post['orderId'];
+        }
+
         $rewardPoints = $post['redeem_rewards'];
-        $orderId = isset($_SESSION['order_id'])?$_SESSION['order_id']:'';
         $totalBalance = UserRewardBreakup::rewardPointBalance($loggedUserId, $orderId);
 
         /* var_dump($totalBalance);exit; */
@@ -1445,7 +1451,10 @@ class CheckoutController extends MyAppController
             FatUtility::dieJsonError($message);
         }
 
-        $cartObj = new Cart();
+        $cartObj = new Cart($loggedUserId, $this->siteLangId, $this->app_user['temp_user_id']);
+
+        // $cartObj = new Cart();
+
         $cartSummary = $cartObj->getCartFinancialSummary($this->siteLangId);
 
         $cartTotalWithoutDiscount = $cartSummary['cartTotal'] - $cartSummary["cartDiscounts"]["coupon_discount_total"];
@@ -1459,7 +1468,6 @@ class CheckoutController extends MyAppController
             $msg = str_replace('{MAX}', FatApp::getConfig('CONF_MAX_REWARD_POINT'), $msg);
             FatUtility::dieJsonError(strip_tags($msg));
         }
-
         if (!$cartObj->updateCartUseRewardPoints($rewardPoints)) {
             $message = Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
@@ -1469,17 +1477,22 @@ class CheckoutController extends MyAppController
             FatUtility::dieWithError(Message::getHtml());
         }
 
+        $this->set('msg', Labels::getLabel("MSG_Used_Reward_point", $this->siteLangId).'-'.$rewardPoints);
         if (true ===  MOBILE_APP_API_CALL) {
+            $cartSummary = $cartObj->getCartFinancialSummary($this->siteLangId);
+            $cartProducts = $cartObj->getProducts($this->siteLangId);
+
+            $this->set('cartSummary', $cartSummary);
+            $this->set('products', $cartProducts);
             $this->_template->render();
         }
 
-        $this->set('msg', Labels::getLabel("MSG_Used_Reward_point", $this->siteLangId).'-'.$rewardPoints);
         $this->_template->render(false, false, 'json-success.php');
     }
 
     public function removeRewardPoints()
     {
-        $cartObj = new Cart();
+        $cartObj = new Cart(UserAuthentication::getLoggedUserId(true), $this->siteLangId, $this->app_user['temp_user_id']);
         if (!$cartObj->removeUsedRewardPoints()) {
             $message = Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
@@ -1488,10 +1501,15 @@ class CheckoutController extends MyAppController
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
-        if (true ===  MOBILE_APP_API_CALL) {
-            $this->_template->render();
-        }
         $this->set('msg', Labels::getLabel("MSG_used_reward_point_removed", $this->siteLangId));
+        if (true ===  MOBILE_APP_API_CALL) {
+            $cartSummary = $cartObj->getCartFinancialSummary($this->siteLangId);
+            $cartProducts = $cartObj->getProducts($this->siteLangId);
+
+            $this->set('cartSummary', $cartSummary);
+            $this->set('products', $cartProducts);
+            $this->_template->render(true, true, 'checkout/use-reward-points.php');
+        }
         $this->_template->render(false, false, 'json-success.php');
     }
 

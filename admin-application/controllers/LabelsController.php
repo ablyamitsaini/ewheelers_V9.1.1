@@ -140,12 +140,12 @@ class LabelsController extends AdminBaseController
         }
 
         $languages = Language::getAllNames();
-        foreach ($languages as $langId=>$langName) {
+        foreach ($languages as $langId => $langName) {
             $keyValue = strip_tags(trim($post['label_caption'.$langId]));
             $data = array(
-            'label_lang_id'=>$langId,
-            'label_key'=>$labelKey,
-            'label_caption'=>$keyValue,
+                'label_lang_id'=>$langId,
+                'label_key'=>$labelKey,
+                'label_caption'=>$keyValue,
             );
             $obj = new Labels();
             if (!$obj->addUpdateData($data)) {
@@ -312,6 +312,9 @@ class LabelsController extends AdminBaseController
                 }
             }
         }
+        
+        $labelsUpdatedAt = array('conf_name'=>'CONF_LANG_LABELS_UPDATED_AT','conf_val'=>time());
+        FatApp::getDb()->insertFromArray('tbl_configurations', $labelsUpdatedAt, false, array(), $labelsUpdatedAt);
 
         Message::addMessage(Labels::getLabel('LBL_Labels_data_imported/updated_Successfully', $this->adminLangId));
         FatUtility::dieJsonSuccess(Message::getHtml());
@@ -357,15 +360,14 @@ class LabelsController extends AdminBaseController
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $this->adminLangId));
         return $frm;
     }
-    
+
     public function updateJsonFile()
     {
-        $records = Labels::getAll($this->adminLangId, array('label_caption', 'label_key'));
-        $labels = array_column($records, 'label_caption', 'label_key');
-        if (!CommonHelper::updateLangLabelsToFile($labels)) {
-            $message = Labels::getLabel('MSG_Unable_to_update_file', $this->adminLangId);
-            FatUtility::dieJsonError($message);
+        $langCode = Language::getAttributesById($this->adminLangId, 'language_code', false);
+        if (!Labels::updateDataToFile($this->adminLangId, $langCode)) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Unable_to_update_file', $langId));
         }
+
         $message = Labels::getLabel('MSG_File_successfully_updated', $this->adminLangId);
         FatUtility::dieJsonSuccess($message);
     }

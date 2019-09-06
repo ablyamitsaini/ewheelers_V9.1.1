@@ -2103,7 +2103,7 @@ class EmailHandler extends FatModel
         return array(
         '{website_name}'    =>    FatApp::getConfig('CONF_WEBSITE_NAME_'.$langId),
         '{website_url}'        =>    CommonHelper::generateFullUrl('', '', array(), CONF_WEBROOT_FRONT_URL),
-        '{Company_Logo}'    =>    '<img src="' . CommonHelper::generateFullUrl('Image', 'emailLogo', array($langId), CONF_WEBROOT_FRONT_URL).'?'.time(). '" />',
+        '{Company_Logo}'    =>    '<img src="' . CommonHelper::generateFullUrl('Image', 'emailLogo', array($langId), CONF_WEBROOT_FRONT_URL). '" />',
         '{current_date}'    =>    date('M d, Y'),
         '{social_media_icons}' => $social_media_icons,
         '{contact_us_url}' => CommonHelper::generateFullUrl('custom', 'contactUs', array(), CONF_WEBROOT_FRONT_URL),

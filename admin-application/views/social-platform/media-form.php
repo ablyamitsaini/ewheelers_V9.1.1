@@ -3,12 +3,12 @@ $frm->setFormTagAttribute('class', 'web_form form_horizontal');
 $frm->developerTags['colClassPrefix'] = 'col-md-';
 $frm->developerTags['fld_default_col'] = 12;
 
-$fld1 = $frm->getField('image');	
+$fld1 = $frm->getField('image');
 $fld1->addFieldTagAttribute('class','btn btn--primary btn--sm');
 
 $htmlAfterField = '<span class="uploadimage--info">'. Labels::getLabel('LBL_This_will_be_displayed_in_30x30_on_your_store.',$adminLangId).'<br/>'. Labels::getLabel('LBL_SVG_images_are_not_supported_in_emails.',$adminLangId) .'</span>';
 if( isset($img) && !empty($img) ){
-	$htmlAfterField .= '<ul class="grids--onethird"> <li><div class="uploaded--image"><img src="'.CommonHelper::generateFullUrl('Image','SocialPlatform',array($splatform_id,'THUMB'),CONF_WEBROOT_FRONT_URL).'?'.time().'"> <a href="javascript:void(0);" onClick="removeImg('.$splatform_id.')" class="remove--img"><i class="ion-close-round"></i></a></div></li></ul>';
+	$htmlAfterField .= '<ul class="grids--onethird"> <li><div class="uploaded--image"><img src="'.CommonHelper::generateFullUrl('Image','SocialPlatform',array($splatform_id,'THUMB'),CONF_WEBROOT_FRONT_URL).'"> <a href="javascript:void(0);" onClick="removeImg('.$splatform_id.')" class="remove--img"><i class="ion-close-round"></i></a></div></li></ul>';
 }
 $fld1->htmlAfterField = $htmlAfterField;
 ?>
@@ -25,7 +25,7 @@ $fld1->htmlAfterField = $htmlAfterField;
 	<div class="tabs_nav_container responsive flat">
 		<ul class="tabs_nav">
 			<li><a href="javascript:void(0);" onclick="addForm(<?php echo $splatform_id ?>);"><?php echo Labels::getLabel('LBL_General',$adminLangId); ?></a></li>
-			<?php 
+			<?php
 			if ( $splatform_id > 0 ) {
 				foreach($languages as $langId=>$langName){?>
 					<li><a href="javascript:void(0);" onclick="addLangForm(<?php echo $splatform_id ?>, <?php echo $langId;?>);"><?php echo Labels::getLabel('LBL_'.$langName,$adminLangId);?></a></li>
@@ -39,5 +39,5 @@ $fld1->htmlAfterField = $htmlAfterField;
 				<?php echo $frm->getFormHtml(); ?>
 			</div>
 		</div>
-	</div>	
+	</div>
 </div>

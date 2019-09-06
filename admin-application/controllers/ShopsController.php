@@ -558,13 +558,13 @@ class ShopsController extends AdminBaseController
         /* $fld = $frm->addButton('Logo','shop_logo','Upload File',
         array('class'=>'shopFile-Js','id'=>'shop_logo','data-file_type'=>AttachedFile::FILETYPE_SHOP_LOGO));
         $fld->htmlAfterField='<span id="input-field'.AttachedFile::FILETYPE_SHOP_LOGO.'"></span>
-        <div class="uploaded--image"><img src="'.CommonHelper::generateUrl('Image','shopLogo',array($shop_id,$lang_id,'THUMB?'.time()),CONF_WEBROOT_FRONT_URL).'"></div>';
+        <div class="uploaded--image"><img src="'.CommonHelper::generateUrl('Image','shopLogo',array($shop_id,$lang_id,'THUMB'),CONF_WEBROOT_FRONT_URL).'"></div>';
 
         $fld1 = $frm->addButton('Banner','shop_banner','Upload File',
         array('class'=>'shopFile-Js','id'=>'shop_banner','data-file_type'=>AttachedFile::FILETYPE_SHOP_BANNER));
         $fld1->htmlAfterField='<span id="input-field'.AttachedFile::FILETYPE_SHOP_BANNER.'"></span>
         <span class="uploadimage--info">Preferred Dimension: Width = 1000px, Height = 250px </span>
-        <div class="uploaded--image"><img src="'.CommonHelper::generateUrl('Image','shopBanner',array($shop_id,$lang_id,'THUMB?'.time()),CONF_WEBROOT_FRONT_URL).'"></div>'; */
+        <div class="uploaded--image"><img src="'.CommonHelper::generateUrl('Image','shopBanner',array($shop_id,$lang_id,'THUMB'),CONF_WEBROOT_FRONT_URL).'"></div>'; */
 
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $this->adminLangId));
         return $frm;

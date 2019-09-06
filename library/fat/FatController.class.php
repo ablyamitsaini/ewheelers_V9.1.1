@@ -7,7 +7,7 @@ class FatController {
 
 	protected $_autoCreateModel = true;
 
-	function __construct($action) { 
+	function __construct($action) {
 		$this->_controllerName = get_class($this);
 		$this->_modelName = substr($this->_controllerName, 0, (strlen($this->_controllerName)) - strlen('Controller'));
 		$this->_actionName = $action;

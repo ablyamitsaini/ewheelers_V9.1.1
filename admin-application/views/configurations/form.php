@@ -22,19 +22,19 @@ else{
             $desktopLogoFld->htmlAfterField = '<span class = "uploadimage--info" >Dimensions 168*37</span>';
             $emailLogoFld->htmlAfterField = '<span class = "uploadimage--info" >Dimensions 168*37</span>';
             if( isset($adminLogo) && !empty($adminLogo) ){
-                $adminLogoFld->htmlAfterField .= '<div class="uploaded--image"><img src="'.CommonHelper::generateFullUrl('Image','siteAdminLogo',array('THUMB')).'?'.time().'"> <a  class="remove--img" href="javascript:void(0);" onclick="removeSiteAdminLogo()" ><i class="ion-close-round"></i></a></div>';
+                $adminLogoFld->htmlAfterField .= '<div class="uploaded--image"><img src="'.CommonHelper::generateFullUrl('Image','siteAdminLogo',array('THUMB')).'"> <a  class="remove--img" href="javascript:void(0);" onclick="removeSiteAdminLogo()" ><i class="ion-close-round"></i></a></div>';
             }
 
             if( isset($desktopLogo) && !empty($desktopLogo) ){
-                $desktopLogoFld->htmlAfterField .= '<div class="uploaded--image"><img src="'.CommonHelper::generateFullUrl('Image','siteLogo',array(''), CONF_WEBROOT_FRONT_URL).'?'.time().'"> <a  class="remove--img" href="javascript:void(0);" onclick="removeDesktopLogo()" ><i class="ion-close-round"></i></a></div>';
+                $desktopLogoFld->htmlAfterField .= '<div class="uploaded--image"><img src="'.CommonHelper::generateFullUrl('Image','siteLogo',array(''), CONF_WEBROOT_FRONT_URL).'"> <a  class="remove--img" href="javascript:void(0);" onclick="removeDesktopLogo()" ><i class="ion-close-round"></i></a></div>';
             }
 
             if( isset($emailLogo) && !empty($emailLogo) ){
-                $emailLogoFld->htmlAfterField .= '<div class="uploaded--image"><img src="'.CommonHelper::generateFullUrl('Image','emailLogo',array(''), CONF_WEBROOT_FRONT_URL).'?'.time().'"><a  class="remove--img" href="javascript:void(0);" onclick="removeEmailLogo()" ><i class="ion-close-round"></i></a></div>';
+                $emailLogoFld->htmlAfterField .= '<div class="uploaded--image"><img src="'.CommonHelper::generateFullUrl('Image','emailLogo',array(''), CONF_WEBROOT_FRONT_URL).'"><a  class="remove--img" href="javascript:void(0);" onclick="removeEmailLogo()" ><i class="ion-close-round"></i></a></div>';
             }
 
             if( isset($favicon) && !empty($favicon) ){
-                $faviconFld->htmlAfterField = '<div class="uploaded--image"><img src="'.CommonHelper::generateFullUrl('Image','favicon',array(''), CONF_WEBROOT_FRONT_URL).'?'.time().'"> <a  class="remove--img" href="javascript:void(0);" onclick="removeFavicon()" ><i class="ion-close-round"></i></a></div>';
+                $faviconFld->htmlAfterField = '<div class="uploaded--image"><img src="'.CommonHelper::generateFullUrl('Image','favicon',array(''), CONF_WEBROOT_FRONT_URL).'"> <a  class="remove--img" href="javascript:void(0);" onclick="removeFavicon()" ><i class="ion-close-round"></i></a></div>';
             }
         } */
     break;

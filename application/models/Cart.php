@@ -14,6 +14,7 @@ class Cart extends FatModel
         parent::__construct();
 
         $user_id = FatUtility::int($user_id);
+
         $langId = FatUtility::int($langId);
 
         $this->cart_lang_id = $langId;
@@ -22,8 +23,13 @@ class Cart extends FatModel
         }
 
         if (empty($tempCartUserId)) {
-            $this->cart_id = session_id();
             $tempCartUserId = session_id();
+            if (true ===  MOBILE_APP_API_CALL) {
+                $tempCartUserId = $user_id;
+                if (1 > $user_id) {
+                    $user_id = $tempCartUserId = UserAuthentication::getLoggedUserId(true);
+                }
+            }
         }
 
         $this->cart_user_id = $tempCartUserId;
@@ -879,10 +885,10 @@ class Cart extends FatModel
         $orderPaymentGatewayCharges = $orderNetAmount - $WalletAmountCharge;
 
         $isCodValidForNetAmt = true;
-        if(FatApp::getConfig("CONF_MAX_COD_ORDER_LIMIT", FatUtility::VAR_INT, 0) > 0){
+        if (FatApp::getConfig("CONF_MAX_COD_ORDER_LIMIT", FatUtility::VAR_INT, 0) > 0) {
             if (($orderPaymentGatewayCharges >= FatApp::getConfig("CONF_MIN_COD_ORDER_LIMIT", FatUtility::VAR_INT, 0)) && ($orderPaymentGatewayCharges <= FatApp::getConfig("CONF_MAX_COD_ORDER_LIMIT", FatUtility::VAR_INT, 0)) && ($isCodEnabled)) {
-            $isCodValidForNetAmt = true;
-            }else{
+                $isCodValidForNetAmt = true;
+            } else {
                 $isCodValidForNetAmt = false;
             }
         }

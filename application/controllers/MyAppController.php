@@ -10,6 +10,9 @@ class MyAppController extends FatController
         $this->action = $action;
 
         if (FatApp::getConfig("CONF_MAINTENANCE", FatUtility::VAR_INT, 0) && (get_class($this) != "MaintenanceController") && (get_class($this) !=' Home' && $action != 'setLanguage')) {
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(Labels::getLabel('MSG_Site_under_maintenance', CommonHelper::getLangId()));
+            }
             FatApp::redirectUser(CommonHelper::generateUrl('maintenance'));
         }
 
@@ -45,7 +48,7 @@ class MyAppController extends FatController
         $controllerName = ucfirst(FatUtility::dashed2Camel($urlController));
 
         /* to keep track of temporary hold the product stock, update time in each row of tbl_product_stock_hold against current user[ */
-        $cartObj = new Cart(0, $this->siteLangId);
+        $cartObj = new Cart(UserAuthentication::getLoggedUserId(true), $this->siteLangId);
         $cartProducts = $cartObj->getProducts($this->siteLangId);
         if ($cartProducts) {
             foreach ($cartProducts as $product) {
@@ -188,7 +191,6 @@ class MyAppController extends FatController
         $srch->addMultipleFields(array('u.*'));
         $rs = $srch->getResultSet();
         $this->user_details = $this->db->fetch($rs, 'user_id');
-
         $cObj = new Cart($user_id, 0, $this->app_user['temp_user_id']);
         $this->cartItemsCount = $cObj->countProducts();
         $this->set('cartItemsCount', $this->cartItemsCount);
