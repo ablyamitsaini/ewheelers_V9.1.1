@@ -52,9 +52,9 @@ if (0 < $selProd_id) {
                         <?php
                         foreach ($dataToEdit as $data) {
                             $data['addMultiple'] = 1;
-                            $this->includeTemplate('seller/add-special-price-form.php', array('adminLangId' => $siteLangId, 'data' => $data), false);
+                            $this->includeTemplate('seller/add-special-price-form.php', array('siteLangId' => $siteLangId, 'data' => $data), false);
                         }
-                        $this->includeTemplate('seller/add-special-price-form.php', array('adminLangId' => $siteLangId), false);
+                        $this->includeTemplate('seller/add-special-price-form.php', array('siteLangId' => $siteLangId), false);
                         ?>
                         <div class="cards-content pl-4 pr-4">
                             <div class="row justify-content-between">

@@ -763,7 +763,6 @@ class SellerProduct extends MyAppModel
     public static function getProductsOptionsString($products, $langId, $toHtml = false)
     {
         if (empty($products) || empty($langId)) {
-            $this->error = Labels::getLabel('ERR_Invalid_Request', CommonHelper::getLangId());
             return false;
         }
         $optionsStringArr = array();

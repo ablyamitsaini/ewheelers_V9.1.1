@@ -4,6 +4,7 @@ $(document).ready(function(){
 });
 $(document).on('keyup', "input[name='product_name']", function(){
     var currObj = $(this);
+    var parentForm = currObj.closest('form').attr('id');
     if('' != currObj.val()){
         currObj.autocomplete({'source': function(request, response) {
         		$.ajax({
@@ -19,12 +20,12 @@ $(document).on('keyup', "input[name='product_name']", function(){
         		});
         	},
         	'select': function(item) {
-        		$("input[name='splprice_selprod_id']").val(item['value']);
+                $("#"+parentForm+" input[name='splprice_selprod_id']").val(item['value']);
                 currObj.val( item['label'] );
         	}
         });
     }else{
-        $("input[name='splprice_selprod_id']").val('');
+        $("#"+parentForm+" input[name='splprice_selprod_id']").val('');
     }
 });
 

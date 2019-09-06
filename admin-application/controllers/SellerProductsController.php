@@ -2264,6 +2264,15 @@ class SellerProductsController extends AdminBaseController
     public function specialPrice($selProd_id = 0)
     {
         $selProd_id = FatUtility::int($selProd_id);
+
+        if (0 < $selProd_id || 0 > $selProd_id) {
+            $selProd_id = SellerProduct::getAttributesByID($selProd_id, 'selprod_id', true);
+            if (empty($selProd_id)) {
+                Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId));
+                FatApp::redirectUser(CommonHelper::generateUrl('SellerProducts', 'specialPrice'));
+            }
+        }
+
         $srchFrm = $this->getSpecialPriceSearchForm();
         $selProdIdsArr = FatApp::getPostedData('selprod_ids', FatUtility::VAR_INT, 0);
 
@@ -2359,6 +2368,9 @@ class SellerProductsController extends AdminBaseController
     public function updateSpecialPriceRow()
     {
         $data = FatApp::getPostedData();
+        if (empty($data)) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Request', $this->adminLangId));
+        }
 
         $splPriceId = $this->updateSelProdSplPrice($data, true);
         if (!$splPriceId) {
