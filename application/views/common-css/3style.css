@@ -16396,9 +16396,8 @@ div.faqanswer p {
 	font-size: 0.9em;
 	height: 2.5rem;
 	line-height: 2.5rem;
-	display: block;
-	width: 100%;
-	max-width: 110px;
+	display: block;	
+	width: 110px;
 	border: solid 1px transparent;
 }
 
@@ -16406,6 +16405,6 @@ div.faqanswer p {
 	border-color: var(--border-color);
 }
 
-.vd-input, .sp-input {
-	max-width: 110px;
+input.vd-input, input.sp-input {
+	width: 110px;
 }

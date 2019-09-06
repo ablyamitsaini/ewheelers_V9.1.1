@@ -9600,8 +9600,7 @@ body.page--front .page__cell #footer {
 	height: 2.5rem;
 	line-height: 2.5rem;
 	display: block;
-	width: 100%;
-	max-width: 110px;
+	width: 100px;
 	border: solid 1px transparent;
 }
 
@@ -9609,8 +9608,12 @@ body.page--front .page__cell #footer {
 	border-color: var(--border-color);
 }
 
-input.vd-input, input.sp-input {
-	max-width: 110px;
-    width : 110px !important;
-    padding: 0 10px !important;
+input[type="text"].vd-input, input[type="text"].sp-input {	
+    width : 100px;
+    padding: 0 10px;
+    text-align:left;
+    height: 2.5rem;
+}
+input[type="text"].vd-input:focus, input[type="text"].sp-input:focus{
+    box-shadow:none;
 }
