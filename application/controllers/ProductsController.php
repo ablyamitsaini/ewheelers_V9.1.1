@@ -796,7 +796,7 @@ class ProductsController extends MyAppController
     }
 
     private function getRecommendedProducts($selprod_id, $langId, $userId = 0)
-    { 
+    {
         $selprod_id = FatUtility::int($selprod_id);
         if (1 > $selprod_id) {
             return;
@@ -817,39 +817,43 @@ class ProductsController extends MyAppController
             'selprod_id', 'selprod_user_id',  'selprod_code', 'selprod_stock', 'selprod_condition', 'selprod_price', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
             'special_price_found','splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type',
             'theprice', 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name', 'brand_short_description', 'user_name',
-            'IF(selprod_stock > 0, 1, 0) AS in_stock','selprod_sold_count','selprod_return_policy','ifnull(prod_rating,0) prod_rating'
+            'IF(selprod_stock > 0, 1, 0) AS in_stock','selprod_sold_count','selprod_return_policy'
                  )
         );
 
         $dateToEquate = date('Y-m-d');
 
-        $recommendedProductsQuery = "(select rec_product_id , weightage from
-                            (
-                                SELECT ppr_recommended_product_id as rec_product_id , ppr_weightage as weightage from tbl_product_product_recommendation
-                                where ppr_viewing_product_id = $productId order by ppr_weightage desc limit 5
-                            ) as set1
-                            union
-                            select rec_product_id , weightage from
-                            (
-                                select tpr_product_id  as rec_product_id , if(tpr_custom_weightage_valid_till <= '$dateToEquate' , tpr_custom_weightage+tpr_weightage , tpr_weightage) as weightage from
-                                (
-                                    select * from tbl_product_to_tags where ptt_product_id = $productId
-                                ) innerSet1 inner JOIN tbl_tag_product_recommendation on tpr_tag_id = ptt_tag_id
-                                order by if(tpr_custom_weightage_valid_till <= '$dateToEquate' , tpr_custom_weightage+tpr_weightage , tpr_weightage) desc limit 5
-                            ) as set2
-                            ";
+        $subSrch1 = new SearchBase('tbl_product_product_recommendation', 'ppr');
+        $subSrch1->addMultipleFields(array('ppr_recommended_product_id as rec_product_id', 'ppr_weightage as weightage'));
+        $subSrch1->addCondition('ppr_viewing_product_id', '=', $productId);
+        $subSrch1->addOrder('weightage', 'desc');
+        $subSrch1->doNotCalculateRecords();
+        $subSrch1->setPageSize(5);
+
+        $subSrch2 = new SearchBase(Product::DB_PRODUCT_TO_TAG, 'ptt');
+        $subSrch2->joinTable('tbl_tag_product_recommendation', 'INNER JOIN', 'tpr.tpr_tag_id = ptt.ptt_tag_id', 'tpr');
+        $subSrch2->addMultipleFields(array('tpr_product_id  as rec_product_id','if(tpr_custom_weightage_valid_till <= '. $dateToEquate.', tpr_custom_weightage+tpr_weightage , tpr_weightage) as weightage'));
+        $subSrch2->addOrder('weightage', 'desc');
+        $subSrch2->doNotCalculateRecords();
+        $subSrch2->setPageSize(5);
+
+        $recommendedProductsQuery = '('.$subSrch1->getQuery().') union ('.$subSrch2->getQuery().')';
         if (0 < $userId) {
-            $recommendedProductsQuery.= " union
-                            select rec_product_id , weightage from
-                            (
-                                SELECT upr_product_id as rec_product_id , upr_weightage as weightage from tbl_user_product_recommendation
-                                where upr_user_id = $userId order by upr_weightage desc limit 5
-                            ) as set3 " ;
+            $subSrch3 = new SearchBase('tbl_user_product_recommendation', 'upr');
+            $subSrch1->addMultipleFields(array('upr_product_id as rec_product_id', 'upr_weightage as weightage'));
+            $subSrch3->addOrder('weightage', 'desc');
+            $subSrch3->addCondition('upr_user_id', '=', $userId);
+            $subSrch3->doNotCalculateRecords();
+            $subSrch3->setPageSize(5);
+            $recommendedProductsQuery.= ' union ('.$subSrch3->getQuery().')';
         }
 
-        $recommendedProductsQuery.= ")";
+        $rs = FatApp::getDb()->query('select rec_product_id , weightage from ('.$recommendedProductsQuery.') as temp order by weightage desc');
+        $recommendedProds = FatApp::getDb()->fetchAllAssoc($rs);
+        if (empty($recommendedProds)) {
+            return array();
+        }
 
-        $srch->joinTable("$recommendedProductsQuery", 'inner join', 'rs1.rec_product_id = product_id', 'rs1');
         $srch->addGroupBy('product_id');
 
         if (FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO) {
@@ -860,7 +864,7 @@ class ProductsController extends MyAppController
             $srch->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
         }
 
-        $selProdReviewObj = new SelProdReviewSearch();
+        /*$selProdReviewObj = new SelProdReviewSearch();
         $selProdReviewObj->joinSelProdRating();
         $selProdReviewObj->addCondition('sprating_rating_type', '=', SelProdRating::TYPE_PRODUCT);
         $selProdReviewObj->doNotCalculateRecords();
@@ -870,8 +874,12 @@ class ProductsController extends MyAppController
         $selProdReviewObj->addMultipleFields(array('spr.spreview_selprod_id',"ROUND(AVG(sprating_rating),2) as prod_rating"));
         $selProdRviewSubQuery = $selProdReviewObj->getQuery();
         $srch->joinTable('(' . $selProdRviewSubQuery . ')', 'LEFT OUTER JOIN', 'sq_sprating.spreview_selprod_id = selprod_id', 'sq_sprating');
+        $srch->addFld('ifnull(prod_rating,0) prod_rating');*/
+
+        $srch->addCondition('product_id', 'in', array_keys($recommendedProds));
         $srch->setPageSize(5);
         $srch->doNotCalculateRecords();
+
         return $recommendedProducts = FatApp::getDb()->fetchAll($srch->getResultSet());
     }
 

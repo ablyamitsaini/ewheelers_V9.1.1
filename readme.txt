@@ -22,6 +22,7 @@ msg-1018591-Download language label file for APP
 > Maintenance mode handling for API.
 > Performance optimization : Used labels from json file.
 > optimization for system images.
+> optimization for recommended products on product details page.
 
 Sheet url : https://docs.google.com/spreadsheets/d/1FpUtNMAX3Zub5RIKe4ESxtXqcE7gkxJf_pe0hdKTTUI/edit#gid=0
 Notes: Check colomn "Web Status" in above sheet url for testing.
