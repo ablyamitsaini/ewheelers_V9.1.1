@@ -21,27 +21,23 @@ foreach ($arr_flds as $key => $val) {
 
 foreach ($arrListing as $sn => $row) {
     $tr = $tbl->appendElement('tr', array());
-
+    $volDiscountId = $row['voldiscount_id'];
+    $selProdId = $row['selprod_id'];
     foreach ($arr_flds as $key => $val) {
-        $tr->setAttribute('id', 'row-'.$row['voldiscount_id']);
+        $tr->setAttribute('id', 'row-'.$volDiscountId);
         $td = $tr->appendElement('td');
         switch ($key) {
             case 'select_all':
-                $td->appendElement('plaintext', array(), '<label class="checkbox"><input class="selectItem--js" type="checkbox" name="selprod_ids['.$row['voldiscount_id'].']" value='.$row['selprod_id'].'><i class="input-helper"></i></label>', true);
+                $td->appendElement('plaintext', array(), '<label class="checkbox"><input class="selectItem--js" type="checkbox" name="selprod_ids['.$volDiscountId.']" value='.$selProdId.'><i class="input-helper"></i></label>', true);
                 break;
             case 'product_name':
-                $variantStr = ($row['selprod_title'] != '') ? $row['selprod_title'].'<br/>' : '';
-                if (is_array($row['options']) && count($row['options'])) {
-                    foreach ($row['options'] as $op) {
-                        $variantStr .= $op['option_name'].': '.$op['optionvalue_name'].'<br/>';
-                    }
-                }
-                $td->appendElement('plaintext', array(), $variantStr, true);
-                $td->appendElement('plaintext', array(), $row['product_name'], true);
+                // last Param of getProductDisplayTitle function used to get title in html form.
+                $productName = SellerProduct::getProductDisplayTitle($selProdId, $siteLangId, true);
+                $td->appendElement('plaintext', array(), $productName, true);
                 break;
             case 'voldiscount_min_qty':
             case 'voldiscount_percentage':
-                $input = '<input type="text" data-id="'.$row['voldiscount_id'].'" value="'.$row[$key].'" data-selprodid="'.$row['selprod_id'].'" name="'.$key.'" class="js--volDiscountCol hidden vd-input" data-val="'.$row[$key].'"/>';
+                $input = '<input type="text" data-id="'.$volDiscountId.'" value="'.$row[$key].'" data-selprodid="'.$selProdId.'" name="'.$key.'" class="js--volDiscountCol hidden vd-input" data-oldval="'.$row[$key].'"/>';
                 $td->appendElement('div', array("class" => 'js--editCol edit-hover', "title" => Labels::getLabel('LBL_Click_To_Edit', $siteLangId)), $row[$key], true);
                 $td->appendElement('plaintext', array(), $input, true);
                 break;
@@ -52,7 +48,7 @@ foreach ($arrListing as $sn => $row) {
                 $li->appendElement(
                     'a',
                     array('href'=>'javascript:void(0)', 'class'=>'',
-                    'title'=>Labels::getLabel('LBL_Delete', $siteLangId),"onclick"=>"deleteSellerProductVolumeDiscount(".$row['voldiscount_id'].")"),
+                    'title'=>Labels::getLabel('LBL_Delete', $siteLangId),"onclick"=>"deleteSellerProductVolumeDiscount(".$volDiscountId.")"),
                     '<i class="fa fa-trash"></i>',
                     true
                 );

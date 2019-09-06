@@ -1,8 +1,9 @@
 $(document).ready(function(){
     searchVolumeDiscountProducts(document.frmSearch);
 });
-$(document).on('keyup', "#frmAddVolumeDiscount input[name='product_name']", function(){
+$(document).on('keyup', "input[name='product_name']", function(){
     var currObj = $(this);
+    var parentForm = currObj.closest('form').attr('id');
     if('' != currObj.val()){
         currObj.autocomplete({'source': function(request, response) {
         		$.ajax({
@@ -18,12 +19,12 @@ $(document).on('keyup', "#frmAddVolumeDiscount input[name='product_name']", func
         		});
         	},
         	'select': function(item) {
-        		$("input[name='voldiscount_selprod_id']").val(item['value']);
+                $("#"+parentForm+" input[name='voldiscount_selprod_id']").val(item['value']);
                 currObj.val( item['label'] );
         	}
         });
     }else{
-        $("input[name='voldiscount_selprod_id']").val('');
+        $("#"+parentForm+" input[name='voldiscount_selprod_id']").val('');
     }
 });
 
@@ -31,7 +32,7 @@ $(document).on('click', 'table.volDiscountList-js tr td .js--editCol', function(
     $(this).hide();
     var input = $(this).siblings('input[type="text"]');
     var value = input.val();
-    input.fadeIn();
+    input.removeClass('hidden');
     input.val('').focus().val(value);
 });
 
@@ -48,27 +49,22 @@ $(document).on('blur', ".js--volDiscountCol", function(){
             var ans = $.parseJSON(t);
             if( ans.status != 1 ){
                 $.systemMessage(ans.msg, 'alert--danger');
-                value = oldValue;
+                updatedValue = oldValue;
             } else {
-                value = ans.data.value;
-                currObj.attr('data-val', value);
+                updatedValue = ans.data.value;
+                currObj.attr('data-oldval', value);
             }
-            currObj.val(value);
-            showElement(currObj, value);
+            currObj.val(updatedValue);
+            showElement(currObj, updatedValue);
         });
     } else {
-        showElement(currObj, oldValue);
+        showElement(currObj);
         currObj.val(oldValue);
     }
     return false;
 });
 
 (function() {
-    showElement = function(currObj, value){
-        currObj.siblings('div').text(value).fadeIn();
-        currObj.hide();
-    };
-
 	var dv = '#listing';
 	searchVolumeDiscountProducts = function(frm){
 
@@ -134,13 +130,13 @@ $(document).on('blur', ".js--volDiscountCol", function(){
             searchVolumeDiscountProducts(document.frmSearch);
         });
 	};
-    updateVolumeDiscount = function(frm, selProd_id){
+    updateVolumeDiscountRow = function(frm, selProd_id){
 		var data = fcom.frmData(frm);
-		fcom.updateWithAjax(fcom.makeUrl('Seller', 'updateVolumeDiscount'), data, function(t) {
+		fcom.updateWithAjax(fcom.makeUrl('Seller', 'updateVolumeDiscountRow'), data, function(t) {
             if(t.status == true){
                 if ((1 > frm.addMultiple.value && 1 > frm.lastRow.value) || 0 < selProd_id) {
                     if (1 > selProd_id) {
-                        $("input[name='voldiscount_selprod_id']").val('');
+                        frm.elements["voldiscount_selprod_id"].value = '';
                     }
                     frm.reset();
                 }
@@ -148,9 +144,6 @@ $(document).on('blur', ".js--volDiscountCol", function(){
                 $('table.volDiscountList-js tbody').prepend(t.data);
             }
 			$(document).trigger('close.facebox');
-            if (0 < $('.defaultForm.hidden').length && 0 < frm.lastRow.value) {
-                $('.defaultForm.hidden').removeClass('defaultForm hidden');
-            }
             if (0 < frm.addMultiple.value && 1 > selProd_id) {
                 var volDisRow = $("#"+frm.id).parent().parent();
                 volDisRow.siblings('.divider:first').remove();
@@ -159,4 +152,12 @@ $(document).on('blur', ".js--volDiscountCol", function(){
 		});
 		return false;
 	};
+    showElement = function(currObj, value){
+        var sibling = currObj.siblings('div');
+        if ('' != value){
+            sibling.text(value);
+        }
+        sibling.fadeIn();
+        currObj.addClass('hidden');
+    };
 })();

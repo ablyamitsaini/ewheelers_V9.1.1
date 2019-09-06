@@ -16,23 +16,6 @@ if (0 < $selProd_id) {
 
     $cancelBtnFld = $frmSearch->getField('btn_clear');
     $cancelBtnFld->setFieldTagAttribute('onclick', 'clearSearch('.$selProd_id.');');
-
-    $prodName = $addVolDiscountFrm->getField('product_name');
-    $prodName->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Select_Product', $adminLangId));
-
-    $minQty = $addVolDiscountFrm->getField('voldiscount_min_qty');
-    $minQty->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Add_Minimum_Quantity', $adminLangId));
-
-    $disPerc = $addVolDiscountFrm->getField('voldiscount_percentage');
-    $disPerc->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Add_Discount_Percentage', $adminLangId));
-
-    $addVolDiscountFrm->setFormTagAttribute('class', 'web_form');
-    $addVolDiscountFrm->setFormTagAttribute('id', 'frmAddVolumeDiscount');
-    $addVolDiscountFrm->setFormTagAttribute('name', 'frmAddVolumeDiscount');
-    $addVolDiscountFrm->setFormTagAttribute('onsubmit', 'updateVolumeDiscount(this, '.$selProd_id.'); return(false);');
-
-    $addVolDiscountFrm->addHiddenField('', 'lastRow', 0);
-    $addVolDiscountFrm->addHiddenField('', 'addMultiple', 0);
 ?>
 <div class='page'>
     <div class='container container-fluid'>
@@ -75,24 +58,11 @@ if (0 < $selProd_id) {
                     </div>
                     <div class="sectionbody">
                         <?php
-                        $class = !empty($dataToUpdate) && 0 < count($dataToUpdate) ? 'defaultForm hide' : '';
-                        $this->includeTemplate('seller-products/add-volume-discount-form.php', array('addVolDiscountFrm'=>$addVolDiscountFrm, 'class' => $class), false);
-                        foreach ($dataToUpdate as $key => $value) {
-                            $cloneFrm = clone $addVolDiscountFrm;
-                            if ($value === end($dataToUpdate) && 1 > $selProd_id) {
-                                $value['lastRow'] = 1;
-                            }
-                            $value['addMultiple'] = 1;
-
-                            $cloneFrm->fill($value);
-                            $cloneFrm->setFormTagAttribute('id', 'frmAddVolumeDiscount-'.$key);
-                            $cloneFrm->setFormTagAttribute('name', 'frmAddVolumeDiscount-'.$key);
-                            $productName = $cloneFrm->getField('product_name');
-                            $productName->setFieldTagAttribute('readonly', 'readonly');
-
-                            // CommonHelper::printArray($cloneFrm, true);
-                            $this->includeTemplate('seller-products/add-volume-discount-form.php', array('addVolDiscountFrm'=>$cloneFrm, 'class' => ''), false);
+                        foreach ($dataToEdit as $data) {
+                            $data['addMultiple'] = 1;
+                            $this->includeTemplate('seller-products/add-volume-discount-form.php', array('adminLangId' => $adminLangId, 'data' => $data), false);
                         }
+                        $this->includeTemplate('seller-products/add-volume-discount-form.php', array('adminLangId' => $adminLangId), false);
                         ?>
                         <div class="tablewrap" >
                             <div id="listing"> <?php echo Labels::getLabel('LBL_Processing...', $adminLangId); ?></div>

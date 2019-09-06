@@ -5,6 +5,9 @@
     $frmSearch->developerTags['fld_default_col'] = 4;
 
     $keywordFld = $frmSearch->getField('keyword');
+if (0 < $selProd_id) {
+    $keywordFld->setFieldTagAttribute('readonly', 'readonly');
+}
     $keywordFld->setWrapperAttribute('class', 'col-lg-4');
     $keywordFld->addFieldTagAttribute('placeholder', Labels::getLabel('LBL_Search_by_keyword', $siteLangId));
     $keywordFld->developerTags['col'] = 4;
@@ -17,30 +20,11 @@
     $submitBtnFld->developerTags['noCaptionTag'] = true;
 
     $cancelBtnFld = $frmSearch->getField('btn_clear');
-    $cancelBtnFld->setFieldTagAttribute('class', 'btn--block btn btn--primary-border '.$class);
+    $cancelBtnFld->setFieldTagAttribute('class', 'btn--block btn btn--primary-border ');
     $cancelBtnFld->setFieldTagAttribute('onclick', 'clearSearch('.$selProd_id.');');
     $cancelBtnFld->developerTags['col'] = 2;
     $cancelBtnFld->developerTags['noCaptionTag'] = true;
 
-    $updateBtnFld = $addVolDiscountFrm->getField('btn_update');
-    $updateBtnFld->setFieldTagAttribute('class', 'btn--block btn btn--primary');
-
-    $prodName = $addVolDiscountFrm->getField('product_name');
-    $prodName->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Select_Product', $siteLangId));
-
-    $minQty = $addVolDiscountFrm->getField('voldiscount_min_qty');
-    $minQty->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Add_Minimum_Quantity', $siteLangId));
-
-    $disPerc = $addVolDiscountFrm->getField('voldiscount_percentage');
-    $disPerc->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Add_Discount_Percentage', $siteLangId));
-
-    $addVolDiscountFrm->setFormTagAttribute('class', 'form');
-    $addVolDiscountFrm->setFormTagAttribute('id', 'frmAddVolumeDiscount');
-    $addVolDiscountFrm->setFormTagAttribute('name', 'frmAddVolumeDiscount');
-    $addVolDiscountFrm->setFormTagAttribute('onsubmit', 'updateVolumeDiscount(this, '.$selProd_id.'); return(false);');
-
-    $addVolDiscountFrm->addHiddenField('', 'lastRow', 0);
-    $addVolDiscountFrm->addHiddenField('', 'addMultiple', 0);
 ?>
 <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">
@@ -67,24 +51,11 @@
                 <div class="col-lg-12">
                     <div class="cards">
                         <?php
-                        $class = !empty($dataToUpdate) && 0 < count($dataToUpdate) ? 'defaultForm hidden' : '';
-                        $this->includeTemplate('seller/add-volume-discount-form.php', array('addVolDiscountFrm'=>$addVolDiscountFrm, 'class' => $class), false);
-                        foreach ($dataToUpdate as $key => $value) {
-                            $cloneFrm = clone $addVolDiscountFrm;
-                            if ($value === end($dataToUpdate) && 1 > $selProd_id) {
-                                $value['lastRow'] = 1;
-                            }
-                            $value['addMultiple'] = 1;
-
-                            $cloneFrm->fill($value);
-                            $cloneFrm->setFormTagAttribute('id', 'frmAddVolumeDiscount-'.$key);
-                            $cloneFrm->setFormTagAttribute('name', 'frmAddVolumeDiscount-'.$key);
-                            $productName = $cloneFrm->getField('product_name');
-                            $productName->setFieldTagAttribute('readonly', 'readonly');
-
-                            // CommonHelper::printArray($cloneFrm, true);
-                            $this->includeTemplate('seller/add-volume-discount-form.php', array('addVolDiscountFrm'=>$cloneFrm, 'class' => ''), false);
+                        foreach ($dataToEdit as $data) {
+                            $data['addMultiple'] = 1;
+                            $this->includeTemplate('seller/add-volume-discount-form.php', array('siteLangId' => $siteLangId, 'data' => $data), false);
                         }
+                        $this->includeTemplate('seller/add-volume-discount-form.php', array('siteLangId' => $siteLangId), false);
                         ?>
                         <div class="cards-content pl-4 pr-4">
                             <div class="row justify-content-between">

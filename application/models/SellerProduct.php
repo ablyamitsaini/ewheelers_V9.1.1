@@ -725,29 +725,49 @@ class SellerProduct extends MyAppModel
         return FatApp::getDb()->fetch($srch->getResultSet());
     }
 
-    public static function getProductDisplayTitle($selprod_id, $langId)
+    public static function getProductDisplayTitle($selProdId, $langId, $toHtml = false)
     {
         $prodSrch = new ProductSearch($langId, null, null, true, false);
         $prodSrch->joinSellerProducts(0, '', array(), false);
-        $prodSrch->addCondition('selprod_id', '=', $selprod_id);
-        $prodSrch->addMultipleFields(array('product_id','product_identifier', 'IFNULL(product_name, product_identifier) as product_name'));
-        $productRs = $prodSrch->getResultSet();
-        $products = FatApp::getDb()->fetch($productRs);
-        $variantStr = (!empty($products['product_name'])) ? $products['product_name'] : $products['product_identifier'];
-
-        $options = static::getSellerProductOptions($selprod_id, true, $langId);
-        if (is_array($options) && count($options)) {
-            $variantStr .= ' - ';
-            $counter = 1;
-            foreach ($options as $op) {
-                $variantStr .= $op['optionvalue_name'];
-                if ($counter != count($options)) {
-                    $variantStr .= ' - ';
-                }
-                $counter++;
-            }
+        if (is_array($selProdId) && 0 < count($selProdId)) {
+            $prodSrch->addCondition('selprod_id', 'IN', $selProdId);
+        } else {
+            $prodSrch->addCondition('selprod_id', '=', $selProdId);
         }
-        return $variantStr;
+        $prodSrch->addMultipleFields(array('selprod_id', 'product_id','product_identifier', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title'));
+        $prodSrch->addGroupBy('selprod_id');
+        $productRs = $prodSrch->getResultSet();
+        $products = FatApp::getDb()->fetchAll($productRs, 'selprod_id');
+
+        $productTitle = SellerProduct::getProductsOptionsString($products, $langId, $toHtml);
+
+        return (is_array($selProdId)) ? $productTitle : $productTitle[$selProdId];
+    }
+
+    public static function getProductsOptionsString($products, $langId, $toHtml = false)
+    {
+        if (empty($products) || empty($langId)) {
+            return false;
+        }
+        $optionsStringArr = array();
+        foreach ($products as $selProdId => $product) {
+            $variantStr = (!empty($product['product_name'])) ? $product['product_name'] : $product['selprod_title'];
+
+            $options = static::getSellerProductOptions($selProdId, true, $langId);
+            if (is_array($options) && count($options)) {
+                $variantStr .= (true === $toHtml) ? '<br/>' : ' - ';
+                $counter = 1;
+                foreach ($options as $op) {
+                    $variantStr .= (true === $toHtml) ? $op['option_name'].': '.$op['optionvalue_name'] : $op['optionvalue_name'];
+                    if ($counter != count($options)) {
+                        $variantStr .= (true === $toHtml) ? '<br/>' : ' - ';
+                    }
+                    $counter++;
+                }
+            }
+            $optionsStringArr[$selProdId] = $variantStr;
+        }
+        return $optionsStringArr;
     }
 
     public function getVolumeDiscounts()
@@ -830,5 +850,21 @@ class SellerProduct extends MyAppModel
         $rs = $srch->getResultSet();
         $records = $db->fetchAll($rs);
         return $srch->recordCount();
+    }
+
+    public static function volumeDiscountForm($langId)
+    {
+        $frm = new Form('frmSellerProductSpecialPrice');
+
+        $frm->addHiddenField('', 'voldiscount_selprod_id', 0);
+        $frm->addHiddenField('', 'voldiscount_id', 0);
+        $qtyFld = $frm->addIntegerField(Labels::getLabel("LBL_Minimum_Quantity", $langId), 'voldiscount_min_qty');
+        $qtyFld->requirements()->setPositive();
+        $discountFld = $frm->addFloatField(Labels::getLabel("LBL_Discount_in_(%)", $langId), "voldiscount_percentage");
+        $discountFld->requirements()->setPositive();
+        $fld1 = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $langId));
+        $fld2 = $frm->addButton('', 'btn_cancel', Labels::getLabel('LBL_Cancel', $langId), array('onClick' => 'javascript:$("#sellerProductsForm").html(\'\')'));
+        $fld1->attachField($fld2);
+        return $frm;
     }
 }
