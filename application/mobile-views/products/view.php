@@ -72,11 +72,7 @@ if (!empty($product)) {
 
 $product['selprod_return_policies'] = !empty($product['selprod_return_policies']) ? $product['selprod_return_policies'] : (object)array();
 $product['selprod_warranty_policies'] = !empty($product['selprod_warranty_policies']) ? $product['selprod_warranty_policies'] : (object)array();
-// $product['product_description'] = strip_tags(html_entity_decode($product['product_description'], ENT_QUOTES, 'utf-8'));
-$product_description = trim(CommonHelper::subStringByWords(strip_tags(CommonHelper::renderHtml($product["product_description"], true)), 500));
-$product_description .= ' - '.Labels::getLabel('LBL_See_more_at', $siteLangId).": ".CommonHelper::getCurrUrl();
-$product['product_description'] = $product_description;
-
+$product['product_description'] = strip_tags(html_entity_decode($product['product_description'], ENT_QUOTES, 'utf-8'));
 $data = array(
     'reviews' => empty($reviews) ? (object)array() : $reviews,
     'codEnabled' => (true === $codEnabled ? 1 : 0),
