@@ -796,7 +796,7 @@ class ProductsController extends MyAppController
     }
 
     private function getRecommendedProducts($selprod_id, $langId, $userId = 0)
-    { 
+    {
         $selprod_id = FatUtility::int($selprod_id);
         if (1 > $selprod_id) {
             return;
