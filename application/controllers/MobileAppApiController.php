@@ -1751,8 +1751,8 @@ class MobileAppApiController extends MyAppController
         $prodSrchObj = new ProductSearch($this->siteLangId);
         $prodSrchObj->setDefinedCriteria();
         $prodSrchObj->joinProductToCategory();
-        $prodSrchObj->    joinSellerSubscription();
-        $prodSrchObj->    addSubscriptionValidCondition();
+        $prodSrchObj->joinSellerSubscription();
+        $prodSrchObj->addSubscriptionValidCondition();
         $prodSrchObj->doNotCalculateRecords();
         $prodSrchObj->addCondition('selprod_id', '=', $seller_product_id);
         $prodSrchObj->addCondition('selprod_deleted', '=', applicationConstants::NO);
