@@ -23,3 +23,4 @@ Enhancements :
     => Maintenance mode handling for API.
     => Optimization for system images.
     => Optimization for recommended products on product details page.
+    => Optimization for home page used cache for collections templates.
