@@ -196,20 +196,17 @@ class Labels extends MyAppModel
 
         $path = CONF_UPLOADS_PATH.static::JSON_FILE_DIR_NAME.'/';
         if (!file_exists($path)) {
-            mkdir($path, 0777);
+            if (!mkdir($path, 0777, true)) {
+                return false;
+            }
         }
 
         $langFile = $path . $langCode.'.json';
         if (!file_exists($langFile) || (filemtime($langFile) < $lastLabelsUpdatedAt)) {
             $records = static::fetchAllAssoc($langId, array('label_key','label_caption'));
-            if (!file_put_contents($langFile, json_encode($records))) {
-                return false;
-            }
-            /*if (!file_put_contents($langFile, json_encode($records))) {
-                return false;
-            }*/
+            return file_put_contents($langFile, json_encode($records));
         }
-        return true;
+        return 0 < filesize($langFile) ? true : false;
     }
 
 

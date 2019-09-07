@@ -312,7 +312,7 @@ class LabelsController extends AdminBaseController
                 }
             }
         }
-        
+
         $labelsUpdatedAt = array('conf_name'=>'CONF_LANG_LABELS_UPDATED_AT','conf_val'=>time());
         FatApp::getDb()->insertFromArray('tbl_configurations', $labelsUpdatedAt, false, array(), $labelsUpdatedAt);
 
