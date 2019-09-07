@@ -86,7 +86,7 @@ class Labels extends MyAppModel
             $langFileData[$langId] = static::readDataFromFile($langId, $key);
         }
 
-        if (array_key_exists($key, $langFileData[$langId])) {
+        if (isset($langFileData[$langId]) && array_key_exists($key, $langFileData[$langId])) {
             $str = $langFileData[$langId][$key];
         }
 
@@ -202,7 +202,7 @@ class Labels extends MyAppModel
         }
 
         $langFile = $path . $langCode.'.json';
-        if (!file_exists($langFile) || (filemtime($langFile) < $lastLabelsUpdatedAt)) {
+        if (!file_exists($langFile) || (filemtime($langFile) < $lastLabelsUpdatedAt) || 1 > filesize($langFile)) {
             $records = static::fetchAllAssoc($langId, array('label_key','label_caption'));
             return file_put_contents($langFile, json_encode($records));
         }
