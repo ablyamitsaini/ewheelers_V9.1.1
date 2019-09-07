@@ -206,7 +206,7 @@ class Labels extends MyAppModel
             $records = static::fetchAllAssoc($langId, array('label_key','label_caption'));
             return file_put_contents($langFile, json_encode($records));
         }
-        return 0 < filesize($langFile) ? true : false;
+        return true;
     }
 
 
