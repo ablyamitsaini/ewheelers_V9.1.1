@@ -3696,12 +3696,6 @@ class SellerController extends SellerBaseController
 
         $frm->addCheckBox(Labels::getLabel('LBL_Product_Featured', $this->siteLangId), 'product_featured', 1, array(), false, 0);
 
-        $paymentMethod = new PaymentMethods;
-        if (!$paymentMethod->cashOnDeliveryIsActive()) {
-            $codFld->addFieldTagAttribute('disabled', 'disabled');
-            $codFld->htmlAfterField = '<small class="text--small">'.Labels::getLabel('LBL_COD_option_is_disabled_in_payment_gateway_settings', $langId).'</small>';
-        }
-
         /* $frm->addSelectBox(Labels::getLabel('LBL_Shipped_by_me',$langId), 'product_shipped_by_me', $yesNoArr, applicationConstants::YES, array(), ''); */
 
 
@@ -3711,7 +3705,11 @@ class SellerController extends SellerBaseController
 
         $yesNoArr = applicationConstants::getYesNoArr($langId);
         $codFld = $frm->addSelectBox(Labels::getLabel('LBL_Available_for_COD', $langId), 'product_cod_enabled', $yesNoArr, applicationConstants::NO, array(), '');
-
+        $paymentMethod = new PaymentMethods;
+        if (!$paymentMethod->cashOnDeliveryIsActive()) {
+            $codFld->addFieldTagAttribute('disabled', 'disabled');
+            $codFld->htmlAfterField = '<small class="text--small">'.Labels::getLabel('LBL_COD_option_is_disabled_in_payment_gateway_settings', $langId).'</small>';
+        }
         $fld=$frm->addCheckBox(Labels::getLabel('LBL_Free_Shipping', $langId), 'ps_free', 1);
 
         $fld = $frm->addTextBox(Labels::getLabel('LBL_Shipping_country', $langId), 'shipping_country');

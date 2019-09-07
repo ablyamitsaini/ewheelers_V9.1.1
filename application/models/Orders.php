@@ -2041,7 +2041,7 @@ class Orders extends MyAppModel
 
             $digitalDownloads[$key]['downloadable_count'] = -1;
             if ($row['op_selprod_max_download_times'] != '-1') {
-                $digitalDownloads[$key]['downloadable_count'] = $row['op_selprod_max_download_times']*$row['op_qty'];
+                $digitalDownloads[$key]['downloadable_count'] = $row['op_selprod_max_download_times'];
             }
 
             if ($row['op_selprod_max_download_times'] != '-1') {
