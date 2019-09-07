@@ -2157,7 +2157,7 @@ trait SellerProducts
         $selprodIdsArr = FatUtility::int(FatApp::getPostedData('selprod_ids'));
         if (empty($selprodIdsArr) || -1 == $status) {
             FatUtility::dieWithError(
-                Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId)
+                Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId)
             );
         }
 
@@ -2197,7 +2197,7 @@ trait SellerProducts
         $selprodId = FatUtility::int($selprodId);
         if (1 > $selprodId || -1 == $status) {
             FatUtility::dieWithError(
-                Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId)
+                Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId)
             );
         }
 
