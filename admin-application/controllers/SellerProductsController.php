@@ -1103,14 +1103,17 @@ class SellerProductsController extends AdminBaseController
 
     private function updateSelProdVolDiscount($selprod_id, $voldiscount_id, $minQty, $perc)
     {
-        $sellerProductRow = SellerProduct::getAttributesById($selprod_id, array('selprod_user_id', 'selprod_stock'), false);
+        $sellerProductRow = SellerProduct::getAttributesById($selprod_id, array('selprod_user_id', 'selprod_stock', 'selprod_min_order_qty'), false);
         if ($minQty > $sellerProductRow['selprod_stock']) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Quantity_cannot_be_more_than_the_Stock', $this->adminLangId));
-            FatUtility::dieWithError(Message::getHtml());
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Quantity_cannot_be_more_than_the_Stock', $this->adminLangId));
         }
+
+        if ($minQty < $sellerProductRow['selprod_min_order_qty']) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Quantity_cannot_be_less_than_the_Minimum_Order_Quantity', $this->adminLangId). ': '.$sellerProductRow['selprod_min_order_qty']);
+        }
+
         if ($perc > 100 || 1 > $perc) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Percentage', $this->adminLangId));
-            FatUtility::dieWithError(Message::getHtml());
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Percentage', $this->adminLangId));
         }
 
         /* Check if volume discount for same quantity already exists [ */

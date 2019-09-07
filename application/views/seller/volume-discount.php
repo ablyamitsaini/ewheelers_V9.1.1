@@ -13,9 +13,9 @@ if (0 < $selProd_id) {
     $keywordFld->developerTags['col'] = 4;
     $keywordFld->developerTags['noCaptionTag'] = true;
 
-    $class = (0 < $selProd_id) ? 'hidden' : '';
     $submitBtnFld = $frmSearch->getField('btn_submit');
-    $submitBtnFld->setFieldTagAttribute('class', 'btn--block btn btn--primary '.$class);
+    $submitBtnFld->setFieldTagAttribute('class', 'btn--block btn btn--primary');
+    $submitBtnFld->setWrapperAttribute('class', (0 < $selProd_id ? 'd-none' : ''));
     $submitBtnFld->developerTags['col'] = 2;
     $submitBtnFld->developerTags['noCaptionTag'] = true;
 
@@ -52,10 +52,12 @@ if (0 < $selProd_id) {
                     <div class="cards">
                         <?php
                         foreach ($dataToEdit as $data) {
-                            $data['addMultiple'] = 1;
+                            $data['addMultiple'] = (1 > $selProd_id) ? 1 : 0;
                             $this->includeTemplate('seller/add-volume-discount-form.php', array('siteLangId' => $siteLangId, 'data' => $data), false);
                         }
-                        $this->includeTemplate('seller/add-volume-discount-form.php', array('siteLangId' => $siteLangId), false);
+                        if (1 > $selProd_id) {
+                            $this->includeTemplate('seller/add-volume-discount-form.php', array('siteLangId' => $siteLangId), false);
+                        }
                         ?>
                         <div class="cards-content pl-4 pr-4">
                             <div class="row justify-content-between">

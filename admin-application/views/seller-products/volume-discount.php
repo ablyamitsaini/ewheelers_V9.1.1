@@ -59,10 +59,12 @@ if (0 < $selProd_id) {
                     <div class="sectionbody">
                         <?php
                         foreach ($dataToEdit as $data) {
-                            $data['addMultiple'] = 1;
+                            $data['addMultiple'] = (1 > $selProd_id) ? 1 : 0;
                             $this->includeTemplate('seller-products/add-volume-discount-form.php', array('adminLangId' => $adminLangId, 'data' => $data), false);
                         }
-                        $this->includeTemplate('seller-products/add-volume-discount-form.php', array('adminLangId' => $adminLangId), false);
+                        if (1 > $selProd_id) {
+                            $this->includeTemplate('seller-products/add-volume-discount-form.php', array('adminLangId' => $adminLangId), false);
+                        }
                         ?>
                         <div class="tablewrap" >
                             <div id="listing"> <?php echo Labels::getLabel('LBL_Processing...', $adminLangId); ?></div>

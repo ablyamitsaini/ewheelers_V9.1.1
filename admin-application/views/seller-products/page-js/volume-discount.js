@@ -49,12 +49,12 @@ $(document).on('blur', ".js--volDiscountCol", function(){
             var ans = $.parseJSON(t);
             if( ans.status != 1 ){
                 $.systemMessage(ans.msg, 'alert--danger');
-                updatedValue = oldValue;
+                value = updatedValue = oldValue;
             } else {
                 updatedValue = ans.data.value;
                 currObj.attr('data-oldval', value);
             }
-            currObj.val(updatedValue);
+            currObj.val(value);
             showElement(currObj, updatedValue);
         });
     } else {
@@ -143,7 +143,7 @@ $(document).on('blur', ".js--volDiscountCol", function(){
                 $('table.volDiscountList-js tbody').prepend(t.data);
             }
 			$(document).trigger('close.facebox');
-            if (0 < frm.addMultiple.value && 1 > selProd_id) {
+            if (0 < frm.addMultiple.value) {
                 var volDisRow = $("#"+frm.id).parent().parent();
                 volDisRow.siblings('.divider:first').remove();
                 volDisRow.remove();

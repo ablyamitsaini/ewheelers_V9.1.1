@@ -39,7 +39,7 @@ $(document).on('click', 'table.volDiscountList-js tr td .js--editCol', function(
 $(document).on('blur', ".js--volDiscountCol", function(){
     var currObj = $(this);
     var value = currObj.val();
-    var oldValue = currObj.attr('data-val');
+    var oldValue = currObj.attr('data-oldval');
     var attribute = currObj.attr('name');
     var id = currObj.data('id');
     var selProdId = currObj.data('selprodid');
@@ -48,13 +48,12 @@ $(document).on('blur', ".js--volDiscountCol", function(){
         fcom.ajax(fcom.makeUrl('Seller', 'updateVolumeDiscountColValue'), data, function(t) {
             var ans = $.parseJSON(t);
             if( ans.status != 1 ){
-                $.systemMessage(ans.msg, 'alert--danger');
-                updatedValue = oldValue;
+                $.systemMessage(ans.msg, 'alert--danger', true);
+                value = updatedValue = oldValue;
             } else {
                 updatedValue = ans.data.value;
                 currObj.attr('data-oldval', value);
             }
-            currObj.val(updatedValue);
             showElement(currObj, updatedValue);
         });
     } else {
@@ -134,7 +133,7 @@ $(document).on('blur', ".js--volDiscountCol", function(){
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('Seller', 'updateVolumeDiscountRow'), data, function(t) {
             if(t.status == true){
-                if ((1 > frm.addMultiple.value && 1 > frm.lastRow.value) || 0 < selProd_id) {
+                if ((1 > frm.addMultiple.value) || 0 < selProd_id) {
                     if (1 > selProd_id) {
                         frm.elements["voldiscount_selprod_id"].value = '';
                     }
@@ -144,7 +143,7 @@ $(document).on('blur', ".js--volDiscountCol", function(){
                 $('table.volDiscountList-js tbody').prepend(t.data);
             }
 			$(document).trigger('close.facebox');
-            if (0 < frm.addMultiple.value && 1 > selProd_id) {
+            if (0 < frm.addMultiple.value) {
                 var volDisRow = $("#"+frm.id).parent().parent();
                 volDisRow.siblings('.divider:first').remove();
                 volDisRow.remove();
