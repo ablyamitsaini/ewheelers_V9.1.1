@@ -157,13 +157,13 @@ $(document).on('blur', ".js--splPriceCol:not(.date_js)", function(){
             fcom.ajax(fcom.makeUrl('Seller', 'updateSpecialPriceColValue'), data, function(t) {
                 var ans = $.parseJSON(t);
                 if( ans.status != 1 ){
-                    $.mbsmessage(ans.msg, 'alert--danger');
-                    updatedValue = oldValue;
+                    $.systemMessage(ans.msg,'alert--danger',true);
+                    value = updatedValue = oldValue;
                 } else {
                     updatedValue = ans.data.value;
                     currObj.attr('data-oldval', value);
                 }
-                currObj.val(value);
+                currObj.attr('value', value);
                 showElement(currObj, updatedValue);
             });
         } else {

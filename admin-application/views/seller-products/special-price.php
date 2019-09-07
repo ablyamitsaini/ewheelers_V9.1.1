@@ -50,7 +50,7 @@ if (0 < $selProd_id) {
                             $innerDiv=$li->appendElement('div', array('class'=>'dropwrap'));
                             $li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green','title'=>Labels::getLabel('LBL_Edit', $adminLangId)), '<i class="ion-android-more-horizontal icon"></i>', true);
                             $innerUl=$innerDiv->appendElement('ul', array('class'=>'linksvertical'));
-                            
+
                             $innerLi=$innerUl->appendElement('li');
                             $innerLi->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Delete_Special_Price', $adminLangId),"onclick"=>"deleteSpecialPriceRows()"), Labels::getLabel('LBL_Delete_Special_Price', $adminLangId), true);
                             echo $ul->getHtml();
@@ -60,10 +60,13 @@ if (0 < $selProd_id) {
                     <div class="sectionbody">
                         <?php
                         foreach ($dataToEdit as $data) {
-                            $data['addMultiple'] = 1;
+                            $data['addMultiple'] = (1 > $selProd_id) ? 1 : 0;
                             $this->includeTemplate('seller-products/add-special-price-form.php', array('adminLangId' => $adminLangId, 'data' => $data), false);
                         }
-                        $this->includeTemplate('seller-products/add-special-price-form.php', array('adminLangId' => $adminLangId), false);
+                        
+                        if (1 > $selProd_id) {
+                            $this->includeTemplate('seller-products/add-special-price-form.php', array('adminLangId' => $adminLangId), false);
+                        }
                         ?>
                         <div class="tablewrap" >
                             <div id="listing"> <?php echo Labels::getLabel('LBL_Processing...', $adminLangId); ?></div>
