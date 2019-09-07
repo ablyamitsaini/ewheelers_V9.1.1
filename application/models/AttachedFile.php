@@ -348,7 +348,7 @@ class AttachedFile extends MyAppModel
     } */
 
     /* always call this function using image controller and pass relavant arguments. */
-    public static function displayImage($image_name, $w, $h, $no_image = '', $uploadedFilePath = '', $resizeType = ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, $apply_watermark = false, $cache = false, $imageCompression = true)
+    public static function displayImage($image_name, $w, $h, $no_image = '', $uploadedFilePath = '', $resizeType = ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, $apply_watermark = false, $cache = true, $imageCompression = true)
     {
         ob_end_clean();
         if ($no_image == '') {
@@ -356,23 +356,43 @@ class AttachedFile extends MyAppModel
         } else {
             $no_image = 'images/defaults/'. $no_image;
         }
-        /*echo $no_image; die;*/
+
         $originalImageName = $image_name;
         if (trim($uploadedFilePath)!='') {
             $uploadedFilePath = CONF_UPLOADS_PATH.$uploadedFilePath;
         } else {
             $uploadedFilePath = CONF_UPLOADS_PATH;
         }
+
         $fileMimeType = '';
+        $cacheFileName = '';
         $w = FatUtility::int($w);
         $h = FatUtility::int($h);
+
         if (!empty($image_name) && file_exists($uploadedFilePath . $image_name)) {
+            $filemtime = filemtime($uploadedFilePath . $image_name);
+            $_SERVER['REQUEST_URI'] = rtrim($_SERVER['REQUEST_URI'],'/').'/?t='.$filemtime;
+
             $fileMimeType = mime_content_type($uploadedFilePath . $image_name);
-            $image_name = $uploadedFilePath . $image_name;
+            $image_name = $cacheFileName = $uploadedFilePath . $image_name;
             $headers = FatApp::getApacheRequestHeaders();
             if (isset($headers['If-Modified-Since']) && (strtotime($headers['If-Modified-Since']) == filemtime($image_name))) {
                 header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($image_name)).' GMT', true, 304);
                 exit;
+            }
+
+            if (CONF_USE_FAT_CACHE && $cache) {
+                ob_get_clean();
+                ob_start();
+                if ($fileMimeType != '') {
+                    header("content-type: ".$fileMimeType);
+                } else {
+                    header("content-type: image/jpeg");
+                }
+                $fileContent = FatCache::get($_SERVER['REQUEST_URI'], null, '.jpg');
+                if ($fileContent) {
+                    static::loadImage($fileContent, $image_name);
+                }
             }
 
             try {
@@ -391,6 +411,7 @@ class AttachedFile extends MyAppModel
                 }
             }
         } else {
+            $cacheFileName = CONF_INSTALLATION_PATH.'public/'.$no_image;
             $img = static::getDefaultImage($no_image, $w, $h);
             $img->setExtraSpaceColor(204, 204, 204);
         }
@@ -424,39 +445,38 @@ class AttachedFile extends MyAppModel
             }
         }
 
-        if ($cache) {
-            $cacheKey = $_SERVER['REQUEST_URI'];
-            ob_get_clean();
+        if ($fileMimeType != '') {
+            header("content-type: ".$fileMimeType);
+        } else {
+            header("content-type: image/jpeg");
+        }
+
+        if (CONF_USE_FAT_CACHE && $cache) {
+            ob_end_clean();
             ob_start();
-            if ($fileMimeType != '') {
-                header("content-type: ".$fileMimeType);
-            } else {
-                header("content-type: image/jpeg");
-            }
             if ($imageCompression) {
                 $img->displayImage(80, false);
             } else {
                 $img->displayImage(100, false);
             }
             $imgData = ob_get_clean();
-
-            FatCache::set($cacheKey, $imgData, '.jpg');
-            echo $imgData;
-        } else {
-            if ($fileMimeType != '') {
-                header("content-type: ".$fileMimeType);
-            } else {
-                header("content-type: image/jpeg");
-            }
-
-            if ($imageCompression) {
-                $img->displayImage(80, false);
-            } else {
-                $img->displayImage(100, false);
-            }
+            FatCache::set($_SERVER['REQUEST_URI'], $imgData, '.jpg');
+            static::loadImage($imgData, $cacheFileName);
         }
 
-        /* $img->displayImage(); */
+        if ($imageCompression) {
+            $img->displayImage(80, false);
+        } else {
+            $img->displayImage(100, false);
+        }
+    }
+
+    public static function loadImage($imgData, $image_name){
+        header('Cache-Control: public');
+        header("Pragma: public");
+        header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($image_name)).' GMT', true, 200);
+        header("Expires: " . date('r', strtotime("+30 Day")));
+        echo $imgData; exit;
     }
 
     public static function getDefaultImage($image_name, $width, $height, $useCache = false)
@@ -477,11 +497,11 @@ class AttachedFile extends MyAppModel
         return $img = new ImageResize($image_name);
     }
 
-    public static function displayOriginalImage($image_name, $no_image = '', $uploadedFilePath = '', $cache = false)
+    public static function displayOriginalImage($image_name, $no_image = '', $uploadedFilePath = '', $cache = true)
     {
         ob_end_clean();
         if ($no_image == '') {
-            $no_image = CONF_THEME_PATH . 'img/no_image.jpg';
+            $no_image = 'images/defaults/no_image.jpg';
         } else {
             $no_image = 'images/defaults/'. $no_image;
         }
@@ -502,35 +522,49 @@ class AttachedFile extends MyAppModel
         } else {
             header("content-type: image/jpeg");
         }
-
-        $cacheKey = $_SERVER['REQUEST_URI'];
+        $cacheFileName = '';
         if (!empty($image_name) && file_exists($uploadedFilePath . $image_name)) {
-            $image_name = $uploadedFilePath . $image_name;
+            $image_name = $cacheFileName = $uploadedFilePath . $image_name;
+            $filemtime = filemtime( $image_name);
+            $_SERVER['REQUEST_URI'] = rtrim($_SERVER['REQUEST_URI'],'/').'/?t='.$filemtime;
+
             $headers = FatApp::getApacheRequestHeaders();
             if (isset($headers['If-Modified-Since']) && (strtotime($headers['If-Modified-Since']) == filemtime($image_name))) {
                 header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($image_name)).' GMT', true, 304);
                 exit;
             }
+
+            if (CONF_USE_FAT_CACHE && $cache) {
+                $fileContent = FatCache::get($_SERVER['REQUEST_URI'], null, '.jpg');
+                if ($fileContent) {
+                    static::loadImage($fileContent, $image_name);
+                }
+            }
+
             try {
                 header('Cache-Control: public');
                 header("Pragma: public");
                 header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($image_name)).' GMT', true, 200);
                 header("Expires: " . date('r', strtotime("+30 Day")));
                 $fileContent =  file_get_contents($image_name);
-                echo $fileContent;
-                if ($cache) {
-                    FatCache::set($cacheKey, $fileContent, '.jpg');
+                if (CONF_USE_FAT_CACHE && $cache) {
+                    FatCache::set($_SERVER['REQUEST_URI'], $fileContent, '.jpg');
+                    static::loadImage($fileContent, $image_name);
                 }
             } catch (Exception $e) {
                 $fileContent = file_get_contents($no_image);
-                echo $fileContent;
-                FatCache::set($cacheKey, $fileContent, '.jpg');
             }
         } else {
+            $cacheFileName = CONF_INSTALLATION_PATH.'public/'.$no_image;
             $fileContent = file_get_contents($no_image);
-            echo $fileContent;
-            FatCache::set($cacheKey, $fileContent, '.jpg');
         }
+
+        if (CONF_USE_FAT_CACHE && $cache) {
+            FatCache::set($_SERVER['REQUEST_URI'], $fileContent, '.jpg');
+            static::loadImage($fileContent, $cacheFileName);
+        }
+        echo $fileContent;
+
     }
 
     public static function updateDownloadCount($aFileId = 0)

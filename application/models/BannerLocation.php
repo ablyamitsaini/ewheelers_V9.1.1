@@ -57,6 +57,7 @@ class BannerLocation extends MyAppModel
         $bannerLocation = $db->fetchAll($rs, 'blocation_key');
 
         $banners = $bannerLocation;
+        $i = 0;
         foreach ($bannerLocation as $val) {
             $bsrch = new BannerSearch($langId, true);
             $bsrch->joinPromotions($langId, true, true, true);
@@ -91,8 +92,13 @@ class BannerLocation extends MyAppModel
             $srch->addOrder('', 'rand()');
             $rs = $srch->getResultSet();
 
-            $bannerListing = $db->fetchAll($rs, 'banner_id');
+            if (true ===  MOBILE_APP_API_CALL) {
+                $bannerListing = $db->fetchAll($rs);
+            } else {
+                $bannerListing = $db->fetchAll($rs, 'banner_id');
+            }
             $banners[$val['blocation_key']]['banners'] = $bannerListing;
+            $i++;
         }
         return $banners;
     }

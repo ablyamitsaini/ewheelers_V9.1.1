@@ -16,7 +16,13 @@
         $address['ua_identifier'] = ($address['ua_identifier'] == '') ? '&nbsp;' : $address['ua_identifier']; ?> <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
             <label class="list__selection <?php echo ($address['ua_is_default']==1)?'is-active':''; ?>">
                 <span class="radio">
-                    <input type="radio" <?php echo ($address['ua_is_default']==1)?'checked=""':''; ?> name="1" onClick="setDefaultAddress(<?php echo $address['ua_id']; ?>)"><i class="input-helper"></i>
+                    <?php
+                    $action = "setDefaultAddress(".$address['ua_id'].", event)";
+                    if (1 == $address['ua_is_default']) {
+                        $action = 'return false';
+                    }
+                    ?>
+                    <input type="radio" <?php echo ($address['ua_is_default']==1)?'checked=""':''; ?> name="1" onClick="<?php echo $action; ?>"><i class="input-helper"></i>
                 </span>
                 <address>
                     <h6><?php echo $address['ua_identifier']; ?></h6>

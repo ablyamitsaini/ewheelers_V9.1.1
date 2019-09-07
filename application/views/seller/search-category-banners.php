@@ -24,7 +24,7 @@ foreach ($arr_listing as $sn => $row){
 				$td->appendElement('plaintext', array(), $sr_no,true);
 			break;
 			case 'banner':
-				$td->appendElement('plaintext', array(), '<img src="'.CommonHelper::generateUrl('category','sellerBanner',array($row['shop_id'], $row['prodcat_id'], $siteLangId, 'thumb')).'?'.time().'">',true);
+				$td->appendElement('plaintext', array(), '<img src="'.CommonHelper::generateUrl('category','sellerBanner',array($row['shop_id'], $row['prodcat_id'], $siteLangId, 'thumb')).'">',true);
 			break;
 			case 'action':
 				$ul = $td->appendElement("ul",array('class'=>'actions'),'',true);

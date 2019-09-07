@@ -4,26 +4,40 @@ class CustomRouter
     public static function setRoute(&$controller, &$action, &$queryString)
     {
         $userType = null;
-
         if ('mobile-app-api' == $controller) {
             define('MOBILE_APP_API_CALL', true);
             define('MOBILE_APP_API_VERSION', '1.0');
         } elseif ('app-api' == $controller) {
-            $controller = 'mobile-app-api';
             define('MOBILE_APP_API_CALL', true);
             define('MOBILE_APP_API_VERSION', str_replace('v', '', $action));
 
-            if (!array_key_exists(0, $queryString)) {
-                $queryString[0] = '';
-            }
-            if (!array_key_exists(1, $queryString)) {
-                $queryString[1] = '';
+            if (MOBILE_APP_API_VERSION <= '1.2') {
+                $controller = 'mobile-app-api';
+                if (!array_key_exists(0, $queryString)) {
+                    $queryString[0] = '';
+                }
+                if (!array_key_exists(1, $queryString)) {
+                    $queryString[1] = '';
+                }
+            } else {
+                if (!array_key_exists(0, $queryString)) {
+                    $arr = array('status'=>-1,'msg'=>"Invalid Request");
+                    die(json_encode($arr));
+                }
+
+                $controller = $queryString[0];
+                array_shift($queryString);
+
+                if (!array_key_exists(0, $queryString)) {
+                    $queryString[0] = '';
+                }
             }
 
             $action = $queryString[0];
             if ($controller != '' && $action == '') {
                 $action = 'index';
             }
+
             array_shift($queryString);
 
             $token = null;
@@ -35,7 +49,6 @@ class CustomRouter
             define('MOBILE_APP_API_CALL', false);
             define('MOBILE_APP_API_VERSION', '');
         }
-
         define('MOBILE_APP_USER_TYPE', $userType);
 
         if (defined('SYSTEM_FRONT') && SYSTEM_FRONT === true && !FatUtility::isAjaxCall()) {

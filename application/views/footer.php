@@ -67,12 +67,12 @@
             </div>
         </div>
     </div>
-    <div class="middle-footer">
+    <?php /*<div class="middle-footer">
         <div class="accordion-footer">
             <?php $this->includeTemplate('_partial/footerTopBrands.php'); ?>
             <?php $this->includeTemplate('_partial/footerTopCategories.php'); ?>
         </div>
-    </div>
+    </div>*/ ?>
     <div class="bottom-footer">
         <div class="row align-items-center">
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">

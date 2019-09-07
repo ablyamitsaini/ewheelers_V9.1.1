@@ -328,7 +328,12 @@ class UserAuthentication extends FatModel
         if (!$isAdmin) {
             if ($row['credential_verified'] != applicationConstants::YES) {
                 $this->error = str_replace("{clickhere}", '<a href="javascript:void(0)" onclick="resendVerificationLink('."'".$username."'".')">'.Labels::getLabel('LBL_Click_Here', $this->commonLangId).'</a>', Labels::getLabel('MSG_Your_Account_verification_is_pending_{clickhere}', $this->commonLangId));
-                if (FatUtility::isAjaxCall()) {
+
+                if (true ===  MOBILE_APP_API_CALL) {
+                    $this->error = Labels::getLabel('MSG_Your_Account_verification_is_pending', $this->commonLangId);
+                }
+
+                if (FatUtility::isAjaxCall() || true ===  MOBILE_APP_API_CALL) {
                     $json['status'] = 0;
                     $json['msg'] = $this->error;
                     $json['notVerified'] = 1;
@@ -364,6 +369,7 @@ class UserAuthentication extends FatModel
 
     private function setSession($data)
     {
+        session_regenerate_id();
         $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME] = array(
         'user_id' => $data['user_id'],
         'user_name' => $data['user_name'],
@@ -510,6 +516,8 @@ class UserAuthentication extends FatModel
         if ($ip == '') {
             $ip = CommonHelper::getClientIp();
         }
+
+        $token = empty($token)?CommonHelper::getAppToken():$token;
 
         if ($token != '' && static::doAppLogin($token)) {
             return true;
@@ -746,6 +754,10 @@ class UserAuthentication extends FatModel
     {
         if (static::isUserLogged() || static::isGuestUserLogged()) {
             return true;
+        }
+        if (true ===  MOBILE_APP_API_CALL) {
+            $message = Labels::getLabel('MSG_Session_seems_to_be_expired', CommonHelper::getLangId());
+            FatUtility::dieJsonError($message);
         }
 
         if (FatUtility::isAjaxCall()) {

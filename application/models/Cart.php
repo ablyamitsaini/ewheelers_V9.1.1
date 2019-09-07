@@ -14,6 +14,7 @@ class Cart extends FatModel
         parent::__construct();
 
         $user_id = FatUtility::int($user_id);
+
         $langId = FatUtility::int($langId);
 
         $this->cart_lang_id = $langId;
@@ -22,8 +23,13 @@ class Cart extends FatModel
         }
 
         if (empty($tempCartUserId)) {
-            $this->cart_id = session_id();
             $tempCartUserId = session_id();
+            if (true ===  MOBILE_APP_API_CALL) {
+                $tempCartUserId = $user_id;
+                if (1 > $user_id) {
+                    $user_id = $tempCartUserId = UserAuthentication::getLoggedUserId(true);
+                }
+            }
         }
 
         $this->cart_user_id = $tempCartUserId;
@@ -99,7 +105,7 @@ class Cart extends FatModel
         return;
     }
 
-    public function add($selprod_id, $qty = 1, $prodgroup_id = 0)
+    public function add($selprod_id, $qty = 1, $prodgroup_id = 0, $returnUserId = false)
     {
         $this->products = array();
         $selprod_id = FatUtility::int($selprod_id);
@@ -135,6 +141,10 @@ class Cart extends FatModel
         }
 
         $this->updateUserCart();
+
+        if ($returnUserId) {
+            return $this->cart_user_id;
+        }
         return true;
     }
 
@@ -194,7 +204,7 @@ class Cart extends FatModel
                     }
                 }
             } else {
-                if ($product['is_physical_product']) {
+                if (!empty($product['is_physical_product'])) {
                     $isPhysical = true;
                     break;
                 }
@@ -258,6 +268,7 @@ class Cart extends FatModel
                 $this->products[$key]['volume_discount'] = 0;
                 $this->products[$key]['volume_discount_total'] = 0;
 
+                $selProdCost = $shopId = '';
                 /* seller products[ */
                 if ($selprod_id > 0) {
                     $sellerProductRow = $this->getSellerProductData($selprod_id, $quantity, $siteLangId, $loggedUserId);
@@ -338,6 +349,8 @@ class Cart extends FatModel
                         $affiliateCommission = ROUND($affiliateCommissionCostValue * $affiliateCommissionPercentage/100, 2);
                     }
                     /* ] */
+                    $selProdCost = $sellerProductRow['selprod_cost'];
+                    $shopId = $sellerProductRow['shop_id'];
                 } else {
                     $is_cod_enabled = false;
                 }
@@ -351,14 +364,14 @@ class Cart extends FatModel
                 $this->products[$key]['has_physical_product'] = 0;
                 $this->products[$key]['has_digital_product'] = 0;
                 /* $this->products[$key]['product_ship_free'] = $sellerProductRow['product_ship_free']; */
-                $this->products[$key]['selprod_cost'] = $sellerProductRow['selprod_cost'];
+                $this->products[$key]['selprod_cost'] = $selProdCost;
                 $this->products[$key]['is_shipping_selected'] = false;
                 $this->products[$key]['affiliate_commission_percentage'] = $affiliateCommissionPercentage;
                 $this->products[$key]['affiliate_commission'] = $affiliateCommission;
                 $this->products[$key]['affiliate_user_id'] = $associatedAffiliateUserId;
                 if (UserAuthentication::isUserLogged() || UserAuthentication::isGuestUserLogged()) {
                     $this->products[$key]['shipping_address'] =  UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), $siteLangId, 0, $this->getCartShippingAddress());
-                    $this->products[$key]['seller_address'] =  Shop::getShopAddress($sellerProductRow['shop_id'], true, $siteLangId);
+                    $this->products[$key]['seller_address'] =  Shop::getShopAddress($shopId, true, $siteLangId);
                 }
             }
 
@@ -366,7 +379,7 @@ class Cart extends FatModel
             foreach ($this->products as $cartkey => $cartval) {
                 $this->products[$cartkey]['shop_eligible_for_free_shipping'] = 0;
 
-                if (array_key_exists($cartval['selprod_user_id'], $sellerPrice)) {
+                if (!empty($cartval['selprod_user_id']) && array_key_exists($cartval['selprod_user_id'], $sellerPrice)) {
                     $this->products[$cartkey]['totalPrice'] = $sellerPrice[$cartval['selprod_user_id']]['totalPrice'];
                     if ($cartval['shop_free_ship_upto'] > 0 && $cartval['shop_free_ship_upto'] < $sellerPrice[$cartval['selprod_user_id']]['totalPrice']) {
                         $this->products[$cartkey]['shop_eligible_for_free_shipping'] = 1;
@@ -503,17 +516,18 @@ class Cart extends FatModel
     {
         $this->products = array();
         $cartProducts = $this->getProducts($this->cart_lang_id);
-
+        $found = false;
         if (is_array($cartProducts)) {
             foreach ($cartProducts as $cartKey => $product) {
                 if ($key == 'all') {
+                    $found = true;
                     unset($this->SYSTEM_ARR['cart'][$cartKey]);
                     /* to keep track of temporary hold the product stock[ */
                     $this->updateTempStockHold($product['selprod_id'], 0, 0);
                 /* ] */
                 } elseif (md5($product['key']) == $key && !$product['is_batch']) {
+                    $found = true;
                     unset($this->SYSTEM_ARR['cart'][$cartKey]);
-
                     /* to keep track of temporary hold the product stock[ */
                     $this->updateTempStockHold($product['selprod_id'], 0, 0);
                     /* ] */
@@ -522,7 +536,10 @@ class Cart extends FatModel
             }
         }
         $this->updateUserCart();
-        return true;
+        if (false === $found) {
+            $this->error = Labels::getLabel('ERR_Invalid_Request', $this->cart_lang_id);
+        }
+        return $found;
     }
 
     public function removeGroup($prodgroup_id)
@@ -556,6 +573,7 @@ class Cart extends FatModel
     public function update($key, $quantity)
     {
         $quantity = FatUtility::int($quantity);
+        $found = false;
         if ($quantity > 0) {
             $cartProducts = $this->getProducts($this->cart_lang_id);
             $cart_user_id = $this->cart_user_id;
@@ -563,6 +581,7 @@ class Cart extends FatModel
             if (is_array($cartProducts)) {
                 foreach ($cartProducts as $cartKey => $product) {
                     if (md5($product['key']) == $key) {
+                        $found = true;
                         /* minimum quantity check[ */
                         $minimum_quantity = ($product['selprod_min_order_qty']) ? $product['selprod_min_order_qty'] : 1;
                         if ($quantity < $minimum_quantity) {
@@ -598,8 +617,14 @@ class Cart extends FatModel
                 }
             }
             $this->updateUserCart();
+        } else {
+            $this->error = Labels::getLabel('ERR_Quantity_should_be_greater_than_0', $this->cart_lang_id);
+            return false;
         }
-        return true;
+        if (false === $found) {
+            $this->error = Labels::getLabel('ERR_Invalid_Request', $this->cart_lang_id);
+        }
+        return $found;
     }
 
     public function updateGroup($prodgroup_id, $quantity)
@@ -833,7 +858,7 @@ class Cart extends FatModel
                     $cartTotal += $product['prodgroup_total'];
                 } else {
                     //$cartTotalNonBatch += $product['total'];
-                    $cartTotal += $product['total'];
+                    $cartTotal += !empty($product['total']) ? $product['total'] : 0;
                 }
                 $cartVolumeDiscount += $product['volume_discount_total'];
                 $cartTaxTotal += $product['tax'];
@@ -860,10 +885,10 @@ class Cart extends FatModel
         $orderPaymentGatewayCharges = $orderNetAmount - $WalletAmountCharge;
 
         $isCodValidForNetAmt = true;
-        if(FatApp::getConfig("CONF_MAX_COD_ORDER_LIMIT", FatUtility::VAR_INT, 0) > 0){
+        if (FatApp::getConfig("CONF_MAX_COD_ORDER_LIMIT", FatUtility::VAR_INT, 0) > 0) {
             if (($orderPaymentGatewayCharges >= FatApp::getConfig("CONF_MIN_COD_ORDER_LIMIT", FatUtility::VAR_INT, 0)) && ($orderPaymentGatewayCharges <= FatApp::getConfig("CONF_MAX_COD_ORDER_LIMIT", FatUtility::VAR_INT, 0)) && ($isCodEnabled)) {
-            $isCodValidForNetAmt = true;
-            }else{
+                $isCodValidForNetAmt = true;
+            } else {
                 $isCodValidForNetAmt = false;
             }
         }
@@ -1615,11 +1640,11 @@ class Cart extends FatModel
         if (is_array($cartProducts) && count($cartProducts)) {
             foreach ($cartProducts as $selprod) {
                 $shipBy = 0;
-                if ($selprod['psbs_user_id']) {
+                if (!empty($selprod['psbs_user_id'])) {
                     $shipBy = $selprod['psbs_user_id'];
                 }
 
-                if (!array_key_exists($selprod['selprod_user_id'], $sellerPrice) || $shipBy == 0) {
+                if (!empty($selprod['selprod_user_id']) && (!array_key_exists($selprod['selprod_user_id'], $sellerPrice) || $shipBy == 0)) {
                     $sellerPrice[$selprod['selprod_user_id']]['totalPrice'] = 0;
                 }
 

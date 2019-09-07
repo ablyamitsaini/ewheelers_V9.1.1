@@ -367,25 +367,6 @@ trait SellerProducts
         $sellerProdObj->rewriteUrlReviews($post['selprod_url_keyword']);
         $sellerProdObj->rewriteUrlMoreSellers($post['selprod_url_keyword']);
 
-        /* $urlRewriteData['urlrewrite_custom'] = trim(CommonHelper::seoUrl($post['selprod_url_keyword']), '/\\').'/'.$selprod_id;
-        $urlRewriteData['urlrewrite_original'] = trim(Product::PRODUCT_VIEW_ORGINAL_URL.$selprod_id, '/\\');
-
-        $productCustomUrl = CommonHelper::seoUrl($post['selprod_url_keyword']);
-        $getProductUrls  = applicationConstants::getProductUrlRewriteLink($productCustomUrl,$selprod_id);
-
-
-        foreach($getProductUrls as $originalUrl=>$customUrl){
-
-        $customUrl = UrlRewrite::getValidSeoUrl($customUrl,$originalUrl);
-
-        $seoUrlKeyword = array(
-        'urlrewrite_original'=>$originalUrl,
-        'urlrewrite_custom'=>$customUrl
-        );
-        FatApp::getDb()->insertFromArray( UrlRewrite::DB_TBL, $seoUrlKeyword,false,array(),array('urlrewrite_custom'=>$customUrl));
-
-
-        } */
         /* Add Meta Tags  [  ---- */
         $tabsArr = MetaTag::getTabsArr();
         $metaType = MetaTag::META_GROUP_PRODUCT_DETAIL;
@@ -2019,24 +2000,6 @@ trait SellerProducts
         $sellerProdObj->rewriteUrlProduct($post['selprod_url_keyword']);
         $sellerProdObj->rewriteUrlReviews($post['selprod_url_keyword']);
         $sellerProdObj->rewriteUrlMoreSellers($post['selprod_url_keyword']);
-        /* $urlRewriteData['urlrewrite_custom'] = trim(CommonHelper::seoUrl($post['selprod_url_keyword']), '/\\').'/'.$selprod_id;
-        $urlRewriteData['urlrewrite_original'] = trim(Product::PRODUCT_VIEW_ORGINAL_URL.$selprod_id, '/\\');
-
-        $productCustomUrl = CommonHelper::seoUrl($post['selprod_url_keyword']);
-        $getProductUrls  = applicationConstants::getProductUrlRewriteLink($productCustomUrl,$selprod_id);
-
-
-        foreach($getProductUrls as $originalUrl=>$customUrl){
-
-
-        $customUrl = UrlRewrite::getValidSeoUrl($customUrl,$originalUrl);
-
-        $seoUrlKeyword = array(
-        'urlrewrite_original'=>$originalUrl,
-        'urlrewrite_custom'=>$customUrl
-        );
-        FatApp::getDb()->insertFromArray( UrlRewrite::DB_TBL, $seoUrlKeyword,false,array(),array('urlrewrite_custom'=>$customUrl));
-        } */
 
         /* save options data, if any[ */
         if ($selprod_id) {

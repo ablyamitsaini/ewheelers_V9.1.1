@@ -1,0 +1,27 @@
+API Updates :
+=> Login/Registration
+=> Homepage/Landing
+=> Account Management
+=> Cart/Checkout
+=> Address
+=> General
+=> Category
+=> Product
+=> Shop
+=> Message
+=> Order
+=> Payment Gateways
+
+msg-1018591-Download language label file for APP
+> Centralized code and optimize as per discussion.
+> Removed un-used code from CommonHelper class and centralized.
+> Naming conventions and logical work flow.
+> Update Lang Label time at configuration while new label inserted
+> Update labels updated time to cofiguration in case of import label file, admin update any individual label and new insertion
+> Admin can manually update labels json file.
+> Maintenance mode handling for API.
+> Performance optimization : Used labels from json file.
+> optimization for system images.
+
+Sheet url : https://docs.google.com/spreadsheets/d/1FpUtNMAX3Zub5RIKe4ESxtXqcE7gkxJf_pe0hdKTTUI/edit#gid=0
+Notes: Check colomn "Web Status" in above sheet url for testing.

@@ -508,7 +508,7 @@
         $fld_phn = $frm->addRequiredField(Labels::getLabel('LBL_Phone', $this->siteLangId), 'bcontributions_author_phone', '', array('class'=>'phone-js ltr-right', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
         $fld_phn->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
         // $fld_phn->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_e.g.', $this->siteLangId).': '.implode(', ', ValidateElement::PHONE_FORMATS).'</small>';
-        $fld_phn->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_format.', $this->siteLangId));
+        $fld_phn->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_phone_number_format.', $this->siteLangId));
 
         $frm->addFileUpload(Labels::getLabel('LBL_Upload_File', $this->siteLangId), 'file')->requirements()->setRequired(true);
         if (FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '')!= '' && FatApp::getConfig('CONF_RECAPTCHA_SECRETKEY', FatUtility::VAR_STRING, '')!= '') {

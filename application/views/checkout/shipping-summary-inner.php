@@ -89,7 +89,7 @@ $shippingapi_idFld->developerTags['col'] = 6;
                             $selectedShippingType = "";
                             $displayManualOptions = "style='display:none'";
                             $displayShipStationOption = "style='display:none'";
-                             $shipping_options = array();
+                            $shipping_options = array();
                             $shipping_options[$product['product_id']][0] = Labels::getLabel("LBL_Select_Shipping",$siteLangId);
 
                             if (count($product["shipping_rates"])) {
@@ -114,8 +114,8 @@ $shippingapi_idFld->developerTags['col'] = 6;
 
                             $servicesList = array();
                             $cartObj = new Cart();
-                            if (array_key_exists(ShippingMethods::SHIPSTATION_SHIPPING,$shippingMethods)) {
 
+                            if (array_key_exists(ShippingMethods::SHIPSTATION_SHIPPING,$shippingMethods)) {
                                 $carrierCode = "";
                                 $selectedService ='';
                                 if ($product['is_shipping_selected'] == ShippingMethods::SHIPSTATION_SHIPPING) {
@@ -133,10 +133,10 @@ $shippingapi_idFld->developerTags['col'] = 6;
                                         }
                                     }
                                 }
-                                $courierProviders = CommonHelper::createDropDownFromArray('shipping_carrier[' . md5($product['key']) . ']', $shipStationCarrierList, $carrierCode, 'class="courier_carriers" onChange="loadShippingCarriers(this);"  data-product-key=\'' . md5($product['key']) . '\'', '');
-                                $serviceProviders = CommonHelper::createDropDownFromArray('shipping_services[' . md5($product['key']) . ']', $servicesList, $selectedService, 'class="courier_services "  ', '');
+                                $courierProviders = CommonHelper::createDropDownFromArray('data[' . md5($product['key']) . ']['."shipping_carrier".']', $shipStationCarrierList, $carrierCode, 'class="courier_carriers" onChange="loadShippingCarriers(this);"  data-product-key=\'' . md5($product['key']) . '\'', '');
+                                $serviceProviders = CommonHelper::createDropDownFromArray('data[' . md5($product['key']) . ']['."shipping_services".']', $servicesList, $selectedService, 'class="courier_services "  ', '');
                             }
-                            $select_shipping_options = CommonHelper:: createDropDownFromArray('shipping_locations[' . md5($product['key']) . ']', $shipping_options[$product['product_id']], isset($product["pship_id"])?$product["pship_id"]:'', '', '');
+                            $select_shipping_options = CommonHelper:: createDropDownFromArray('data[' . md5($product['key']) . ']['."shipping_locations".']', $shipping_options[$product['product_id']], isset($product["pship_id"])?$product["pship_id"]:'', '', '');
 
                             ?>
                                 <?php Labels::getLabel('M_Select_Shipping', $siteLangId) ?>
@@ -145,19 +145,14 @@ $shippingapi_idFld->developerTags['col'] = 6;
 
 
                             if(sizeof($shipping_options[$product['product_id']])<2){
-
                                 unset($newShippingMethods[SHIPPINGMETHODS::MANUAL_SHIPPING]);
                             }
-
                             if( !$product['is_physical_product'] && $product['is_digital_product'] ){
                                     echo $shippingOptions = CommonHelper::displayNotApplicable($siteLangId, '');
                                 }
                                 else{
-
-
                                     if(sizeof($newShippingMethods)>0){
-
-                                       echo '<li>'. CommonHelper::createDropDownFromArray('shipping_type[' . md5($product['key']) . ']', $newShippingMethods, $selectedShippingType, 'class="shipping_method"  data-product-key="' . md5($product['key']) . '" ', Labels::getLabel('LBL_Select_Shipping_Method',$siteLangId)) .'</li>';
+                                       echo '<li>'. CommonHelper::createDropDownFromArray('data[' . md5($product['key']) . ']['."shipping_type".']', $newShippingMethods, $selectedShippingType, 'class="shipping_method"  data-product-key="' . md5($product['key']) . '" ', Labels::getLabel('LBL_Select_Shipping_Method',$siteLangId)) .'</li>';
                                     }
                                     else{
                                         echo '<li class="info-message">'.Labels::getLabel('MSG_Product_is_not_available_for_shipping',$siteLangId).'</li>';

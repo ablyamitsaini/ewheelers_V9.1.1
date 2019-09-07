@@ -1,7 +1,7 @@
 <?php
 class SellerOrdersController extends AdminBaseController
 {
-    public function __construct( $action ) 
+    public function __construct( $action )
     {
         $ajaxCallArray = array();
         if(!FatUtility::isAjaxCall() && in_array($action, $ajaxCallArray)) {
@@ -15,7 +15,7 @@ class SellerOrdersController extends AdminBaseController
         $this->set("canEdit", $this->canEdit);
     }
 
-    public function index( $order_id = '' ) 
+    public function index( $order_id = '' )
     {
         $this->objPrivilege->canViewSellerOrders();
         $frm = $this->getOrderSearchForm($this->adminLangId);
@@ -156,7 +156,7 @@ class SellerOrdersController extends AdminBaseController
         $srch->addMultipleFields(
             array( 'order_id', 'order_pmethod_id','order_tax_charged', 'order_date_added', 'op_id', 'op_qty', 'op_unit_price','op_selprod_user_id','op_invoice_number', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name', 'ou.user_name as buyer_user_name', 'ouc.credential_username as buyer_username','pmethod_code', 'IFNULL(pmethod_name, IFNULL(pmethod_identifier, "Wallet")) as pmethod_name', 'op_commission_charged', 'op_qty', 'op_commission_percentage', 'ou.user_name as buyer_name', 'ouc.credential_username as buyer_username', 'ouc.credential_email as buyer_email', 'ou.user_phone as buyer_phone', 'op.op_shop_owner_name', 'op.op_shop_owner_username', 'op_l.op_shop_name', 'op.op_shop_owner_email', 'op.op_shop_owner_phone',
             'op_selprod_title', 'op_product_name', 'op_brand_name', 'op_selprod_options', 'op_selprod_sku', 'op_product_model', 'op_product_type',
-            'op_shipping_duration_name', 'op_shipping_durations','op_status_id', 'op_refund_qty', 'op_refund_amount', 'op_refund_commission','op_other_charges','optosu.optsu_user_id','ops.opshipping_by_seller_user_id','op_tax_collected_by_seller','order_is_wallet_selected','order_reward_point_used') 
+            'op_shipping_duration_name', 'op_shipping_durations','op_status_id', 'op_refund_qty', 'op_refund_amount', 'op_refund_commission','op_other_charges','optosu.optsu_user_id','ops.opshipping_by_seller_user_id','op_tax_collected_by_seller','order_is_wallet_selected','order_reward_point_used')
         );
         $srch->addCondition('op_id', '=', $op_id);
 
@@ -255,7 +255,7 @@ class SellerOrdersController extends AdminBaseController
         //$srch->addMultipleFields(array('op_id','op_order_id','optsu_user_id'));
         $srch->addMultipleFields(
             array( 'order_id', 'order_pmethod_id', 'order_date_added', 'op_id', 'op_qty', 'op_unit_price',
-            'op_invoice_number', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name', 'ou.user_name as buyer_user_name', 'ouc.credential_username as buyer_username', 'IFNULL(pmethod_name, IFNULL(pmethod_identifier, "Wallet")) as pmethod_name', 'op_commission_charged', 'op_commission_percentage',   'ou.user_name as buyer_name', 'ouc.credential_username as buyer_username', 'ouc.credential_email as buyer_email', 'ou.user_phone as buyer_phone', 'op.op_shop_owner_name', 'op.op_shop_owner_username', 'op_l.op_shop_name', 'op.op_shop_owner_email', 'op.op_shop_owner_phone','op_selprod_title', 'op_product_name', 'op_brand_name', 'op_selprod_options', 'op_selprod_sku', 'op_product_model','op_shipping_duration_name', 'op_shipping_durations','op_status_id','op_other_charges','optsu_user_id','op_product_weight','credential_email','pmethod_code') 
+            'op_invoice_number', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name', 'ou.user_name as buyer_user_name', 'ouc.credential_username as buyer_username', 'IFNULL(pmethod_name, IFNULL(pmethod_identifier, "Wallet")) as pmethod_name', 'op_commission_charged', 'op_commission_percentage',   'ou.user_name as buyer_name', 'ouc.credential_username as buyer_username', 'ouc.credential_email as buyer_email', 'ou.user_phone as buyer_phone', 'op.op_shop_owner_name', 'op.op_shop_owner_username', 'op_l.op_shop_name', 'op.op_shop_owner_email', 'op.op_shop_owner_phone','op_selprod_title', 'op_product_name', 'op_brand_name', 'op_selprod_options', 'op_selprod_sku', 'op_product_model','op_shipping_duration_name', 'op_shipping_durations','op_status_id','op_other_charges','optsu_user_id','op_product_weight','credential_email','pmethod_code')
         );
         $rs = $srch->getResultSet();
         $orderDetail = FatApp::getDb()->fetch($rs);
@@ -485,7 +485,7 @@ class SellerOrdersController extends AdminBaseController
         $srch->doNotLimitRecords();
         $srch->addMultipleFields(
             array( 'order_id', 'order_pmethod_id', 'order_date_added', 'op_id', 'op_qty', 'op_unit_price',
-            'op_invoice_number', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name', 'ou.user_name as buyer_user_name', 'ouc.credential_username as buyer_username', 'IFNULL(pmethod_name, IFNULL(pmethod_identifier, "Wallet")) as pmethod_name', 'op_commission_charged', 'op_commission_percentage',   'ou.user_name as buyer_name', 'ouc.credential_username as buyer_username', 'ouc.credential_email as buyer_email', 'ou.user_phone as buyer_phone', 'op.op_shop_owner_name', 'op.op_shop_owner_username', 'op_l.op_shop_name', 'op.op_shop_owner_email', 'op.op_shop_owner_phone','op_selprod_title', 'op_product_name', 'op_brand_name', 'op_selprod_options', 'op_selprod_sku', 'op_product_model','op_shipping_duration_name', 'op_shipping_durations','op_status_id','op_other_charges') 
+            'op_invoice_number', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name', 'ou.user_name as buyer_user_name', 'ouc.credential_username as buyer_username', 'IFNULL(pmethod_name, IFNULL(pmethod_identifier, "Wallet")) as pmethod_name', 'op_commission_charged', 'op_commission_percentage',   'ou.user_name as buyer_name', 'ouc.credential_username as buyer_username', 'ouc.credential_email as buyer_email', 'ou.user_phone as buyer_phone', 'op.op_shop_owner_name', 'op.op_shop_owner_username', 'op_l.op_shop_name', 'op.op_shop_owner_email', 'op.op_shop_owner_phone','op_selprod_title', 'op_product_name', 'op_brand_name', 'op_selprod_options', 'op_selprod_sku', 'op_product_model','op_shipping_duration_name', 'op_shipping_durations','op_status_id','op_other_charges')
         );
         $srch->addCondition('op_id', '=', $op_id);
         $opRs = $srch->getResultSet();
