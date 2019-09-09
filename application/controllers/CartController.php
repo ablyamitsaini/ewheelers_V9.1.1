@@ -124,7 +124,11 @@ class CartController extends MyAppController
         $selprod_id = FatApp::getPostedData('selprod_id', FatUtility::VAR_INT, 0);
         $quantity = FatApp::getPostedData('quantity', FatUtility::VAR_INT, 1);
 
-        $productsToAdd  = isset($post['addons'])?$post['addons']:array();
+        if (true ===  MOBILE_APP_API_CALL) {
+            $productsToAdd  = isset($post['addons']) ? json_decode($post['addons'], true) : array();
+        } else {
+            $productsToAdd  = isset($post['addons'])?$post['addons']:array();
+        }
         $productsToAdd[$selprod_id] = $quantity;
 
         $this->addProductToCart($productsToAdd, $selprod_id);
