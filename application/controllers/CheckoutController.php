@@ -1520,7 +1520,8 @@ class CheckoutController extends MyAppController
         $order_id = FatApp::getPostedData("order_id", FatUtility::VAR_STRING, "");
         $user_id = UserAuthentication::getLoggedUserId();
         $cartSummary = $this->cartObj->getCartFinancialSummary($this->siteLangId);
-        $userWalletBalance = User::getUserBalance($user_id, true);
+        $userWalletBalance = FatUtility::convertToType(User::getUserBalance($user_id, true), FatUtility::VAR_FLOAT);
+        $orderNetAmount = isset($cartSummary['orderNetAmount']) ? FatUtility::convertToType($cartSummary['orderNetAmount'], FatUtility::VAR_FLOAT) : 0;
 
         if (true ===  MOBILE_APP_API_CALL) {
             $paymentUrl = '';
@@ -1530,7 +1531,7 @@ class CheckoutController extends MyAppController
                 $controller = $paymentMethod['pmethod_code'].'Pay';
                 $paymentUrl = CommonHelper::generateFullUrl($controller, 'charge', array($order_id));
             }
-            if ($cartSummary['cartWalletSelected'] && (FatUtility::convertToType($userWalletBalance, FatUtility::VAR_FLOAT) >= FatUtility::convertToType($cartSummary['orderNetAmount'], FatUtility::VAR_FLOAT))) {
+            if (Orders::ORDER_WALLET_RECHARGE != $order_type && $cartSummary['cartWalletSelected'] && $userWalletBalance >= $orderNetAmount) {
                 $sendToWeb = $pmethod_id = 0;
                 $paymentUrl = CommonHelper::generateFullUrl('WalletPay', 'charge', array($order_id));
             }
@@ -1622,7 +1623,7 @@ class CheckoutController extends MyAppController
             FatUtility::dieWithError($errMsg);
         }
 
-        if ($cartSummary['cartWalletSelected'] && (FatUtility::convertToType($userWalletBalance, FatUtility::VAR_FLOAT) >= FatUtility::convertToType($cartSummary['orderNetAmount'], FatUtility::VAR_FLOAT)) && !$pmethod_id) {
+        if ($cartSummary['cartWalletSelected'] && $userWalletBalance >= $orderNetAmount && !$pmethod_id) {
             if (true ===  MOBILE_APP_API_CALL) {
                 $this->_template->render();
             }
