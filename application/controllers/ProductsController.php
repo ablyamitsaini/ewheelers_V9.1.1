@@ -840,7 +840,7 @@ class ProductsController extends MyAppController
         $recommendedProductsQuery = '('.$subSrch1->getQuery().') union ('.$subSrch2->getQuery().')';
         if (0 < $userId) {
             $subSrch3 = new SearchBase('tbl_user_product_recommendation', 'upr');
-            $subSrch1->addMultipleFields(array('upr_product_id as rec_product_id', 'upr_weightage as weightage'));
+            $subSrch3->addMultipleFields(array('upr_product_id as rec_product_id', 'upr_weightage as weightage'));
             $subSrch3->addOrder('weightage', 'desc');
             $subSrch3->addCondition('upr_user_id', '=', $userId);
             $subSrch3->doNotCalculateRecords();
