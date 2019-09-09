@@ -364,11 +364,13 @@ class LabelsController extends AdminBaseController
     public function updateJsonFile()
     {
         $langCode = Language::getAttributesById($this->adminLangId, 'language_code', false);
-        if (!Labels::updateDataToFile($this->adminLangId, $langCode)) {
-            FatUtility::dieJsonError(Labels::getLabel('MSG_Unable_to_update_file', $this->adminLangId));
+
+        $resp = Labels::updateDataToFile($this->adminLangId, $langCode);
+        if ($resp === true || 0 < $resp) {
+            $message = Labels::getLabel('MSG_File_successfully_updated', $this->adminLangId);
+            FatUtility::dieJsonSuccess($message);
         }
 
-        $message = Labels::getLabel('MSG_File_successfully_updated', $this->adminLangId);
-        FatUtility::dieJsonSuccess($message);
+        FatUtility::dieJsonError(!empty($resp) ? $resp : Labels::getLabel('MSG_Unable_to_update_file', $this->adminLangId));
     }
 }

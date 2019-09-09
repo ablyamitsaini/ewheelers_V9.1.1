@@ -204,6 +204,9 @@ class Labels extends MyAppModel
         $langFile = $path . $langCode.'.json';
         if (!file_exists($langFile) || (filemtime($langFile) < $lastLabelsUpdatedAt) || 1 > filesize($langFile)) {
             $records = static::fetchAllAssoc($langId, array('label_key','label_caption'));
+            if (!json_encode($records)) {
+                return json_last_error_msg();
+            }
             return file_put_contents($langFile, json_encode($records));
         }
         return true;
