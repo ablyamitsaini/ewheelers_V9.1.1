@@ -4216,12 +4216,13 @@ class SellerController extends SellerBaseController
 
     public function searchSpecialPriceProducts()
     {
+        $userId = UserAuthentication::getLoggedUserId();
         $post = FatApp::getPostedData();
         $page = FatApp::getPostedData('page', FatUtility::VAR_INT, 1);
         $selProdId = FatApp::getPostedData('selprod_id', FatUtility::VAR_INT, 0);
         $keyword = FatApp::getPostedData('keyword', FatUtility::VAR_STRING, '');
 
-        $srch = SellerProduct::searchSpecialPriceProductsObj($this->siteLangId, $selProdId, $keyword);
+        $srch = SellerProduct::searchSpecialPriceProductsObj($this->siteLangId, $selProdId, $keyword, $userId);
         $srch->setPageNumber($page);
 
         $db = FatApp::getDb();

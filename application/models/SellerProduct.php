@@ -894,7 +894,7 @@ class SellerProduct extends MyAppModel
         return $frm;
     }
 
-    public static function searchSpecialPriceProductsObj($langId, $selProdId = 0, $keyword = '')
+    public static function searchSpecialPriceProductsObj($langId, $selProdId = 0, $keyword = '', $userId = 0)
     {
         $pageSize = FatApp::getConfig('CONF_PAGE_SIZE', FatUtility::VAR_INT, 10);
         $srch = static::getSearchObject($langId);
@@ -914,6 +914,10 @@ class SellerProduct extends MyAppModel
         if (!empty($keyword)) {
             $cnd = $srch->addCondition('product_name', 'like', "%$keyword%");
             $cnd->attachCondition('selprod_title', 'LIKE', '%'. $keyword . '%', 'OR');
+        }
+
+        if (0 < $userId) {
+            $srch->addCondition('selprod_user_id', '=', $userId);
         }
 
         $srch->addCondition('selprod_active', '=', applicationConstants::ACTIVE);
