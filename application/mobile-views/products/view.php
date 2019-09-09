@@ -74,6 +74,7 @@ if (!empty($product)) {
         $videoCode = CommonHelper::parseYouTubeurl($youtubeVideoUrl);
         $product['youtubeUrlThumbnail'] = 'https://img.youtube.com/vi/'.$videoCode.'/hqdefault.jpg';
     }
+    $product['productUrl'] = CommonHelper::generateFullUrl('Products', 'View', array($product['selprod_id']));
 }
 
 $product['selprod_return_policies'] = !empty($product['selprod_return_policies']) ? $product['selprod_return_policies'] : (object)array();
