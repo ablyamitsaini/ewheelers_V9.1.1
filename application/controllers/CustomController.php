@@ -724,4 +724,17 @@
         $msg = $obj->deleteBulkUploadSubDirs($hoursBefore);
         FatUtility::dieJsonSuccess($msg);
     }
+
+    public function signupAgreementUrls()
+    {
+        $privacyPolicyLink = FatApp::getConfig('CONF_PRIVACY_POLICY_PAGE', FatUtility::VAR_STRING, '');
+        $termsAndConditionsLink = FatApp::getConfig('CONF_TERMS_AND_CONDITIONS_PAGE', FatUtility::VAR_STRING, '');
+        $data = array(
+            'privacyPolicyLink' => CommonHelper::generateFullUrl('cms', 'view', array($privacyPolicyLink)),
+            'faqLink' => CommonHelper::generateFullUrl('custom', 'faq'),
+            'termsAndConditionsLink' => CommonHelper::generateFullUrl('cms', 'view', array($termsAndConditionsLink)),
+        );
+        $this->set('data', $data);
+        $this->_template->render();
+    }
 }
