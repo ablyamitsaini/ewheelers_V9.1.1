@@ -2277,34 +2277,12 @@ trait SellerProducts
     {
         $userId = UserAuthentication::getLoggedUserId();
         $page = FatApp::getPostedData('page', FatUtility::VAR_INT, 1);
-        $pageSize = FatApp::getConfig('CONF_PAGE_SIZE', FatUtility::VAR_INT, 10);
         $selProdId = FatApp::getPostedData('selprod_id', FatUtility::VAR_INT, 0);
-
-        $srch = SellerProduct::getSearchObject($this->siteLangId);
-        $srch->joinTable(Product::DB_TBL, 'INNER JOIN', 'p.product_id = sp.selprod_product_id', 'p');
-        $srch->joinTable(SellerProductVolumeDiscount::DB_TBL, 'INNER JOIN', 'vd.voldiscount_selprod_id = sp.selprod_id', 'vd');
-        $srch->joinTable(Product::DB_LANG_TBL, 'LEFT OUTER JOIN', 'p.product_id = p_l.productlang_product_id AND p_l.productlang_lang_id = '.$this->siteLangId, 'p_l');
-        $srch->addMultipleFields(
-            array(
-            'selprod_id', 'voldiscount_min_qty', 'voldiscount_percentage', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title', 'voldiscount_id')
-        );
-
         $keyword = FatApp::getPostedData('keyword', FatUtility::VAR_STRING, '');
-        if ($keyword != '') {
-            $cnd = $srch->addCondition('product_name', 'like', "%$keyword%");
-            $cnd->attachCondition('selprod_title', 'LIKE', '%'. $keyword . '%', 'OR');
-        }
-        if (0 < $selProdId) {
-            $srch->addCondition('selprod_id', '=', $selProdId);
-        }
 
-        $srch->addCondition('selprod_user_id', '=', $userId);
-        $srch->addCondition('selprod_active', '=', applicationConstants::ACTIVE);
-        $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
+        $srch = SellerProduct::searchVolumeDiscountProducts($this->siteLangId, $selProdId, $keyword, $userId);
+
         $srch->setPageNumber($page);
-        $srch->setPageSize($pageSize);
-        $srch->addOrder('voldiscount_id', 'DESC');
-        // $srch->addGroupBy('vd.voldiscount_selprod_id');
 
         $db = FatApp::getDb();
         $rs = $srch->getResultSet();
@@ -2316,7 +2294,7 @@ trait SellerProducts
         $this->set('pageCount', $srch->pages());
         $this->set('postedData', FatApp::getPostedData());
         $this->set('recordCount', $srch->recordCount());
-        $this->set('pageSize', $pageSize);
+        $this->set('pageSize', FatApp::getConfig('CONF_PAGE_SIZE', FatUtility::VAR_INT, 10));
         $this->_template->render(false, false);
     }
 
