@@ -384,7 +384,9 @@ class HomeController extends MyAppController
                     $shopObj->setDefinedCriteria($langId);
                     $shopObj->joinSellerSubscription();
                     $shopObj->addCondition('shop_id', 'IN', array_keys($shopIds));
-                    $shopObj->setPageSize($collection['collection_primary_records']);
+                    if (false ===  MOBILE_APP_API_CALL) {
+                        $shopObj->setPageSize($collection['collection_primary_records']);
+                    }
                     $shopObj->addMultipleFields(array( 'shop_id','shop_user_id','IFNULL(shop_name, shop_identifier) as shop_name','IFNULL(country_name, country_code) as country_name','IFNULL(state_name, state_identifier) as state_name'));
                     $rs = $shopObj->getResultSet();
 
@@ -447,6 +449,9 @@ class HomeController extends MyAppController
                     $brandSearchTempObj->addMultipleFields(array('brand_id','IFNULL(brand_name, brand_identifier) as brand_name'));
                     $brandSearchTempObj->addCondition('brand_id', 'IN', array_keys($brandIds));
                     $brandSearchTempObj->setPageSize($collection['collection_primary_records']);
+                    if (false ===  MOBILE_APP_API_CALL) {
+                        $brandSearchTempObj->setPageSize($collection['collection_primary_records']);
+                    }
                     $rs = $brandSearchTempObj->getResultSet();
                     /* ] */
                     if (true ===  MOBILE_APP_API_CALL) {
