@@ -4218,34 +4218,11 @@ class SellerController extends SellerBaseController
     {
         $post = FatApp::getPostedData();
         $page = FatApp::getPostedData('page', FatUtility::VAR_INT, 1);
-        $pageSize = FatApp::getConfig('CONF_PAGE_SIZE', FatUtility::VAR_INT, 10);
-
-        $srch = SellerProduct::getSearchObject($this->siteLangId);
-        $srch->joinTable(Product::DB_TBL, 'INNER JOIN', 'p.product_id = sp.selprod_product_id', 'p');
-        $srch->joinTable(SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE, 'INNER JOIN', 'spp.splprice_selprod_id = sp.selprod_id', 'spp');
-        $srch->joinTable(Product::DB_LANG_TBL, 'LEFT OUTER JOIN', 'p.product_id = p_l.productlang_product_id AND p_l.productlang_lang_id = '.$this->siteLangId, 'p_l');
-
-        $srch->addMultipleFields(
-            array(
-            'selprod_id', 'selprod_price', 'date(splprice_start_date) as splprice_start_date', 'splprice_end_date', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title', 'splprice_id', 'splprice_price')
-        );
-
-        $keyword = FatApp::getPostedData('keyword', FatUtility::VAR_STRING, '');
-        if ($keyword != '') {
-            $cnd = $srch->addCondition('product_name', 'like', "%$keyword%");
-            $cnd->attachCondition('selprod_title', 'LIKE', '%'. $keyword . '%', 'OR');
-        }
-
         $selProdId = FatApp::getPostedData('selprod_id', FatUtility::VAR_INT, 0);
-        if (0 < $selProdId) {
-            $cnd = $srch->addCondition('selprod_id', '=', $selProdId);
-        }
-        $srch->addCondition('selprod_active', '=', applicationConstants::ACTIVE);
-        $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
+        $keyword = FatApp::getPostedData('keyword', FatUtility::VAR_STRING, '');
+
+        $srch = SellerProduct::searchSpecialPriceProductsObj($this->siteLangId, $selProdId, $keyword);
         $srch->setPageNumber($page);
-        $srch->setPageSize($pageSize);
-        $srch->addOrder('selprod_active', 'DESC');
-        $srch->addOrder('selprod_added_on', 'DESC');
 
         $db = FatApp::getDb();
         $rs = $srch->getResultSet();
@@ -4257,7 +4234,7 @@ class SellerController extends SellerBaseController
         $this->set('pageCount', $srch->pages());
         $this->set('postedData', $post);
         $this->set('recordCount', $srch->recordCount());
-        $this->set('pageSize', $pageSize);
+        $this->set('pageSize', FatApp::getConfig('CONF_PAGE_SIZE', FatUtility::VAR_INT, 10));
         $this->_template->render(false, false);
     }
 

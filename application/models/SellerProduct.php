@@ -893,4 +893,34 @@ class SellerProduct extends MyAppModel
         $fld1->attachField($fld2);
         return $frm;
     }
+
+    public static function searchSpecialPriceProductsObj($langId, $selProdId = 0, $keyword = '')
+    {
+        $pageSize = FatApp::getConfig('CONF_PAGE_SIZE', FatUtility::VAR_INT, 10);
+        $srch = static::getSearchObject($langId);
+        $srch->joinTable(Product::DB_TBL, 'INNER JOIN', 'p.product_id = sp.selprod_product_id', 'p');
+        $srch->joinTable(SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE, 'INNER JOIN', 'spp.splprice_selprod_id = sp.selprod_id', 'spp');
+        $srch->joinTable(Product::DB_LANG_TBL, 'LEFT OUTER JOIN', 'p.product_id = p_l.productlang_product_id AND p_l.productlang_lang_id = '.$langId, 'p_l');
+
+        $srch->addMultipleFields(
+            array(
+            'selprod_id', 'selprod_price', 'date(splprice_start_date) as splprice_start_date', 'splprice_end_date', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title', 'splprice_id', 'splprice_price')
+        );
+
+        if (0 < $selProdId) {
+            $srch->addCondition('selprod_id', '=', $selProdId);
+        }
+
+        if (!empty($keyword)) {
+            $cnd = $srch->addCondition('product_name', 'like', "%$keyword%");
+            $cnd->attachCondition('selprod_title', 'LIKE', '%'. $keyword . '%', 'OR');
+        }
+
+        $srch->addCondition('selprod_active', '=', applicationConstants::ACTIVE);
+        $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
+        $srch->addOrder('selprod_active', 'DESC');
+        $srch->addOrder('selprod_added_on', 'DESC');
+        $srch->setPageSize($pageSize);
+        return $srch;
+    }
 }
