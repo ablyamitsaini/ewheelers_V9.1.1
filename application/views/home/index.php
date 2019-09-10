@@ -12,14 +12,15 @@ if (count($sponsoredProds)>0) {
     $this->includeTemplate('_partial/collection/sponsored-products.php', array( 'products' => $sponsoredProds, 'siteLangId' => $siteLangId ), false);
 }
 
-echo FatUtility::decodeHtmlEntities($homePageProdLayout1);
+echo FatUtility::decodeHtmlEntities($homePageFirstLayout);
+// echo FatUtility::decodeHtmlEntities($homePageProdLayout1);
 /*if (isset($collections[Collections::TYPE_PRODUCT_LAYOUT1])) {
     $this->includeTemplate('_partial/collection/product-layout-1.php', array( 'collections' => $collections[Collections::TYPE_PRODUCT_LAYOUT1], 'siteLangId' => $siteLangId ), false);
 }*/
 /* ] */
 
 /* category Layout2[ */
-echo FatUtility::decodeHtmlEntities($homePageCatLayout1);
+// echo FatUtility::decodeHtmlEntities($homePageCatLayout1);
 /*if (isset($collections[Collections::TYPE_CATEGORY_LAYOUT1])) {
     $this->includeTemplate('_partial/collection/category-layout-1.php', array( 'collections' => $collections[Collections::TYPE_CATEGORY_LAYOUT1], 'siteLangId' => $siteLangId,'action'=>$action ), false);
 }*/
@@ -55,22 +56,23 @@ if (count($sponsoredShops) > 0) {
 }
 /* ] */
 
+echo FatUtility::decodeHtmlEntities($homePageFooterLayout);
 /* Category Layout2[ */
-echo FatUtility::decodeHtmlEntities($homePageCatLayout2);
+// echo FatUtility::decodeHtmlEntities($homePageCatLayout2);
 /*if (isset($collections[Collections::TYPE_CATEGORY_LAYOUT2])) {
     $this->includeTemplate('_partial/collection/category-layout-2.php', array( 'collections' => $collections[Collections::TYPE_CATEGORY_LAYOUT2], 'siteLangId' => $siteLangId,'action'=>$action ), false);
 }*/
 /* ] */
 
 /* Product Layout3[ */
-echo FatUtility::decodeHtmlEntities($homePageProdLayout3);
+// echo FatUtility::decodeHtmlEntities($homePageProdLayout3);
 /*if (isset($collections[Collections::TYPE_PRODUCT_LAYOUT3])) {
     $this->includeTemplate('_partial/collection/product-layout-3.php', array( 'collections' => $collections[Collections::TYPE_PRODUCT_LAYOUT3], 'siteLangId' => $siteLangId ), false);
 }*/
 /* ] */
 
 /* Brand Layout1[ */
-echo FatUtility::decodeHtmlEntities($homePageBrandLayout1);
+// echo FatUtility::decodeHtmlEntities($homePageBrandLayout1);
 /*if (isset($collections[Collections::TYPE_BRAND_LAYOUT1])) {
     $this->includeTemplate('_partial/collection/brand-layout-1.php', array( 'collections' => $collections[Collections::TYPE_BRAND_LAYOUT1], 'siteLangId' => $siteLangId ), false);
 }*/
