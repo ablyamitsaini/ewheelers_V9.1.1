@@ -43,8 +43,12 @@ class GuestUserController extends MyAppController
     public function login()
     {
         $authentication = new UserAuthentication();
+        $userType = FatApp::getPostedData('userType', FatUtility::VAR_INT, 0);
+        if (true ===  MOBILE_APP_API_CALL && 1 > $userType) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
+        }
 
-        if (!$authentication->login(FatApp::getPostedData('username'), FatApp::getPostedData('password'), $_SERVER['REMOTE_ADDR'], true, false, $this->app_user['temp_user_id'])) {
+        if (!$authentication->login(FatApp::getPostedData('username'), FatApp::getPostedData('password'), $_SERVER['REMOTE_ADDR'], true, false, $this->app_user['temp_user_id'], $userType)) {
             $message = Labels::getLabel($authentication->getError(), $this->siteLangId);
             FatUtility::dieJsonError($message);
         }

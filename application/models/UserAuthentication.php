@@ -274,7 +274,7 @@ class UserAuthentication extends FatModel
         return true;
     }
 
-    public function login($username, $password, $ip, $encryptPassword = true, $isAdmin = false, $tempUserId = 0)
+    public function login($username, $password, $ip, $encryptPassword = true, $isAdmin = false, $tempUserId = 0, $userType = 0)
     {
         $db = FatApp::getDb();
         if ($this->isBruteForceAttempt($ip, $username)) {
@@ -299,6 +299,25 @@ class UserAuthentication extends FatModel
         $condition=$srch->addCondition('credential_username', '=', $username);
         $condition->attachCondition('credential_email', '=', $username, 'OR');
         $srch->addCondition('credential_password', '=', $password);
+        if (0 < $userType) {
+            switch ($userType) {
+                case User::USER_TYPE_BUYER:
+                    $srch->addCondition('user_is_buyer', '=', 1);
+                    break;
+                case User::USER_TYPE_SELLER:
+                    $srch->addCondition('user_is_supplier', '=', 1);
+                    break;
+                case User::USER_TYPE_ADVERTISER:
+                    $srch->addCondition('user_is_advertiser', '=', 1);
+                    break;
+                case User::USER_TYPE_AFFILIATE:
+                    $srch->addCondition('user_is_affiliate', '=', 1);
+                    break;
+                default:
+                    $srch->addCondition('user_registered_initially_for', '=', $userType);
+                    break;
+            }
+        }
         $rs = $srch->getResultSet();
 
 
