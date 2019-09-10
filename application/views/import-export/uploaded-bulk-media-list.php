@@ -29,10 +29,16 @@ foreach ($arr_listing as $sn=>$row) {
                 $td->appendElement('plaintext', array(), $path, true);
             break;
             case 'files':
-                $allFiles = scandir(CONF_UPLOADS_PATH . AttachedFile::FILETYPE_BULK_IMAGES_PATH . $row['afile_physical_path']);
-                $files_count = array_diff($allFiles, array( '..', '.' ));
+                $fullPath = CONF_UPLOADS_PATH . AttachedFile::FILETYPE_BULK_IMAGES_PATH . $row['afile_physical_path'];
+                $count = Labels::getLabel('LBL_NA', $siteLangId);
+                if (file_exists($fullPath)) {
+                    $allFiles = scandir($fullPath);
+                    $files_count = array_diff($allFiles, array( '..', '.' ));
+                    $count = count($files_count);
+                }
 
-                $td->appendElement('plaintext', array(), count($files_count));
+                // $td->appendElement('plaintext', array(), count($files_count));
+                $td->appendElement('a', array('href'=> CommonHelper::generateUrl('ImportExport', 'downloadPathsFile', [base64_encode($fullPath)]), 'class'=>'button green','title'=>Labels::getLabel('LBL_Click_To_Download', $siteLangId)), $count, true);
             break;
             case 'action':
                 $ul = $td->appendElement("ul", array("class"=>"actions actions--centered"));

@@ -161,6 +161,7 @@ $(document).ready(function() {
                             document.uploadBulkImages.reset();
                             $("#uploadFileName").text('');
                             searchFiles();
+                            location.href = fcom.makeUrl('ImportExport', 'downloadPathsFile',[ans.path]);
                         } else {
                             $(document).trigger('close.mbsmessage');
                             $.systemMessage(ans.msg, 'alert--danger');

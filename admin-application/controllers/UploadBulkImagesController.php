@@ -48,32 +48,16 @@ class UploadBulkImagesController extends AdminBaseController
         }
 
         $fileName = $_FILES['bulk_images']['name'];
-        $tmp_name = $_FILES['bulk_images']['tmp_name'];
+        $tmpName = $_FILES['bulk_images']['tmp_name'];
 
-        $fileExt = pathinfo($fileName, PATHINFO_EXTENSION);
-        $fileExt = strtolower($fileExt);
-        if ('zip' != $fileExt) {
-            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_FILE', $this->langId));
-            FatUtility::dieJsonError(Message::getHtml());
-        }
-
-        $fileHandlerObj = new AttachedFile();
-
-        $savedFile = $fileHandlerObj->saveAttachment($tmp_name, AttachedFile::FILETYPE_BULK_IMAGES, 0, 0, $fileName);
-
+        $uploadBulkImgobj = new UploadBulkImages();
+        $savedFile = $uploadBulkImgobj->upload($fileName, $tmpName);
         if (false === $savedFile) {
-            Message::addErrorMessage($fileHandlerObj->getError());
+            Message::addErrorMessage($uploadBulkImgobj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
-
 
         $path = CONF_UPLOADS_PATH . AttachedFile::FILETYPE_BULK_IMAGES_PATH;
-
-        if (false === $fileHandlerObj->extractZip($path . $savedFile)) {
-            Message::addErrorMessage(Labels::getLabel('MSG_COULD_NOT_SAVE_FILE', $this->langId));
-            FatUtility::dieJsonError(Message::getHtml());
-        }
-
         $filePath = AttachedFile::FILETYPE_BULK_IMAGES_PATH . $savedFile;
 
         $msg = '<br>'.str_replace('{path}', '<br><b>'.$filePath.'</b>', Labels::getLabel('MSG_Your_uploaded_files_path_will_be:_{path}', $this->langId));
@@ -194,7 +178,7 @@ class UploadBulkImagesController extends AdminBaseController
         if (empty($path)) {
             Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId));
         }
-        $filesPathArr = $this->getAllFilesPath(base64_decode($path));
+        $filesPathArr = UploadBulkImages::getAllFilesPath(base64_decode($path));
         if (!empty($filesPathArr) && 0 < count($filesPathArr)) {
             $headers[] = ['File Path', 'File Name'];
             $filesPathArr = array_merge($headers, $filesPathArr);
@@ -203,30 +187,5 @@ class UploadBulkImagesController extends AdminBaseController
         }
         Message::addErrorMessage(Labels::getLabel('MSG_No_File_Found', $this->adminLangId));
         CommonHelper::redirectUserReferer();
-    }
-
-    public function getAllFilesPath($path)
-    {
-        if (empty($path)) {
-            FatUtility::dieWithError(Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId));
-        }
-        $locations = [];
-        if (file_exists($path)) {
-            $allFiles = scandir($path);
-            $files = array_diff($allFiles, array( '..', '.' ));
-            foreach ($files as $fileName) {
-                if (is_dir($path.'/'.$fileName)) {
-                    $subLocations = $this->getAllFilesPath($path.'/'.$fileName);
-                    $locations = array_merge($locations, $subLocations);
-                } else {
-                    $locations[] = array(
-                                        str_replace(CONF_UPLOADS_PATH, '', $path.'/'.$fileName),
-                                        $fileName
-                                    );
-                }
-            }
-            return $locations;
-        }
-        return [];
     }
 }

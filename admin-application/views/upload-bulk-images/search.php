@@ -45,15 +45,15 @@ foreach ($arr_listing as $sn => $row) {
                 $td->appendElement('plaintext', array(), $path, true);
                 break;
             case 'files':
-                $path = CONF_UPLOADS_PATH . AttachedFile::FILETYPE_BULK_IMAGES_PATH . $row['afile_physical_path'];
+                $fullPath = CONF_UPLOADS_PATH . AttachedFile::FILETYPE_BULK_IMAGES_PATH . $row['afile_physical_path'];
                 $count = Labels::getLabel('LBL_NA', $adminLangId);
-                if (file_exists($path)) {
-                    $allFiles = scandir($path);
+                if (file_exists($fullPath)) {
+                    $allFiles = scandir($fullPath);
                     $files_count = array_diff($allFiles, array( '..', '.' ));
                     $count = count($files_count);
                 }
 
-                $td->appendElement('a', array('href'=> CommonHelper::generateUrl('UploadBulkImages', 'downloadPathsFile', [base64_encode($path)]), 'class'=>'button green','title'=>Labels::getLabel('LBL_Click_To_Download', $adminLangId)), $count, true);
+                $td->appendElement('a', array('href'=> CommonHelper::generateUrl('UploadBulkImages', 'downloadPathsFile', [base64_encode($fullPath)]), 'class'=>'button green','title'=>Labels::getLabel('LBL_Click_To_Download', $adminLangId)), $count, true);
                 break;
             case 'action':
                 $ul = $td->appendElement("ul", array("class"=>"actions actions--centered"));

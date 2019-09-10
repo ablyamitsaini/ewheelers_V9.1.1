@@ -121,4 +121,58 @@ class UploadBulkImages extends FatModel
                 'vals' => array( AttachedFile::FILETYPE_BULK_IMAGES, $afile_physical_path )
         ));
     }
+
+    public function upload($fileName, $tmpName)
+    {
+        $fileExt = pathinfo($fileName, PATHINFO_EXTENSION);
+        $fileExt = strtolower($fileExt);
+        if ('zip' != $fileExt) {
+            $this->error = Labels::getLabel('MSG_INVALID_FILE', $this->langId);
+            return false;
+        }
+
+        $path = CONF_UPLOADS_PATH . AttachedFile::FILETYPE_BULK_IMAGES_PATH;
+
+        $fileHandlerObj = new AttachedFile();
+
+        $savedFile = $fileHandlerObj->saveAttachment($tmpName, AttachedFile::FILETYPE_BULK_IMAGES, UserAuthentication::getLoggedUserId(true), 0, $fileName);
+
+        if (false === $savedFile) {
+            $this->error = $fileHandlerObj->getError();
+            return false;
+        }
+
+        if (false === $fileHandlerObj->extractZip($path . $savedFile)) {
+            $this->error = Labels::getLabel('MSG_COULD_NOT_SAVE_FILE', $this->langId);
+            return false;
+        }
+
+        return $savedFile;
+    }
+
+    public static function getAllFilesPath($path)
+    {
+        if (empty($path)) {
+            return false;
+        }
+        $locations = [];
+        if (file_exists($path)) {
+            $allFiles = scandir($path);
+            $files = array_diff($allFiles, array( '..', '.' ));
+            foreach ($files as $fileName) {
+                if (is_dir($path.'/'.$fileName)) {
+                    $subLocations = static::getAllFilesPath($path.'/'.$fileName);
+                    $locations = array_merge($locations, $subLocations);
+                } else {
+                    $locations[] = array(
+                                        str_replace(CONF_UPLOADS_PATH, '', $path.'/'.$fileName),
+                                        $fileName
+                                    );
+                }
+            }
+            return $locations;
+        }
+        die('here');
+        return [];
+    }
 }

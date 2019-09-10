@@ -630,37 +630,26 @@ class ImportExportController extends SellerBaseController
         }
 
         $fileName = $_FILES['bulk_images']['name'];
-        $tmp_name = $_FILES['bulk_images']['tmp_name'];
+        $tmpName = $_FILES['bulk_images']['tmp_name'];
 
-        $fileExt = pathinfo($fileName, PATHINFO_EXTENSION);
-        $fileExt = strtolower($fileExt);
-        if ('zip' != $fileExt) {
-            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_FILE', $this->siteLangId));
+        $uploadBulkImgobj = new UploadBulkImages();
+        $savedFile = $uploadBulkImgobj->upload($fileName, $tmpName);
+        if (false === $savedFile) {
+            Message::addErrorMessage($uploadBulkImgobj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         $path = CONF_UPLOADS_PATH . AttachedFile::FILETYPE_BULK_IMAGES_PATH;
 
-        $fileHandlerObj = new AttachedFile();
-
-        $savedFile = $fileHandlerObj->saveAttachment($tmp_name, AttachedFile::FILETYPE_BULK_IMAGES, UserAuthentication::getLoggedUserId(), 0, $fileName);
-
-        if (false === $savedFile) {
-            Message::addErrorMessage($fileHandlerObj->getError());
-            FatUtility::dieJsonError(Message::getHtml());
-        }
-
-        if (false === $fileHandlerObj->extractZip($path . $savedFile)) {
-            Message::addErrorMessage(Labels::getLabel('MSG_COULD_NOT_SAVE_FILE', $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
-        }
-
         $filePath = AttachedFile::FILETYPE_BULK_IMAGES_PATH . $savedFile;
 
         $msg = '<br>'.str_replace('{path}', '<br><b>'.$filePath.'</b>', Labels::getLabel('MSG_Your_uploaded_files_path_will_be:_{path}', $this->siteLangId));
         $msg = Labels::getLabel('MSG_Uploaded_Successfully.', $this->siteLangId) .' '.$msg;
-
-        FatUtility::dieJsonSuccess($msg);
+        $json = [
+            "msg" => $msg,
+            "path" => base64_encode($path . $savedFile)
+        ];
+        FatUtility::dieJsonSuccess($json);
     }
 
     public function uploadedBulkMediaList()
@@ -706,8 +695,24 @@ class ImportExportController extends SellerBaseController
             $msg = $obj->deleteSingleBulkMediaDir($directory);
             FatUtility::dieJsonSuccess($msg);
         } else {
-            $errMsg = Labels::getLabel("MSG_Directory_not_found.", $langId);
+            $errMsg = Labels::getLabel("MSG_Directory_not_found.", $this->siteLangId);
             FatUtility::dieJsonError($errMsg);
         }
+    }
+
+    public function downloadPathsFile($path)
+    {
+        if (empty($path)) {
+            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
+        }
+        $filesPathArr = UploadBulkImages::getAllFilesPath(base64_decode($path));
+        if (!empty($filesPathArr) && 0 < count($filesPathArr)) {
+            $headers[] = ['File Path', 'File Name'];
+            $filesPathArr = array_merge($headers, $filesPathArr);
+            CommonHelper::convertToCsv($filesPathArr, time().'.csv');
+            exit;
+        }
+        Message::addErrorMessage(Labels::getLabel('MSG_No_File_Found', $this->siteLangId));
+        CommonHelper::redirectUserReferer();
     }
 }
