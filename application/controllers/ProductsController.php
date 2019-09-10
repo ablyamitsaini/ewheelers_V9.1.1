@@ -350,7 +350,7 @@ class ProductsController extends MyAppController
         if (true ===  MOBILE_APP_API_CALL && 1 > $selprod_id) {
             FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
         }
-        $productImagesArr = array();
+
         $prodSrchObj = new ProductSearch($this->siteLangId);
 
         /* fetch requested product[ */
@@ -431,10 +431,11 @@ class ProductsController extends MyAppController
 
         /* Current Product option Values[ */
         $options = SellerProduct::getSellerProductOptions($selprod_id, false);
-        /* CommonHelper::printArray($options); die; */
         $productSelectedOptionValues = array();
         $productGroupImages= array();
-        if ($options) {
+        $productImagesArr = array();
+
+        if (count($options) > 0) {
             foreach ($options as $op) {
                 /* Product UPC code [ */
                 $product['product_upc'] = UpcCode::getUpcCode($product['product_id'], $op['selprodoption_optionvalue_id']);
@@ -446,7 +447,8 @@ class ProductsController extends MyAppController
                 $productSelectedOptionValues[$op['selprodoption_option_id']] = $op['selprodoption_optionvalue_id'];
             }
         }
-        if ($productImagesArr) {
+
+        if (count($productImagesArr) > 0) {
             foreach ($productImagesArr as $image) {
                 $afileId = $image['afile_id'];
                 if (!array_key_exists($afileId, $productGroupImages)) {
@@ -565,7 +567,8 @@ class ProductsController extends MyAppController
         } else {
             $optionRows = FatApp::getDb()->fetchAll($optionRs, 'option_id');
         }
-        if ($optionRows) {
+
+        if (count($optionRows) > 0) {
             foreach ($optionRows as &$option) {
                 $optionValueSrch = clone $optionSrchObj;
                 $optionValueSrch->joinTable(OptionValue::DB_TBL.'_lang', 'LEFT OUTER JOIN', 'opval.optionvalue_id = opval_l.optionvaluelang_optionvalue_id AND opval_l.optionvaluelang_lang_id = '. $this->siteLangId, 'opval_l');
@@ -685,8 +688,8 @@ class ProductsController extends MyAppController
         $this->set('frmReviewSearch', $frmReviewSearch);
 
         /* Get product Polls [ */
-        $pollQuest = Polling::getProductPoll($product['product_id'], $this->siteLangId);
-        $this->set('pollQuest', $pollQuest);
+        /*$pollQuest = Polling::getProductPoll($product['product_id'], $this->siteLangId);
+        $this->set('pollQuest', $pollQuest);*/
         /* ] */
 
         /* Get Product Volume Discount (if any)[ */
@@ -802,6 +805,10 @@ class ProductsController extends MyAppController
             return;
         }
 
+        /*if($recommendedProducts =  FatCache::get('recommProds'.$selprod_id.'-'.$langId.'-'.$userId, CONF_HOME_PAGE_CACHE_TIME, '.txt')){
+            return  unserialize($recommendedProducts);
+        }*/
+
         $productId = SellerProduct::getAttributesById($selprod_id, 'selprod_product_id', false);
 
         $srch = new ProductSearch($langId);
@@ -880,7 +887,9 @@ class ProductsController extends MyAppController
         $srch->setPageSize(5);
         $srch->doNotCalculateRecords();
 
-        return $recommendedProducts = FatApp::getDb()->fetchAll($srch->getResultSet());
+        $recommendedProducts = FatApp::getDb()->fetchAll($srch->getResultSet());
+        //FatCache::set('recommProds'.$selprod_id.'-'.$langId.'-'.$userId, serialize($recommendedProducts), '.txt');
+        return $recommendedProducts;
     }
 
     private function getOgTags($product = array(), $afile_id = 0)
