@@ -122,7 +122,7 @@ class UploadBulkImages extends FatModel
         ));
     }
 
-    public function upload($fileName, $tmpName)
+    public function upload($fileName, $tmpName, $userId = 0)
     {
         $fileExt = pathinfo($fileName, PATHINFO_EXTENSION);
         $fileExt = strtolower($fileExt);
@@ -135,7 +135,7 @@ class UploadBulkImages extends FatModel
 
         $fileHandlerObj = new AttachedFile();
 
-        $savedFile = $fileHandlerObj->saveAttachment($tmpName, AttachedFile::FILETYPE_BULK_IMAGES, UserAuthentication::getLoggedUserId(true), 0, $fileName);
+        $savedFile = $fileHandlerObj->saveAttachment($tmpName, AttachedFile::FILETYPE_BULK_IMAGES, $userId, 0, $fileName);
 
         if (false === $savedFile) {
             $this->error = $fileHandlerObj->getError();

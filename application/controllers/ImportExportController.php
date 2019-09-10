@@ -633,7 +633,7 @@ class ImportExportController extends SellerBaseController
         $tmpName = $_FILES['bulk_images']['tmp_name'];
 
         $uploadBulkImgobj = new UploadBulkImages();
-        $savedFile = $uploadBulkImgobj->upload($fileName, $tmpName);
+        $savedFile = $uploadBulkImgobj->upload($fileName, $tmpName, UserAuthentication::getLoggedUserId());
         if (false === $savedFile) {
             Message::addErrorMessage($uploadBulkImgobj->getError());
             FatUtility::dieJsonError(Message::getHtml());
