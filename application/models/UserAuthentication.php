@@ -302,16 +302,16 @@ class UserAuthentication extends FatModel
         if (0 < $userType) {
             switch ($userType) {
                 case User::USER_TYPE_BUYER:
-                    $srch->addCondition('user_is_buyer', '=', 1);
+                    $srch->addCondition('user_is_buyer', '=', applicationConstants::YES);
                     break;
                 case User::USER_TYPE_SELLER:
-                    $srch->addCondition('user_is_supplier', '=', 1);
+                    $srch->addCondition('user_is_supplier', '=', applicationConstants::YES);
                     break;
                 case User::USER_TYPE_ADVERTISER:
-                    $srch->addCondition('user_is_advertiser', '=', 1);
+                    $srch->addCondition('user_is_advertiser', '=', applicationConstants::YES);
                     break;
                 case User::USER_TYPE_AFFILIATE:
-                    $srch->addCondition('user_is_affiliate', '=', 1);
+                    $srch->addCondition('user_is_affiliate', '=', applicationConstants::YES);
                     break;
                 default:
                     $srch->addCondition('user_registered_initially_for', '=', $userType);
