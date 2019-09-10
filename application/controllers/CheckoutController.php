@@ -1595,8 +1595,11 @@ class CheckoutController extends MyAppController
                 Message::addErrorMessage($message);
                 FatUtility::dieWithError(Message::getHtml());
             }
-            $this->cartObj->clear();
-            $this->cartObj->updateUserCart();
+
+            //No Need to clear cart in case of wallet recharge
+            /*$this->cartObj->clear();
+            $this->cartObj->updateUserCart();*/
+            
             $orderObj->updateOrderInfo($order_id, array('order_pmethod_id' => $pmethod_id));
 
             if (true ===  MOBILE_APP_API_CALL) {
