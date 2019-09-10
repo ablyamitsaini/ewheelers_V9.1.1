@@ -53,7 +53,7 @@ foreach ($arr_listing as $sn => $row) {
                     $count = count($files_count);
                 }
 
-                $td->appendElement('plaintext', array(), $count);
+                $td->appendElement('a', array('href'=> CommonHelper::generateUrl('UploadBulkImages', 'downloadPathsFile', [base64_encode($path)]), 'class'=>'button green','title'=>Labels::getLabel('LBL_Click_To_Download', $adminLangId)), $count, true);
                 break;
             case 'action':
                 $ul = $td->appendElement("ul", array("class"=>"actions actions--centered"));

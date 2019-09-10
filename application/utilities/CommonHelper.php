@@ -718,7 +718,7 @@ class CommonHelper extends FatUtility
 
 
 
-    public static function convertToCsv($input_array, $output_file_name, $delimiter)
+    public static function convertToCsv($input_array, $output_file_name, $delimiter = ',')
     {
         /** open raw memory as file, no need for temp files */
         $temp_memory = fopen('php://memory', 'w');

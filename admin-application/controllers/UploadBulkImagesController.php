@@ -78,8 +78,11 @@ class UploadBulkImagesController extends AdminBaseController
 
         $msg = '<br>'.str_replace('{path}', '<br><b>'.$filePath.'</b>', Labels::getLabel('MSG_Your_uploaded_files_path_will_be:_{path}', $this->langId));
         $msg = Labels::getLabel('MSG_Uploaded_Successfully.', $this->langId) .' '.$msg;
-
-        FatUtility::dieJsonSuccess($msg);
+        $json = [
+            "msg" => $msg,
+            "path" => base64_encode($path . $savedFile)
+        ];
+        FatUtility::dieJsonSuccess($json);
     }
 
     private function getSearchForm()
@@ -142,8 +145,8 @@ class UploadBulkImagesController extends AdminBaseController
 
     public function removeDir($directory)
     {
-        $directory = CONF_UPLOADS_PATH . base64_decode($directory).'/' ;
-
+        $directory = CONF_UPLOADS_PATH . base64_decode($directory) ;
+        $obj = new UploadBulkImages();
         $msg = $obj->deleteSingleBulkMediaDir($directory);
         FatUtility::dieJsonSuccess($msg);
     }
@@ -184,5 +187,46 @@ class UploadBulkImagesController extends AdminBaseController
         $rs = $sellersObj->getResultSet();
         $sellers = FatApp::getDb()->fetchAll($rs);
         die(json_encode($sellers));
+    }
+
+    public function downloadPathsFile($path)
+    {
+        if (empty($path)) {
+            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId));
+        }
+        $filesPathArr = $this->getAllFilesPath(base64_decode($path));
+        if (!empty($filesPathArr) && 0 < count($filesPathArr)) {
+            $headers[] = ['File Path', 'File Name'];
+            $filesPathArr = array_merge($headers, $filesPathArr);
+            CommonHelper::convertToCsv($filesPathArr, time().'.csv');
+            exit;
+        }
+        Message::addErrorMessage(Labels::getLabel('MSG_No_File_Found', $this->adminLangId));
+        CommonHelper::redirectUserReferer();
+    }
+
+    public function getAllFilesPath($path)
+    {
+        if (empty($path)) {
+            FatUtility::dieWithError(Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId));
+        }
+        $locations = [];
+        if (file_exists($path)) {
+            $allFiles = scandir($path);
+            $files = array_diff($allFiles, array( '..', '.' ));
+            foreach ($files as $fileName) {
+                if (is_dir($path.'/'.$fileName)) {
+                    $subLocations = $this->getAllFilesPath($path.'/'.$fileName);
+                    $locations = array_merge($locations, $subLocations);
+                } else {
+                    $locations[] = array(
+                                        str_replace(CONF_UPLOADS_PATH, '', $path.'/'.$fileName),
+                                        $fileName
+                                    );
+                }
+            }
+            return $locations;
+        }
+        return [];
     }
 }

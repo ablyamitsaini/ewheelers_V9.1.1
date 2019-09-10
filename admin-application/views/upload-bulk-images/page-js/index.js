@@ -88,6 +88,7 @@ $(document).ready(function() {
                             document.uploadBulkImages.reset();
                             $("#uploadFileName").text('');
                             searchFiles(document.frmSearch);
+                            location.href = fcom.makeUrl('UploadBulkImages', 'downloadPathsFile',[ans.path]);
                         } else {
                             $(document).trigger('close.mbsmessage');
                             fcom.displayErrorMessage(ans.msg);

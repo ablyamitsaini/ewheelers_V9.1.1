@@ -41,14 +41,18 @@ class UploadBulkImages extends FatModel
             return Labels::getLabel('LBL_Directory_Path_is_required.', $this->langId) ;
         }
 
+        if (!file_exists($dirPath)) {
+            return Labels::getLabel('LBL_Invalid_Directory.', $this->langId) ;
+        }
+
         $files = array_diff(scandir($dirPath), array( '..', '.' ));
 
         if (0 < count($files)) {
             foreach ($files as $file) {
-                $filePath = $dirPath . $file;
+                $filePath = $dirPath .'/'. $file;
                 if (false !== strpos($dirPath, $this->bulkRoot)) {
                     if (is_dir($filePath)) {
-                        rmdir($filePath);
+                        $this->deleteSingleBulkMediaDir($filePath);
                     } else {
                         unlink($filePath);
                     }
