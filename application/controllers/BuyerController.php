@@ -618,7 +618,7 @@ class BuyerController extends BuyerBaseController
             $cancelReasonsArr[$count]['value']= $val;
             $count++;
         }
-        $this->set('orderCancelReasonsArr', $cancelReasonsArr);
+        $this->set('data', array('reasons' =>$cancelReasonsArr));
         $this->_template->render();
     }
 
@@ -647,7 +647,7 @@ class BuyerController extends BuyerBaseController
             FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
         }
 
-        $this->set('returnReasonsArr', $returnReasonsArr);
+        $this->set('data', array('reasons' => $returnReasonsArr));
         $this->_template->render();
     }
 
@@ -2575,7 +2575,7 @@ class BuyerController extends BuyerBaseController
 
         $referralTrackingUrl = CommonHelper::referralTrackingUrl($userInfo['user_referral_code']);
 
-        $this->set('trackingUrl', $referralTrackingUrl);
+        $this->set('data', array('trackingUrl'=>$referralTrackingUrl));
         $this->_template->render();
     }
     public function orderReceipt($orderId)

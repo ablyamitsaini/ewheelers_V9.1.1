@@ -58,12 +58,13 @@ class AddressesController extends LoggedUserController
             $this->markAsDefault($ua_id);
         }
 
-        $this->set('ua_id', $ua_id);
 
+        $this->set('msg', Labels::getLabel('LBL_Setup_Successful', $this->siteLangId));
         if (true ===  MOBILE_APP_API_CALL) {
+            $this->set('data', array('ua_id' => $ua_id));
             $this->_template->render();
         }
-        $this->set('msg', Labels::getLabel('LBL_Setup_Successful', $this->siteLangId));
+        $this->set('ua_id', $ua_id);
         $this->_template->render(false, false, 'json-success.php');
     }
 

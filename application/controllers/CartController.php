@@ -359,11 +359,12 @@ class CartController extends MyAppController
         if (0 == $total) {
             $cartObj->removeCartDiscountCoupon();
         }
-        $this->set('total', $total);
         $this->set('msg', Labels::getLabel("MSG_Item_removed_successfully", $this->siteLangId));
         if (true ===  MOBILE_APP_API_CALL) {
+            $this->set('data', array('cartItemsCount'=>$total));
             $this->_template->render();
         }
+        $this->set('total', $total);
         $this->_template->render(false, false, 'json-success.php');
     }
 
@@ -437,6 +438,7 @@ class CartController extends MyAppController
             $this->set('msg', Labels::getLabel("MSG_cart_updated_successfully", $this->siteLangId));
         }
         if (true ===  MOBILE_APP_API_CALL) {
+            $this->set('data', array('cartItemsCount'=>$cartObj->countProducts()));
             $this->_template->render();
         }
         $this->_template->render(false, false, 'json-success.php');

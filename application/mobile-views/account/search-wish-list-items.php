@@ -2,6 +2,9 @@
 
 foreach ($products as $key => $product) {
     $products[$key]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($product['product_id'], "CLAYOUT3", $product['selprod_id'], 0, $siteLangId));
+    $products[$key]['selprod_price'] = CommonHelper::displayMoneyFormat($product['selprod_price'], true, false, false);
+    $products[$key]['theprice'] = CommonHelper::displayMoneyFormat($product['theprice'], true, false, false);
+
     $optionTitle = '';
     if (is_array($product['options']) && count($product['options'])) {
         foreach ($product['options'] as $op) {

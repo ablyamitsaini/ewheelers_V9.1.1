@@ -22,5 +22,5 @@ $data = array(
 );
 
 if (1 > $recordCount) {
-   $status = applicationConstants::OFF;
+    $status = applicationConstants::OFF;
 }

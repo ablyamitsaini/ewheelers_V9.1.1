@@ -9,12 +9,16 @@ foreach ($sponsoredProds as $index => $product) {
 foreach ($sponsoredShops as $shopIndex => $shopData) {
     foreach ($shopData["products"] as $index => $shopProduct) {
         $sponsoredShops[$shopIndex]['products'][$index]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($shopProduct['product_id'], "CLAYOUT3", $shopProduct['selprod_id'], 0, $siteLangId));
+        $sponsoredShops[$shopIndex]['products'][$index]['selprod_price'] = CommonHelper::displayMoneyFormat($shopProduct['selprod_price'], true, false, false);
+        $sponsoredShops[$shopIndex]['products'][$index]['theprice'] = CommonHelper::displayMoneyFormat($shopProduct['theprice'], true, false, false);
     }
 }
 foreach ($collections as $collectionIndex => $collectionData) {
     if (array_key_exists('products', $collectionData)) {
         foreach ($collectionData['products'] as $index => $product) {
             $collections[$collectionIndex]['products'][$index]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($product['product_id'], "CLAYOUT3", $product['selprod_id'], 0, $siteLangId));
+            $collections[$collectionIndex]['products'][$index]['selprod_price'] = CommonHelper::displayMoneyFormat($product['selprod_price'], true, false, false);
+            $collections[$collectionIndex]['products'][$index]['theprice'] = CommonHelper::displayMoneyFormat($product['theprice'], true, false, false);
         }
     } elseif (array_key_exists('categories', $collectionData)) {
         foreach ($collectionData['categories'] as $index => $category) {
