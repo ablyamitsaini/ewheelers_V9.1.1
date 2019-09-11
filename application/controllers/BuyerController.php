@@ -2585,24 +2585,11 @@ class BuyerController extends BuyerBaseController
             FatUtility::dieJsonError(strip_tags($message));
         }
 
-        $srch = Transactions::getSearchObject();
-        $srch->addCondition('utxn.utxn_order_id', 'like', '%'.$orderId.'%');
-        $srch->addMultipleFields(array('utxn_id'));
-        $rs = $srch->getResultSet();
-        $records = FatApp::getDb()->fetch($rs);
-
-        if (empty($records)) {
-            $message = Labels::getLabel('MSG_Invalid_Request', $this->siteLangId);
-            FatUtility::dieJsonError(strip_tags($message));
-        }
-        $txnId = $records['utxn_id'];
-        /* Send email to User[ */
-        $emailNotificationObj = new EmailHandler();
-        if (!$emailNotificationObj->sendTxnNotification($txnId, $this->siteLangId)) {
+        $emailObj = new EmailHandler();
+        if (!$emailObj->newOrderBuyerAdmin($orderId, $this->siteLangId, false)) {
             $message = Labels::getLabel('MSG_Unable_to_notify_customer', $this->siteLangId);
             FatUtility::dieJsonError(strip_tags($message));
         }
-        /* ] */
         $this->_template->render();
     }
 }
