@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 
 $loggedUserId = UserAuthentication::getLoggedUserId(true);
-$userWalletBalance = User::getUserBalance($loggedUserId, true);
+$remainingWalletBalance = $userWalletBalance = User::getUserBalance($loggedUserId, true);
 
 $totalRewardPoints = UserRewardBreakup::rewardPointBalance($loggedUserId);
 $discountTotal = isset($cartSummary["cartDiscounts"]["coupon_discount_total"]) ? $cartSummary["cartDiscounts"]["coupon_discount_total"] : 0;
@@ -10,12 +10,25 @@ $minValue = min($totalRewardPoints, $cartValue);
 $canBeUse = min($minValue, FatApp::getConfig('CONF_MAX_REWARD_POINT', FatUtility::VAR_INT, 0));
 $canBeUseRPAmt = CommonHelper::displayMoneyFormat(CommonHelper::convertRewardPointToCurrency($canBeUse));
 
+
+$walletCharged = 0;
+if ($userWalletBalance > 0 && $cartSummary['orderNetAmount'] > 0 && $cartSummary["cartWalletSelected"]) {
+    $remainingWalletBalance = ($userWalletBalance - $cartSummary['orderNetAmount']);
+    $remainingWalletBalance = ($remainingWalletBalance < 0) ? 0 : $remainingWalletBalance;
+
+    $walletCharged = $userWalletBalance - $remainingWalletBalance;
+}
+
+
 $priceDetail = array(
     'userWalletBalance' => $userWalletBalance,
+    'displayUserWalletBalance' => CommonHelper::displayMoneyFormat($userWalletBalance),
     'rewardPoints' => $totalRewardPoints,
     'canBeUseRP' => trim($canBeUse),
     'canBeUseRPAmt' => trim($canBeUseRPAmt),
-    'remainingWalletBalance' => CommonHelper::displayMoneyFormat($userWalletBalance),
+    'walletCharged' => CommonHelper::displayMoneyFormat($walletCharged),
+    'remainingWalletBalance' => $remainingWalletBalance,
+    'displayRemainingWalletBalance' => CommonHelper::displayMoneyFormat($remainingWalletBalance),
     'orderNetAmount' => $cartSummary['orderNetAmount'],
 );
 
@@ -73,12 +86,6 @@ $priceDetail['netPayable'] = array(
     'key' => Labels::getLabel('LBL_Net_Payable', $siteLangId),
     'value' => CommonHelper::displayMoneyFormat($cartSummary['orderNetAmount'])
 );
-
-if ($userWalletBalance > 0 && $cartSummary['orderNetAmount'] > 0 && $cartSummary["cartWalletSelected"]) {
-    $remainingWalletBalance = ($userWalletBalance - $cartSummary['orderNetAmount']);
-    $remainingWalletBalance = ($remainingWalletBalance < 0) ? 0 : $remainingWalletBalance;
-    $priceDetail['remainingWalletBalance'] = CommonHelper::displayMoneyFormat($remainingWalletBalance);
-}
 
 $data['cartSummary']['cartDiscounts'] = !empty($data['cartSummary']['cartDiscounts']) ? $data['cartSummary']['cartDiscounts'] : (object)array();
 $data = !empty($data) ? array_merge($data, $priceDetail) : $priceDetail;
