@@ -768,6 +768,11 @@ class AccountController extends LoggedUserController
             FatUtility::dieJsonError($message);
         }
         if (true ===  MOBILE_APP_API_CALL) {
+            $data = array(
+                'userImage' => CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId, 'croped', true))
+            );
+
+            $this->set('data', $data);
             $this->_template->render();
         }
 
@@ -3281,7 +3286,7 @@ class AccountController extends LoggedUserController
         if (!$uObj->createUserTempToken($tempToken)) {
             FatUtility::dieJsonError($uObj->getError());
         }
-        $this->set('tempToken', $tempToken);
+        $this->set('data', array('tempToken' => $tempToken));
         $this->_template->render();
     }
 

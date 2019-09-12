@@ -590,7 +590,7 @@ class EmailHandler extends FatModel
         return false;
     }
 
-    public function newOrderBuyerAdmin($order_id, $langId = 0)
+    public function newOrderBuyerAdmin($order_id, $langId = 0, $includeAdmin = true)
     {
         if ($order_id == '') {
             trigger_error(Labels::getLabel("MSG_Order_Id_not_specified", $this->commonLangId), E_USER_ERROR);
@@ -657,7 +657,7 @@ class EmailHandler extends FatModel
             '{order_products_table_format}' => $order_products_table_format,
             );
 
-            if (FatApp::getConfig('CONF_NEW_ORDER_EMAIL', FatUtility::VAR_INT, 1)) {
+            if ($includeAdmin && FatApp::getConfig('CONF_NEW_ORDER_EMAIL', FatUtility::VAR_INT, 1)) {
                 $this->sendMailToAdminAndAdditionalEmails("admin_order_email", $arrReplacements, static::ADD_ADDITIONAL_ALERTS, static::NOT_ONLY_SUPER_ADMIN, $langId);
             }
             self::sendMailTpl($userInfo['credential_email'], "customer_order_email", $langId, $arrReplacements);

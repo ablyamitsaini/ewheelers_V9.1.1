@@ -618,7 +618,7 @@ class BuyerController extends BuyerBaseController
             $cancelReasonsArr[$count]['value']= $val;
             $count++;
         }
-        $this->set('orderCancelReasonsArr', $cancelReasonsArr);
+        $this->set('data', array('reasons' =>$cancelReasonsArr));
         $this->_template->render();
     }
 
@@ -647,7 +647,7 @@ class BuyerController extends BuyerBaseController
             FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
         }
 
-        $this->set('returnReasonsArr', $returnReasonsArr);
+        $this->set('data', array('reasons' => $returnReasonsArr));
         $this->_template->render();
     }
 
@@ -2575,7 +2575,7 @@ class BuyerController extends BuyerBaseController
 
         $referralTrackingUrl = CommonHelper::referralTrackingUrl($userInfo['user_referral_code']);
 
-        $this->set('trackingUrl', $referralTrackingUrl);
+        $this->set('data', array('trackingUrl'=>$referralTrackingUrl));
         $this->_template->render();
     }
     public function orderReceipt($orderId)
@@ -2585,24 +2585,11 @@ class BuyerController extends BuyerBaseController
             FatUtility::dieJsonError(strip_tags($message));
         }
 
-        $srch = Transactions::getSearchObject();
-        $srch->addCondition('utxn.utxn_order_id', 'like', '%'.$orderId.'%');
-        $srch->addMultipleFields(array('utxn_id'));
-        $rs = $srch->getResultSet();
-        $records = FatApp::getDb()->fetch($rs);
-
-        if (empty($records)) {
-            $message = Labels::getLabel('MSG_Invalid_Request', $this->siteLangId);
-            FatUtility::dieJsonError(strip_tags($message));
-        }
-        $txnId = $records['utxn_id'];
-        /* Send email to User[ */
-        $emailNotificationObj = new EmailHandler();
-        if (!$emailNotificationObj->sendTxnNotification($txnId, $this->siteLangId)) {
+        $emailObj = new EmailHandler();
+        if (!$emailObj->newOrderBuyerAdmin($orderId, $this->siteLangId, false)) {
             $message = Labels::getLabel('MSG_Unable_to_notify_customer', $this->siteLangId);
             FatUtility::dieJsonError(strip_tags($message));
         }
-        /* ] */
         $this->_template->render();
     }
 }

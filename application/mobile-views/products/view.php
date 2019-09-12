@@ -2,18 +2,26 @@
 
 foreach ($upsellProducts as $index => $btProduct) {
     $upsellProducts[$index]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($btProduct['product_id'], "THUMB", $btProduct['selprod_id'], 0, $siteLangId));
+    $upsellProducts[$index]['selprod_price'] = CommonHelper::displayMoneyFormat($btProduct['selprod_price'], false, false, false);
+    $upsellProducts[$index]['theprice'] = CommonHelper::displayMoneyFormat($btProduct['theprice'], false, false, false);
 }
 
 foreach ($relatedProductsRs as $index => $rProduct) {
     $relatedProductsRs[$index]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($rProduct['product_id'], "THUMB", $rProduct['selprod_id'], 0, $siteLangId));
+    $relatedProductsRs[$index]['selprod_price'] = CommonHelper::displayMoneyFormat($rProduct['selprod_price'], false, false, false);
+    $relatedProductsRs[$index]['theprice'] = CommonHelper::displayMoneyFormat($rProduct['theprice'], false, false, false);
 }
 
 foreach ($recommendedProducts as $index => $recProduct) {
     $recommendedProducts[$index]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($recProduct['product_id'], "THUMB", $recProduct['selprod_id'], 0, $siteLangId));
+    $recommendedProducts[$index]['selprod_price'] = CommonHelper::displayMoneyFormat($recProduct['selprod_price'], false, false, false);
+    $recommendedProducts[$index]['theprice'] = CommonHelper::displayMoneyFormat($recProduct['theprice'], false, false, false);
 }
 
 foreach ($recentlyViewed as $index => $recViewed) {
     $recentlyViewed[$index]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($recViewed['product_id'], "THUMB", $recViewed['selprod_id'], 0, $siteLangId));
+    $recentlyViewed[$index]['selprod_price'] = CommonHelper::displayMoneyFormat($recViewed['selprod_price'], false, false, false);
+    $recentlyViewed[$index]['theprice'] = CommonHelper::displayMoneyFormat($recViewed['theprice'], false, false, false);
 }
 
 foreach ($productImagesArr as $afile_id => $image) {
@@ -39,6 +47,8 @@ foreach ($optionRows as $key => $option) {
 }
 
 if (!empty($product)) {
+    $product['selprod_price'] = CommonHelper::displayMoneyFormat($product['selprod_price'], false, false, false);
+    $product['theprice'] = CommonHelper::displayMoneyFormat($product['theprice'], false, false, false);
     if (!empty($product['selprod_return_policies'])) {
         $product['productPolicies'][] = array(
             'title' => $product['selprod_return_policies']['ppoint_title'],
