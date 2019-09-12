@@ -5,6 +5,8 @@ foreach ($slides as $index => $slideDetail) {
 }
 foreach ($sponsoredProds as $index => $product) {
     $sponsoredProds[$index]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($product['product_id'], "CLAYOUT3", $product['selprod_id'], 0, $siteLangId));
+    $sponsoredProds[$index]['selprod_price'] = CommonHelper::displayMoneyFormat($product['selprod_price'], true, false, false);
+    $sponsoredProds[$index]['theprice'] = CommonHelper::displayMoneyFormat($product['theprice'], true, false, false);
 }
 foreach ($sponsoredShops as $shopIndex => $shopData) {
     foreach ($shopData["products"] as $index => $shopProduct) {
