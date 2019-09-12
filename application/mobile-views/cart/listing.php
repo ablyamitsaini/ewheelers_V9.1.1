@@ -4,6 +4,8 @@ foreach ($products as $key => $product) {
     $products[$key]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($product['product_id'], "CLAYOUT3", $product['selprod_id'], 0, $siteLangId));
     $products[$key]['selprod_price'] = CommonHelper::displayMoneyFormat($product['selprod_price'], false, false, false);
     $products[$key]['theprice'] = CommonHelper::displayMoneyFormat($product['theprice'], false, false, false);
+    $products[$key]['total'] = CommonHelper::displayMoneyFormat($product['total'], false, false, false);
+    $products[$key]['netTotal'] = CommonHelper::displayMoneyFormat($product['netTotal'], false, false, false);
 }
 
 $data = array(
