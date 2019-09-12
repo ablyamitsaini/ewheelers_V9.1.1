@@ -47,6 +47,8 @@ foreach ($optionRows as $key => $option) {
 }
 
 if (!empty($product)) {
+    $product['selprod_price'] = CommonHelper::displayMoneyFormat($product['selprod_price'], false, false, false);
+    $product['theprice'] = CommonHelper::displayMoneyFormat($product['theprice'], false, false, false);
     if (!empty($product['selprod_return_policies'])) {
         $product['productPolicies'][] = array(
             'title' => $product['selprod_return_policies']['ppoint_title'],
