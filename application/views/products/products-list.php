@@ -17,10 +17,10 @@ if ($products) {
             <span class="tag--soldout"><?php echo Labels::getLabel('LBL_SOLD_OUT', $siteLangId);?></span>
         <?php  } ?>
         <div class="products__body"> <?php $this->includeTemplate('_partial/collection-ui.php', array('product'=>$product,'siteLangId'=>$siteLangId, 'forPage'=> $forPage), false); ?> <div class="products__img">
-                <?php $uploadedTime = ($product['product_image_updated_on'] > 0) ? '?'.strtotime($product['product_image_updated_on']) : '' ; ?> <a title="<?php echo $product['selprod_title']; ?>"
+                <?php /*$uploadedTime = ($product['product_image_updated_on'] > 0) ? '?'.strtotime($product['product_image_updated_on']) : '' ; */?> <a title="<?php echo $product['selprod_title']; ?>"
                     href="<?php echo !isset($product['promotion_id'])?CommonHelper::generateUrl('Products', 'View', array($product['selprod_id'])):CommonHelper::generateUrl('Products', 'track', array($product['promotion_record_id']))?>">
                     <img data-ratio="1:1 (500x500)"
-                        src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('image', 'product', array($product['product_id'], "CLAYOUT3", $product['selprod_id'], 0, $siteLangId)), CONF_IMG_CACHE_TIME, '.jpg').$uploadedTime; ?>"
+                        src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('image', 'product', array($product['product_id'], "CLAYOUT3", $product['selprod_id'], 0, $siteLangId)), CONF_IMG_CACHE_TIME, '.jpg'); ?>"
                         alt="<?php echo $product['prodcat_name']; ?>">
                 </a>
             </div>

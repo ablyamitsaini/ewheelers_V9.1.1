@@ -35,14 +35,14 @@ FatApp::setViewDataProvider('_partial/dashboardTop.php', array('Navigation', 'da
 
 FatApp::setViewDataProvider('_partial/custom/header-breadcrumb.php', array('Common', 'setHeaderBreadCrumb'));
 FatApp::setViewDataProvider('_partial/footerNewsLetterForm.php', array('Common', 'footerNewsLetterForm'));
-FatApp::setViewDataProvider('_partial/userDashboardMessages.php', array('Common', 'userMessages'));
+// FatApp::setViewDataProvider('_partial/userDashboardMessages.php', array('Common', 'userMessages'));
 FatApp::setViewDataProvider('_partial/headerTopNavigation.php', array('Navigation', 'headerTopNavigation'));
 FatApp::setViewDataProvider('_partial/footerNavigation.php', array('Navigation', 'footerNavigation'));
 FatApp::setViewDataProvider('_partial/seller/sellerNavigationLeft.php', array('Navigation', 'sellerNavigationLeft'));
 FatApp::setViewDataProvider('_partial/seller/sellerNavigationRight.php', array('Navigation', 'sellerNavigationRight'));
 FatApp::setViewDataProvider('_partial/footerSocialMedia.php', array('Common', 'footerSocialMedia'));
-FatApp::setViewDataProvider('_partial/footerTopBrands.php', array('Common', 'footerTopBrands'));
-FatApp::setViewDataProvider('_partial/footerTopCategories.php', array('Common', 'footerTopCategories'));
+// FatApp::setViewDataProvider('_partial/footerTopBrands.php', array('Common', 'footerTopBrands'));
+// FatApp::setViewDataProvider('_partial/footerTopCategories.php', array('Common', 'footerTopCategories'));
 FatApp::setViewDataProvider('_partial/footerTrustBanners.php', array('Common', 'footerTrustBanners'));
 FatApp::setViewDataProvider('_partial/blogNavigation.php', array('Navigation', 'blogNavigation'));
 //FatApp::setViewDataProvider('_partial/brandFilters.php', array('Common', 'brandFilters'));

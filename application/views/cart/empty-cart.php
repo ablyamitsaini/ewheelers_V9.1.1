@@ -70,6 +70,6 @@
 </div>
 <script>
 $(document).ready(function(){
-	$(".hide_on_no_product").hide(); 
+	$(".hide_on_no_product").hide();
 });
 </script>

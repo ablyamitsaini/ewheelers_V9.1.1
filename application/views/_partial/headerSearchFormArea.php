@@ -15,7 +15,9 @@
 ?>
 
 <div class="main-search">
-	<a href="javascript:void(0)" class="toggle--search toggle--search-js"> <span class="icn"></span></a>
+	<a href="javascript:void(0)" class="toggle--search toggle--search-js"> <span class="icn"><svg class="svg">
+         <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#magnifying" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#magnifying"></use>
+        </svg></span></a>
 	<div class="form--search form--search-popup">
 		<a id="close-search-popup-js" class="close-layer d-xl-none" href="javascript:void(0)"></a>
 		<?php echo $headerSrchFrm->getFormTag(); ?>

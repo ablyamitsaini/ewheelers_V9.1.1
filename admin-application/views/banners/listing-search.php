@@ -73,7 +73,7 @@ foreach ($arr_listing as $sn=>$row) {
                 }
 
 
-                $img = '<img src="'.CommonHelper::generateFullUrl('Banner', 'Thumb', array($row['banner_id'] , $adminLangId), CONF_WEBROOT_FRONT_URL).'?'.time().'" />';
+                $img = '<img src="'.CommonHelper::generateFullUrl('Banner', 'Thumb', array($row['banner_id'] , $adminLangId), CONF_WEBROOT_FRONT_URL).'" />';
                 $td->appendElement('plaintext', array(), $img, true);
             break;
             case 'action':

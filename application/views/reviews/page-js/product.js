@@ -34,37 +34,37 @@ function setupReviewAbuse(frm){
 }
 
 (function() {
-	
+
 	/* reviews section[ */
-	
+
 	var dv = '#itemRatings .listing__all';
 	var currPage = 1;
-	
+
 	reviews = function(frm, append){
 		if( typeof append == undefined || append == null ){
 			append = 0;
 		}
-		
+
 		var data = fcom.frmData(frm);
 		if( append == 1 ){
 			$(dv).prepend(fcom.getLoader());
 		} else {
 			$(dv).html(fcom.getLoader());
 		}
-		
+
 		//
-		fcom.updateWithAjax(fcom.makeUrl('Reviews','searchForProductList'), data, function(ans){
+		fcom.updateWithAjax(fcom.makeUrl('Reviews','searchForProduct'), data, function(ans){
 			if( ans.status == 1 ){
 				$.mbsmessage.close();
 			}
 			if( ans.totalRecords ){
 				$('#reviews-pagination-strip--js').show();
-			}			
+			}
 			if( append == 1 ){
 				$(dv).find('.loader-yk').remove();
 				$(dv).find('form[name="frmSearchReviewsPaging"]').remove();
 				$(dv).append(ans.html);
-				
+
 				$('#reviewEndIndex').html(( Number($('#reviewEndIndex').html()) + ans.recordsToDisplay));
 			} else {
 				$(dv).html(ans.html);
@@ -72,24 +72,24 @@ function setupReviewAbuse(frm){
 				$('#reviewEndIndex').html(ans.recordsToDisplay);
 			}
 			$('#reviewsTotal').html( ans.totalRecords );
-			
+
 			$("#loadMoreReviewsBtnDiv").html( ans.loadMoreBtnHtml );
 			$('a.yes').toggleClass("is-active");
-		}); 
+		});
 	};
-	
+
 	goToLoadMoreReviews = function(page){
 		if(typeof page == undefined || page == null){
 			page = 1;
 		}
 		currPage = page;
-		var frm = document.frmSearchReviewsPaging;		
+		var frm = document.frmSearchReviewsPaging;
 		$(frm.page).val(page);
 		reviews(frm,1);
 	};
-	
+
 	/*] */
-	
+
 	markReviewHelpful = function(reviewId , isHelpful){
 		if( isUserLogged() == 0 ){
 			loginPopUpBox();
@@ -98,12 +98,12 @@ function setupReviewAbuse(frm){
 		isHelpful = (isHelpful) ? isHelpful : 0;
 		var data = 'reviewId='+reviewId+'&isHelpful=' + isHelpful;
 		fcom.updateWithAjax(fcom.makeUrl('Reviews','markHelpful'), data, function(ans){
-		
+
 			setTimeout(function(){
-				reviews(document.frmReviewSearch); 
+				reviews(document.frmReviewSearch);
 			}, 3000);
-			
+
 		});
 	}
-	
+
 })();

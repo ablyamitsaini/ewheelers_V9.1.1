@@ -12,6 +12,7 @@ class CommonHelper extends FatUtility
     private static $_currency_value;
     private static $_default_currency_symbol_left;
     private static $_default_currency_symbol_right;
+    private static $appToken;
 
     public static function initCommonVariables($isAdmin = false)
     {
@@ -34,6 +35,10 @@ class CommonHelper extends FatUtility
                     self::$_currency_id = FatUtility::int(trim($_COOKIE['defaultSiteCurrency']));
                 }
             }
+
+            if (true ===  MOBILE_APP_API_CALL && array_key_exists('HTTP_X_TOKEN', $_SERVER) && !empty($_SERVER['HTTP_X_TOKEN'])) {
+                self::$appToken = ($_SERVER['HTTP_X_TOKEN'] != '')?$_SERVER['HTTP_X_TOKEN']:'';
+            }
         } else {
             if (isset($_COOKIE['defaultAdminSiteLang'])) {
                 $languages = Language::getAllNames();
@@ -55,6 +60,11 @@ class CommonHelper extends FatUtility
         self::$_currency_code = $currencyData['currency_code'];
         self::$_currency_value = $currencyData['currency_value'];
         self::$_layout_direction = Language::getLayoutDirection(self::$_lang_id);
+    }
+
+    public static function getAppToken()
+    {
+        return self::$appToken;
     }
 
     public static function getLangId()
@@ -134,26 +144,6 @@ class CommonHelper extends FatUtility
     /* public static function encryptPassword($pwd) {
         return md5(PASSWORD_SALT . $pwd . PASSWORD_SALT);
     } */
-
-    public static function isShippedBySeller($sellerId = 0, $productSellerId = 0, $shippedBySellerId = false)
-    {
-        $productSellerId = FatUtility::int($productSellerId);
-        $sellerId = FatUtility::int($sellerId);
-        /* if(FatApp::getConfig('CONF_SHIPPED_BY_ADMIN',FatUtility::VAR_INT,0)){
-            return false;
-        } */
-
-        if ($productSellerId > 0 && $sellerId == $productSellerId) {
-            /* Catalog-Product Added By Seller so also shipped by seller */
-            return $sellerId;
-        } else {
-            $shippedBySellerId = FatUtility::int($shippedBySellerId);
-            if ($shippedBySellerId > 0 && $sellerId == $shippedBySellerId) {
-                return $shippedBySellerId;
-            }
-        }
-        return false;
-    }
 
     public static function canAvailShippingChargesBySeller($opSellerId = 0, $shippedByUserId = 0)
     {
@@ -1590,34 +1580,6 @@ class CommonHelper extends FatUtility
         $dropDown .='</select>';
         return  $dropDown;
     }
-    public static function getLgColsForPackages()
-    {
-        return array('1'=>4,
-            '2'=>6,
-            '3'=>4,
-            '4'=>3,
-            '5'=>4,
-            '6'=>4,
-            '7'=>4,
-            '8'=>4,
-            '9'=>4,
-            '10'=>4
-        );
-    }
-    public static function getMdColsForPackages()
-    {
-        return array('1'=>4,
-            '2'=>6,
-            '3'=>4,
-            '4'=>3,
-            '5'=>4,
-            '6'=>4,
-            '7'=>4,
-            '8'=>4,
-            '9'=>4,
-            '10'=>4
-        );
-    }
 
     public static function getUserFirstName($userName = '')
     {
@@ -1864,6 +1826,50 @@ class CommonHelper extends FatUtility
             return true;
         }
         return false;
+    }
+
+    public static function jsonEncodeUnicode($data, $convertToType = true)
+    {
+        if (false === $convertToType) {
+            die(json_encode($data));
+        }
+
+        $data = static::cleanArray($data);
+        die(FatUtility::convertToJson($data, 0));
+    }
+
+    public static function cleanArray($obj)
+    {
+        $orig_obj = $obj;
+
+        // We want to preserve the object name to the array
+        // So we get the object name in case it is an object before we convert to an array (which we lose the object name)
+        if (is_object($obj)) {
+            $obj = (array)$obj;
+            if (empty($obj)) {
+                return $orig_obj;
+            }
+        }
+
+        // If obj is now an array, we do a recursion
+        // If obj is not, just return the value
+        if (is_array($obj)) {
+            $new = [];
+            //initiate the recursion
+            foreach ($obj as $key => $val) {
+                if (is_object($orig_obj)) {
+                    // Remove full class name from the key
+                    $key = str_replace(get_class($orig_obj), '', $key);
+                    // We don't want those * infront of our keys due to protected methods
+                }
+
+                $new[$key] = self::cleanArray($val);
+            }
+        } else {
+            $new = FatUtility::convertToType($obj, FatUtility::VAR_STRING);
+        }
+
+        return $new;
     }
 
     public static function displayBadgeCount($totalCount, $maxValue = 99)

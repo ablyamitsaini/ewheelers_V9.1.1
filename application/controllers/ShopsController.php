@@ -150,6 +150,10 @@ class ShopsController extends MyAppController
         $json['startRecord'] = $startRecord;
         $json['endRecord'] = $endRecord;
 
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
+
         $json['html'] = $this->_template->render(false, false, 'shops/search.php', true, false);
         $json['loadMoreBtnHtml'] = $this->_template->render(false, false, '_partial/load-more-btn.php', true, false);
         FatUtility::dieJsonSuccess($json);
@@ -173,42 +177,71 @@ class ShopsController extends MyAppController
 
         $this->shopDetail($shop_id);
 
-        $frm = $this->getProductSearchForm();
-
-        $get = FatApp::getParameters();
-        $get = Product::convertArrToSrchFiltersAssocArr($get);
-
+        if (true ===  MOBILE_APP_API_CALL) {
+            $get = FatApp::getPostedData();
+        } else {
+            $get = FatApp::getParameters();
+            $get = array_filter(Product::convertArrToSrchFiltersAssocArr($get));
+        }
+        // CommonHelper::printArray($get, true);
         if (array_key_exists('currency', $get)) {
             $get['currency_id'] = $get['currency'];
         }
         if (array_key_exists('sort', $get)) {
             $get['sortOrder'] = $get['sort'];
         }
+
+        $includeShopData = true;
+        if (array_key_exists('includeShopData', $get) && 1 > FatUtility::int($get['includeShopData'])) {
+            $includeShopData = false;
+        }
         //$get['join_price'] = 1;
         $get['shop_id'] = $shop_id;
 
-        $frm->fill($get);
+        $data = $this->getListingData($get, $includeShopData);
 
-        $data = $this->getListingData($get);
+        if (false ===  MOBILE_APP_API_CALL) {
+            $frm = $this->getProductSearchForm();
+            $frm->fill($get);
 
-        $arr = array(
-            'frmProductSearch'=>$frm,
-            'canonicalUrl'=>CommonHelper::generateFullUrl('Shops', 'view', array($shop_id)),
-            'productSearchPageType'=>SavedSearchProduct::PAGE_SHOP,
-            'recordId'=>$shop_id,
-            'bannerListigUrl'=>CommonHelper::generateFullUrl('Banner', 'categories'),
-        );
+            $arr = array(
+                'frmProductSearch'=>$frm,
+                'canonicalUrl'=>CommonHelper::generateFullUrl('Shops', 'view', array($shop_id)),
+                'productSearchPageType'=>SavedSearchProduct::PAGE_SHOP,
+                'recordId'=>$shop_id,
+                'bannerListigUrl'=>CommonHelper::generateFullUrl('Banner', 'categories'),
+            );
+            $data = array_merge($data, $arr);
 
-        $data = array_merge($data, $arr);
+            $this->includeProductPageJsCss();
+            $this->_template->addJs('js/slick.min.js');
+            $this->_template->addCss(array('css/slick.css','css/product-detail.css'));
+            $this->_template->addJs('js/shop-nav.js');
+            $this->_template->addJs('js/jquery.colourbrightness.min.js');
+        }
+        if (true ===  MOBILE_APP_API_CALL && true === $includeShopData) {
+            $shopInfo = $this->shopPoliciesData($this->getShopInfo($shop_id));
+            $data['shop'] = array_merge($data['shop'], $shopInfo);
+            $data['shop']['rating'] = 0;
+            if (FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) {
+                $data['shop']['rating'] = SelProdRating::getSellerRating($data['shop']['shop_user_id']);
+            }
+            $data['shop']['shop_logo'] = CommonHelper::generateFullUrl('image', 'shopLogo', array($data['shop']['shop_id'], $this->siteLangId));
+            $data['shop']['shop_banner'] = CommonHelper::generateFullUrl('image', 'shopBanner', array($data['shop']['shop_id'], $this->siteLangId));
+        }
+
         $this->set('data', $data);
 
-        $this->includeProductPageJsCss();
-        $this->_template->addJs(array('js/slick.min.js', 'js/responsive-img.min.js', 'js/shop-nav.js', 'js/jquery.colourbrightness.min.js'));
-        $this->_template->addCss(array('css/slick.css','css/product-detail.css'));
+        if (false === MOBILE_APP_API_CALL) {
+            $this->includeProductPageJsCss();
+            $this->_template->addJs(array('js/slick.min.js', 'js/responsive-img.min.js', 'js/shop-nav.js', 'js/jquery.colourbrightness.min.js'));
+            $this->_template->addCss(array('css/slick.css','css/product-detail.css'));
+        }
+
         $this->_template->render();
     }
 
-    public function showBackgroundImage($shop_id =0, $lang_id =0, $templateId='')
+    public function showBackgroundImage($shop_id = 0, $lang_id = 0, $templateId = '')
     {
         $recordId = FatUtility::int($shop_id);
         $lang_id = FatUtility::int($lang_id);
@@ -289,7 +322,7 @@ class ShopsController extends MyAppController
             break;
         } */
         $this->_template->addCss('shops/templates/page-css/'.SHOP::TEMPLATE_ONE.'.css');
-        $this->set('shop', $shop);
+        $this->set('shop', $this->shopPoliciesData($shop));
         $this->set('shopRating', SelProdRating::getSellerRating($shop['shop_user_id']));
         $this->set('shopTotalReviews', SelProdReview::getSellerTotalReviews($shop['shop_user_id']));
 
@@ -465,7 +498,7 @@ class ShopsController extends MyAppController
         $this->_template->render(true, true, 'shops/view.php');
     }
 
-    public function sendMessage($shop_id, $selprod_id=0)
+    public function sendMessage($shop_id, $selprod_id = 0)
     {
         UserAuthentication::checkLogin();
         $shop_id = FatUtility::int($shop_id);
@@ -511,20 +544,19 @@ class ShopsController extends MyAppController
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
         $loggedUserId = UserAuthentication::getLoggedUserId();
         if (false == $post) {
-            Message::addErrorMessage(current($frm->getValidationErrors()));
-            FatUtility::dieJsonError(Message::getHtml());
+            FatUtility::dieJsonError(strip_tags(current($frm->getValidationErrors())));
         }
 
         $shop_id = FatUtility::int($post['shop_id']);
         $shopData = $this->getShopInfo($shop_id);
         if (!$shopData) {
-            Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
+            $message = Labels::getLabel('LBL_Invalid_Shop', $this->siteLangId);
+            FatUtility::dieJsonError($message);
         }
 
         if ($shopData['shop_user_id'] == $loggedUserId) {
-            Message::addErrorMessage(Labels::getLabel('LBL_You_are_not_allowed_to_send_message', $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
+            $message = Labels::getLabel('LBL_You_are_not_allowed_to_send_message', $this->siteLangId);
+            FatUtility::dieJsonError($message);
         }
 
         $threadObj = new Thread();
@@ -546,7 +578,11 @@ class ShopsController extends MyAppController
         $threadObj->assignValues($threadDataToSave);
 
         if (!$threadObj->save()) {
-            Message::addErrorMessage(Labels::getLabel($threadObj->getError(), $this->siteLangId));
+            $message = Labels::getLabel($threadObj->getError(), $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError($message);
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
         $thread_id = $threadObj->getMainTableRecordId();
@@ -561,15 +597,23 @@ class ShopsController extends MyAppController
         'message_deleted'    =>    0
         );
         if (!$message_id = $threadObj->addThreadMessages($threadMsgDataToSave)) {
-            Message::addErrorMessage(Labels::getLabel($threadObj->getError(), $this->siteLangId));
+            $message = Labels::getLabel($threadObj->getError(), $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError($message);
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
 
         if ($message_id) {
             $emailObj = new EmailHandler();
-            $emailObj->SendMessageNotification($message_id, $this->siteLangId);
+            if (!$emailObj->SendMessageNotification($message_id, $this->siteLangId)) {
+                FatUtility::dieJsonError(strip_tags($emailObj->getError()));
+            }
         }
-
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
         $this->set('msg', Labels::getLabel('MSG_Message_Submitted_Successfully!', $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
@@ -785,6 +829,30 @@ class ShopsController extends MyAppController
         $this->set('shop', $shop);
         $this->_template->render();
     }
+    private function shopPoliciesData($shop)
+    {
+        $shop['shop_payment_policy'] = empty($shop['shop_payment_policy']) ? (object) array() : array(
+            'title' => Labels::getLabel('LBL_PAYMENT_POLICY', $this->siteLangId),
+            'description' => $shop['shop_payment_policy'],
+        );
+        $shop['shop_delivery_policy'] =  empty($shop['shop_delivery_policy']) ? (object) array() : array(
+            'title' => Labels::getLabel('LBL_DELIVERY_POLICY', $this->siteLangId),
+            'description' => $shop['shop_delivery_policy'],
+        );
+        $shop['shop_refund_policy'] =  empty($shop['shop_refund_policy']) ? (object) array() : array(
+            'title' => Labels::getLabel('LBL_REFUND_POLICY', $this->siteLangId),
+            'description' => $shop['shop_refund_policy'],
+        );
+        $shop['shop_additional_info'] =  empty($shop['shop_additional_info']) ? (object) array() : array(
+            'title' => Labels::getLabel('LBL_ADDITIONAL_INFO', $this->siteLangId),
+            'description' => $shop['shop_additional_info'],
+        );
+        $shop['shop_seller_info'] =  empty($shop['shop_seller_info']) ? (object) array() : array(
+            'title' => Labels::getLabel('LBL_SELLER_INFO', $this->siteLangId),
+            'description' => $shop['shop_seller_info'],
+        );
+        return $shop;
+    }
 
     public function banner($shopId, $sizeType = '', $prodCatId = 0, $lang_id = 0)
     {
@@ -806,19 +874,19 @@ class ShopsController extends MyAppController
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {
-        case 'THUMB':
-            $w = 250;
-            $h = 100;
-            AttachedFile::displayImage($image_name, $w, $h);
-            break;
-        case 'WIDE':
-            $w = 1320;
-            $h = 320;
-            AttachedFile::displayImage($image_name, $w, $h);
-            break;
-        default:
-            AttachedFile::displayOriginalImage($image_name);
-            break;
+            case 'THUMB':
+                $w = 250;
+                $h = 100;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            case 'WIDE':
+                $w = 1320;
+                $h = 320;
+                AttachedFile::displayImage($image_name, $w, $h);
+                break;
+            default:
+                AttachedFile::displayOriginalImage($image_name);
+                break;
         }
     }
 
@@ -981,7 +1049,7 @@ class ShopsController extends MyAppController
     return $frm;
     } */
 
-    private function getListingData($get)
+    private function getListingData($get, $includeShopData = true)
     {
         $db = FatApp::getDb();
 
@@ -994,36 +1062,38 @@ class ShopsController extends MyAppController
         if (UserAuthentication::isUserLogged()) {
             $userId = UserAuthentication::getLoggedUserId();
         }
+        $shop = array();
 
-        $srch = new ShopSearch($this->siteLangId);
-        $srch->setDefinedCriteria($this->siteLangId);
-        $srch->joinSellerSubscription();
-        $srch->doNotCalculateRecords();
-        $srch->joinTable('tbl_users', 'LEFT OUTER JOIN', 'tu.user_id = shop_user_id', 'tu');
+        if (true == $includeShopData) {
+            $srch = new ShopSearch($this->siteLangId);
+            $srch->setDefinedCriteria($this->siteLangId);
+            $srch->joinSellerSubscription();
+            $srch->doNotCalculateRecords();
+            $srch->joinTable('tbl_users', 'LEFT OUTER JOIN', 'tu.user_id = shop_user_id', 'tu');
 
-        /* sub query to find out that logged user have marked current shop as favorite or not[ */
-        $favSrchObj = new UserFavoriteShopSearch();
-        $favSrchObj->doNotCalculateRecords();
-        $favSrchObj->doNotLimitRecords();
-        $favSrchObj->addMultipleFields(array('ufs_shop_id','ufs_id'));
-        $favSrchObj->addCondition('ufs_user_id', '=', $userId);
-        $favSrchObj->addCondition('ufs_shop_id', '=', $shop_id);
-        $srch->joinTable('('. $favSrchObj->getQuery() . ')', 'LEFT OUTER JOIN', 'ufs_shop_id = shop_id', 'ufs');
-        /* ] */
+            /* sub query to find out that logged user have marked current shop as favorite or not[ */
+            $favSrchObj = new UserFavoriteShopSearch();
+            $favSrchObj->doNotCalculateRecords();
+            $favSrchObj->doNotLimitRecords();
+            $favSrchObj->addMultipleFields(array('ufs_shop_id','ufs_id'));
+            $favSrchObj->addCondition('ufs_user_id', '=', $userId);
+            $favSrchObj->addCondition('ufs_shop_id', '=', $shop_id);
+            $srch->joinTable('('. $favSrchObj->getQuery() . ')', 'LEFT OUTER JOIN', 'ufs_shop_id = shop_id', 'ufs');
+            /* ] */
 
-        $srch->addMultipleFields(
-            array( 'shop_id', 'tu.user_name', 'tu.user_regdate', 'shop_user_id', 'shop_ltemplate_id', 'shop_created_on', 'IFNULL(shop_name, shop_identifier) as shop_name', 'shop_description',
-            'shop_country_l.country_name as shop_country_name', 'shop_state_l.state_name as shop_state_name', 'shop_city',
-            'IFNULL(ufs.ufs_id, 0) as is_favorite' )
-        );
-        $srch->addCondition('shop_id', '=', $shop_id);
-        /* if($policy) {
-            $srch->addMultipleFields(array('shop_payment_policy', 'shop_delivery_policy','shop_refund_policy','shop_additional_info','shop_seller_info'));
-        } */
-        //echo $srch->getQuery();
-        $shopRs = $srch->getResultSet();
-        $shop = $db->fetch($shopRs);
-
+            $srch->addMultipleFields(
+                array( 'shop_id', 'tu.user_name', 'tu.user_regdate', 'shop_user_id', 'shop_ltemplate_id', 'shop_created_on', 'IFNULL(shop_identifier, shop_name) as shop_name', 'shop_description',
+                'shop_country_l.country_name as shop_country_name', 'shop_state_l.state_name as shop_state_name', 'shop_city',
+                'IFNULL(ufs.ufs_id, 0) as is_favorite' )
+            );
+            $srch->addCondition('shop_id', '=', $shop_id);
+            /* if($policy) {
+                $srch->addMultipleFields(array('shop_payment_policy', 'shop_delivery_policy','shop_refund_policy','shop_additional_info','shop_seller_info'));
+            } */
+            //echo $srch->getQuery();
+            $shopRs = $srch->getResultSet();
+            $shop = $db->fetch($shopRs);
+        }
 
         $page = 1;
         if (array_key_exists('page', $get)) {

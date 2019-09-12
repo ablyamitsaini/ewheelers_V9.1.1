@@ -41,6 +41,7 @@
                                 <?php echo Labels::getLabel('Lbl_SHOW_MORE', $siteLangId) ; ?> </a>
                             <?php } ?>
                         </p>
+                        <!-- <a class="btn btn--secondary btn--primary-border mt-3" href="<?php echo CommonHelper::generateUrl('Reviews', 'productPermalink', array($review['spreview_selprod_id'] , $review['spreview_id'])) ?>"><?php echo Labels::getLabel('Lbl_Permalink', $siteLangId); ?> </a> -->
                     </div>
                 </div>
             </div>
@@ -50,4 +51,6 @@
 </ul>
 <div class="align--center  mt-4"><a href="<?php echo CommonHelper::generateUrl('Reviews', 'Product', array($selprod_id)); ?>"
         class="btn btn--secondary btn--primary-border"><?php echo Labels::getLabel('Lbl_Showing_All', $siteLangId).' '.count($reviewsList).' '.Labels::getLabel('Lbl_Reviews', $siteLangId) ; ?> </a></div> <?php echo FatUtility::createHiddenFormFromData($postedData, array('name' => 'frmSearchReviewsPaging')); ?>
-<?php } ?>
+<?php } else {
+    // $this->includeTemplate('_partial/no-record-found.php', array('siteLangId'=>$siteLangId), false);
+}?>

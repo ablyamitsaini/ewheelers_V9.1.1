@@ -40,7 +40,7 @@
                                         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12  ">
                                             <div class="shop-template <?php echo ($shopLayoutTemplateId == $layout['ltemplate_id'])?'is--active':'';?>">
                                                 <a href="javascript:void(0)" onClick="setTemplate(<?php echo $shop_id; ?>,<?php echo $layout['ltemplate_id']; ?>)">
-                                                    <figure class="thumb--square"><img src="<?php echo CommonHelper::generateFullUrl('Image', 'shopLayout', array($layout['ltemplate_id'], 'THUMB'), CONF_WEBROOT_FRONT_URL).'?'.time() ?>" alt=""></figure>
+                                                    <figure class="thumb--square"><img src="<?php echo CommonHelper::generateFullUrl('Image', 'shopLayout', array($layout['ltemplate_id'], 'THUMB'), CONF_WEBROOT_FRONT_URL) ?>" alt=""></figure>
                                                     <p style="text-align: center">
                                                         <?php echo Labels::getLabel('LBL_Layout', $adminLangId);?> <strong><?php echo $layout['ltemplate_id'];?></strong> </p>
                                                 </a>

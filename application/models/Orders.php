@@ -143,7 +143,9 @@ class Orders extends MyAppModel
         $srch = new SearchBase(Orders::DB_TBL_ORDERS_STATUS, 'ostatus');
         $srch->addCondition('orderstatus_type', '=', Orders::ORDER_PRODUCT);
         $srchOrderStatus = clone $srch;
-        $srchOrderStatus->addCondition('orderstatus_id', '=', $current);
+        if (0 < $current) {
+            $srchOrderStatus->addCondition('orderstatus_id', '=', $current);
+        }
         $srchOrderStatus->addCondition('orderstatus_type', '=', Orders::ORDER_PRODUCT);
         $srchOrderStatus->doNotCalculateRecords();
         $srchOrderStatus->doNotLimitRecords();
@@ -560,7 +562,7 @@ class Orders extends MyAppModel
 
     private function addUpdateSubscriptionOrder($data = array(), $langId = 1)
     {
-        $db  = FatApp::getDb(); 
+        $db  = FatApp::getDb();
         $ordersLangData = $data['orderLangData'];
         unset($data['orderLangData']);
         $subscriptions = $data['subscriptions'];
@@ -1883,7 +1885,7 @@ class Orders extends MyAppModel
         return $records;
     }
 
-    public function getOrderProductChargesArr($op_id)
+    public function getOrderProductChargesArr($op_id, $mobileApiCall = false)
     {
         $op_id = FatUtility::int($op_id);
         $srch = new SearchBase(OrderProduct::DB_TBL_CHARGES, 'opc');
@@ -1894,16 +1896,19 @@ class Orders extends MyAppModel
         $srch->addCondition(OrderProduct::DB_TBL_CHARGES_PREFIX.'order_type', '=', Orders::ORDER_PRODUCT);
         $rs = $srch->getResultSet();
 
-        $row = FatApp::getDb()->fetchAll($rs, OrderProduct::DB_TBL_CHARGES_PREFIX.'type');
+        if (true === $mobileApiCall) {
+            return FatApp::getDb()->fetchAll($rs);
+        } else {
+            $row = FatApp::getDb()->fetchAll($rs, OrderProduct::DB_TBL_CHARGES_PREFIX.'type');
 
-        if (!array_key_exists(OrderProduct::CHARGE_TYPE_SHIPPING, $row)) {
-            $row[OrderProduct::CHARGE_TYPE_SHIPPING] = array(
-            'opcharge_type'=>OrderProduct::CHARGE_TYPE_SHIPPING,
-            'opcharge_amount'=>0,
-            );
+            if (!array_key_exists(OrderProduct::CHARGE_TYPE_SHIPPING, $row)) {
+                $row[OrderProduct::CHARGE_TYPE_SHIPPING] = array(
+                'opcharge_type'=>OrderProduct::CHARGE_TYPE_SHIPPING,
+                'opcharge_amount'=>0,
+                );
+            }
+            return $row;
         }
-
-        return $row;
     }
 
     public function getOrderProductChargesByOrderId($orderId)
@@ -2036,7 +2041,7 @@ class Orders extends MyAppModel
 
             $digitalDownloads[$key]['downloadable_count'] = -1;
             if ($row['op_selprod_max_download_times'] != '-1') {
-                $digitalDownloads[$key]['downloadable_count'] = $row['op_selprod_max_download_times']*$row['op_qty'];
+                $digitalDownloads[$key]['downloadable_count'] = $row['op_selprod_max_download_times'];
             }
 
             if ($row['op_selprod_max_download_times'] != '-1') {

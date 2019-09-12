@@ -78,12 +78,12 @@ class ReviewsController extends MyAppController
         $srch->setPageSize($pageSize);
 
         switch ($orderBy) {
-        case 'most_helpful':
-            $srch->addOrder('helpful', 'desc');
-            break;
-        default:
-            $srch->addOrder('spr.spreview_posted_on', 'desc');
-            break;
+            case 'most_helpful':
+                $srch->addOrder('helpful', 'desc');
+                break;
+            default:
+                $srch->addOrder('spr.spreview_posted_on', 'desc');
+                break;
         }
         $records = FatApp::getDb()->fetchAll($srch->getResultSet());
 
@@ -95,62 +95,15 @@ class ReviewsController extends MyAppController
         $json['startRecord'] = !empty($records)?($page-1)*$pageSize + 1 :0;
 
         $json['recordsToDisplay'] = count($records);
-        $json['totalRecords'] = $srch->recordCount();
+        $totalRecords = $srch->recordCount();
+        $json['totalRecords'] = $totalRecords;
 
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->set('totalRecords', $totalRecords);
+            $this->_template->render();
+        }
 
         $json['html'] = $this->_template->render(false, false, 'reviews/search-for-product.php', true, false);
-        $json['loadMoreBtnHtml'] = $this->_template->render(false, false, 'reviews/load-more-product-reviews-btn.php', true, false);
-        FatUtility::dieJsonSuccess($json);
-    }
-
-    public function searchForProductList()
-    {
-        $selprod_id = FatApp::getPostedData('selprod_id');
-        $productId = SellerProduct::getAttributesById($selprod_id, 'selprod_product_id', false);
-
-        $page = FatApp::getPostedData('page', FatUtility::VAR_INT, 1);
-        if ($page < 2) {
-            $page = 1;
-        }
-        $orderBy = FatApp::getPostedData('orderBy', FatUtility::VAR_STRING, 'most_recent');
-
-        $pageSize = FatApp::getPostedData('pageSize', FatUtility::VAR_INT, FatApp::getConfig('CONF_ITEMS_PER_PAGE_CATALOG', FatUtility::VAR_INT, 10));
-
-        $srch = new SelProdReviewSearch();
-        $srch->joinProducts($this->siteLangId);
-        $srch->joinSellerProducts($this->siteLangId);
-        $srch->joinSelProdRating();
-        $srch->joinUser();
-        $srch->joinSelProdReviewHelpful();
-
-        $srch->addCondition('sprating_rating_type', '=', SelProdRating::TYPE_PRODUCT);
-        $srch->addCondition('spr.spreview_product_id', '=', $productId);
-        $srch->addCondition('spr.spreview_status', '=', SelProdReview::STATUS_APPROVED);
-        $srch->addMultipleFields(array('spreview_id','spreview_selprod_id',"ROUND(AVG(sprating_rating),2) as prod_rating" ,'spreview_title','spreview_description','spreview_posted_on','spreview_postedby_user_id','user_name','group_concat(case when sprh_helpful = 1 then concat(sprh_user_id,"~",1) else concat(sprh_user_id,"~",0) end ) usersMarked' ,'sum(if(sprh_helpful = 1 , 1 ,0)) as helpful' ,'sum(if(sprh_helpful = 0 , 1 ,0)) as notHelpful','count(sprh_spreview_id) as countUsersMarked' ));
-        $srch->addGroupBy('spr.spreview_id');
-
-        $srch->setPageNumber($page);
-        $srch->setPageSize($pageSize);
-
-        switch ($orderBy) {
-        case 'most_helpful':
-            $srch->addOrder('helpful', 'desc');
-            break;
-        default:
-            $srch->addOrder('spr.spreview_posted_on', 'desc');
-            break;
-        }
-        $records = FatApp::getDb()->fetchAll($srch->getResultSet());
-        $this->set('reviewsList', $records);
-        $this->set('page', $page);
-        $this->set('pageCount', $srch->pages());
-        $this->set('postedData', FatApp::getPostedData());
-        $json['startRecord'] = !empty($records)?($page-1)*$pageSize + 1 :0;
-
-        $json['recordsToDisplay'] = count($records);
-        $json['totalRecords'] = $srch->recordCount();
-        //$json['msg'] = '';
-        $json['html'] = $this->_template->render(false, false, 'reviews/search-for-product-list.php', true, false);
         $json['loadMoreBtnHtml'] = $this->_template->render(false, false, 'reviews/load-more-product-reviews-btn.php', true, false);
         FatUtility::dieJsonSuccess($json);
     }
@@ -217,8 +170,17 @@ class ReviewsController extends MyAppController
 
     public function searchForShop()
     {
-        $selprod_id = FatApp::getPostedData('shop_id');
+        $selprod_id = FatApp::getPostedData('shop_id', FatUtility::VAR_INT, 0);
         $sellerId = Shop::getAttributesById($selprod_id, 'shop_user_id', false);
+
+        if ($selprod_id <= 0 || false === $sellerId) {
+            $message = Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError($message);
+            }
+            Message::addErrorMessage($message);
+            FatUtility::dieJsonError(Message::getHtml());
+        }
 
         $page = FatApp::getPostedData('page', FatUtility::VAR_INT, 1);
         $orderBy = FatApp::getPostedData('orderBy', FatUtility::VAR_STRING, 'most_recent');
@@ -247,22 +209,31 @@ class ReviewsController extends MyAppController
         $srch->setPageSize($pageSize);
 
         switch ($orderBy) {
-        case 'most_helpful':
-            $srch->addOrder('helpful', 'desc');
-            break;
-        default:
-            $srch->addOrder('spr.spreview_posted_on', 'desc');
-            break;
+            case 'most_helpful':
+                $srch->addOrder('helpful', 'desc');
+                break;
+            default:
+                $srch->addOrder('spr.spreview_posted_on', 'desc');
+                break;
         }
         $records = FatApp::getDb()->fetchAll($srch->getResultSet());
         $this->set('reviewsList', $records);
         $this->set('page', $page);
         $this->set('pageCount', $srch->pages());
         $this->set('postedData', FatApp::getPostedData());
-        $json['startRecord'] = !empty($records)?($page-1)*$pageSize + 1 :0;
+        $startRecord = !empty($records)?($page-1)*$pageSize + 1 :0;
+
+        $recordCount = $srch->recordCount();
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->set('startRecord', $startRecord);
+            $this->set('totalRecords', $recordCount);
+            $this->_template->render();
+        }
+
+        $json['startRecord'] = $startRecord;
 
         $json['recordsToDisplay'] = count($records);
-        $json['totalRecords'] = $srch->recordCount();
+        $json['totalRecords'] = $recordCount;
 
         $json['html'] = $this->_template->render(false, false, 'reviews/search-for-shop.php', true, false);
         $json['loadMoreBtnHtml'] = $this->_template->render(false, false, 'reviews/load-more-shop-reviews-btn.php', true, false);
@@ -433,19 +404,31 @@ class ReviewsController extends MyAppController
         $reviewId = FatApp::getPostedData('reviewId', FatUtility::VAR_INT, 0);
         $isHelpful = FatApp::getPostedData('isHelpful', FatUtility::VAR_INT, 0);
         if ($reviewId <= 0) {
-            Message::addErrorMessage(Labels::getLabel('Msg_Invalid_Request', $this->siteLangId));
+            $message = Labels::getLabel('Msg_Invalid_Request', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError($message);
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
         $userId = UserAuthentication::getLoggedUserId();
         $tblRecObj = new SelProdReviewHelpful();
         $tblRecObj->assignValues(array('sprh_spreview_id'=>$reviewId , 'sprh_user_id'=>$userId, 'sprh_helpful'=>$isHelpful));
         if (!$tblRecObj->addNew(array(), array('sprh_helpful'=>$isHelpful))) {
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($tblRecObj->getError()));
+            }
             Message::addErrorMessage($tblRecObj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
         $tblRecObj = new SelProdReviewHelpful($reviewId);
         $success['msg'] = Labels::getLabel('Msg_Successfully_Updated', $this->siteLangId);
         $success['data'] = $tblRecObj->getData();
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
+
         FatUtility::dieJsonSuccess($success);
     }
 

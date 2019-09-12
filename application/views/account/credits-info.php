@@ -8,8 +8,8 @@ if ($userTotalWalletBalance != $userWalletBalance || ($promotionWalletToBeCharge
 } ?>
 <div class="row">
     <?php if ($showTotalBalanceAvailableDiv) { ?>
-        <div class="col-lg-8 col-md-12 mb-3 mb-md-0 mb-sm-0">
-            <div class="balancebox">
+        <div class="col-lg-8 col-md-12 mb-3 mb-md-0">
+            <div class="balancebox border h-100 text-center rounded p-3">
 
                     <div class="credits-number">
                         <ul>
@@ -56,7 +56,7 @@ if ($userTotalWalletBalance != $userWalletBalance || ($promotionWalletToBeCharge
         </div>
     <?php } ?>
     <div class="col-lg-<?php echo $divCol; ?> col-md-<?php echo $divCol; ?> col-md-12">
-        <div class="balancebox">
+        <div class="balancebox border h-100 rounded text-center p-3">
             <p><?php echo Labels::getLabel('LBL_Available_Balance', $siteLangId);?>: </p>
             <h2><strong>
                 <?php echo CommonHelper::displayMoneyFormat($userWalletBalance);?></strong></h2>

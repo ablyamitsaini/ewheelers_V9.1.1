@@ -5,7 +5,7 @@
             <div class="sidebar_inner">
                  <div class="profilewrap">
                         <div class="profilecover">
-                            <figure class="profilepic"><img id="leftmenuimgtag"  src="<?php echo CommonHelper::generateUrl('image', 'profileImage', array(AdminAuthentication::getLoggedAdminId(), "THUMB", true )).'?'.time(); ?>" alt=""></figure>
+                            <figure class="profilepic"><img id="leftmenuimgtag"  src="<?php echo CommonHelper::generateUrl('image', 'profileImage', array(AdminAuthentication::getLoggedAdminId(), "THUMB", true )); ?>" alt=""></figure>
                             <span class="profileinfo"><?php echo Labels::getLabel('LBL_Welcome',$adminLangId);?> <?php echo $adminName; ?></span>
                         </div>
 

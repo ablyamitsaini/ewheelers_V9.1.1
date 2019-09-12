@@ -195,9 +195,10 @@ class ProductCategory extends MyAppModel
         if ($excludeCatHavingNoProducts) {
             $prodSrchObj = new ProductSearch($langId);
             $prodSrchObj->setDefinedCriteria();
-            $prodSrchObj->joinProductToCategory();
             $prodSrchObj->doNotCalculateRecords();
+
             $prodSrchObj->doNotLimitRecords();
+            $prodSrchObj->joinProductToCategory();
             $prodSrchObj->joinSellerSubscription($langId, true);
             $prodSrchObj->addSubscriptionValidCondition();
 
@@ -266,7 +267,9 @@ class ProductCategory extends MyAppModel
             if ($parent == $root) {
                 unset($tree[$categoryId]);
                 $return[$categoryId] = $category;
-                $return[$categoryId]['children'] = static::parseTree($tree, $categoryId);
+                $child = static::parseTree($tree, $categoryId);
+                $return[$categoryId]['isLastChildCategory'] = (0 < count($child)) ? 0 : 1;
+                $return[$categoryId]['children'] = (true ===  MOBILE_APP_API_CALL) ? array_values($child) : $child;
             }
         }
         return empty($return) ? array() : $return;
@@ -691,7 +694,7 @@ class ProductCategory extends MyAppModel
         $prodCatSrch->doNotCalculateRecords();
         $prodCatSrch->doNotLimitRecords();
 
-
+        $prodCatSrch->addMultipleFields(array( 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name','substr(prodcat_code,1,6) AS prodrootcat_code', 'prodcat_content_block','prodcat_active','prodcat_parent','prodcat_code as prodcat_code'));
 
         if ($excludeCategoriesHavingNoProducts) {
             $prodSrchObj = new ProductSearch($langId);
@@ -708,11 +711,8 @@ class ProductCategory extends MyAppModel
             $prodSrchObj->addCondition('selprod_deleted', '=', applicationConstants::NO);
             $prodCatSrch->joinTable('('.$prodSrchObj->getQuery().')', 'LEFT OUTER JOIN', 'qryProducts.qryProducts_prodcat_id = c.prodcat_id', 'qryProducts');
             $prodCatSrch->addCondition('qryProducts.productCounts', '>', 0);
+            $prodCatSrch->addFld(array('IFNULL(productCounts, 0) as productCounts'));
         }
-
-
-        $prodCatSrch->addMultipleFields(array( 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name','substr(prodcat_code,1,6) AS prodrootcat_code', 'prodcat_content_block','prodcat_active','prodcat_parent','prodcat_code as prodcat_code'));
-
 
         if ($orderFeatured) {
             $prodCatSrch->addOrder('prodcat_featured');
@@ -720,18 +720,18 @@ class ProductCategory extends MyAppModel
 
         $rs = $prodCatSrch->getResultSet();
 
-
         if ($forSelectBox) {
             $categoriesArr = FatApp::getDb()->fetchAllAssoc($rs);
         } else {
             $categoriesArr = FatApp::getDb()->fetchAll($rs);
         }
-        if (!$includeChildCat) {
+        if (false === $includeChildCat) {
             return $categoriesArr;
         }
         if ($categoriesArr) {
-            foreach ($categoriesArr as &$cat) {
-                $cat['children'] = self::getProdCatParentChildWiseArr($langId, $cat['prodcat_id']);
+            foreach ($categoriesArr as $key => $cat) {
+                $categoriesArr[$key]['icon'] = CommonHelper::generateFullUrl('Category', 'icon', array($cat['prodcat_id'], $langId, 'COLLECTION_PAGE'));
+                $categoriesArr[$key]['children'] = self::getProdCatParentChildWiseArr($langId, $cat['prodcat_id']);
             }
         }
         return $categoriesArr;

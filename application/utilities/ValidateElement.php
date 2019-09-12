@@ -37,6 +37,22 @@ class ValidateElement extends FatUtility
         return true;
     }
 
+    public static function convertPhone($string)
+    {
+        // Allow only Digits, remove all other characters.
+        $number = preg_replace("/[^\d]/", "", $string);
+
+        // get number length.
+        $length = strlen($number);
+
+        // if number = 10
+        if ($length == 10) {
+            $number = preg_replace("/^1?(\d{3})(\d{3})(\d{4})$/", "($1) $2-$3", $number);
+        }
+
+        return $number;
+    }
+
     public static function password($string = '')
     {
         if (strlen($string) < 1) {

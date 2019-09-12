@@ -67,12 +67,12 @@
             </div>
         </div>
     </div>
-    <div class="middle-footer">
+    <?php /*<div class="middle-footer">
         <div class="accordion-footer">
             <?php $this->includeTemplate('_partial/footerTopBrands.php'); ?>
             <?php $this->includeTemplate('_partial/footerTopCategories.php'); ?>
         </div>
-    </div>
+    </div>*/ ?>
     <div class="bottom-footer">
         <div class="row align-items-center">
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
@@ -98,7 +98,7 @@
     <?php if (FatApp::getConfig('CONF_COOKIES_TEXT_'.$siteLangId, FatUtility::VAR_STRING, '')) { ?>
     <div class="box-cookies">
         <span id="cookieconsent:desc" class="cc-message">
-            <?php echo FatUtility::decodeHtmlEntities(FatApp::getConfig('CONF_COOKIES_TEXT_'.$siteLangId, FatUtility::VAR_STRING, ''));?>
+            <?php echo FatUtility::decodeHtmlEntities(mb_substr(FatApp::getConfig('CONF_COOKIES_TEXT_'.$siteLangId, FatUtility::VAR_STRING, ''), 0, 500));?>
             <a href="<?php echo CommonHelper::generateUrl('cms', 'view', array(FatApp::getConfig('CONF_COOKIES_BUTTON_LINK', FatUtility::VAR_INT)));?>"><?php echo Labels::getLabel('LBL_Read_More', $siteLangId);?></a></span>
         <span class="cc-close cc-cookie-accept-js"><?php echo Labels::getLabel('LBL_Accept_Cookies', $siteLangId);?></span>
     </div>
