@@ -9,7 +9,7 @@ foreach ($products as $index => $product) {
     $products[$index]['total'] = !empty($product['total']) ? CommonHelper::displayMoneyFormat($product['total']) : 0;
     $products[$index]['totalPrice'] = !empty($product['totalPrice']) ? CommonHelper::displayMoneyFormat($product['totalPrice']) : 0;
     $products[$index]['netTotal'] = !empty($product['netTotal']) ? CommonHelper::displayMoneyFormat($product['netTotal']) : 0;
-    $products[$index]['shop_free_ship_upto'] = !empty($product['shop_free_ship_upto']) ? CommonHelper::displayMoneyFormat($product['shop_free_ship_upto'], false, false, false) : 0;
+    // $products[$index]['shop_free_ship_upto'] = !empty($product['shop_free_ship_upto']) ? CommonHelper::displayMoneyFormat($product['shop_free_ship_upto'], false, false, false) : 0;
     $products[$index]['productKey'] = md5($products[$index]['key']);
     $shipping_options = array(
         array(
