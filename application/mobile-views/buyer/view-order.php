@@ -29,7 +29,7 @@ $shippingCharges = 0;
 $defaultOrderStatus = FatApp::getConfig('CONF_DEFAULT_REVIEW_STATUS', FatUtility::VAR_INT, 0);
 $reviewAllowed = FatApp::getConfig('CONF_ALLOW_REVIEWS', FatUtility::VAR_INT, 0);
 foreach ($childArr as $index => $childOrder) {
-    $childArr[$index]['prod_rating'] =  (1 == $defaultOrderStatus || $childArr[$index]['spreview_status'] == 1 ) ? $childArr[$index]['prod_rating'] : 0;
+    $childArr[$index]['prod_rating'] =  (1 == $defaultOrderStatus || (isset($childArr[$index]['spreview_status']) && $childArr[$index]['spreview_status'] == 1 )) ? $childArr[$index]['prod_rating'] : 0;
     $childArr[$index]['reviewsAllowed'] =  $reviewAllowed;
     $childArr[$index]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($childOrder['selprod_product_id'], "THUMB", $childOrder['op_selprod_id'], 0, $siteLangId));
 
