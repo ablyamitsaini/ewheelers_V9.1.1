@@ -60,7 +60,7 @@ class MyAppController extends FatController
         $controllerName = ucfirst(FatUtility::dashed2Camel($urlController));
 
         /* to keep track of temporary hold the product stock, update time in each row of tbl_product_stock_hold against current user[ */
-        $cartObj = new Cart(UserAuthentication::getLoggedUserId(true), $this->siteLangId);
+        $cartObj = new Cart(UserAuthentication::getLoggedUserId(true), $this->siteLangId, $this->app_user['temp_user_id']);
         $cartProducts = $cartObj->getProducts($this->siteLangId);
         if ($cartProducts) {
             foreach ($cartProducts as $product) {
@@ -68,6 +68,11 @@ class MyAppController extends FatController
             }
         }
         /* ] */
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->cartItemsCount = $cartObj->countProducts();
+            $this->set('cartItemsCount', $this->cartItemsCount);
+        }
 
         $jsVariables = array(
         'confirmRemove' =>Labels::getLabel('LBL_Do_you_want_to_remove', $this->siteLangId),
@@ -154,7 +159,6 @@ class MyAppController extends FatController
 
     private function setApiVariables()
     {
-
         $this->db = FatApp::getDb();
         $post = FatApp::getPostedData();
 
@@ -203,9 +207,9 @@ class MyAppController extends FatController
         $srch->addMultipleFields(array('u.*'));
         $rs = $srch->getResultSet();
         $this->user_details = $this->db->fetch($rs, 'user_id');
-        $cObj = new Cart($user_id, 0, $this->app_user['temp_user_id']);
+        /*$cObj = new Cart($user_id, 0, $this->app_user['temp_user_id']);
         $this->cartItemsCount = $cObj->countProducts();
-        $this->set('cartItemsCount', $this->cartItemsCount);
+        $this->set('cartItemsCount', $this->cartItemsCount);*/
 
         $this->totalFavouriteItems = UserFavorite::getUserFavouriteItemCount($user_id);
         $this->set('totalFavouriteItems', $this->totalFavouriteItems);

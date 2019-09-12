@@ -7,3 +7,6 @@ msg-1018591-Download language label file for APP
 > Admin can manually update labels json file.
 > Maintenance mode handling for API.
 > Performance optimization : Used labels from json file.
+> optimization for system images.
+> Optimization for home page used cache for collections.
+> App notification labels update
