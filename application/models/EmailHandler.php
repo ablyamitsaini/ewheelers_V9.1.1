@@ -125,8 +125,8 @@ class EmailHandler extends FatModel
         $vars += static::commonVars($langId);
 
         foreach ($vars as $key => $val) {
-            $subject = str_replace($key, $val, $subject);
-            $body = str_replace($key, $val, $body);
+            $subject = mb_str_replace($key, $val, $subject);
+            $body = mb_str_replace($key, $val, $body);
         }
 
         if (FatApp::getConfig('CONF_SEND_SMTP_EMAIL')) {
@@ -665,7 +665,7 @@ class EmailHandler extends FatModel
             $notificationObj = new Notifications();
             $notificationDataArr = array(
             'unotification_user_id'    =>$orderInfo["order_user_id"],
-            'unotification_body'=>str_replace('{ORDERID}', $orderInfo['order_id'], Labels::getLabel('APP_YOUR_ORDER_{ORDERID}_HAVE_BEEN_PLACED', $langId)),
+            'unotification_body'=>mb_str_replace('{ORDERID}', $orderInfo['order_id'], Labels::getLabel('APP_YOUR_ORDER_{ORDERID}_HAVE_BEEN_PLACED', $langId)),
             'unotification_type'=>'BUYER_ORDER',
             );
             if (!$notificationObj->addNotification($notificationDataArr)) {
@@ -735,8 +735,8 @@ class EmailHandler extends FatModel
 
             $this->sendMailToAdminAndAdditionalEmails("primary_order_payment_status_change_admin", $arrReplacements, static::ADD_ADDITIONAL_ALERTS, static::NOT_ONLY_SUPER_ADMIN, $langId);
 
-            $appNotification = str_replace('{ORDERID}', $arrReplacements['{invoice_number}'], Labels::getLabel('APP_PAYMENT_STATUS_FOR_ORDER_{ORDERID}_UPDATED_{STATUS}', $langId));
-            $appNotification = str_replace('{STATUS}', $arrReplacements['{new_order_status}'], $appNotification);
+            $appNotification = mb_str_replace('{ORDERID}', $arrReplacements['{invoice_number}'], Labels::getLabel('APP_PAYMENT_STATUS_FOR_ORDER_{ORDERID}_UPDATED_{STATUS}', $langId));
+            $appNotification = mb_str_replace('{STATUS}', $arrReplacements['{new_order_status}'], $appNotification);
 
             $notificationObj = new Notifications();
             $notificationDataArr = array(
@@ -857,8 +857,8 @@ class EmailHandler extends FatModel
                 self::sendMailTpl($val["op_shop_owner_email"], "vendor_order_email", $langId, $arrReplacements);
             }
 
-            $appNotification = str_replace('{PRODUCT}', $val["op_product_name"], Labels::getLabel('SAPP_{PRODUCT}_ORDER_{ORDERID}_HAS_BEEN_PLACED', $langId));
-            $appNotification = str_replace('{ORDERID}', $orderDetail['order_id'], $appNotification);
+            $appNotification = mb_str_replace('{PRODUCT}', $val["op_product_name"], Labels::getLabel('SAPP_{PRODUCT}_ORDER_{ORDERID}_HAS_BEEN_PLACED', $langId));
+            $appNotification = mb_str_replace('{ORDERID}', $orderDetail['order_id'], $appNotification);
 
             $notificationObj = new Notifications();
             $notificationDataArr = array(
@@ -1127,7 +1127,7 @@ class EmailHandler extends FatModel
         $notificationObj = new Notifications();
         $notificationDataArr = array(
         'unotification_user_id'    =>    $message["message_to"],
-        'unotification_body'=>str_replace('{username}', $message['message_from_username'], Labels::getLabel('APP_YOU_HAVE_A_NEW_MESSAGE_FROM_{USERNAME}', $langId)),
+        'unotification_body'=>mb_str_replace('{username}', $message['message_from_username'], Labels::getLabel('APP_YOU_HAVE_A_NEW_MESSAGE_FROM_{USERNAME}', $langId)),
         'unotification_type'=>'MESSAGE',
         );
         if (!$notificationObj->addNotification($notificationDataArr)) {
@@ -2164,8 +2164,8 @@ class EmailHandler extends FatModel
         $vars += static::commonVars($langId);
 
         foreach ($vars as $key => $val) {
-            $subject = str_replace($key, $val, $subject);
-            $body = str_replace($key, $val, $body);
+            $subject = mb_str_replace($key, $val, $subject);
+            $body = mb_str_replace($key, $val, $body);
         }
 
         try {
@@ -2199,8 +2199,8 @@ class EmailHandler extends FatModel
         $vars += static::commonVars($langId);
 
         foreach ($vars as $key => $val) {
-            $subject = str_replace($key, $val, $subject);
-            $body = str_replace($key, $val, $body);
+            $subject = mb_str_replace($key, $val, $subject);
+            $body = mb_str_replace($key, $val, $body);
         }
 
         try {
@@ -2290,7 +2290,7 @@ class EmailHandler extends FatModel
             if (strpos($keyDecoded, Cart::CART_KEY_PREFIX_PRODUCT) === false) {
                 continue;
             }
-            $selProdIds[] = FatUtility::int(str_replace(Cart::CART_KEY_PREFIX_PRODUCT, '', $keyDecoded));
+            $selProdIds[] = FatUtility::int(mb_str_replace(Cart::CART_KEY_PREFIX_PRODUCT, '', $keyDecoded));
         }
 
         $prodSrch = new ProductSearch($langId);
