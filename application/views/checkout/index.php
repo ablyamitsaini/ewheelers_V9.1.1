@@ -12,6 +12,7 @@
         </div>
     </div>
 </section>
+<input id="hasAddress" class="d-none" value = "<?php echo (empty($addresses) || count($addresses) == 0) ? 0 : 1?>">
 <script type="text/javascript">
     <?php if (isset($defaultAddress)) { ?>
     $defaultAddress = 1;
