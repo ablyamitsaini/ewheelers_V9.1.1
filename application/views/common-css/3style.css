@@ -1139,6 +1139,7 @@ input:checked + .slider:before {
 	display: flex;
 	margin: 0;
 	align-items: center;
+	flex-wrap: wrap;
 }
 
 .breadcrumbs ul li {
@@ -1148,9 +1149,9 @@ input:checked + .slider:before {
 	padding-inline-end: 25px;
 	font-size: 0.875rem;
 	vertical-align: top;
-	line-height: 1;
 	display: block;
 	font-weight: 400;
+	line-height: 1.5;
 }
 
 .breadcrumbs ul li:before {
