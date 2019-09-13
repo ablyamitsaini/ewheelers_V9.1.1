@@ -1555,7 +1555,7 @@ body.fixed .top-bar {
 .toggle--search .icn {
 	/*background: url(../images/retina/magni-black.svg) no-repeat center;
 	background-size: 20px 20px;*/
-	vertical-align: top;	
+	vertical-align: top;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -10642,14 +10642,15 @@ html.quick-view--open {
 .enter-page {
 	min-height: 675px;
 	position: relative;
+	display: flex;
 }
 
 .container-info {
 	background: #000;
 	display: flex;
 	width: 100%;
-	/*height: calc(100vh - 174px);*/
-	height: 100vh;
+	/*height: calc(100vh - 174px);
+	height: 100vh;*/
 	align-items: center;
 	justify-content: space-between;
 }

@@ -1257,26 +1257,6 @@
 		/*min-height: 250px;
 		background-size: cover;*/
 	}
-
-	.container-form.sign-up {
-		-webkit-transform: none;
-		transform: none;
-		position: static;
-		opacity: 1;
-		visibility: visible;
-	}
-
-	.container-form.sign-up .form-item.sign-in {
-		opacity: 1;
-		visibility: visible;
-	}
-
-	.form-item.sign-up.is-opened {
-		-webkit-transform: none;
-		transform: none;
-	}
-
-
 }
 
 @media only screen and (max-width: 767px) {
@@ -1701,7 +1681,8 @@
 	.profile-wrapper .profile__bio {
 		text-align: center;
 	}
-
+	
+	
 	.container-info {
 		display: none;
 	}
@@ -2215,6 +2196,28 @@
 		max-width: 50%;
 	}
 
+	
+	
+	.container-form.sign-up {
+		-webkit-transform: none;
+		transform: none;
+		position: static;
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.container-form.sign-up .form-item.sign-in {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.form-item.sign-up.is-opened {
+		-webkit-transform: none;
+		transform: none;
+	}
+	
+	
+	
 
 }
 
