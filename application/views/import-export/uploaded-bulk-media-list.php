@@ -37,20 +37,21 @@ foreach ($arr_listing as $sn=>$row) {
                     $count = count($files_count);
                 }
 
-                // $td->appendElement('plaintext', array(), count($files_count));
-                $td->appendElement('a', array('href'=> CommonHelper::generateUrl('ImportExport', 'downloadPathsFile', [base64_encode($fullPath)]), 'class'=>'button green','title'=>Labels::getLabel('LBL_Click_To_Download', $siteLangId)), $count, true);
+                $td->appendElement('plaintext', array(), $count);
             break;
             case 'action':
                 $ul = $td->appendElement("ul", array("class"=>"actions actions--centered"));
 
-                $innerLiEdit = $ul->appendElement("li");
-                $innerLiEdit->appendElement(
+                $li = $ul->appendElement("li");
+                $li->appendElement(
                     'a',
                     array('href'=>'javascript:void(0)', 'class'=>'button small green',
                 'title'=>Labels::getLabel('LBL_Delete', $siteLangId),"onclick"=>"removeDir('".base64_encode($row['afile_physical_path'])."')"),
                     '<i class="fa fa-trash"></i>',
                     true
                 );
+                $li = $ul->appendElement("li");
+                $li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green', 'title'=>Labels::getLabel('LBL_Download', $siteLangId),"onclick"=>"downloadPathsFile('".base64_encode($fullPath)."')"), '<i class="fa fa-download"></i>', true);
             break;
             default:
                 $td->appendElement('plaintext', array(), $row[$key], true);

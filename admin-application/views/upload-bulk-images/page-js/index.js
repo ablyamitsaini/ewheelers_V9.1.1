@@ -147,4 +147,7 @@ $(document).ready(function() {
         document.frmSearch.reset();
         searchFiles(document.frmSearch);
     };
+    downloadPathsFile = function(path) {
+        location.href = fcom.makeUrl('UploadBulkImages', 'downloadPathsFile', [path]);
+    };
 })();

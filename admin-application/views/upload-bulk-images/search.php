@@ -52,8 +52,7 @@ foreach ($arr_listing as $sn => $row) {
                     $files_count = array_diff($allFiles, array( '..', '.' ));
                     $count = count($files_count);
                 }
-
-                $td->appendElement('a', array('href'=> CommonHelper::generateUrl('UploadBulkImages', 'downloadPathsFile', [base64_encode($fullPath)]), 'class'=>'button green','title'=>Labels::getLabel('LBL_Click_To_Download', $adminLangId)), $count, true);
+                $td->appendElement('plaintext', array(), $count, true);
                 break;
             case 'action':
                 $ul = $td->appendElement("ul", array("class"=>"actions actions--centered"));
@@ -63,8 +62,10 @@ foreach ($arr_listing as $sn => $row) {
                 $innerDiv=$li->appendElement('div', array('class'=>'dropwrap'));
                 $innerUl=$innerDiv->appendElement('ul', array('class'=>'linksvertical'));
 
-                $innerLiEdit = $innerUl->appendElement("li");
-                $innerLiEdit->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green', 'title'=>Labels::getLabel('LBL_Delete', $adminLangId),"onclick"=>"removeDir('".base64_encode(AttachedFile::FILETYPE_BULK_IMAGES_PATH . $row['afile_physical_path'])."')"), Labels::getLabel('LBL_Delete', $adminLangId), true);
+                $li = $innerUl->appendElement("li");
+                $li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green', 'title'=>Labels::getLabel('LBL_Delete', $adminLangId),"onclick"=>"removeDir('".base64_encode(AttachedFile::FILETYPE_BULK_IMAGES_PATH . $row['afile_physical_path'])."')"), Labels::getLabel('LBL_Delete', $adminLangId), true);
+                $li = $innerUl->appendElement("li");
+                $li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green', 'title'=>Labels::getLabel('LBL_Download', $adminLangId),"onclick"=>"downloadPathsFile('".base64_encode($fullPath)."')"), Labels::getLabel('LBL_Download', $adminLangId), true);
                 break;
             default:
                 $td->appendElement('plaintext', array(), $row[$key], true);

@@ -224,6 +224,9 @@ $(document).ready(function() {
 		$(frm.page).val(page);
 		searchFiles(frm);
 	};
+    downloadPathsFile = function(path) {
+        location.href = fcom.makeUrl('ImportExport', 'downloadPathsFile', [path]);
+    };
 
 })();
 
