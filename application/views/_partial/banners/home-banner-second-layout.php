@@ -44,7 +44,7 @@ if (!empty($bannerLayout1['banners']) && $bannerLayout1['blocation_active']) { ?
     }/* else{
             Banner::updateImpressionData($val['banner_id']);
         } */ ?>
-	<div class="col-md-6">
+	<div class="col-md-6 mb-3 mb-md-0">
         <div class="banner-ppc"><a  target="<?php echo $val['banner_target']; ?>" href="<?php echo CommonHelper::generateUrl('Banner', 'url', array($val['banner_id'])); ?>" title="<?php echo $val['banner_title']; ?>"><img data-ratio="10:3" data-src-base="" data-src-base2x="" data-src="<?php echo $mobile_url . $tablet_url  . $desktop_url; ?>" src="<?php echo CommonHelper::generateUrl('Banner', 'HomePageBannerBottomLayout', array($val['banner_id'],$siteLangId,applicationConstants::SCREEN_DESKTOP)); ?>" alt="<?php echo $val['banner_title']; ?>"> </a> </div>
     </div>
 <?php $bCount++;
