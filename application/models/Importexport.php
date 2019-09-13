@@ -1671,8 +1671,9 @@ class Importexport extends ImportexportCommon
                             continue;
                         }
 
-                        $this->db->insertFromArray(Product::DB_TBL, $prodDataArr);
-
+                        if (!$this->db->insertFromArray(Product::DB_TBL, $prodDataArr, false, array(), $prodDataArr)) {
+                            FatUtility::dieJsonError($this->db->getError());
+                        }
                         // echo $this->db->getError();
                         $productId = $this->db->getInsertId();
 
