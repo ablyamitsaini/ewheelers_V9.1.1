@@ -2,6 +2,8 @@
 class ValidateElement extends FatUtility
 {
     // const PHONE_REGEX = '^(\+\d{1,2}\s)?\(?\d{3}\)?[\s#-]\d{3}[\s#-]\d{4}$';
+    const PHONE_NO_FORMAT = '(XXX) XXX-XXXX';
+    const PHONE_NO_LENGTH = 14;
     const PHONE_REGEX = '^\(\d\d\d\) \d\d\d-\d\d\d\d$';
     const ZIP_REGEX = '^[a-zA-Z0-9]+$';
     const CITY_NAME_REGEX = '^([^0-9]*)$';
@@ -14,7 +16,6 @@ class ValidateElement extends FatUtility
     const DISCOVER_REGEX = '^6(?:011|5)';
     const JCB_REGEX = '^(?:2131|1800|35\d{3})';
     const TIME_REGEX = '^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$';
-
     /*const PHONE_FORMATS = [
         '123-456-7890',
         '(123) 456-7890',

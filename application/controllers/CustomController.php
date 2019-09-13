@@ -472,17 +472,33 @@
         $orderInfo = $orderObj->getOrderById($orderId, $this->siteLangId);
 
         if ($orderInfo['order_type'] == Orders::ORDER_PRODUCT) {
-            $textMessage = sprintf(Labels::getLabel('MSG_customer_success_order', $this->siteLangId), CommonHelper::generateUrl('buyer'), CommonHelper::generateUrl('buyer', 'orders'), CommonHelper::generateUrl('custom', 'contactUs'));
+            $searchReplaceArray = array(
+              '{account}' => '<a href="'.CommonHelper::generateUrl('buyer').'">'.Labels::getLabel('MSG_My_Account', $this->siteLangId).'</a>',
+              '{history}' => '<a href="'.CommonHelper::generateUrl('buyer', 'orders').'">'.Labels::getLabel('MSG_History', $this->siteLangId).'</a>',
+              '{contactus}' => '<a href="'.CommonHelper::generateUrl('custom', 'contactUs').'">'.Labels::getLabel('MSG_Store_Owner', $this->siteLangId).'</a>',
+            );
+            $textMessage = Labels::getLabel('MSG_customer_success_order_{account}_{history}_{contactus}', $this->siteLangId);
+            $textMessage = str_replace(array_keys($searchReplaceArray), array_values($searchReplaceArray), $textMessage);
         } elseif ($orderInfo['order_type'] == Orders::ORDER_SUBSCRIPTION) {
-            $textMessage = sprintf(Labels::getLabel('MSG_subscription_success_order', $this->siteLangId), CommonHelper::generateUrl('seller'), CommonHelper::generateUrl('seller', 'subscriptions'));
+            $searchReplaceArray = array(
+              '{account}' => '<a href="'.CommonHelper::generateUrl('seller').'">'.Labels::getLabel('MSG_My_Account', $this->siteLangId).'</a>',
+              '{subscription}' => '<a href="'.CommonHelper::generateUrl('seller', 'subscriptions').'">'.Labels::getLabel('MSG_My_Subscription', $this->siteLangId).'</a>',
+            );
+            $textMessage = Labels::getLabel('MSG_subscription_success_order_{account}_{subscription}', $this->siteLangId);
+            $textMessage = str_replace(array_keys($searchReplaceArray), array_values($searchReplaceArray), $textMessage);
         } elseif ($orderInfo['order_type'] == Orders::ORDER_WALLET_RECHARGE) {
-            $textMessage = sprintf(Labels::getLabel('MSG_wallet_success_order', $this->siteLangId), CommonHelper::generateUrl('account'), CommonHelper::generateUrl('account', 'credits'));
+            $searchReplaceArray = array(
+              '{account}' => '<a href="'.CommonHelper::generateUrl('account').'">'.Labels::getLabel('MSG_My_Account', $this->siteLangId).'</a>',
+              '{credits}' => '<a href="'.CommonHelper::generateUrl('account', 'credits').'">'.Labels::getLabel('MSG_My_Credits', $this->siteLangId).'</a>',
+            );
+            $textMessage = Labels::getLabel('MSG_wallet_success_order_{account}_{credits}', $this->siteLangId);
+            $textMessage = str_replace(array_keys($searchReplaceArray), array_values($searchReplaceArray), $textMessage);
         } else {
             FatUtility::exitWithErrorCode(404);
         }
 
         if (!UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()) {
-            $textMessage = sprintf(Labels::getLabel('MSG_guest_success_order', $this->siteLangId), CommonHelper::generateUrl('custom', 'contactUs'));
+            $textMessage = str_replace('{contactus}', '<a href="'.CommonHelper::generateUrl('custom', 'contactUs').'">'.Labels::getLabel('MSG_Store_Owner', $this->siteLangId).'</a>', Labels::getLabel('MSG_guest_success_order_{contactus}', $this->siteLangId));
         }
 
         /* Clear cart upon successfull redirection from Payment gateway[ */
@@ -647,7 +663,7 @@
         $frm->addRequiredField(Labels::getLabel('LBL_Your_Name', $this->siteLangId), 'name', '');
         $frm->addEmailField(Labels::getLabel('LBL_Your_Email', $this->siteLangId), 'email', '');
 
-        $fld_phn = $frm->addRequiredField(Labels::getLabel('LBL_Your_Phone', $this->siteLangId), 'phone', '', array('class'=>'phone-js ltr-right', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
+        $fld_phn = $frm->addRequiredField(Labels::getLabel('LBL_Your_Phone', $this->siteLangId), 'phone', '', array('class'=>'phone-js ltr-right', 'placeholder' => ValidateElement::PHONE_NO_FORMAT, 'maxlength' => ValidateElement::PHONE_NO_LENGTH));
         $fld_phn->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
         // $fld_phn->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_e.g.', $this->siteLangId).': '.implode(', ', ValidateElement::PHONE_FORMATS).'</small>';
         $fld_phn->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_phone_number_format.', $this->siteLangId));
