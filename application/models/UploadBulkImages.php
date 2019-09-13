@@ -41,14 +41,18 @@ class UploadBulkImages extends FatModel
             return Labels::getLabel('LBL_Directory_Path_is_required.', $this->langId) ;
         }
 
+        if (!file_exists($dirPath)) {
+            return Labels::getLabel('LBL_Invalid_Directory.', $this->langId) ;
+        }
+
         $files = array_diff(scandir($dirPath), array( '..', '.' ));
 
         if (0 < count($files)) {
             foreach ($files as $file) {
-                $filePath = $dirPath . $file;
+                $filePath = $dirPath .'/'. $file;
                 if (false !== strpos($dirPath, $this->bulkRoot)) {
                     if (is_dir($filePath)) {
-                        rmdir($filePath);
+                        $this->deleteSingleBulkMediaDir($filePath);
                     } else {
                         unlink($filePath);
                     }
@@ -116,5 +120,59 @@ class UploadBulkImages extends FatModel
                 'smt' => 'afile_type = ? AND afile_physical_path = ?',
                 'vals' => array( AttachedFile::FILETYPE_BULK_IMAGES, $afile_physical_path )
         ));
+    }
+
+    public function upload($fileName, $tmpName, $userId = 0)
+    {
+        $fileExt = pathinfo($fileName, PATHINFO_EXTENSION);
+        $fileExt = strtolower($fileExt);
+        if ('zip' != $fileExt) {
+            $this->error = Labels::getLabel('MSG_INVALID_FILE', $this->langId);
+            return false;
+        }
+
+        $path = CONF_UPLOADS_PATH . AttachedFile::FILETYPE_BULK_IMAGES_PATH;
+
+        $fileHandlerObj = new AttachedFile();
+
+        $savedFile = $fileHandlerObj->saveAttachment($tmpName, AttachedFile::FILETYPE_BULK_IMAGES, $userId, 0, $fileName);
+
+        if (false === $savedFile) {
+            $this->error = $fileHandlerObj->getError();
+            return false;
+        }
+
+        if (false === $fileHandlerObj->extractZip($path . $savedFile)) {
+            $this->error = Labels::getLabel('MSG_COULD_NOT_SAVE_FILE', $this->langId);
+            return false;
+        }
+
+        return $savedFile;
+    }
+
+    public static function getAllFilesPath($path)
+    {
+        if (empty($path)) {
+            return false;
+        }
+        $locations = [];
+        if (file_exists($path)) {
+            $allFiles = scandir($path);
+            $files = array_diff($allFiles, array( '..', '.' ));
+            foreach ($files as $fileName) {
+                if (is_dir($path.'/'.$fileName)) {
+                    $subLocations = static::getAllFilesPath($path.'/'.$fileName);
+                    $locations = array_merge($locations, $subLocations);
+                } else {
+                    $locations[] = array(
+                                        str_replace(CONF_UPLOADS_PATH, '', $path.'/'.$fileName),
+                                        $fileName
+                                    );
+                }
+            }
+            return $locations;
+        }
+        die('here');
+        return [];
     }
 }
