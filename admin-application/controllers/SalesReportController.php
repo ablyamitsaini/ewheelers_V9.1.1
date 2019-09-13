@@ -55,14 +55,14 @@ class SalesReportController extends AdminBaseController
         $cnd->attachCondition('pmethod_code', '=','cashondelivery');
         $srch->addStatusCondition(unserialize(FatApp::getConfig('CONF_COMPLETED_ORDER_STATUS'))); */
         $srch = Report::salesReportObject();
-        if (empty($orderDate) ) {
+        if (empty($orderDate)) {
             $date_from = FatApp::getPostedData('date_from', FatUtility::VAR_DATE, '');
-            if (!empty($date_from) ) {
+            if (!empty($date_from)) {
                 $srch->addCondition('o.order_date_added', '>=', $date_from. ' 00:00:00');
             }
 
             $date_to = FatApp::getPostedData('date_to', FatUtility::VAR_DATE, '');
-            if (!empty($date_to) ) {
+            if (!empty($date_to)) {
                 $srch->addCondition('o.order_date_added', '<=', $date_to. ' 23:59:59');
             }
             $srch->addGroupBy('DATE(o.order_date_added)');
@@ -104,35 +104,25 @@ class SalesReportController extends AdminBaseController
         /* $page = (empty($post['page']) || $post['page'] <= 0) ? 1 : intval($post['page']);
         $pagesize = FatApp::getConfig('CONF_ADMIN_PAGESIZE', FatUtility::VAR_INT, 10); */
 
-        $srch = new OrderProductSearch(0, true);
-        $srch->joinPaymentMethod();
-        $srch->joinOrderProductCharges(OrderProduct::CHARGE_TYPE_TAX, 'optax');
-        $srch->joinOrderProductCharges(OrderProduct::CHARGE_TYPE_SHIPPING, 'opship');
-
-        $cnd = $srch->addCondition('o.order_is_paid', '=', Orders::ORDER_IS_PAID);
-        $cnd->attachCondition('pmethod_code', '=', 'cashondelivery');
-        $srch->addStatusCondition(unserialize(FatApp::getConfig('CONF_COMPLETED_ORDER_STATUS')));
-
-        if (empty($orderDate) ) {
+        $srch = Report::salesReportObject();
+        if (empty($orderDate)) {
             $date_from = FatApp::getPostedData('date_from', FatUtility::VAR_DATE, '');
-            if (!empty($date_from) ) {
+            if (!empty($date_from)) {
                 $srch->addCondition('o.order_date_added', '>=', $date_from. ' 00:00:00');
             }
 
             $date_to = FatApp::getPostedData('date_to', FatUtility::VAR_DATE, '');
-            if (!empty($date_to) ) {
+            if (!empty($date_to)) {
                 $srch->addCondition('o.order_date_added', '<=', $date_to. ' 23:59:59');
             }
             $srch->addGroupBy('DATE(o.order_date_added)');
-        }else{
+        } else {
             $this->set('orderDate', $orderDate);
             $srch->addGroupBy('op_invoice_number');
             $srch->addCondition('o.order_date_added', '>=', $orderDate. ' 00:00:00');
             $srch->addCondition('o.order_date_added', '<=', $orderDate. ' 23:59:59');
             $srch->addFld(array('op_invoice_number'));
         }
-
-        $srch->addMultipleFields(array('DATE(order_date_added) as order_date','count(op_id) as totOrders','SUM(op_qty) as totQtys','SUM(op_refund_qty) as totRefundedQtys','SUM(op_qty - op_refund_qty) as netSoldQty','sum((op_commission_charged - op_refund_commission)) as totalSalesEarnings','sum(op_refund_amount) as totalRefundedAmount','op.op_unit_cost','SUM( op.op_unit_cost * op_qty ) as inventoryValue','sum(order_net_amount) as orderNetAmount','(SUM(op_qty*optax.opcharge_amount)) as taxTotal','(SUM(op_qty*opship.opcharge_amount)) as shippingTotal'));
 
         $srch->addOrder('order_date', 'desc');
         $srch->doNotCalculateRecords();
@@ -146,19 +136,19 @@ class SalesReportController extends AdminBaseController
         $sheetData = array();
         $arr1 = array(Labels::getLabel('LBL_Sr_No', $this->adminLangId),Labels::getLabel('LBL_Date', $this->adminLangId),Labels::getLabel('LBL_No._Of_Orders', $this->adminLangId));
         $arr2 = array(Labels::getLabel('LBL_Sr_No', $this->adminLangId),Labels::getLabel('LBL_Invoice_Number', $this->adminLangId));
-        $arr = array(Labels::getLabel('LBL_No._Of_Qty', $this->adminLangId),Labels::getLabel('LBL_Refund_Qty', $this->adminLangId), Labels::getLabel('LBL_Inventory_Value',$this->adminLangId),Labels::getLabel('LBL_Order_Net_Amount', $this->adminLangId),Labels::getLabel('LBL_Tex_Charges', $this->adminLangId),Labels::getLabel('LBL_Shipping_Charges', $this->adminLangId),Labels::getLabel('LBL_Refunded_Amount', $this->adminLangId),Labels::getLabel('LBL_Sales_Earnings', $this->adminLangId));
-        if(empty($orderDate)) {
+        $arr = array(Labels::getLabel('LBL_No._Of_Qty', $this->adminLangId),Labels::getLabel('LBL_Refund_Qty', $this->adminLangId), Labels::getLabel('LBL_Inventory_Value', $this->adminLangId),Labels::getLabel('LBL_Order_Net_Amount', $this->adminLangId),Labels::getLabel('LBL_Tax_Charged', $this->adminLangId),Labels::getLabel('LBL_Shipping_Charges', $this->adminLangId),Labels::getLabel('LBL_Refunded_Amount', $this->adminLangId),Labels::getLabel('LBL_Sales_Earnings', $this->adminLangId));
+        if (empty($orderDate)) {
             $arr = array_merge($arr1, $arr);
-        }else{
+        } else {
             $arr = array_merge($arr2, $arr);
         }
         array_push($sheetData, $arr);
 
         $count = 1;
-        while($row = $db->fetch($rs)){
-            if(empty($orderDate)) {
+        while ($row = $db->fetch($rs)) {
+            if (empty($orderDate)) {
                 $arr1 = array($count,FatDate::format($row['order_date']),$row['totOrders']);
-            }else{
+            } else {
                 $arr1 = array($count,$row['op_invoice_number']);
             }
             $arr = array($row['totQtys'],$row['totRefundedQtys'],$row['inventoryValue'],$row['orderNetAmount'],$row['taxTotal'],$row['shippingTotal'],$row['totalRefundedAmount'],$row['totalSalesEarnings']);
@@ -167,7 +157,8 @@ class SalesReportController extends AdminBaseController
             $count++;
         }
 
-        CommonHelper::convertToCsv($sheetData, 'Sales_Report_'.date("d-M-Y").'.csv', ','); exit;
+        CommonHelper::convertToCsv($sheetData, 'Sales_Report_'.date("d-M-Y").'.csv', ',');
+        exit;
     }
 
     private function getSearchForm($orderDate = '')
@@ -175,7 +166,7 @@ class SalesReportController extends AdminBaseController
         $frm = new Form('frmSalesReportSearch');
         $frm->addHiddenField('', 'page');
         $frm->addHiddenField('', 'orderDate', $orderDate);
-        if(empty($orderDate)) {
+        if (empty($orderDate)) {
             $frm->addDateField(Labels::getLabel('LBL_Date_From', $this->adminLangId), 'date_from', '', array('readonly' => 'readonly','class' => 'small dateTimeFld field--calender' ));
             $frm->addDateField(Labels::getLabel('LBL_Date_To', $this->adminLangId), 'date_to', '', array('readonly' => 'readonly','class' => 'small dateTimeFld field--calender'));
             $fld_submit = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Search', $this->adminLangId));
