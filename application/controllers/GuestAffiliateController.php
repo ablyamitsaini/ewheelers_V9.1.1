@@ -353,7 +353,7 @@ class GuestAffiliateController extends MyAppController
 
             $frm->addRequiredField(Labels::getLabel('LBL_NAME', $siteLangId), 'user_name');
 
-            $phoneFld = $frm->addRequiredField(Labels::getLabel('LBL_Phone', $siteLangId), 'user_phone', '', array('class'=>'phone-js ltr-right', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
+            $phoneFld = $frm->addRequiredField(Labels::getLabel('LBL_Phone', $siteLangId), 'user_phone', '', array('class'=>'phone-js ltr-right', 'placeholder' => ValidateElement::PHONE_NO_FORMAT, 'maxlength' => ValidateElement::PHONE_NO_LENGTH));
             $phoneFld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
 
             $fld = $frm->addPasswordField(Labels::getLabel('LBL_PASSWORD', $siteLangId), 'user_password');

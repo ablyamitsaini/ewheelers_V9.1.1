@@ -3114,7 +3114,7 @@ class SellerController extends SellerBaseController
         $zipFld->requirements()->setRegularExpressionToValidate(ValidateElement::ZIP_REGEX);
         $zipFld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Only_alphanumeric_value_is_allowed.', $this->siteLangId));
 
-        $phnFld = $frm->addTextBox(Labels::getLabel('Lbl_phone', $this->siteLangId), 'shop_phone', '', array('class'=>'phone-js ltr-right', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
+        $phnFld = $frm->addTextBox(Labels::getLabel('Lbl_phone', $this->siteLangId), 'shop_phone', '', array('class'=>'phone-js ltr-right', 'placeholder' => ValidateElement::PHONE_NO_FORMAT, 'maxlength' => ValidateElement::PHONE_NO_LENGTH));
         $phnFld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
         // $phnFld->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_e.g.', $this->siteLangId).': '.implode(', ', ValidateElement::PHONE_FORMATS).'</small>';
         $phnFld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_phone_number_format.', $this->siteLangId));
@@ -4086,7 +4086,7 @@ class SellerController extends SellerBaseController
         $zipFld->requirements()->setRegularExpressionToValidate(ValidateElement::ZIP_REGEX);
         $zipFld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Only_alphanumeric_value_is_allowed.', $this->siteLangId));
 
-        $phnFld = $frm->addTextBox(Labels::getLabel('LBL_Phone', $this->siteLangId), 'ura_phone', '', array('class'=>'phone-js ltr-right', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
+        $phnFld = $frm->addTextBox(Labels::getLabel('LBL_Phone', $this->siteLangId), 'ura_phone', '', array('class'=>'phone-js ltr-right', 'placeholder' => ValidateElement::PHONE_NO_FORMAT, 'maxlength' => ValidateElement::PHONE_NO_LENGTH));
         $phnFld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
         // $phnFld->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_e.g.', $this->siteLangId).': '.implode(', ', ValidateElement::PHONE_FORMATS).'</small>';
 

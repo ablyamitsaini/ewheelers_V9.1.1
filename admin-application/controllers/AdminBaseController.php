@@ -255,7 +255,7 @@ class AdminBaseController extends FatController
         $frm->addRequiredField(Labels::getLabel('LBL_Customer_name', $this->adminLangId), 'user_name');
         $frm->addDateField(Labels::getLabel('LBL_Date_of_birth', $this->adminLangId), 'user_dob', '', array('readonly' => 'readonly'));
         /*$frm->addTextBox(Labels::getLabel('LBL_Phone', $this->adminLangId), 'user_phone');*/
-        $phnFld = $frm->addTextBox(Labels::getLabel('LBL_Phone', $this->adminLangId), 'user_phone', '', array('class'=>'phone-js ltr-right', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
+        $phnFld = $frm->addTextBox(Labels::getLabel('LBL_Phone', $this->adminLangId), 'user_phone', '', array('class'=>'phone-js ltr-right', 'placeholder' => ValidateElement::PHONE_NO_FORMAT, 'maxlength' => ValidateElement::PHONE_NO_LENGTH));
         $phnFld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
         $frm->addEmailField(Labels::getLabel('LBL_Email', $this->adminLangId), 'credential_email', '');
 

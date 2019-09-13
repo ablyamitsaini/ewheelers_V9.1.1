@@ -334,7 +334,7 @@ class GuestAdvertiserController extends MyAppController
 
         $frm->addRequiredField(Labels::getLabel('LBL_NAME', $this->siteLangId), 'user_name');
 
-        $phnFld = $frm->addRequiredField(Labels::getLabel('LBL_PHONE', $this->siteLangId), 'user_phone', '', array('class'=>'phone-js ltr-right', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
+        $phnFld = $frm->addRequiredField(Labels::getLabel('LBL_PHONE', $this->siteLangId), 'user_phone', '', array('class'=>'phone-js ltr-right', 'placeholder' => ValidateElement::PHONE_NO_FORMAT, 'maxlength' => ValidateElement::PHONE_NO_LENGTH));
         $phnFld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
 
         $fld = $frm->addPasswordField(Labels::getLabel('LBL_PASSWORD', $this->siteLangId), 'user_password');
