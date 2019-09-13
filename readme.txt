@@ -10,3 +10,5 @@ msg-1018591-Download language label file for APP
 > optimization for system images.
 > Optimization for home page used cache for collections.
 > App notification labels update
+Bug :
+    -> 030496 - redirect back issue from browser back button.
