@@ -1599,7 +1599,7 @@ class CheckoutController extends MyAppController
             //No Need to clear cart in case of wallet recharge
             /*$this->cartObj->clear();
             $this->cartObj->updateUserCart();*/
-            
+
             $orderObj->updateOrderInfo($order_id, array('order_pmethod_id' => $pmethod_id));
 
             if (true ===  MOBILE_APP_API_CALL) {
@@ -1739,8 +1739,8 @@ class CheckoutController extends MyAppController
             $_SESSION['cart_order_id'] = $order_id;
             $_SESSION['order_type'] = $order_type;
             $orderObj->updateOrderInfo($order_id, array('order_pmethod_id' => $pmethod_id));
-            $this->cartObj->clear();
-            $this->cartObj->updateUserCart();
+            // $this->cartObj->clear();
+            // $this->cartObj->updateUserCart();
         }
 
         /* Deduct reward point in case of cashondelivery [ */
