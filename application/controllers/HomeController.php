@@ -43,6 +43,125 @@ class HomeController extends MyAppController
         } else {
             $this->_template->addJs(array('js/slick.min.js', 'js/responsive-img.min.js'));
             $this->_template->addCss(array('css/slick.css', 'css/product-detail.css'));
+
+            /*[ As all layout in sequence so added in one cache]*/
+            $homePageFirstLayout =  FatCache::get('homePageFirstLayout'.$this->siteLangId, CONF_HOME_PAGE_CACHE_TIME, '.txt');
+            if (!$homePageFirstLayout) {
+                $homePageProdLayout1 = '';
+                if (isset($collections[Collections::TYPE_PRODUCT_LAYOUT1])) {
+                    $this->set('collections', $collections[Collections::TYPE_PRODUCT_LAYOUT1]);
+                    $homePageProdLayout1 = $this->_template->render(false, false, '_partial/collection/product-layout-1.php', true, false);
+                }
+
+                $homePageCatLayout1 = '';
+                if (isset($collections[Collections::TYPE_CATEGORY_LAYOUT1])) {
+                    $this->set('collections', $collections[Collections::TYPE_CATEGORY_LAYOUT1]);
+                    $homePageCatLayout1 = $this->_template->render(false, false, '_partial/collection/category-layout-1.php', true, false);
+                }
+
+                $homePageFirstLayout = $homePageProdLayout1.$homePageCatLayout1;
+                FatCache::set('homePageFirstLayout'.$this->siteLangId, $homePageFirstLayout, '.txt');
+            }
+            $this->set('homePageFirstLayout', $homePageFirstLayout);
+            /*]*/
+
+            /*[ we can use saparate cache if layout is not in sequence]*/
+            /* Product Layout1[ */
+            /*$homePageProdLayout1 =  FatCache::get('homePageProdLayout1'.$this->siteLangId, CONF_HOME_PAGE_CACHE_TIME, '.txt');
+            if (!$homePageProdLayout1 && (isset($collections[Collections::TYPE_PRODUCT_LAYOUT1]))) {
+                $this->set('collections', $collections[Collections::TYPE_PRODUCT_LAYOUT1]);
+                $homePageProdLayout1 = $this->_template->render(false, false, '_partial/collection/product-layout-1.php', true, false);
+                FatCache::set('homePageProdLayout1'.$this->siteLangId, $homePageProdLayout1, '.txt');
+            }
+            $this->set('homePageProdLayout1', $homePageProdLayout1);*/
+            /* ] */
+
+            /* category Layout2[ */
+            /*$homePageCatLayout1 =  FatCache::get('homePageCatLayout1'.$this->siteLangId, CONF_HOME_PAGE_CACHE_TIME, '.txt');
+            if (!$homePageCatLayout1 && (isset($collections[Collections::TYPE_CATEGORY_LAYOUT1]))) {
+                $this->set('collections', $collections[Collections::TYPE_CATEGORY_LAYOUT1]);
+                $homePageCatLayout1 = $this->_template->render(false, false, '_partial/collection/category-layout-1.php', true, false);
+                FatCache::set('homePageCatLayout1'.$this->siteLangId, $homePageCatLayout1, '.txt');
+            }
+            $this->set('homePageCatLayout1', $homePageCatLayout1);*/
+            /* ] */
+
+            /* Product Layout2[ */
+            $homePageProdLayout2 =  FatCache::get('homePageProdLayout2'.$this->siteLangId, CONF_HOME_PAGE_CACHE_TIME, '.txt');
+            if (!$homePageProdLayout2 && (isset($collections[Collections::TYPE_PRODUCT_LAYOUT2]))) {
+                $this->set('collections', $collections[Collections::TYPE_PRODUCT_LAYOUT2]);
+                $homePageProdLayout2 = $this->_template->render(false, false, '_partial/collection/product-layout-2.php', true, false);
+                FatCache::set('homePageProdLayout2'.$this->siteLangId, $homePageProdLayout2, '.txt');
+            }
+            $this->set('homePageProdLayout2', $homePageProdLayout2);
+            /* ] */
+
+            /* Shop Layout1[ */
+            $homePageShopLayout1 =  FatCache::get('homePageShopLayout1'.$this->siteLangId, CONF_HOME_PAGE_CACHE_TIME, '.txt');
+            if (!$homePageShopLayout1 && (isset($collections[Collections::TYPE_SHOP_LAYOUT1]))) {
+                $this->set('collections', $collections[Collections::TYPE_SHOP_LAYOUT1]);
+                $homePageShopLayout1 = $this->_template->render(false, false, '_partial/collection/shop-layout-1.php', true, false);
+                FatCache::set('homePageShopLayout1'.$this->siteLangId, $homePageShopLayout1, '.txt');
+            }
+            $this->set('homePageShopLayout1', $homePageShopLayout1);
+            /* ] */
+
+            /*[ As all layout in sequence so added in one cache]*/
+            $homePageFooterLayout =  FatCache::get('homePageFooterLayout'.$this->siteLangId, CONF_HOME_PAGE_CACHE_TIME, '.txt');
+            if (!$homePageFooterLayout) {
+                $homePageCatLayout2 = '';
+                if (isset($collections[Collections::TYPE_CATEGORY_LAYOUT2])) {
+                    $this->set('collections', $collections[Collections::TYPE_CATEGORY_LAYOUT2]);
+                    $homePageCatLayout2 = $this->_template->render(false, false, '_partial/collection/category-layout-2.php', true, false);
+                }
+
+                $homePageProdLayout3 = '';
+                if (isset($collections[Collections::TYPE_PRODUCT_LAYOUT3])) {
+                    $this->set('collections', $collections[Collections::TYPE_PRODUCT_LAYOUT3]);
+                    $homePageProdLayout3 = $this->_template->render(false, false, '_partial/collection/product-layout-3.php', true, false);
+                }
+
+                $homePageBrandLayout1 = '';
+                if (isset($collections[Collections::TYPE_BRAND_LAYOUT1])) {
+                    $this->set('collections', $collections[Collections::TYPE_BRAND_LAYOUT1]);
+                    $homePageBrandLayout1 = $this->_template->render(false, false, '_partial/collection/brand-layout-1.php', true, false);
+                }
+
+                $homePageFooterLayout = $homePageCatLayout2.$homePageProdLayout3.$homePageBrandLayout1;
+                FatCache::set('homePageFooterLayout'.$this->siteLangId, $homePageFooterLayout, '.txt');
+            }
+            $this->set('homePageFooterLayout', $homePageFooterLayout);
+
+            /*[ we can use saparate cache if layout is not in sequence]*/
+            /* Category Layout2[ */
+            /*$homePageCatLayout2 =  FatCache::get('homePageCatLayout2'.$this->siteLangId, CONF_HOME_PAGE_CACHE_TIME, '.txt');
+            if (!$homePageCatLayout2 && (isset($collections[Collections::TYPE_CATEGORY_LAYOUT2]))) {
+                $this->set('collections', $collections[Collections::TYPE_CATEGORY_LAYOUT2]);
+                $homePageCatLayout2 = $this->_template->render(false, false, '_partial/collection/category-layout-2.php', true, false);
+                FatCache::set('homePageCatLayout2'.$this->siteLangId, $homePageCatLayout2, '.txt');
+            }
+            $this->set('homePageCatLayout2', $homePageCatLayout2);*/
+            /* ] */
+
+            /* Product Layout3[ */
+            /*$homePageProdLayout3 =  FatCache::get('homePageProdLayout3'.$this->siteLangId, CONF_HOME_PAGE_CACHE_TIME, '.txt');
+            if (!$homePageProdLayout3 && (isset($collections[Collections::TYPE_PRODUCT_LAYOUT3]))) {
+                $this->set('collections', $collections[Collections::TYPE_PRODUCT_LAYOUT3]);
+                $homePageProdLayout3 = $this->_template->render(false, false, '_partial/collection/product-layout-3.php', true, false);
+                FatCache::set('homePageProdLayout3'.$this->siteLangId, $homePageProdLayout3, '.txt');
+            }
+            $this->set('homePageProdLayout3', $homePageProdLayout3);*/
+            /* ] */
+
+            /* Brand Layout1[ */
+            /*$homePageBrandLayout1 =  FatCache::get('homePageBrandLayout1'.$this->siteLangId, CONF_HOME_PAGE_CACHE_TIME, '.txt');
+            if (!$homePageBrandLayout1 && (isset($collections[Collections::TYPE_BRAND_LAYOUT1]))) {
+                $this->set('collections', $collections[Collections::TYPE_BRAND_LAYOUT1]);
+                $homePageBrandLayout1 = $this->_template->render(false, false, '_partial/collection/brand-layout-1.php', true, false);
+                FatCache::set('homePageBrandLayout1'.$this->siteLangId, $homePageBrandLayout1, '.txt');
+            }
+            $this->set('homePageBrandLayout1', $homePageBrandLayout1);*/
+            /* ] */
         }
 
         $this->_template->render();
@@ -329,7 +448,7 @@ class HomeController extends MyAppController
 
                             if (true ===  MOBILE_APP_API_CALL) {
                                 $collections[$i]['categories'][$counter] = $catData;
-                                // $collections[$i]['categories'][$counter]['subCategories'] = $db->fetchAll($Catrs);
+                            // $collections[$i]['categories'][$counter]['subCategories'] = $db->fetchAll($Catrs);
                             } else {
                                 $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']] = $catData;
                                 $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']]['subCategories'] = $db->fetchAll($Catrs);
@@ -351,7 +470,7 @@ class HomeController extends MyAppController
                             }
                             if (true ===  MOBILE_APP_API_CALL) {
                                 $collections[$i]['categories'][$counter] = $catData;
-                                // $collections[$i]['categories'][$counter]['products'] = $db->fetchAll($Prs);
+                            // $collections[$i]['categories'][$counter]['products'] = $db->fetchAll($Prs);
                             } else {
                                 $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']]['catData'] = $catData;
                                 $collections[$collection['collection_layout_type']][$collection['collection_id']]['categories'][$catData['prodcat_id']]['products'] = $db->fetchAll($Prs);

@@ -1,6 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
 
-$loggedUserId = UserAuthentication::getLoggedUserId();
+$loggedUserId = UserAuthentication::getLoggedUserId(true);
 $userWalletBalance = User::getUserBalance($loggedUserId, true);
 
 $totalRewardPoints = UserRewardBreakup::rewardPointBalance($loggedUserId);

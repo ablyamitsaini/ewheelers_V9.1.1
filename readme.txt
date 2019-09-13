@@ -6,7 +6,7 @@ Bug :
    => 030088 - admin> if wrong file is attached then warning message is not displaying properly
    => 030096 - default commission value is not getting changed.
    => 030097 - sales report> tax having wrong value on exporting file
-   
+
 Enhancements :
    => Optimization for home page used cache for collections.
    => App notification labels update
@@ -37,3 +37,4 @@ Enhancements :
       => Maintenance mode handling for API.
       => Optimization for system images.
       => Optimization for recommended products on product details page.
+      => Optimization for home page used cache for collections templates.
