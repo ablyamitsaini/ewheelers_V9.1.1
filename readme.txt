@@ -4,6 +4,7 @@ Bug :
    => 030287 - catalog data is not getting imported from admin
    => 029519 - User skips add address screen.
    => 030088 - admin> if wrong file is attached then warning message is not displaying properly
+   => 030096 - default commission value is not getting changed.
    
 Enhancements :
    => Optimization for home page used cache for collections.
