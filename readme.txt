@@ -3,6 +3,7 @@ Bug :
    => 030167 - menu on dashboard is not loading randomly
    => 030287 - catalog data is not getting imported from admin
    => 029519 - User skips add address screen.
+   => 030088 - admin> if wrong file is attached then warning message is not displaying properly
    
 Enhancements :
    => Optimization for home page used cache for collections.
