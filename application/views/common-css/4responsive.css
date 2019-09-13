@@ -1154,6 +1154,7 @@
 
 	.slider-for img {
 		border: none;
+		max-width: 100%;
 	}
 
 	.slider-for {
