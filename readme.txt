@@ -1,4 +1,3 @@
-
 Bug :
     -> 030496 - redirect back issue from browser back button.
 
@@ -8,27 +7,29 @@ Enhancements :
 
 <!--  Release notes TV-9.0.1.20190907 -- >
 
-       Buyer API
+Updates:
+    Buyer API
 
-       Sheet url : https://docs.google.com/spreadsheets/d/1FpUtNMAX3Zub5RIKe4ESxtXqcE7gkxJf_pe0hdKTTUI/edit#gid=0
-       Notes: Check colomn "Web Status" in above sheet url for testing.
+    Sheet url : https://docs.google.com/spreadsheets/d/1FpUtNMAX3Zub5RIKe4ESxtXqcE7gkxJf_pe0hdKTTUI/edit#gid=0
+    Notes: Check colomn "Web Status" in above sheet url for testing.
 
-       => Login/Registration
-       => Homepage/Landing
-       => Account Management
-       => Cart/Checkout
-       => Address
-       => General
-       => Category
-       => Product
-       => Shop
-       => Message
-       => Order
-       => Payment Gateways
-       => Msg-1018591 Used Labels via json file.
+    => Login/Registration
+    => Homepage/Landing
+    => Account Management
+    => Cart/Checkout
+    => Address
+    => General
+    => Category
+    => Product
+    => Shop
+    => Message
+    => Order
+    => Payment Gateways
+    => Msg-1018591 Used Labels via json file.
 
-    Enhancements :
-       => Performance optimization : Used labels from json file.
-       => Maintenance mode handling for API.
-       => Optimization for system images.
-       => Optimization for recommended products on product details page.
+Enhancements :
+    => Performance optimization : Used labels from json file.
+    => Maintenance mode handling for API.
+    => Optimization for system images.
+    => Optimization for recommended products on product details page.
+    => Optimization for home page used cache for collections templates.

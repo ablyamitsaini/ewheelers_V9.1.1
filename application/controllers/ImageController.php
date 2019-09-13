@@ -121,8 +121,6 @@ class ImageController extends FatController
         $selprod_id = FatUtility::int($selprod_id);
         $lang_id = FatUtility::int($lang_id);
 
-        //echo 'recordId='.$recordId.', sizeType='.$sizeType.', selprod_id='.$selprod_id.', afile_id='.$afile_id.', lang_id='.$lang_id; die();
-
         /* code to fetch color specific images for a single product, and varies according to option value id, E.g: Color: White, Black, Grey[ */
         if ($selprod_id) {
             $srch = SellerProduct::getSearchObject();
@@ -169,21 +167,6 @@ class ImageController extends FatController
 
         $image_name = isset($file_row['afile_physical_path']) ? AttachedFile::FILETYPE_PRODUCT_IMAGE_PATH . $file_row['afile_physical_path'] : '';
         /* CommonHelper::printArray($image_name); die();  */
-        $cacheKey = false;
-        /* if(CONF_USE_FAT_CACHE){
-        $requestUrl = $_SERVER['REQUEST_URI'];
-        if(FatCache::get($requestUrl, CONF_IMG_CACHE_TIME, '.jpg')){
-        $cacheKey = $requestUrl;
-        }
-        } */
-        $cacheKey = $_SERVER['REQUEST_URI'];
-        $str = FatCache::get($cacheKey, CONF_IMG_CACHE_TIME, '.jpg');
-        if (false == $str && !CONF_USE_FAT_CACHE) {
-            $cacheKey = false;
-        }
-
-        /*
-        ob_start(); */
 
         switch (strtoupper($sizeType)) {
             case 'THUMB':
@@ -194,56 +177,51 @@ class ImageController extends FatController
             case 'MINI':
                 $w = 50;
                 $h = 50;
-                AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, false, $cacheKey);
+                AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, false);
                 break;
             case 'EXTRA-SMALL':
                 $w = 60;
                 $h = 60;
-                AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, false, $cacheKey);
+                AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, false);
                 break;
             case 'SMALL':
                 // image size required in product listing
                 $w = 230;
                 $h = 230;
-                AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true, $cacheKey);
+                AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true);
                 break;
             case 'MEDIUM':
                 $w = 500;
                 $h = 500;
-                AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true, $cacheKey);
+                AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true);
                 break;
             case 'CLAYOUT3':
                 $w = 230;
                 $h = 230;
-                AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true, $cacheKey);
+                AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true);
                 break;
             case 'CLAYOUT2':
                 $w = 398;
                 $h = 398;
-                AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true, $cacheKey);
+                AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true);
                 break;
             case 'ORIGINAL':
                 $w = 2000;
                 $h = 2000;
-                AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true, $cacheKey);
+                AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true);
                 break;
             case 'FB_RECOMMEND':
                 $w = 1200;
                 $h = 630;
-                AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true, $cacheKey);
+                AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true);
                 break;
             default:
                 $h = 400;
                 $w = 400;
-                AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true, $cacheKey);
+                AttachedFile::displayImage($image_name, $w, $h, $default_image, '', ImageResize::IMG_RESIZE_EXTRA_ADDSPACE, true);
                 break;
         }
 
-        /*   $str = ob_get_clean();
-        FatCache::set($cacheKey, $str);
-
-        echo $str;
-        exit(); */
     }
 
     public function shopLogo($recordId, $lang_id = 0, $sizeType = '', $afile_id = 0, $displayUniversalImage = true)
