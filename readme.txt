@@ -2,6 +2,8 @@ Bug :
    => 030496 - redirect back issue from browser back button.
    => 030167 - menu on dashboard is not loading randomly
    => 030287 - catalog data is not getting imported from admin
+   => 029519 - User skips add address screen.
+   
 Enhancements :
    => Optimization for home page used cache for collections.
    => App notification labels update
