@@ -161,6 +161,7 @@ $(document).ready(function() {
                             document.uploadBulkImages.reset();
                             $("#uploadFileName").text('');
                             searchFiles();
+                            location.href = fcom.makeUrl('ImportExport', 'downloadPathsFile',[ans.path]);
                         } else {
                             $(document).trigger('close.mbsmessage');
                             $.systemMessage(ans.msg, 'alert--danger');
@@ -223,6 +224,9 @@ $(document).ready(function() {
 		$(frm.page).val(page);
 		searchFiles(frm);
 	};
+    downloadPathsFile = function(path) {
+        location.href = fcom.makeUrl('ImportExport', 'downloadPathsFile', [path]);
+    };
 
 })();
 
