@@ -334,7 +334,7 @@ class CartController extends MyAppController
         }
 
         if (!isset($post['key'])) {
-            $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
+            $message = Labels::getLabel('LBL_Product_Key_Required', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
                 FatUtility::dieJsonError($message);
             }

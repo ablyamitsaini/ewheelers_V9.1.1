@@ -537,7 +537,7 @@ class Cart extends FatModel
         }
         $this->updateUserCart();
         if (false === $found) {
-            $this->error = Labels::getLabel('ERR_Invalid_Request', $this->cart_lang_id);
+            $this->error = Labels::getLabel('ERR_Invalid_Product', $this->cart_lang_id);
         }
         return $found;
     }
