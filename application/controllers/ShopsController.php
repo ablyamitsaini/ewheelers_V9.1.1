@@ -1136,4 +1136,11 @@ class ShopsController extends MyAppController
         );
         return $data;
     }
+
+    public function shopReportReasons()
+    {
+        $data = ShopReportReason::getReportReasonArr($this->siteLangId);
+        $this->set('data', array('reportReasons' => $data));
+        $this->_template->render();
+    }
 }

@@ -37,6 +37,10 @@ class ShopReportReason extends MyAppModel
         $srch->addMultipleFields(array('reportreason_id','IFNULL(reportreason_title, reportreason_identifier) as reportreason_title'));
         $srch->addOrder('reportreason_title');
         $rs = $srch->getResultSet();
-        return $row = FatApp::getDb()->fetchAllAssoc($rs);
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            return FatApp::getDb()->fetchAll($rs);
+        }
+        return FatApp::getDb()->fetchAllAssoc($rs);
     }
 }
