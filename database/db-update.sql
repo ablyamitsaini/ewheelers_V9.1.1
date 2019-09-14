@@ -52,6 +52,5 @@ SET
 WHERE
     `tbl_configurations`.`conf_name` = 'CONF_MAINTENANCE_TEXT_1'
 
-
-//13-09-2019
 DELETE FROM `tbl_language_labels` WHERE `label_key` = "LBL_Tex_Charges";
+DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE 'MSG_Your_report_sent_review!';
