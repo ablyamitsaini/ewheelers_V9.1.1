@@ -12,7 +12,6 @@ if (count($sponsoredProds)>0) {
     $this->includeTemplate('_partial/collection/sponsored-products.php', array( 'products' => $sponsoredProds, 'siteLangId' => $siteLangId ), false);
 }
 
-// echo FatUtility::decodeHtmlEntities($homePageFirstLayout);
 // echo FatUtility::decodeHtmlEntities($homePageProdLayout1);
 if (isset($collections[Collections::TYPE_PRODUCT_LAYOUT1])) {
     $this->includeTemplate('_partial/collection/product-layout-1.php', array( 'collections' => $collections[Collections::TYPE_PRODUCT_LAYOUT1], 'siteLangId' => $siteLangId ), false);

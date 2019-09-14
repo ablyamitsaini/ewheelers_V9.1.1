@@ -21,8 +21,8 @@ $(document).ready(function() {
     };
     redirecrt = function(redirecrt) {
 
-        var url = SITE_ROOT_URL + '' + redirecrt;
-        window.location = url;
+        //var url = SITE_ROOT_URL + '' + redirecrt;
+        window.location = redirecrt;
     }
 
     goToSearchPage = function(page) {

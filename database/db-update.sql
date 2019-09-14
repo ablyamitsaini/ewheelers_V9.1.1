@@ -52,6 +52,6 @@ SET
 WHERE
     `tbl_configurations`.`conf_name` = 'CONF_MAINTENANCE_TEXT_1'
 
-
-//13-09-2019
 DELETE FROM `tbl_language_labels` WHERE `label_key` = "LBL_Tex_Charges";
+/*Release notes TV-9.0.1.20190914*/
+ALTER TABLE `tbl_attached_files` ADD `afile_updated_at` DATETIME NOT NULL AFTER `afile_downloaded_times`;
