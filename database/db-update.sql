@@ -54,3 +54,4 @@ WHERE
 
 DELETE FROM `tbl_language_labels` WHERE `label_key` = "LBL_Tex_Charges";
 DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE 'MSG_Your_report_sent_review!';
+ALTER TABLE `tbl_user_notifications` ADD `unotification_data` TEXT NULL DEFAULT NULL AFTER `unotification_type`;
