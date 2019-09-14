@@ -467,6 +467,9 @@
         if (!$orderId) {
             FatUtility::exitWithErrorCode(404);
         }
+        $cartObj = new Cart(UserAuthentication::getLoggedUserId(), $this->siteLangId, $this->app_user['temp_user_id']);
+        $cartObj->clear();
+        $cartObj->updateUserCart();
 
         $orderObj = new Orders();
         $orderInfo = $orderObj->getOrderById($orderId, $this->siteLangId);
