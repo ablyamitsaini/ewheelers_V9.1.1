@@ -172,10 +172,10 @@
                                     echo FatApp::getConfig('CONF_SITE_TRACKER_CODE', FatUtility::VAR_STRING, '');
                                 }?>
 
-<script type="text/javascript" src="<?php
+<?php /*?><script type="text/javascript" src="<?php
 $fl = 'js/variables.js';
 echo FatUtility::generateUrl('JsCss', 'js', array(), '', false). '&f=' . rawurlencode($fl);
-?>"></script>
+?>"></script> <?php */?>
 <div class="no-print">
     <?php if (CommonHelper::demoUrl()) { ?>
     <!--Start of Tawk.to Script-->
