@@ -616,7 +616,7 @@ class CommonHelper extends FatUtility
             $val =  $sign.$val;
         }
 
-        return $val;
+        return trim($val);
         /* if($displaySymbol){
             if($val < 0){
 
@@ -645,7 +645,6 @@ class CommonHelper extends FatUtility
 
             }
         } */
-        return $val;
     }
     public static function convertCurrencyToRewardPoint($currencyValue)
     {
@@ -1878,5 +1877,16 @@ class CommonHelper extends FatUtility
             return $maxValue.'+';
         }
         return $totalCount;
+    }
+
+    public static function replaceStringData($str, $replacements = array(), $replaceTags = false)
+    {
+        foreach ($replacements as $key=>$val) {
+            if ($replaceTags) {
+                $val = strip_tags($val);
+            }
+            $str = str_replace($key, $val, $str);
+        }
+        return $str;
     }
 }

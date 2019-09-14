@@ -136,6 +136,17 @@ class BuyerController extends BuyerBaseController
         }
 
         $opId = FatUtility::int($opId);
+        if (0 < $opId) {
+            $opOrderId = OrderProduct::getAttributesById($opId, 'op_order_id');
+            if ($orderId != $opOrderId) {
+                $message = Labels::getLabel('MSG_Invalid_Order', $this->siteLangId);
+                if (true ===  MOBILE_APP_API_CALL) {
+                    FatUtility::dieJsonError(strip_tags($message));
+                }
+                Message::addErrorMessage($message);
+                CommonHelper::redirectUserReferer();
+            }
+        }
         $primaryOrderDisplay = false;
 
         $orderObj = new Orders();
@@ -164,16 +175,13 @@ class BuyerController extends BuyerBaseController
         $srch->addCondition('order_user_id', '=', $userId);
         $srch->addCondition('order_id', '=', $orderId);
 
-        if (true ===  MOBILE_APP_API_CALL) {
-            $srch->joinTable(SelProdReview::DB_TBL, 'LEFT OUTER JOIN', 'o.order_id = spr.spreview_order_id and op.op_selprod_id = spr.spreview_selprod_id', 'spr');
-            $srch->joinTable(SelProdRating::DB_TBL, 'LEFT OUTER JOIN', 'sprating.sprating_spreview_id = spr.spreview_id', 'sprating');
-            $srch->addFld(array('*','IFNULL(ROUND(AVG(sprating_rating),2),0) as prod_rating'));
 
-            // Comment: Passing wrong $opId it will return result having null values coresponding with their keys except sprating_rating (due to AVG function). To avoid this situation, having clause added.
-            $srch->addHaving('op_id', '=', $opId);
-        }
-
-        if ($opId > 0) {
+        if (0 < $opId) {
+            if (true ===  MOBILE_APP_API_CALL) {
+                $srch->joinTable(SelProdReview::DB_TBL, 'LEFT OUTER JOIN', 'o.order_id = spr.spreview_order_id and op.op_selprod_id = spr.spreview_selprod_id', 'spr');
+                $srch->joinTable(SelProdRating::DB_TBL, 'LEFT OUTER JOIN', 'sprating.sprating_spreview_id = spr.spreview_id', 'sprating');
+                $srch->addFld(array('*','IFNULL(ROUND(AVG(sprating_rating),2),0) as prod_rating'));
+            }
             $srch->addCondition('op_id', '=', $opId);
             $srch->addStatusCondition(unserialize(FatApp::getConfig("CONF_BUYER_ORDER_STATUS")));
             $primaryOrderDisplay = true;
@@ -618,7 +626,7 @@ class BuyerController extends BuyerBaseController
             $cancelReasonsArr[$count]['value']= $val;
             $count++;
         }
-        $this->set('orderCancelReasonsArr', $cancelReasonsArr);
+        $this->set('data', array('reasons' =>$cancelReasonsArr));
         $this->_template->render();
     }
 
@@ -647,7 +655,7 @@ class BuyerController extends BuyerBaseController
             FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
         }
 
-        $this->set('returnReasonsArr', $returnReasonsArr);
+        $this->set('data', array('reasons' => $returnReasonsArr));
         $this->_template->render();
     }
 
@@ -2575,7 +2583,7 @@ class BuyerController extends BuyerBaseController
 
         $referralTrackingUrl = CommonHelper::referralTrackingUrl($userInfo['user_referral_code']);
 
-        $this->set('trackingUrl', $referralTrackingUrl);
+        $this->set('data', array('trackingUrl'=>$referralTrackingUrl));
         $this->_template->render();
     }
     public function orderReceipt($orderId)
@@ -2585,24 +2593,11 @@ class BuyerController extends BuyerBaseController
             FatUtility::dieJsonError(strip_tags($message));
         }
 
-        $srch = Transactions::getSearchObject();
-        $srch->addCondition('utxn.utxn_order_id', 'like', '%'.$orderId.'%');
-        $srch->addMultipleFields(array('utxn_id'));
-        $rs = $srch->getResultSet();
-        $records = FatApp::getDb()->fetch($rs);
-
-        if (empty($records)) {
-            $message = Labels::getLabel('MSG_Invalid_Request', $this->siteLangId);
-            FatUtility::dieJsonError(strip_tags($message));
-        }
-        $txnId = $records['utxn_id'];
-        /* Send email to User[ */
-        $emailNotificationObj = new EmailHandler();
-        if (!$emailNotificationObj->sendTxnNotification($txnId, $this->siteLangId)) {
+        $emailObj = new EmailHandler();
+        if (!$emailObj->newOrderBuyerAdmin($orderId, $this->siteLangId, false)) {
             $message = Labels::getLabel('MSG_Unable_to_notify_customer', $this->siteLangId);
             FatUtility::dieJsonError(strip_tags($message));
         }
-        /* ] */
         $this->_template->render();
     }
 }

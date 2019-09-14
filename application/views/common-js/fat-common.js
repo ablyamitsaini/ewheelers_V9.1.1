@@ -124,7 +124,6 @@ var fcom = {
 		},
 
 		updateWithAjax: function(url, data, fn, options, processMsg) {
-			this.addTrailingSlash();
 
 			if(typeof processMsg == undefined || processMsg == null){
 				processMsg = true;

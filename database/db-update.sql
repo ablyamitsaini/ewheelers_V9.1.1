@@ -1,3 +1,37 @@
+ALTER TABLE `tbl_orders_status` ADD `orderstatus_color_code` VARCHAR(10) NULL DEFAULT NULL AFTER `orderstatus_identifier`;
+
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'M_APP_NOTIFICATION_THANK_YOU_FOR_REGISTERING';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'M_APP_NOTIFICATION_THANK_YOU_FOR_SIGNING_UP';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'M_APP_NOTIFICATION_THANKS_FOR_PLACING_AN_ORDER';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'M_APP_NOTIFICATION_YOUR_ORDER_PAYMENT_STATUS_CHANGED';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'M_APP_NOTIFICATION_AN_ORDER_HAS_BEEN_PLACED';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'M_APP_NOTIFICATION_YOUR_ORDER_ITEM_STATUS_CHANGED';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'M_APP_NOTIFICATION_YOUR_ACCOUNT_HAS_BEEN_TXN_TYPE_WITH_AMOUNT';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'M_APP_NOTIFICATION_YOUR_FUND_WITHDRAWAL_REQUEST_CHANGED';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'M_APP_NOTIFICATION_MESSAGE_RECEIVED_FROM_{USERNAME}';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'M_APP_NOTIFICATION_BUYER_HAS_SUBMITTED_ORDER_CANCELLATION_REQUEST';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'M_APP_NOTIFICATION_USERNAME_HAS_SUBMITTED_RETURN_REQUEST';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'M_APP_NOTIFICATION_YOUR_PRODUCT_RETURN_REQUEST_SUBMITTED';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'M_APP_NOTIFICATION_USERNAME_POSTED_MESSAGE_REQUEST_NUMBER';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'M_APP_NOTIFICATION_YOUR_ORDER_CANCELLATION_REQUEST_STATUS_CHANGED';
+DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'M_APP_NOTIFICATION_YOUR_ACCOUNT_CREDITED_DEBITED_REWARD_POINTS';
+
+INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('APP_VERIFY_YOUR_ACCCOUNT_FROM_REGISTERED_EMAIL', '1', 'Please verify your account from your registered emailLogo.');
+INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('APP_THANK_YOU_FOR_ACCOUNT_VERIFICATION', '1', 'Thank you for verifying your account.');
+INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('APP_YOUR_ORDER_{ORDERID}_HAVE_BEEN_PLACED', '1', 'Thank you for placing order {ORDERID}. Visit my order section for updates.');
+INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('APP_PAYMENT_STATUS_FOR_ORDER_{ORDERID}_UPDATED_{STATUS}', '1', 'Payment status for order {ORDERID} has been updated to {STATUS}');
+INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('SAPP_{PRODUCT}_ORDER_{ORDERID}_HAS_BEEN_PLACED', '1', 'You have received a new order {ORDERID} for {PRODUCT}.');
+INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('APP_YOUR_ORDER_{INVOICE}_{PRODUCT}_STATUS_{STATUS}', '1', 'Status for {PRODUCT} with invoice {INVOICE} has been updated to {STATUS}');
+INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('APP_AMOUNT_{txn_amount}_WITH_{txn_id}_HAS_BEEN_{txn_type}', '1', 'Amount {txn_amount} with transaction id {txn_id} has been {txn_type} to your account');
+INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('APP_AMOUNT_{request_amount}_WITH_{request_id}_HAS_BEEN_{request_status}', '1', 'Withdrawal Amount {request_amount} with request id {request_id} has been {request_status}');
+INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('APP_YOU_HAVE_A_NEW_MESSAGE_FROM_{USERNAME}', '1', 'You have a new message from {USERNAME}');
+INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('SAPP_RECEIVED_CANCELLATION_FOR_INVOICE_{invoice_number}', '1', 'Cancellation request received for invoice {invoice_number}');
+INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('SAPP_RECEIVED_RETURN_FROM_{username}_WITH_REFERENCE_NUMBER_{return_request_id}', '1', 'Return request receinved from {username} with reference number {return_request_id}');
+INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('APP_RETURN_FOR_{return_prod_title}_with_{return_request_id}_submitted', '1', 'Return request for {prod} with reference number is successfully submitted.');
+INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('APP_NEW_MESSAGE_POASTED_BY_{username}_ON_RETURN_{request_number}', '1', 'New message posted by {username} on return request {return_request_id}');
+INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('APP_STATUS_FOR_CANCELLATION_{invoice_number}_UPDATED_{request_status}', '1', 'Status for order cancellation invoice {invoice_number} has been updated to {request_status}');
+INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('APP_REWARDS_{reward_points}_HAS_BEEN_{debit_credit_type}_ACCOUNT', '1', 'Reward points {reward_points} has been {debit_credit_type} to your account');
+
 DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'MSG_customer_success_order';
 DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'MSG_subscription_success_order';
 DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'MSG_wallet_success_order';

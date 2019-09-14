@@ -69,6 +69,8 @@ class applicationConstants
     const DASHBOARD_PAGE_SIZE = 3;
     const PAGE_SIZE = 20;
 
+    const ALLOWED_HTML_TAGS_FOR_APP = '<b><strong><i><u><small><br><p><h1><h2><h3><h4><h5><h6><div><a>';
+
     public static function getWeightUnitsArr($langId)
     {
         $langId = FatUtility::int($langId);

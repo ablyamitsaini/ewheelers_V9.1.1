@@ -86,7 +86,7 @@ class Labels extends MyAppModel
             $langFileData[$langId] = static::readDataFromFile($langId, $key);
         }
 
-        if (array_key_exists($key, $langFileData[$langId])) {
+        if (isset($langFileData[$langId]) && array_key_exists($key, $langFileData[$langId])) {
             $str = $langFileData[$langId][$key];
         }
 
@@ -196,18 +196,18 @@ class Labels extends MyAppModel
 
         $path = CONF_UPLOADS_PATH.static::JSON_FILE_DIR_NAME.'/';
         if (!file_exists($path)) {
-            mkdir($path, 0777);
+            if (!mkdir($path, 0777, true)) {
+                return false;
+            }
         }
 
         $langFile = $path . $langCode.'.json';
-        if (!file_exists($langFile) || (filemtime($langFile) < $lastLabelsUpdatedAt)) {
+        if (!file_exists($langFile) || (filemtime($langFile) < $lastLabelsUpdatedAt) || 1 > filesize($langFile)) {
             $records = static::fetchAllAssoc($langId, array('label_key','label_caption'));
-            if (!file_put_contents($langFile, json_encode($records))) {
-                return false;
+            if (!json_encode($records)) {
+                return json_last_error_msg();
             }
-            /*if (!file_put_contents($langFile, json_encode($records))) {
-                return false;
-            }*/
+            return file_put_contents($langFile, json_encode($records));
         }
         return true;
     }

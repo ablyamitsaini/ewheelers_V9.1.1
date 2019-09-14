@@ -16,6 +16,18 @@ class MyAppController extends FatController
             FatApp::redirectUser(CommonHelper::generateUrl('maintenance'));
         }
 
+        if (true ===  MOBILE_APP_API_CALL) {
+            if (!empty($_SERVER['HTTP_X_LANGUAGE_ID'])) {
+                $this->siteLangId = FatUtility::int($_SERVER['HTTP_X_LANGUAGE_ID']);
+                $_COOKIE['defaultSiteLang'] = $this->siteLangId;
+            }
+
+            if (!empty($_SERVER['HTTP_X_CURRENCY_ID'])) {
+                $this->siteCurrencyId = FatUtility::int($_SERVER['HTTP_X_CURRENCY_ID']);
+                $_COOKIE['defaultSiteCurrency'] = $this->siteCurrencyId;
+            }
+        }
+
         CommonHelper::initCommonVariables();
         $this->initCommonVariables();
     }

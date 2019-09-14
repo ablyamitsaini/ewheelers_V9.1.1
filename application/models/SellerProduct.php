@@ -316,7 +316,7 @@ class SellerProduct extends MyAppModel
 
         $srch->addMultipleFields(array(
             'selprod_id', 'product_id', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title','selprod_price','selprod_stock', 'IFNULL(product_identifier ,product_name) as product_name','product_identifier','selprod_product_id','CASE WHEN m.splprice_selprod_id IS NULL THEN 0 ELSE 1 END AS special_price_found',
-        'IFNULL(m.splprice_price, selprod_price) AS theprice'));
+        'IFNULL(m.splprice_price, selprod_price) AS theprice', 'selprod_min_order_qty'));
 
         if (true ===  MOBILE_APP_API_CALL) {
             if (FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO) {

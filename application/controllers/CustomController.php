@@ -467,6 +467,9 @@
         if (!$orderId) {
             FatUtility::exitWithErrorCode(404);
         }
+        $cartObj = new Cart(UserAuthentication::getLoggedUserId(), $this->siteLangId, $this->app_user['temp_user_id']);
+        $cartObj->clear();
+        $cartObj->updateUserCart();
 
         $orderObj = new Orders();
         $orderInfo = $orderObj->getOrderById($orderId, $this->siteLangId);
@@ -739,5 +742,18 @@
         $obj = new UploadBulkImages();
         $msg = $obj->deleteBulkUploadSubDirs($hoursBefore);
         FatUtility::dieJsonSuccess($msg);
+    }
+
+    public function signupAgreementUrls()
+    {
+        $privacyPolicyLink = FatApp::getConfig('CONF_PRIVACY_POLICY_PAGE', FatUtility::VAR_STRING, '');
+        $termsAndConditionsLink = FatApp::getConfig('CONF_TERMS_AND_CONDITIONS_PAGE', FatUtility::VAR_STRING, '');
+        $data = array(
+            'privacyPolicyLink' => CommonHelper::generateFullUrl('cms', 'view', array($privacyPolicyLink)),
+            'faqLink' => CommonHelper::generateFullUrl('custom', 'faq'),
+            'termsAndConditionsLink' => CommonHelper::generateFullUrl('cms', 'view', array($termsAndConditionsLink)),
+        );
+        $this->set('data', $data);
+        $this->_template->render();
     }
 }

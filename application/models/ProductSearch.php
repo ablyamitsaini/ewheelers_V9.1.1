@@ -483,7 +483,7 @@ class ProductSearch extends SearchBase
             /* $category = explode(",", $category);
             $category = FatUtility::int($category);
             $this->addCondition('prodcat_id', 'IN', $category ); */
-            
+
             if (0 < count(array_filter($category))) {
                 $condition= '(';
                 foreach ($category as $catId) {
@@ -572,13 +572,15 @@ class ProductSearch extends SearchBase
         $brandId = FatUtility::int($brand);
         if (is_numeric($brand)) {
             $this->addCondition('brand_id', '=', $brandId);
-        } elseif (is_array($brand)) {
+        } elseif (is_array($brand) && 0 < count($brand)) {
             $brand = array_filter(array_unique($brandId));
             $this->addDirectCondition('brand_id IN ('. implode(',', $brand).')');
         } else {
-            $brand = explode(",", $brand);
-            $brand = array_filter(array_unique($brand));
-            $this->addDirectCondition('brand_id IN ('. implode(',', $brand).')');
+            if (!empty($brand)) {
+                $brand = explode(",", $brand);
+                $brand = array_filter(array_unique($brand));
+                $this->addDirectCondition('brand_id IN ('. implode(',', $brand).')');
+            }
         }
     }
 
