@@ -1,3 +1,4 @@
+<!--  Release notes TV-9.0.1.20190914 -- >
 Bug :
     => 030496 - redirect back issue from browser back button.
     => 030496 - redirect back issue from browser back button.
