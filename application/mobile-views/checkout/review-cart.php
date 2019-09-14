@@ -7,6 +7,14 @@ foreach ($products as $key => $product) {
     $products[$key]['netTotal'] = !empty($product['netTotal']) ? CommonHelper::displayMoneyFormat($product['netTotal']) : 0;
     $products[$key]['shop_free_ship_upto'] = !empty($product['shop_free_ship_upto']) ? CommonHelper::displayMoneyFormat($product['shop_free_ship_upto'], false, false, false) : 0;
     $products[$key]['selectedProductShippingMethod'] = !empty($selectedProductShippingMethod['product'][$product['selprod_id']]) ? $selectedProductShippingMethod['product'][$product['selprod_id']] : (object)array();
+
+    $optionTitle = '';
+    if (is_array($product['options']) && count($product['options'])) {
+        foreach ($product['options'] as $op) {
+            $optionTitle .= $op['option_name'].': '.$op['optionvalue_name'].', ';
+        }
+    }
+    $products[$key]['optionsTitle'] = rtrim($optionTitle, ', ');
 }
 
 $data = array(
