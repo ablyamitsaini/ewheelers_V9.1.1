@@ -1101,7 +1101,7 @@ class Cart extends FatModel
                 'coupon_discount_type'       => $couponInfo["coupon_type"],
                 'coupon_code' => $couponInfo["coupon_code"],
                 'coupon_discount_value'      =>$couponInfo["coupon_discount_value"],
-                'coupon_discount_total'      => $selProdDiscountTotal,
+                'coupon_discount_total'      => ($selProdDiscountTotal < 0)?0:$selProdDiscountTotal,
                 'coupon_info'      => json_encode($labelArr),
                 'discountedSelProdIds'=>$discountedSelProdIds,
                 'discountedProdGroupIds'=>$discountedProdGroupIds,
