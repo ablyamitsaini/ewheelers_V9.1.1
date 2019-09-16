@@ -545,7 +545,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                 }
                             }
                         } ?>
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-3 mb-md-0">
                         <div class="banner-ppc"><a href="<?php echo CommonHelper::generateUrl('Banner', 'url', array($val['banner_id'])); ?>" target="<?php echo $val['banner_target']; ?>" title="<?php echo $val['banner_title']; ?>"
                                 class="advertise__block"><img data-ratio="10:3" data-src-base="" data-src-base2x="" data-src="<?php echo $mobile_url  . $tablet_url  . $desktop_url; ?>"
                                     src="<?php echo CommonHelper::generateUrl('Banner', 'productDetailPageBanner', array($val['banner_id'],$siteLangId,applicationConstants::SCREEN_DESKTOP)); ?>" alt="<?php echo $val['banner_title']; ?>"
