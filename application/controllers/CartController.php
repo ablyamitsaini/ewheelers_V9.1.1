@@ -342,7 +342,6 @@ class CartController extends MyAppController
         }
 
         $cartObj = new Cart(UserAuthentication::getLoggedUserId(true), $this->siteLangId, $this->app_user['temp_user_id']);
-        $total = $cartObj->countProducts();
         $key = $post['key'];
 
         if ('all' == $key) {
@@ -363,6 +362,7 @@ class CartController extends MyAppController
             $cartObj->removeProductShippingMethod();
             $cartObj->removeCartDiscountCoupon();
         }
+        $total = $cartObj->countProducts();
         $this->set('msg', Labels::getLabel("MSG_Item_removed_successfully", $this->siteLangId));
         if (true ===  MOBILE_APP_API_CALL) {
             $this->set('data', array('cartItemsCount'=>$total));
