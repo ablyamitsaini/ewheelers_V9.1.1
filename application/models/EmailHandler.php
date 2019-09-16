@@ -1127,7 +1127,7 @@ class EmailHandler extends FatModel
         $notificationObj = new Notifications();
         $notificationDataArr = array(
         'unotification_user_id'    =>    $message["message_to"],
-        'unotification_body'=>str_replace('{username}', $message['message_from_username'], Labels::getLabel('APP_YOU_HAVE_A_NEW_MESSAGE_FROM_{USERNAME}', $langId)),
+        'unotification_body'=>str_replace('{username}', $message['message_from_username'], Labels::getLabel('APP_YOU_HAVE_A_NEW_MESSAGE_FROM_{username}', $langId)),
         'unotification_type'=>'MESSAGE',
         );
         if (!$notificationObj->addNotification($notificationDataArr)) {

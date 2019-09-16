@@ -365,20 +365,28 @@ class AttachedFile extends MyAppModel
 
         $fileMimeType = '';
         $cacheFileName = '';
+
+        if (false !== file_exists($uploadedFilePath . $image_name)) {
+            $fileMimeType = mime_content_type($uploadedFilePath . $image_name);
+        }
+
+        if (strpos($_SERVER['REQUEST_URI'], '?t=') === false) {
+            $filemtime = filemtime($uploadedFilePath . $image_name);
+            $_SERVER['REQUEST_URI'] = rtrim($_SERVER['REQUEST_URI'], '/').'/?t='.$filemtime;
+        }
+
+        $headers = FatApp::getApacheRequestHeaders();
+        header('Cache-Control: public, max-age=604800, stale-while-revalidate=86400');
+        header("Pragma: public");
+        header("Expires: " . date('r', strtotime("+30 days")));
+
         $w = FatUtility::int($w);
         $h = FatUtility::int($h);
 
         if (!empty($image_name) && file_exists($uploadedFilePath . $image_name)) {
-            if (strpos($_SERVER['REQUEST_URI'], '?t=') === false) {
-                $filemtime = filemtime($uploadedFilePath . $image_name);
-                $_SERVER['REQUEST_URI'] = rtrim($_SERVER['REQUEST_URI'], '/').'/?t='.$filemtime;
-            }
-
-            $fileMimeType = mime_content_type($uploadedFilePath . $image_name);
             $image_name = $cacheFileName = $uploadedFilePath . $image_name;
-            $headers = FatApp::getApacheRequestHeaders();
             if (isset($headers['If-Modified-Since']) && (strtotime($headers['If-Modified-Since']) == filemtime($image_name))) {
-                header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($image_name)).' GMT', true, 304);
+                header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($image_name)) . ' GMT', true, 304);
                 exit;
             }
 
@@ -398,10 +406,7 @@ class AttachedFile extends MyAppModel
 
             try {
                 $img = new ImageResize($image_name);
-                header('Cache-Control: public');
-                header("Pragma: public");
-                header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($image_name)).' GMT', true, 200);
-                header("Expires: " . date('r', strtotime("+30 Day")));
+                header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($image_name)) . ' GMT', true, 200);
             } catch (Exception $e) {
                 try {
                     $img = static::getDefaultImage($no_image, $w, $h);
@@ -412,6 +417,11 @@ class AttachedFile extends MyAppModel
                 }
             }
         } else {
+            if (isset($headers['If-Modified-Since']) && (strtotime($headers['If-Modified-Since']) == filemtime($no_image))) {
+                header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($no_image)) . ' GMT', true, 304);
+                exit;
+            }
+            header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($no_image)) . ' GMT', true, 200);
             $cacheFileName = CONF_INSTALLATION_PATH.'public/'.$no_image;
             $img = static::getDefaultImage($no_image, $w, $h);
             $img->setExtraSpaceColor(204, 204, 204);
@@ -446,15 +456,16 @@ class AttachedFile extends MyAppModel
             }
         }
 
-        if ($fileMimeType != '') {
-            header("content-type: ".$fileMimeType);
-        } else {
-            header("content-type: image/jpeg");
-        }
 
         if (CONF_USE_FAT_CACHE && $cache) {
             ob_end_clean();
             ob_start();
+            if ($fileMimeType != '') {
+                header("content-type: ".$fileMimeType);
+            } else {
+                header("content-type: image/jpeg");
+            }
+
             if ($imageCompression) {
                 $img->displayImage(80, false);
             } else {
@@ -463,6 +474,12 @@ class AttachedFile extends MyAppModel
             $imgData = ob_get_clean();
             FatCache::set($_SERVER['REQUEST_URI'], $imgData, '.jpg');
             static::loadImage($imgData, $cacheFileName);
+        }
+
+        if ($fileMimeType != '') {
+            header("content-type: " . $fileMimeType);
+        } else {
+            header("content-type: image/jpeg");
         }
 
         if ($imageCompression) {
@@ -488,10 +505,7 @@ class AttachedFile extends MyAppModel
         if ($file_extension=="svg") {
             header("Content-type: image/svg+xml");
             if ($useCache) {
-                header('Cache-Control: public');
-                header("Pragma: public");
-                header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($image_name)).' GMT', true, 200);
-                header("Expires: " . date('r', strtotime("+30 Day")));
+                header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($image_name)) . ' GMT', true, 200);
             }
             // $image_name = static::setDimensions($image_name, $width, $height);
             echo file_get_contents($image_name);
