@@ -29,18 +29,18 @@ class ShopReportReason extends MyAppModel
         return $srch;
     }
 
-    public static function getReportReasonArr($langId = 0)
+    public static function getReportReasonArr($langId = 0, $returnObj = false)
     {
         $srch = static::getSearchObject($langId);
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
         $srch->addMultipleFields(array('reportreason_id','IFNULL(reportreason_title, reportreason_identifier) as reportreason_title'));
         $srch->addOrder('reportreason_title');
-        $rs = $srch->getResultSet();
 
-        if (true ===  MOBILE_APP_API_CALL) {
-            return FatApp::getDb()->fetchAll($rs);
+        if (true === $returnObj) {
+            return $srch;
         }
+        $rs = $srch->getResultSet();
         return FatApp::getDb()->fetchAllAssoc($rs);
     }
 }

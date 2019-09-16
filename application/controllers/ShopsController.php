@@ -1139,7 +1139,9 @@ class ShopsController extends MyAppController
 
     public function shopReportReasons()
     {
-        $data = ShopReportReason::getReportReasonArr($this->siteLangId);
+        $srch = ShopReportReason::getReportReasonArr($this->siteLangId, true);
+        $rs = $srch->getResultSet();
+        $data = FatApp::getDb()->fetchAll($rs);
         $this->set('data', array('reportReasons' => $data));
         $this->_template->render();
     }
