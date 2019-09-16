@@ -43,7 +43,6 @@ class CartController extends MyAppController
             } */
 
             $cartSummary = $cartObj->getCartFinancialSummary($this->siteLangId);
-
             $PromoCouponsFrm = $this->getPromoCouponsForm($this->siteLangId);
 
             if (true ===  MOBILE_APP_API_CALL) {
@@ -342,21 +341,26 @@ class CartController extends MyAppController
             FatUtility::dieWithError(Message::getHtml());
         }
 
-        $cartObj = new Cart();
-        $key = $post['key'];
-        if (true ===  MOBILE_APP_API_CALL) {
-            $key = md5($key);
-        }
-        if (!$cartObj->remove($key)) {
-            if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($cartObj->getError()));
-            }
-            Message::addMessage($cartObj->getError());
-            FatUtility::dieWithError(Message::getHtml());
-        }
-        $cartObj->removeUsedRewardPoints();
+        $cartObj = new Cart(UserAuthentication::getLoggedUserId(true), $this->siteLangId, $this->app_user['temp_user_id']);
         $total = $cartObj->countProducts();
-        if (0 == $total) {
+        $key = $post['key'];
+
+        if ('all' == $key) {
+            $cartObj->clear();
+            $cartObj->updateUserCart();
+        } else {
+            if (true ===  MOBILE_APP_API_CALL) {
+                $key = md5($key);
+            }
+            if (!$cartObj->remove($key)) {
+                if (true ===  MOBILE_APP_API_CALL) {
+                    FatUtility::dieJsonError(strip_tags($cartObj->getError()));
+                }
+                Message::addMessage($cartObj->getError());
+                FatUtility::dieWithError(Message::getHtml());
+            }
+            $cartObj->removeUsedRewardPoints();
+            $cartObj->removeProductShippingMethod();
             $cartObj->removeCartDiscountCoupon();
         }
         $this->set('msg', Labels::getLabel("MSG_Item_removed_successfully", $this->siteLangId));
