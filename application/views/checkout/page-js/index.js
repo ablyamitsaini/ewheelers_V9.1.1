@@ -167,6 +167,9 @@ $("document").ready(function()
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('Addresses', 'setUpAddress'), data, function(t) {
 			if( t.status == 1 ){
+				if ($("#hasAddress").length > 0) {
+                    $("#hasAddress").val(1);
+                }
 				showShippingSummaryDiv(t.ua_id);
 				loadFinancialSummary();
 			}

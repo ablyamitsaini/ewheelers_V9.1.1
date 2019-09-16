@@ -122,7 +122,7 @@ var fcom = {
 		},
 
 		updateWithAjax: function(url, data, fn, options) {
-			this.addTrailingSlash();
+			/*this.addTrailingSlash();*/
 			$.systemMessage(langLbl.processing,'alert--process');
 			var o = $.extend(true, {fOutMode:'json'}, options);
 			this.ajax(url, data, function(ans) {

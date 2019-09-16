@@ -3,24 +3,28 @@
 if (array_key_exists('products', $data)) {
     foreach ($data['products'] as $index => $product) {
         $data['products'][$index]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($product['product_id'], "CLAYOUT3", $product['selprod_id'], 0, $siteLangId));
+        $data['products'][$index]['selprod_price'] = CommonHelper::displayMoneyFormat($product['selprod_price'], false, false, false);
+        $data['products'][$index]['theprice'] = CommonHelper::displayMoneyFormat($product['theprice'], false, false, false);
     }
 }
 if (!empty($data['shop'])) {
-    if (!empty($data['shop']['shop_payment_policy'])) {
+    if (!empty(array_filter((array)$data['shop']['shop_payment_policy']))) {
         $data['shop']['policies'][] = $data['shop']['shop_payment_policy'];
     }
-    if (!empty($data['shop']['shop_delivery_policy'])) {
+    if (!empty(array_filter((array)$data['shop']['shop_delivery_policy']))) {
         $data['shop']['policies'][] = $data['shop']['shop_delivery_policy'];
     }
-    if (!empty($data['shop']['shop_refund_policy'])) {
+    if (!empty(array_filter((array)$data['shop']['shop_refund_policy']))) {
         $data['shop']['policies'][] = $data['shop']['shop_refund_policy'];
     }
-    if (!empty($data['shop']['shop_additional_info'])) {
+    if (!empty(array_filter((array)$data['shop']['shop_additional_info']))) {
         $data['shop']['policies'][] = $data['shop']['shop_additional_info'];
     }
-    if (!empty($data['shop']['shop_seller_info'])) {
+    if (!empty(array_filter((array)$data['shop']['shop_seller_info']))) {
         $data['shop']['policies'][] = $data['shop']['shop_seller_info'];
     }
+    
+    $data['shop']['policies'] = !empty($data['shop']['policies']) ? $data['shop']['policies'] : [];
 
     unset($data['shop']['shop_payment_policy'], $data['shop']['shop_delivery_policy'], $data['shop']['shop_refund_policy'], $data['shop']['shop_additional_info'], $data['shop']['shop_seller_info']);
 }

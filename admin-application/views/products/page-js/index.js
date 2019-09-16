@@ -227,14 +227,14 @@ $(document).on('change','.language-js',function(){
                             var ans = $.parseJSON(t);
                             productImages( $('#imageFrm input[name=product_id]').val(), $('.option-js').val(), $('.language-js').val() );
                             if( ans.status == 1 ){
-                                fcom.displaySuccessMessage( ans.msg );
+                                $.systemMessage(ans.msg, 'alert--success');
                             }else {
-                                fcom.displayErrorMessage( ans.msg, ' ' );
+                                $.systemMessage(ans.msg, 'alert--danger');
                             }
                         }
                         catch(exc){
                             productImages( $('#imageFrm input[name=product_id]').val(), $('.option-js').val(), $('.language-js').val() );
-                            fcom.displayErrorMessage(t);
+                            $.systemMessage(t, 'alert--danger');
                         }
                     },
                     error: function(jqXHR, textStatus, errorThrown){
