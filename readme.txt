@@ -1,8 +1,10 @@
 Enhancements :
     -> Display System image for product and banners
-
 Bug:
     -> 030531 - Rewards points with discount coupon issue.
+
+API Feature:
+    -> Downnload digital files in app.    
 
 <!--  Release notes TV-9.0.1.20190914 -- >
 Bug :
