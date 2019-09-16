@@ -1555,7 +1555,7 @@ body.fixed .top-bar {
 .toggle--search .icn {
 	/*background: url(../images/retina/magni-black.svg) no-repeat center;
 	background-size: 20px 20px;*/
-	vertical-align: top;	
+	vertical-align: top;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -4833,7 +4833,7 @@ span.subheading {
 
 .filter-content {
 	margin: 0;
-	overflow: hidden;
+	/*overflow: hidden;*/
 	-webkit-transition: height 0.3s ease 0s;
 	transition: height 0.3s ease 0s;
 }
