@@ -1614,13 +1614,7 @@ class AccountController extends LoggedUserController
         }
 
         if (false ===  MOBILE_APP_API_CALL) {
-            $srch = UserWishList::getSearchObject($loggedUserId);
-            $srch->addMultipleFields(array('uwlist_id', 'uwlist_title'));
-            $srch->doNotCalculateRecords();
-            $srch->doNotLimitRecords();
-            $srch->addCondition('uwlist_id', '=', $uwlist_id);
-            $rs = $srch->getResultSet();
-            $wishListRow = $db->fetch($rs);
+            $wishListRow = UserWishList::getAttributesById($uwlist_id, array('uwlist_id'));
             if (!$wishListRow) {
                 $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
@@ -1682,7 +1676,7 @@ class AccountController extends LoggedUserController
             'IFNULL(brand_name, brand_identifier) as brand_name', 'IFNULL(splprice_price, selprod_price) AS theprice','splprice_display_list_price', 'splprice_display_dis_val','splprice_display_dis_type',
             'CASE WHEN splprice_selprod_id IS NULL THEN 0 ELSE 1 END AS special_price_found', 'selprod_price', 'selprod_user_id', 'selprod_code', 'selprod_sold_count', 'selprod_condition', 'IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist','IFNULL(uwlp.uwlp_uwlist_id, 0) as uwlp_uwlist_id','ifnull(prod_rating,0) prod_rating', 'selprod_min_order_qty'  )
         );
-        $srch->addOrder('uwlp_added_on');
+        $srch->addOrder('uwlp_added_on', 'DESC');
         $rs = $srch->getResultSet();
         /* echo $srch->getQuery(); die; */
         $products = $db->fetchAll($rs);
