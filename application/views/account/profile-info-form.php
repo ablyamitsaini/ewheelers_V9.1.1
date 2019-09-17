@@ -48,7 +48,7 @@ $fld->addFieldTagAttribute('class','btn btn--primary btn--sm'); */
             <div class="profile-container__col col-xl-12 col-lg-6">
                 <div class="row preview preview--profile align-items-center" id="profileImageFrmBlock">
                     <div class="col-md-6">
-                        <div class="avtar avtar--large"><img src="<?php echo CommonHelper::generateUrl('Account', 'userProfileImage', array(UserAuthentication::getLoggedUserId(), 'croped', true));?>"
+                        <div class="avtar avtar--large"><img src="<?php echo CommonHelper::generateUrl('Account', 'userProfileImage', array(UserAuthentication::getLoggedUserId(), 'croped', true)).'?t='.time();?>"
                                 alt="<?php echo Labels::getLabel('LBL_Profile_Image', $siteLangId);?>"></div>
                     </div>
                     <div class="col-md-6">

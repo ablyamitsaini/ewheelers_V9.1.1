@@ -802,7 +802,7 @@ class AccountController extends LoggedUserController
                 $h = 100;
                 AttachedFile::displayImage($image_name, $w, $h, $default_image);
                 break;
-            default:
+            default: 
                 AttachedFile::displayOriginalImage($image_name, $default_image);
                 break;
         }

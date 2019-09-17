@@ -523,7 +523,7 @@ class AttachedFile extends MyAppModel
         return $img = new ImageResize($image_name);
     }
 
-    public static function displayOriginalImage($image_name, $no_image = '', $uploadedFilePath = '', $cache = true)
+    public static function displayOriginalImage($image_name, $no_image = '', $uploadedFilePath = '', $cache = false)
     {
         ob_end_clean();
         if ($no_image == '') {
@@ -553,7 +553,7 @@ class AttachedFile extends MyAppModel
         $cacheFileName = '';
         if (!empty($image_name) && file_exists($uploadedFilePath . $image_name)) {
             $image_name = $cacheFileName = $uploadedFilePath . $image_name;
-            //static::checkModifiedHeader($image_name);
+            static::checkModifiedHeader($image_name);
 
             if (CONF_USE_FAT_CACHE && $cache) {
                 ob_get_clean();
@@ -579,7 +579,7 @@ class AttachedFile extends MyAppModel
                 $fileContent = file_get_contents($no_image);
             }
         } else {
-            //static::checkModifiedHeader($no_image);
+            static::checkModifiedHeader($no_image);
             static::setLastModified($no_image);
             static::setContentType($fileMimeType);
             $cacheFileName = CONF_INSTALLATION_PATH.'public/'.$no_image;
