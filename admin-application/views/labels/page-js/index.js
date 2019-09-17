@@ -32,9 +32,9 @@ $(document).ready(function(){
 		});
 	};
 
-	labelsForm = function(labelId){
+	labelsForm = function(labelId, type){
 		$.facebox(function() {
-			fcom.ajax(fcom.makeUrl('Labels', 'form', [labelId]), '', function(t) {
+			fcom.ajax(fcom.makeUrl('Labels', 'form', [labelId, type]), '', function(t) {
 				$.facebox(t,'faceboxWidth');
 			});
 		});

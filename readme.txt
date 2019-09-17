@@ -1,6 +1,7 @@
 Enhancements :
     -> Display System image for product and banners
     -> JS/CSS handled browser cache with 304 headers.
+    -> APP labels Management.
 Bug:
     -> 030531 - Rewards points with discount coupon issue.
 

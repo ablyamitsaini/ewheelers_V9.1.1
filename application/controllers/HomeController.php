@@ -112,11 +112,13 @@ class HomeController extends MyAppController
         $langCode = Language::getAttributesById($this->siteLangId, 'language_code', false);
 
         if (0 < $download) {
-            if (!Labels::updateDataToFile($this->siteLangId, $langCode)) {
+            if (!Labels::updateDataToFile($this->siteLangId, $langCode, Labels::TYPE_APP)) {
                 FatUtility::dieJsonError(Labels::getLabel('MSG_Unable_to_update_file', $langId));
             }
             $fileName = $langCode.'.json';
-            AttachedFile::downloadAttachment(Labels::JSON_FILE_DIR_NAME.'/' . $fileName, $fileName);
+            $filePath = Labels::JSON_FILE_DIR_NAME.'/'.Labels::TYPE_APP.'/'.$fileName;
+
+            AttachedFile::downloadAttachment($filePath, $fileName);
         }
 
         $data = array(

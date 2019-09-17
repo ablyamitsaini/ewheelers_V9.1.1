@@ -56,3 +56,4 @@ DELETE FROM `tbl_language_labels` WHERE `label_key` = "LBL_Tex_Charges";
 /*Release notes TV-9.0.1.20190914*/
 ALTER TABLE `tbl_attached_files` ADD `afile_updated_at` DATETIME NOT NULL AFTER `afile_downloaded_times`;
 UPDATE `tbl_language_labels` SET `label_key` = 'APP_YOU_HAVE_A_NEW_MESSAGE_FROM_{username}' and `label_caption`= 'You have a new message from {username}' WHERE `tbl_language_labels`.`label_key` = 'APP_YOU_HAVE_A_NEW_MESSAGE_FROM_{USERNAME}';
+ALTER TABLE `tbl_language_labels` ADD `label_type` TINYINT(1) NOT NULL DEFAULT '1' AFTER `label_caption`;

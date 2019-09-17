@@ -48,6 +48,11 @@ class LabelsController extends AdminBaseController
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
 
+        $type = FatApp::getPostedData('label_type', FatUtility::VAR_INT, -1);
+        if ($type > -1) {
+            $srch->addCondition('label_type', '=', $type);
+        }
+
         if (!empty($post['keyword'])) {
             $cond = $srch->addCondition('lbl.label_key', 'like', '%'.$post['keyword'].'%', 'AND');
             $cond->attachCondition('lbl.label_caption', 'like', '%'.$post['keyword'].'%', 'OR');
@@ -65,9 +70,15 @@ class LabelsController extends AdminBaseController
         $this->_template->render(false, false);
     }
 
-    public function form($label_id)
+    public function form($label_id, $labelType = Labels::TYPE_WEB)
     {
         $this->objPrivilege->canViewLanguageLabels();
+
+        $labelTypeArr = Labels::getTypeArr($this->adminLangId);
+
+        if (!array_key_exists($labelType, $labelTypeArr)) {
+            FatUtility::dieWithError($this->str_invalid_request);
+        }
 
         $label_id = FatUtility::int($label_id);
 
@@ -82,7 +93,7 @@ class LabelsController extends AdminBaseController
 
         $labelKey = $data['label_key'];
 
-        $frm = $this->getForm($labelKey);
+        $frm = $this->getForm($labelKey, $labelType);
 
         $srch = Labels::getSearchObject();
         $srch->addCondition('lbl.label_key', '=', $labelKey);
@@ -106,6 +117,7 @@ class LabelsController extends AdminBaseController
             $arr['label_caption'.$k] = $v['label_caption'];
         }
 
+        $arr['label_type'] = $labelType;
         $frm->fill($arr);
 
         $this->set('labelKey', $labelKey);
@@ -119,7 +131,7 @@ class LabelsController extends AdminBaseController
         $this->objPrivilege->canEditLanguageLabels();
         $data = FatApp::getPostedData();
 
-        $frm = $this->getForm($data['label_key']);
+        $frm = $this->getForm($data['label_key'],$data['label_type']);
         $post = $frm->getFormDataFromArray($data);
         if (false === $post) {
             Message::addErrorMessage(current($frm->getValidationErrors()));
@@ -127,6 +139,13 @@ class LabelsController extends AdminBaseController
         }
 
         $labelKey = $post['label_key'];
+        $labelType = FatApp::getPostedData('label_type',FatUtility::VAR_INT, Labels::TYPE_WEB);
+        $labelTypeArr = Labels::getTypeArr($this->adminLangId);
+
+        if (!array_key_exists($labelType, $labelTypeArr)) {
+            FatUtility::dieJsonError($this->str_invalid_request);
+        }
+
         $srch = Labels::getSearchObject();
         $srch->addCondition('lbl.label_key', '=', $labelKey);
         $srch->doNotCalculateRecords();
@@ -146,6 +165,7 @@ class LabelsController extends AdminBaseController
                 'label_lang_id'=>$langId,
                 'label_key'=>$labelKey,
                 'label_caption'=>$keyValue,
+                'label_type'=>$labelType,
             );
             $obj = new Labels();
             if (!$obj->addUpdateData($data)) {
@@ -338,17 +358,19 @@ class LabelsController extends AdminBaseController
         $this->objPrivilege->canViewLanguageLabels();
         $frm = new Form('frmLabelsSearch');
         $f1 = $frm->addTextBox(Labels::getLabel('LBL_Keyword', $this->adminLangId), 'keyword', '');
+        $frm->addSelectBox(Labels::getLabel('LBL_Type', $this->adminLangId), 'label_type', array('-1'=>Labels::getLabel('LBL_Does_Not_Matter', $this->adminLangId)) + Labels::getTypeArr($this->adminLangId), -1, array(), '');
         $fld_submit=$frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Search', $this->adminLangId));
         $fld_cancel = $frm->addButton("", "btn_clear", Labels::getLabel('LBL_Clear_Search', $this->adminLangId));
         $fld_submit->attachField($fld_cancel);
         return $frm;
     }
 
-    private function getForm($label_key)
+    private function getForm($label_key, $label_type)
     {
         $this->objPrivilege->canViewLanguageLabels();
         $frm = new Form('frmLabels');
         $frm->addHiddenField('', 'label_key', $label_key);
+        $frm->addHiddenField('', 'label_type', $label_type);
         $languages = Language::getAllNames();
         $frm->addTextbox(Labels::getLabel('LBL_Key', $this->adminLangId), 'key', $label_key);
         foreach ($languages as $langId => $langName) {

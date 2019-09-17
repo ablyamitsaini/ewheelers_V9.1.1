@@ -19,7 +19,7 @@
                         $frmSearch->setFormTagAttribute('id', 'frmLabelsSearch');
                         $frmSearch->setFormTagAttribute('class', 'web_form');
                         $frmSearch->developerTags['colClassPrefix'] = 'col-md-';
-                        $frmSearch->developerTags['fld_default_col'] = 6;
+                        $frmSearch->developerTags['fld_default_col'] = 4;
 
                         $btn = $frmSearch->getField('btn_clear');
                         $btn->setFieldTagAttribute('onClick', 'clearSearch()');
