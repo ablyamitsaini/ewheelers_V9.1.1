@@ -375,29 +375,19 @@ class AttachedFile extends MyAppModel
             $_SERVER['REQUEST_URI'] = rtrim($_SERVER['REQUEST_URI'], '/').'/?t='.$filemtime;
         }
 
-        $headers = FatApp::getApacheRequestHeaders();
-        header('Cache-Control: public, max-age=604800, stale-while-revalidate=86400');
-        header("Pragma: public");
-        header("Expires: " . date('r', strtotime("+30 days")));
+        static::setHeaders();
 
         $w = FatUtility::int($w);
         $h = FatUtility::int($h);
 
         if (!empty($image_name) && file_exists($uploadedFilePath . $image_name)) {
             $image_name = $cacheFileName = $uploadedFilePath . $image_name;
-            if (isset($headers['If-Modified-Since']) && (strtotime($headers['If-Modified-Since']) == filemtime($image_name))) {
-                header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($image_name)) . ' GMT', true, 304);
-                exit;
-            }
+            static::checkModifiedHeader($image_name);
 
             if (CONF_USE_FAT_CACHE && $cache) {
                 ob_get_clean();
                 ob_start();
-                if ($fileMimeType != '') {
-                    header("content-type: ".$fileMimeType);
-                } else {
-                    header("content-type: image/jpeg");
-                }
+                static::setContentType($fileMimeType);
                 $fileContent = FatCache::get($_SERVER['REQUEST_URI'], null, '.jpg');
                 if ($fileContent) {
                     static::loadImage($fileContent, $image_name);
@@ -405,8 +395,14 @@ class AttachedFile extends MyAppModel
             }
 
             try {
+                static::setLastModified($image_name);
+                static::setContentType($fileMimeType);
+                $fileContent =  file_get_contents($image_name);
                 $img = new ImageResize($image_name);
-                header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($image_name)) . ' GMT', true, 200);
+                if (CONF_USE_FAT_CACHE && $cache) {
+                    FatCache::set($_SERVER['REQUEST_URI'], $fileContent, '.jpg');
+                    static::loadImage($fileContent, $image_name);
+                }
             } catch (Exception $e) {
                 try {
                     $img = static::getDefaultImage($no_image, $w, $h);
@@ -417,11 +413,9 @@ class AttachedFile extends MyAppModel
                 }
             }
         } else {
-            if (isset($headers['If-Modified-Since']) && (strtotime($headers['If-Modified-Since']) == filemtime($no_image))) {
-                header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($no_image)) . ' GMT', true, 304);
-                exit;
-            }
-            header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($no_image)) . ' GMT', true, 200);
+            static::checkModifiedHeader($no_image);
+            static::setLastModified($no_image);
+            static::setContentType($fileMimeType);
             $cacheFileName = CONF_INSTALLATION_PATH.'public/'.$no_image;
             $img = static::getDefaultImage($no_image, $w, $h);
             $img->setExtraSpaceColor(204, 204, 204);
@@ -460,12 +454,7 @@ class AttachedFile extends MyAppModel
         if (CONF_USE_FAT_CACHE && $cache) {
             ob_end_clean();
             ob_start();
-            if ($fileMimeType != '') {
-                header("content-type: ".$fileMimeType);
-            } else {
-                header("content-type: image/jpeg");
-            }
-
+            static::setContentType($fileMimeType);
             if ($imageCompression) {
                 $img->displayImage(80, false);
             } else {
@@ -476,11 +465,7 @@ class AttachedFile extends MyAppModel
             static::loadImage($imgData, $cacheFileName);
         }
 
-        if ($fileMimeType != '') {
-            header("content-type: " . $fileMimeType);
-        } else {
-            header("content-type: image/jpeg");
-        }
+        static::setContentType($fileMimeType);
 
         if ($imageCompression) {
             $img->displayImage(80, false);
@@ -491,12 +476,38 @@ class AttachedFile extends MyAppModel
 
     public static function loadImage($imgData, $image_name)
     {
-        header('Cache-Control: public');
-        header("Pragma: public");
-        header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($image_name)).' GMT', true, 200);
-        header("Expires: " . date('r', strtotime("+30 Day")));
+        static::setHeaders();
+        static::setLastModified($image_name);
         echo $imgData;
         exit;
+    }
+
+    public static function setHeaders()
+    {
+        header('Cache-Control: public, max-age=2592000, stale-while-revalidate=604800');
+        header("Pragma: public");
+        header("Expires: " . date('r', strtotime("+30 days")));
+    }
+
+    public static function setContentType($fileMimeType){
+        if ($fileMimeType != '') {
+            header("content-type: ".$fileMimeType);
+        } else {
+            header("content-type: image/jpeg");
+        }
+    }
+
+    public static function setLastModified($image_name){
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($image_name)) . ' GMT', true, 200);
+    }
+
+    public static function checkModifiedHeader($image_name)
+    {
+        $headers = FatApp::getApacheRequestHeaders();
+        if (isset($headers['If-Modified-Since']) && (strtotime($headers['If-Modified-Since']) == filemtime($image_name))) {
+            header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($image_name)) . ' GMT', true, 304);
+            exit;
+        }
     }
 
     public static function getDefaultImage($image_name, $width, $height, $useCache = false)
@@ -504,9 +515,7 @@ class AttachedFile extends MyAppModel
         $file_extension = substr($image_name, strlen($image_name)-3, strlen($image_name));
         if ($file_extension=="svg") {
             header("Content-type: image/svg+xml");
-            if ($useCache) {
-                header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($image_name)) . ' GMT', true, 200);
-            }
+            static::setLastModified($image_name);
             // $image_name = static::setDimensions($image_name, $width, $height);
             echo file_get_contents($image_name);
             exit;
@@ -534,24 +543,22 @@ class AttachedFile extends MyAppModel
             $fileMimeType = mime_content_type($uploadedFilePath . $image_name);
         }
 
-        if ($fileMimeType != '') {
-            header("content-type: ".$fileMimeType);
-        } else {
-            header("content-type: image/jpeg");
+        if (strpos($_SERVER['REQUEST_URI'], '?t=') === false) {
+            $filemtime = filemtime($uploadedFilePath . $image_name);
+            $_SERVER['REQUEST_URI'] = rtrim($_SERVER['REQUEST_URI'], '/').'/?t='.$filemtime;
         }
+
+        static::setHeaders();
+
         $cacheFileName = '';
         if (!empty($image_name) && file_exists($uploadedFilePath . $image_name)) {
             $image_name = $cacheFileName = $uploadedFilePath . $image_name;
-            $filemtime = filemtime($image_name);
-            $_SERVER['REQUEST_URI'] = rtrim($_SERVER['REQUEST_URI'], '/').'/?t='.$filemtime;
-
-            $headers = FatApp::getApacheRequestHeaders();
-            if (isset($headers['If-Modified-Since']) && (strtotime($headers['If-Modified-Since']) == filemtime($image_name))) {
-                header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($image_name)).' GMT', true, 304);
-                exit;
-            }
+            //static::checkModifiedHeader($image_name);
 
             if (CONF_USE_FAT_CACHE && $cache) {
+                ob_get_clean();
+                ob_start();
+                static::setContentType($fileMimeType);
                 $fileContent = FatCache::get($_SERVER['REQUEST_URI'], null, '.jpg');
                 if ($fileContent) {
                     static::loadImage($fileContent, $image_name);
@@ -559,19 +566,22 @@ class AttachedFile extends MyAppModel
             }
 
             try {
-                header('Cache-Control: public');
-                header("Pragma: public");
-                header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($image_name)).' GMT', true, 200);
-                header("Expires: " . date('r', strtotime("+30 Day")));
+                static::setLastModified($image_name);
+                static::setContentType($fileMimeType);
                 $fileContent =  file_get_contents($image_name);
                 if (CONF_USE_FAT_CACHE && $cache) {
                     FatCache::set($_SERVER['REQUEST_URI'], $fileContent, '.jpg');
                     static::loadImage($fileContent, $image_name);
                 }
             } catch (Exception $e) {
+                static::setLastModified($no_image);
+                static::setContentType($fileMimeType);
                 $fileContent = file_get_contents($no_image);
             }
         } else {
+            //static::checkModifiedHeader($no_image);
+            static::setLastModified($no_image);
+            static::setContentType($fileMimeType);
             $cacheFileName = CONF_INSTALLATION_PATH.'public/'.$no_image;
             $fileContent = file_get_contents($no_image);
         }
@@ -808,7 +818,8 @@ class AttachedFile extends MyAppModel
         }
     }
 
-    public static function setTimeParam($dateTime){
+    public static function setTimeParam($dateTime)
+    {
         $time = strtotime($dateTime);
         return ($time > 0) ? '?t='.$time : '' ;
     }
