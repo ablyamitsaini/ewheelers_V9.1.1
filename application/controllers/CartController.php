@@ -408,7 +408,7 @@ class CartController extends MyAppController
             FatApp::redirectUser(CommonHelper::generateUrl());
         }
         if (empty($post['key'])) {
-            $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
+            $message = Labels::getLabel('LBL_Invalid_Product', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
                 FatUtility::dieJsonError($message);
             }
