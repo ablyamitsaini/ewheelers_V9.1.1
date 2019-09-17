@@ -323,7 +323,7 @@ class SlidesController extends AdminBaseController
             Message::addErrorMessage($fileHandlerObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
-
+        Slides::setLastModified($slide_id);
         $this->set('slideId', $slide_id);
         $this->set('file', $_FILES['file']['name']);
         $this->set('msg', $_FILES['file']['name']. Labels::getLabel('MSG_File_uploaded_successfully', $this->adminLangId));
