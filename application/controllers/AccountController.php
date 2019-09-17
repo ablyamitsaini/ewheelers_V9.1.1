@@ -958,9 +958,9 @@ class AccountController extends LoggedUserController
             }
 
             if (false ===  MOBILE_APP_API_CALL) {
-                $this->set('file', CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId)));
+                $this->set('file', CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId)).'?t='.time());
             } else {
-                $this->set('file', CommonHelper::generateFullUrl('image', 'user', array($userId,'thumb',1)));
+                $this->set('file', CommonHelper::generateFullUrl('image', 'user', array($userId,'thumb',1)).'?t='.time());
             }
         }
 
@@ -984,9 +984,9 @@ class AccountController extends LoggedUserController
             }
 
             if (false ===  MOBILE_APP_API_CALL) {
-                $this->set('file', CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId,'croped',true)));
+                $this->set('file', CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId,'croped',true)).'?t='.time());
             } else {
-                $this->set('file', CommonHelper::generateFullUrl('image', 'user', array($userId,'thumb',1)));
+                $this->set('file', CommonHelper::generateFullUrl('image', 'user', array($userId,'thumb',1)).'?t='.time());
             }
         }
 
