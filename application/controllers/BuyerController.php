@@ -786,11 +786,13 @@ class BuyerController extends BuyerBaseController
             FatUtility::dieWithError(Message::getHtml());
         }
 
+        $msg = Labels::getLabel('MSG_Your_cancellation_request_submitted', $this->siteLangId);
         if (true ===  MOBILE_APP_API_CALL) {
+            $this->set('msg', $msg);
             $this->_template->render();
         }
 
-        Message::addMessage(Labels::getLabel('MSG_Your_cancellation_request_submitted', $this->siteLangId));
+        Message::addMessage($msg);
         FatUtility::dieJsonSuccess(Message::getHtml());
         //$this->_template->render( false, false, 'json-success.php' );
     }
@@ -1850,11 +1852,12 @@ class BuyerController extends BuyerBaseController
             FatUtility::dieJsonError(strip_tags($message));
         }
 
-
-        Message::addMessage(Labels::getLabel('MSG_Your_return_request_submitted', $this->siteLangId));
+        $msg = Labels::getLabel('MSG_Your_return_request_submitted', $this->siteLangId);
         if (true ===  MOBILE_APP_API_CALL) {
+            $this->set('msg', $msg);
             $this->_template->render();
         }
+        Message::addMessage($msg);
         FatUtility::dieJsonSuccess(Message::getHtml());
         // $this->_template->render(false, false, 'json-success.php');
     }
@@ -2598,6 +2601,7 @@ class BuyerController extends BuyerBaseController
             $message = Labels::getLabel('MSG_Unable_to_notify_customer', $this->siteLangId);
             FatUtility::dieJsonError(strip_tags($message));
         }
+        $this->set('msg', Labels::getLabel('MSG_Email_Sent', $this->siteLangId));
         $this->_template->render();
     }
 }
