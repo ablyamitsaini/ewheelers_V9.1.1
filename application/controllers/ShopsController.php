@@ -611,10 +611,10 @@ class ShopsController extends MyAppController
                 FatUtility::dieJsonError(strip_tags($emailObj->getError()));
             }
         }
+        $this->set('msg', Labels::getLabel('MSG_Message_Submitted_Successfully!', $this->siteLangId));
         if (true ===  MOBILE_APP_API_CALL) {
             $this->_template->render();
         }
-        $this->set('msg', Labels::getLabel('MSG_Message_Submitted_Successfully!', $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
 

@@ -1192,6 +1192,10 @@ class Product extends MyAppModel
             $keyword = $criteria['keyword'];
         }
 
+        if (true ===  MOBILE_APP_API_CALL) {
+            $criteria['optionvalue'] = !empty($criteria['optionvalue']) ? json_decode($criteria['optionvalue'], true) : '';
+        }
+
         $srch->setDefinedCriteria($join_price, 0, $criteria, true);
         $srch->joinProductToCategory();
         $srch->joinSellerSubscription(0, false, true);
@@ -1306,9 +1310,6 @@ END,   special_price_found ) as special_price_found'
 
         if (array_key_exists('optionvalue', $criteria)) {
             if (!empty($criteria['optionvalue'])) {
-                if (true ===  MOBILE_APP_API_CALL) {
-                    $criteria['optionvalue'] = json_decode($criteria['optionvalue'], true);
-                }
                 $srch->addOptionCondition($criteria['optionvalue']);
             }
         }

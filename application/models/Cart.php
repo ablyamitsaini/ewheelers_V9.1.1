@@ -23,17 +23,8 @@ class Cart extends FatModel
         }
 
         if (empty($tempCartUserId)) {
-            /*$tempCartUserId = session_id();
-            if (true ===  MOBILE_APP_API_CALL) {
-                $tempCartUserId = $user_id;
-                if (1 > $user_id) {
-                    $user_id = $tempCartUserId = UserAuthentication::getLoggedUserId(true);
-                }
-            }*/
-            $tempCartUserId = $user_id;
-            if (1 > $user_id) {
-                $user_id = $tempCartUserId = UserAuthentication::getLoggedUserId(true);
-            }
+            $user_id = (0 < $user_id) ? $user_id : UserAuthentication::getLoggedUserId(true);
+            $tempCartUserId = (0 < $user_id) ? $user_id : session_id();
         }
 
         $this->cart_user_id = $tempCartUserId;

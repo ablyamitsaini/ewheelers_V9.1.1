@@ -182,7 +182,7 @@ class MyAppController extends FatController
                 die(json_encode($arr));
             }
 
-
+            $userId = UserAuthentication::getLoggedUserId();
             $userObj = new User($userId);
             if (!$row = $userObj->getProfileData()) {
                 $arr = array('status'=>-1,'msg'=>Labels::getLabel('L_Invalid_Token', $this->siteLangId));

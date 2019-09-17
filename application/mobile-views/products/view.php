@@ -52,30 +52,30 @@ if (!empty($product)) {
     if (!empty($product['selprod_return_policies'])) {
         $product['productPolicies'][] = array(
             'title' => $product['selprod_return_policies']['ppoint_title'],
-            'icon' => CONF_WEBROOT_URL.'images/retina/sprite.svg#easyreturns'
+            'icon' => CONF_WEBROOT_URL.'images/easyreturns.png'
         );
     }
     if (!empty($product['selprod_warranty_policies'])) {
         $product['productPolicies'][] = array(
             'title' => $product['selprod_warranty_policies']['ppoint_title'],
-            'icon' => CONF_WEBROOT_URL.'images/retina/sprite.svg#yearswarranty'
+            'icon' => CONF_WEBROOT_URL.'images/yearswarranty.png'
         );
     }
     if (isset($shippingDetails['ps_free']) && $shippingDetails['ps_free'] == applicationConstants::YES) {
         $product['productPolicies'][] = array(
             'title' => Labels::getLabel('LBL_Free_Shipping_on_this_Order', $siteLangId),
-            'icon' => CONF_WEBROOT_URL.'images/retina/sprite.svg#freeshipping'
+            'icon' => CONF_WEBROOT_URL.'images/freeshipping.png'
         );
     } else if (count($shippingRates) > 0) {
         $product['productPolicies'][] = array(
             'title' => Labels::getLabel('LBL_Shipping_Rates', $siteLangId),
-            'icon' => CONF_WEBROOT_URL.'images/retina/sprite.svg#shipping-policies'
+            'icon' => CONF_WEBROOT_URL.'images/shipping-policies.png'
         );
     }
     if (0 < $codEnabled) {
         $product['productPolicies'][] = array(
             'title' => Labels::getLabel('LBL_Cash_on_delivery_is_available', $siteLangId),
-            'icon' => CONF_WEBROOT_URL.'images/retina/sprite.svg#safepayments'
+            'icon' => CONF_WEBROOT_URL.'images/safepayments.png'
         );
     }
     $product['youtubeUrlThumbnail'] = '';
