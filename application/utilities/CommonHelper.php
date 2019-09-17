@@ -22,17 +22,27 @@ class CommonHelper extends FatUtility
         self::$_currency_id = FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1);
 
         if (!$isAdmin) {
-            if (isset($_COOKIE['defaultSiteLang'])) {
-                $languages = Language::getAllNames();
-                if (array_key_exists($_COOKIE['defaultSiteLang'], $languages)) {
-                    self::$_lang_id = FatUtility::int(trim($_COOKIE['defaultSiteLang']));
+            if (true ===  MOBILE_APP_API_CALL) {
+                if (!empty($_SERVER['HTTP_X_LANGUAGE_ID'])) {
+                    self::$_lang_id = FatUtility::int($_SERVER['HTTP_X_LANGUAGE_ID']);
                 }
-            }
 
-            if (isset($_COOKIE['defaultSiteCurrency'])) {
-                $currencies = Currency::getCurrencyAssoc(self::$_lang_id);
-                if (array_key_exists($_COOKIE['defaultSiteCurrency'], $currencies)) {
-                    self::$_currency_id = FatUtility::int(trim($_COOKIE['defaultSiteCurrency']));
+                if (!empty($_SERVER['HTTP_X_CURRENCY_ID'])) {
+                    self::$_currency_id = FatUtility::int($_SERVER['HTTP_X_CURRENCY_ID']);
+                }
+            } else {
+                if (isset($_COOKIE['defaultSiteLang'])) {
+                    $languages = Language::getAllNames();
+                    if (array_key_exists($_COOKIE['defaultSiteLang'], $languages)) {
+                        self::$_lang_id = FatUtility::int(trim($_COOKIE['defaultSiteLang']));
+                    }
+                }
+
+                if (isset($_COOKIE['defaultSiteCurrency'])) {
+                    $currencies = Currency::getCurrencyAssoc(self::$_lang_id);
+                    if (array_key_exists($_COOKIE['defaultSiteCurrency'], $currencies)) {
+                        self::$_currency_id = FatUtility::int(trim($_COOKIE['defaultSiteCurrency']));
+                    }
                 }
             }
 
@@ -40,6 +50,7 @@ class CommonHelper extends FatUtility
                 self::$appToken = ($_SERVER['HTTP_X_TOKEN'] != '')?$_SERVER['HTTP_X_TOKEN']:'';
             }
         } else {
+
             if (isset($_COOKIE['defaultAdminSiteLang'])) {
                 $languages = Language::getAllNames();
                 if (array_key_exists($_COOKIE['defaultAdminSiteLang'], $languages)) {
@@ -1878,7 +1889,7 @@ class CommonHelper extends FatUtility
         }
         return $totalCount;
     }
-    
+
     public static function replaceStringData($str, $replacements = array(), $replaceTags = false)
     {
         foreach ($replacements as $key=>$val) {

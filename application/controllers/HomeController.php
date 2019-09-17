@@ -38,7 +38,7 @@ class HomeController extends MyAppController
         $this->set('banners', $banners);
         $this->set('collections', $collections);
 
-        if (true ===  MOBILE_APP_API_CALL) {
+        if (true ===  MOBILE_APP_API_CALL) { 
             $this->set('layoutType', Collections::getLayoutTypeArr($this->siteLangId));
         } else {
             $this->_template->addJs(array('js/slick.min.js', 'js/responsive-img.min.js'));
