@@ -301,11 +301,11 @@ class AccountController extends LoggedUserController
             FatUtility::dieJsonError($message);
         }
 
+        $this->set('msg', Labels::getLabel('MSG_Password_changed_successfully', $this->siteLangId));
         if (true ===  MOBILE_APP_API_CALL) {
             $this->_template->render();
         }
 
-        $this->set('msg', Labels::getLabel('MSG_Password_changed_successfully', $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
 
@@ -1066,11 +1066,11 @@ class AccountController extends LoggedUserController
             $message = Labels::getLabel($userObj->getError(), $this->siteLangId);
             FatUtility::dieJsonError($message);
         }
+        $this->set('msg', Labels::getLabel('MSG_Updated_Successfully', $this->siteLangId));
         if (true ===  MOBILE_APP_API_CALL) {
             $this->_template->render();
         }
 
-        $this->set('msg', Labels::getLabel('MSG_Setup_successful', $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
 
@@ -1143,11 +1143,11 @@ class AccountController extends LoggedUserController
             FatUtility::dieJsonError($message);
         }
 
+        $this->set('msg', Labels::getLabel('MSG_Updated_Successfully', $this->siteLangId));
         if (true ===  MOBILE_APP_API_CALL) {
             $this->_template->render();
         }
 
-        $this->set('msg', Labels::getLabel('MSG_Setup_successful', $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
 
@@ -1233,8 +1233,8 @@ class AccountController extends LoggedUserController
             FatUtility::dieJsonError($message);
         }
 
-        $this->set('msg', Labels::getLabel('MSG_CHANGE_EMAIL_REQUEST_SENT_SUCCESSFULLY', $this->siteLangId));
 
+        $this->set('msg', Labels::getLabel('MSG_CHANGE_EMAIL_REQUEST_SENT_SUCCESSFULLY', $this->siteLangId));
         if (true ===  MOBILE_APP_API_CALL) {
             $this->_template->render();
         }
