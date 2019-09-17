@@ -1034,9 +1034,9 @@ class Cart extends FatModel
                         } */
                     } else {
                         if ($couponInfo['coupon_discount_in_percent'] == applicationConstants::FLAT) {
-                            $discount = $couponInfo['coupon_discount_value'] * ($cartProduct['total'] / $subTotal);
+                            $discount = $couponInfo['coupon_discount_value'] * (($cartProduct['total'] - $cartProduct['volume_discount_total']) / $subTotal);
                         } else {
-                            $discount = ($cartProduct['total'] / 100) * $couponInfo['coupon_discount_value'];
+                            $discount = (($cartProduct['total'] - $cartProduct['volume_discount_total']) / 100) * $couponInfo['coupon_discount_value'];
                         }
                     }
                 }
@@ -1060,7 +1060,7 @@ class Cart extends FatModel
                         $selProdDiscountTotal += $totalSelProdDiscount;
                         $discountedProdGroupIds[$cartProduct['prodgroup_id']] = round($totalSelProdDiscount,2); */
                     } else {
-                        $totalSelProdDiscount = round(($discountTotal*$cartProduct['total'])/$subTotal, 2);
+                        $totalSelProdDiscount = round(($discountTotal*($cartProduct['total'] - $cartProduct['volume_discount_total']))/($subTotal-$cartVolumeDiscount), 2);
                         $selProdDiscountTotal += $totalSelProdDiscount;
                         $discountedSelProdIds[$cartProduct['selprod_id']] = round($totalSelProdDiscount, 2);
                     }
@@ -1075,7 +1075,7 @@ class Cart extends FatModel
                         } */
                     } else {
                         if (in_array($cartProduct['product_id'], $couponInfo['grouped_coupon_products'])) {
-                            $totalSelProdDiscount = round(($discountTotal*$cartProduct['total'])/$subTotal, 2);
+                            $totalSelProdDiscount = round(($discountTotal*($cartProduct['total'] - $cartProduct['volume_discount_total']))/($subTotal-$cartVolumeDiscount), 2);
                             $selProdDiscountTotal += $totalSelProdDiscount;
                             $discountedSelProdIds[$cartProduct['selprod_id']] = round($totalSelProdDiscount, 2);
                         }
@@ -1083,7 +1083,7 @@ class Cart extends FatModel
                 }
             }
             /*]*/
-            $selProdDiscountTotal = $selProdDiscountTotal - $cartVolumeDiscount;
+            $selProdDiscountTotal = $selProdDiscountTotal /*- $cartVolumeDiscount*/;
             $labelArr = array(
                 'coupon_label'=>$couponInfo["coupon_title"],
                 'coupon_id'=>$couponInfo["coupon_id"],
@@ -1105,7 +1105,7 @@ class Cart extends FatModel
                 'coupon_discount_type'       => $couponInfo["coupon_type"],
                 'coupon_code' => $couponInfo["coupon_code"],
                 'coupon_discount_value'      =>$couponInfo["coupon_discount_value"],
-                'coupon_discount_total'      => $selProdDiscountTotal,
+                'coupon_discount_total'      => ($selProdDiscountTotal < 0)?0:$selProdDiscountTotal,
                 'coupon_info'      => json_encode($labelArr),
                 'discountedSelProdIds'=>$discountedSelProdIds,
                 'discountedProdGroupIds'=>$discountedProdGroupIds,

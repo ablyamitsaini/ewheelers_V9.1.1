@@ -305,7 +305,7 @@
 
 .alert--positioned-center-center {
 	left: 50% !important;
-	.div_error li top: 50% !important;
+	top: 50% !important;
 	bottom: auto !important;
 	-webkit-transform: translateX(-50%) !important;
 	transform: translateX(-50%) !important;

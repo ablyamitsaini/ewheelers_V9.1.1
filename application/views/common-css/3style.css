@@ -1139,6 +1139,7 @@ input:checked + .slider:before {
 	display: flex;
 	margin: 0;
 	align-items: center;
+	flex-wrap: wrap;
 }
 
 .breadcrumbs ul li {
@@ -1148,9 +1149,9 @@ input:checked + .slider:before {
 	padding-inline-end: 25px;
 	font-size: 0.875rem;
 	vertical-align: top;
-	line-height: 1;
 	display: block;
 	font-weight: 400;
+	line-height: 1.5;
 }
 
 .breadcrumbs ul li:before {
@@ -1555,7 +1556,7 @@ body.fixed .top-bar {
 .toggle--search .icn {
 	/*background: url(../images/retina/magni-black.svg) no-repeat center;
 	background-size: 20px 20px;*/
-	vertical-align: top;	
+	vertical-align: top;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -1885,7 +1886,7 @@ body.fixed .top-bar {
 }
 
 .cart-summary {
-	width: 100%;
+	width: calc(100% - 20px);
 	/*table-layout: fixed;*/
 }
 
@@ -4833,7 +4834,7 @@ span.subheading {
 
 .filter-content {
 	margin: 0;
-	overflow: hidden;
+	/*overflow: hidden;*/
 	-webkit-transition: height 0.3s ease 0s;
 	transition: height 0.3s ease 0s;
 }
@@ -6399,10 +6400,14 @@ a.loadmore.loading {
 /*order data*/
 .item__pic {
 	width: 80px;
+	height: 80px;
 	border: solid 1px var(--border-color);
 	border-radius: 4px;
 	/*padding: 8px;*/
 	margin: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .item__description {
@@ -6410,10 +6415,26 @@ a.loadmore.loading {
 }
 
 .item__description .item__title {
+	/*	font-size: 1.2em;*/
 	/*font-weight: 700;*/
 	color: var(--txt-color);
 	margin: 0 0 4px 0;
-	/*	font-size: 1.2em;*/
+	/* These are technically the same, but use both */
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+
+	-ms-word-break: break-all;
+	/* This is the dangerous one in WebKit, as it breaks things wherever */
+	word-break: break-all;
+	/* Instead use this non-standard one: */
+	word-break: break-word;
+
+	/* Adds a hyphen where the word breaks, if supported (No Blink) */
+	-ms-hyphens: auto;
+	-moz-hyphens: auto;
+	-webkit-hyphens: auto;
+	hyphens: auto;
+
 }
 
 .item__description .item__title a {
@@ -9842,6 +9863,22 @@ html.quick-view--open {
 	font-weight: 300;
 	color: #000;
 	font-family: 'Poppins', sans-serif;
+
+	/* These are technically the same, but use both */
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+
+	-ms-word-break: break-all;
+	/* This is the dangerous one in WebKit, as it breaks things wherever */
+	word-break: break-all;
+	/* Instead use this non-standard one: */
+	word-break: break-word;
+
+	/* Adds a hyphen where the word breaks, if supported (No Blink) */
+	-ms-hyphens: auto;
+	-moz-hyphens: auto;
+	-webkit-hyphens: auto;
+	hyphens: auto;
 }
 
 .product-description .products__price {
@@ -10642,14 +10679,15 @@ html.quick-view--open {
 .enter-page {
 	min-height: 675px;
 	position: relative;
+	display: flex;
 }
 
 .container-info {
 	background: #000;
 	display: flex;
 	width: 100%;
-	/*height: calc(100vh - 174px);*/
-	height: 100vh;
+	/*height: calc(100vh - 174px);
+	height: 100vh;*/
 	align-items: center;
 	justify-content: space-between;
 }
@@ -10877,6 +10915,7 @@ html.quick-view--open {
 .cart-head {}
 
 .icons-wrapper {
+	position: relative;
 	/*  background: #666666 !important;
   border: none !important;*/
 	width: 28px;
@@ -10886,7 +10925,33 @@ html.quick-view--open {
 	align-items: center;
 	border-radius: 2px;
 	margin: 0 5px;
+
 }
+
+.icons-wrapper:before {
+	content: '';
+	display: block;
+	opacity: 0;
+	position: absolute;
+	transition-duration: .15s;
+	transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+	z-index: -1;
+	bottom: -5px;
+	left: -5px;
+	right: -5px;
+	top: -5px;
+	background: rgba(0, 0, 0, 0.1);
+	border-radius: 50%;
+	transform: scale(0);
+	transition-property: transform, opacity;
+}
+
+.icons-wrapper:hover:before {
+	opacity: 1;
+	z-index: 1;
+	transform: scale(1);
+}
+
 
 .icons-wrapper .icn svg {
 	width: 16px;
@@ -13772,6 +13837,8 @@ input[type="password"][disabled] {
 	border: 1px solid #ddd;
 	max-width: 100px;
 	min-width: 100px;
+	border-radius: 4px;
+	overflow: hidden;
 }
 
 .summary-order-list .actions li {
@@ -14009,6 +14076,7 @@ div.faqanswer {
 	border-radius: 4px;
 	/*margin-inline-start: 3rem;*/
 	border: solid 1px var(--border-color);
+	display: none;
 }
 
 div.faqanswer p {

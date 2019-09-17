@@ -30,6 +30,8 @@ class MyAppController extends FatController
 
         CommonHelper::initCommonVariables();
         $this->initCommonVariables();
+
+        $this->tempTokenLogin();
     }
 
     public function initCommonVariables()
@@ -163,12 +165,15 @@ class MyAppController extends FatController
         $post = FatApp::getPostedData();
 
         $this->appToken = CommonHelper::getAppToken();
-        if (('1.0' == MOBILE_APP_API_VERSION || $this->action == 'send_to_web' || empty($this->appToken)) && array_key_exists('_token', $post)) {
-            $this->appToken = ($post['_token']!='')?$post['_token']:'';
-        }
 
+        $this->app_user['temp_user_id'] = 0;
         if (!empty($_SERVER['HTTP_X_TEMP_USER_ID'])) {
             $this->app_user['temp_user_id'] = $_SERVER['HTTP_X_TEMP_USER_ID'];
+        }
+
+        $forTempTokenBasedActions = array('send_to_web');
+        if (('1.0' == MOBILE_APP_API_VERSION || in_array($this->action, $forTempTokenBasedActions) || empty($this->appToken)) && array_key_exists('_token', $post)) {
+            $this->appToken = ($post['_token']!='')?$post['_token']:'';
         }
 
         if ($this->appToken) {
@@ -177,7 +182,7 @@ class MyAppController extends FatController
                 die(json_encode($arr));
             }
 
-            $userId = UserAuthentication::getLoggedUserId();
+
             $userObj = new User($userId);
             if (!$row = $userObj->getProfileData()) {
                 $arr = array('status'=>-1,'msg'=>Labels::getLabel('L_Invalid_Token', $this->siteLangId));
@@ -590,5 +595,41 @@ class MyAppController extends FatController
 
         $generatedTempId = substr(md5(rand(1, 99999) . microtime()), 0, UserAuthentication::TOKEN_LENGTH);
         return $this->app_user['temp_user_id'] = $generatedTempId;
+    }
+
+    public function tempTokenLogin()
+    {
+        $forTempTokenBasedGetActions = array('downloadDigitalFile');
+        if (in_array($this->action, $forTempTokenBasedGetActions)) {
+            $get = FatApp::getQueryStringData();
+            $ttk = '';
+            if (!empty($get) && array_key_exists('ttk', $get)) {
+                $ttk = ($get['ttk']!='')?$get['ttk']:'';
+            }
+
+             if (strlen($ttk) != UserAuthentication::TOKEN_LENGTH) {
+                  FatUtility::dieJSONError(Labels::getLabel('LBL_Invalid_Temp_Token', CommonHelper::getLangId()));
+              }
+
+            $userId = 0;
+            if (!empty($get) && array_key_exists('user_id', $get)) {
+                $userId = FatUtility::int($get['user_id']);
+            }
+
+            $uObj = new User($userId);
+
+            if (!$user_temp_token_data = $uObj->validateAPITempToken($ttk)) {
+                FatUtility::dieJSONError(Labels::getLabel('LBL_Invalid_Temp_Token', CommonHelper::getLangId()));
+            }
+
+            if (!$user = $uObj->getUserInfo(array('credential_username','credential_password','user_id'), true, true)) {
+                FatUtility::dieJSONError(Labels::getLabel('LBL_Invalid_Request', CommonHelper::getLangId()));
+            }
+
+            $authentication = new UserAuthentication();
+            if ($authentication->login($user['credential_username'], $user['credential_password'], $_SERVER['REMOTE_ADDR'], false)) {
+                $uObj->deleteUserAPITempToken() ;
+            }
+        }
     }
 }

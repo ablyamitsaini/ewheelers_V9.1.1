@@ -2878,6 +2878,7 @@ class Importexport extends ImportexportCommon
 
         $prodConditionArr = Product::getConditionArr($langId);
         $prodConditionArr = array_flip($prodConditionArr);
+        $userId = $sellerId;
 
         $coloumArr = $this->getSelProdGeneralColoumArr($langId, $sellerId);
         $this->validateCSVHeaders($csvFilePointer, $coloumArr, $langId);
