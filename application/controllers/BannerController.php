@@ -191,6 +191,7 @@ class BannerController extends MyAppController
 
         $srch->addCondition('banner_blocation_id', '=', $bannerLocation['blocation_id']);
         $rs = $srch->getResultSet();
+
         return $bannerListing = $db->fetchAll($rs, 'banner_id');
     }
 

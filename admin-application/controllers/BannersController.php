@@ -170,7 +170,7 @@ class BannersController extends AdminBaseController
         $srch->joinLocations();
         $srch->joinPromotions($this->adminLangId, true);
         $srch->addPromotionTypeCondition();
-        $srch->addMultipleFields(array('IFNULL(promotion_name,promotion_identifier) as promotion_name','banner_id','banner_type','banner_url','banner_target','banner_active','banner_blocation_id','banner_title'));
+        $srch->addMultipleFields(array('IFNULL(promotion_name,promotion_identifier) as promotion_name','banner_id','banner_type','banner_url','banner_target','banner_active','banner_blocation_id','banner_title','banner_img_updated_on'));
         $srch->addCondition('b.banner_blocation_id', '=', $blocation_id);
 
         $srch->addOrder('banner_active', 'DESC');
@@ -558,6 +558,8 @@ class BannersController extends AdminBaseController
         ) {
             FatUtility::dieJsonError($fileHandlerObj->getError());
         }
+
+        Banner::setLastModified($banner_id);
 
         $this->set('bannerId', $banner_id);
         $this->set('blocationId', $blocation_id);

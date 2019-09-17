@@ -397,12 +397,7 @@ class AttachedFile extends MyAppModel
             try {
                 static::setLastModified($image_name);
                 static::setContentType($fileMimeType);
-                $fileContent =  file_get_contents($image_name);
                 $img = new ImageResize($image_name);
-                if (CONF_USE_FAT_CACHE && $cache) {
-                    FatCache::set($_SERVER['REQUEST_URI'], $fileContent, '.jpg');
-                    static::loadImage($fileContent, $image_name);
-                }
             } catch (Exception $e) {
                 try {
                     $img = static::getDefaultImage($no_image, $w, $h);
