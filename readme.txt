@@ -11,7 +11,6 @@ API Feature:
 <!--  Release notes TV-9.0.1.20190914 -- >
 Bug :
     => 030496 - redirect back issue from browser back button.
-    => 030496 - redirect back issue from browser back button.
     => 030167 - menu on dashboard is not loading randomly
     => 030287 - catalog data is not getting imported from admin
     => 029519 - User skips add address screen.

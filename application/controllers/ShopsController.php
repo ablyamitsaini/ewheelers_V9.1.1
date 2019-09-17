@@ -644,11 +644,13 @@ class ShopsController extends MyAppController
         $loggedUserId = UserAuthentication::getLoggedUserId();
 
         if (false == $post) {
-            Message::addErrorMessage(current($frm->getValidationErrors()));
-            FatUtility::dieJsonError(Message::getHtml());
+            FatUtility::dieJsonError(strip_tags(current($frm->getValidationErrors())));
         }
 
         $shop_id = FatUtility::int($post['shop_id']);
+        if (1 > $shop_id) {
+            FatUtility::dieJsonError(strip_tags(Labels::getLabel('LBL_Invalid_Shop', $this->siteLangId)));
+        }
 
         $srch = new ShopSearch($this->siteLangId);
         $srch->setDefinedCriteria($this->siteLangId);
@@ -660,8 +662,7 @@ class ShopsController extends MyAppController
         $shopData = FatApp::getDb()->fetch($shopRs);
 
         if (!$shopData) {
-            Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
+            FatUtility::dieJsonError(strip_tags(Labels::getLabel('LBL_Invalid_Shop', $this->siteLangId)));
         }
 
         $sReportObj = new ShopReport();
@@ -675,15 +676,13 @@ class ShopsController extends MyAppController
 
         $sReportObj->assignValues($dataToSave);
         if (!$sReportObj->save()) {
-            Message::addErrorMessage(Labels::getLabel($sReportObj->getError(), $this->siteLangId));
-            FatUtility::dieWithError(Message::getHtml());
+            FatUtility::dieWithError(strip_tags(Labels::getLabel($sReportObj->getError(), $this->siteLangId)));
         }
 
         $sreport_id = $sReportObj->getMainTableRecordId();
 
         if (!$sreport_id) {
-            Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
-            FatUtility::dieWithError(Message::getHtml());
+            FatUtility::dieWithError(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
         }
 
         /* email notification[ */
@@ -701,15 +700,17 @@ class ShopsController extends MyAppController
             );
 
             if (!Notification::saveNotifications($notificationData)) {
-                Message::addErrorMessage(Labels::getLabel("MSG_NOTIFICATION_COULD_NOT_BE_SENT", $this->siteLangId));
-                FatUtility::dieWithError(Message::getHtml());
+                FatUtility::dieWithError(Labels::getLabel("MSG_NOTIFICATION_COULD_NOT_BE_SENT", $this->siteLangId));
             }
         }
         /* ] */
 
-        $sucessMsg = Labels::getLabel('MSG_Your_report_sent_review!', $this->siteLangId);
+        $sucessMsg = Labels::getLabel('MSG_Reported_Successfully!', $this->siteLangId);
         Message::addMessage($sucessMsg);
         $this->set('msg', $sucessMsg);
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->_template->render();
+        }
         $this->_template->render(false, false, 'json-success.php');
     }
 
@@ -1134,5 +1135,14 @@ class ShopsController extends MyAppController
             'siteLangId'=>$this->siteLangId
         );
         return $data;
+    }
+
+    public function shopReportReasons()
+    {
+        $srch = ShopReportReason::getReportReasonArr($this->siteLangId, true);
+        $rs = $srch->getResultSet();
+        $data = FatApp::getDb()->fetchAll($rs);
+        $this->set('data', array('reportReasons' => $data));
+        $this->_template->render();
     }
 }

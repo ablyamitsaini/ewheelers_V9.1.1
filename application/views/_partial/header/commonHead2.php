@@ -44,7 +44,7 @@ if (isset($isUserDashboard) && $isUserDashboard) {
         setcookie('openSidebar', 1, 0, CONF_WEBROOT_URL);
     }
 
-    if(array_key_exists('openSidebar', $_COOKIE) && 1 == $_COOKIE['openSidebar']){
+    if(array_key_exists('openSidebar', $_COOKIE) && 0 < $_COOKIE['openSidebar']){
         $expanded = 'sidebar-is-expanded';
     }
 

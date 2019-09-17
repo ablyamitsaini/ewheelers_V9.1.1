@@ -43,7 +43,6 @@ class CartController extends MyAppController
             } */
 
             $cartSummary = $cartObj->getCartFinancialSummary($this->siteLangId);
-
             $PromoCouponsFrm = $this->getPromoCouponsForm($this->siteLangId);
 
             if (true ===  MOBILE_APP_API_CALL) {
@@ -334,7 +333,7 @@ class CartController extends MyAppController
         }
 
         if (!isset($post['key'])) {
-            $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
+            $message = Labels::getLabel('LBL_Product_Key_Required', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
                 FatUtility::dieJsonError($message);
             }
@@ -342,23 +341,28 @@ class CartController extends MyAppController
             FatUtility::dieWithError(Message::getHtml());
         }
 
-        $cartObj = new Cart();
+        $cartObj = new Cart(UserAuthentication::getLoggedUserId(true), $this->siteLangId, $this->app_user['temp_user_id']);
         $key = $post['key'];
-        if (true ===  MOBILE_APP_API_CALL) {
-            $key = md5($key);
-        }
-        if (!$cartObj->remove($key)) {
+
+        if ('all' == $key) {
+            $cartObj->clear();
+            $cartObj->updateUserCart();
+        } else {
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($cartObj->getError()));
+                $key = md5($key);
             }
-            Message::addMessage($cartObj->getError());
-            FatUtility::dieWithError(Message::getHtml());
-        }
-        $cartObj->removeUsedRewardPoints();
-        $total = $cartObj->countProducts();
-        if (0 == $total) {
+            if (!$cartObj->remove($key)) {
+                if (true ===  MOBILE_APP_API_CALL) {
+                    FatUtility::dieJsonError(strip_tags($cartObj->getError()));
+                }
+                Message::addMessage($cartObj->getError());
+                FatUtility::dieWithError(Message::getHtml());
+            }
+            $cartObj->removeUsedRewardPoints();
+            $cartObj->removeProductShippingMethod();
             $cartObj->removeCartDiscountCoupon();
         }
+        $total = $cartObj->countProducts();
         $this->set('msg', Labels::getLabel("MSG_Item_removed_successfully", $this->siteLangId));
         if (true ===  MOBILE_APP_API_CALL) {
             $this->set('data', array('cartItemsCount'=>$total));

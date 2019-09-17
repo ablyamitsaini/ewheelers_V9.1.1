@@ -53,6 +53,8 @@ WHERE
     `tbl_configurations`.`conf_name` = 'CONF_MAINTENANCE_TEXT_1'
 
 DELETE FROM `tbl_language_labels` WHERE `label_key` = "LBL_Tex_Charges";
+DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE 'MSG_Your_report_sent_review!';
+ALTER TABLE `tbl_user_notifications` ADD `unotification_data` TEXT NULL DEFAULT NULL AFTER `unotification_type`;
 /*Release notes TV-9.0.1.20190914*/
 ALTER TABLE `tbl_attached_files` ADD `afile_updated_at` DATETIME NOT NULL AFTER `afile_downloaded_times`;
 UPDATE `tbl_language_labels` SET `label_key` = 'APP_YOU_HAVE_A_NEW_MESSAGE_FROM_{username}' and `label_caption`= 'You have a new message from {username}' WHERE `tbl_language_labels`.`label_key` = 'APP_YOU_HAVE_A_NEW_MESSAGE_FROM_{USERNAME}';

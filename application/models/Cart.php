@@ -23,12 +23,16 @@ class Cart extends FatModel
         }
 
         if (empty($tempCartUserId)) {
-            $tempCartUserId = session_id();
+            /*$tempCartUserId = session_id();
             if (true ===  MOBILE_APP_API_CALL) {
                 $tempCartUserId = $user_id;
                 if (1 > $user_id) {
                     $user_id = $tempCartUserId = UserAuthentication::getLoggedUserId(true);
                 }
+            }*/
+            $tempCartUserId = $user_id;
+            if (1 > $user_id) {
+                $user_id = $tempCartUserId = UserAuthentication::getLoggedUserId(true);
             }
         }
 
@@ -54,7 +58,7 @@ class Cart extends FatModel
             }
 
             $this->SYSTEM_ARR['cart'] = unserialize($row["usercart_details"]);
-            //CommonHelper::printArray($this->SYSTEM_ARR['cart']); exit;
+            // CommonHelper::printArray($this->SYSTEM_ARR['cart'], true);
             if (isset($this->SYSTEM_ARR['cart']['shopping_cart'])) {
                 $this->SYSTEM_ARR['shopping_cart'] = $this->SYSTEM_ARR['cart']['shopping_cart'];
                 unset($this->SYSTEM_ARR['cart']['shopping_cart']);
@@ -537,7 +541,7 @@ class Cart extends FatModel
         }
         $this->updateUserCart();
         if (false === $found) {
-            $this->error = Labels::getLabel('ERR_Invalid_Request', $this->cart_lang_id);
+            $this->error = Labels::getLabel('ERR_Invalid_Product', $this->cart_lang_id);
         }
         return $found;
     }
