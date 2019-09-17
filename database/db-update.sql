@@ -59,4 +59,5 @@ ALTER TABLE `tbl_user_notifications` ADD `unotification_data` TEXT NULL DEFAULT 
 ALTER TABLE `tbl_attached_files` ADD `afile_updated_at` DATETIME NOT NULL AFTER `afile_downloaded_times`;
 UPDATE `tbl_language_labels` SET `label_key` = 'APP_YOU_HAVE_A_NEW_MESSAGE_FROM_{username}' and `label_caption`= 'You have a new message from {username}' WHERE `tbl_language_labels`.`label_key` = 'APP_YOU_HAVE_A_NEW_MESSAGE_FROM_{USERNAME}';
 
-DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE 'MSG_Setup_successful' ORDER BY `label_id` DESC;
+DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE 'MSG_Setup_successful';
+DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE 'MSG_File_deleted_successfully';

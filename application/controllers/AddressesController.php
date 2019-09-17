@@ -59,7 +59,7 @@ class AddressesController extends LoggedUserController
         }
 
 
-        $this->set('msg', Labels::getLabel('LBL_Setup_Successful', $this->siteLangId));
+        $this->set('msg', Labels::getLabel('LBL_Updated_Successfully', $this->siteLangId));
         if (true ===  MOBILE_APP_API_CALL) {
             $this->set('data', array('ua_id' => $ua_id));
             $this->_template->render();
@@ -163,7 +163,7 @@ class AddressesController extends LoggedUserController
         if (!$db->deleteRecords(UserAddress::DB_TBL, array('smt' => 'ua_user_id = ? AND ua_id = ?', 'vals' => array($userId, $ua_id)))) {
             FatUtility::dieJsonError(strip_tags($db->getError()));
         }
-        $msg = Labels::getLabel('MSG_Deleted_successfully', $this->siteLangId);
+        $msg = Labels::getLabel('MSG_Removed_Successfully', $this->siteLangId);
         if (true ===  MOBILE_APP_API_CALL) {
             $this->set('msg', $msg);
             $this->_template->render();

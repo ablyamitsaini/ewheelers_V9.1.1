@@ -767,6 +767,8 @@ class AccountController extends LoggedUserController
             $message = Labels::getLabel($fileHandlerObj->getError(), $this->siteLangId);
             FatUtility::dieJsonError($message);
         }
+
+        $this->set('msg', Labels::getLabel('MSG_Profile_Image_Removed_Successfully', $this->siteLangId));
         if (true ===  MOBILE_APP_API_CALL) {
             $data = array(
                 'userImage' => CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId, 'croped', true))
@@ -776,7 +778,6 @@ class AccountController extends LoggedUserController
             $this->_template->render();
         }
 
-        $this->set('msg', Labels::getLabel('MSG_File_deleted_successfully', $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
 
@@ -989,10 +990,10 @@ class AccountController extends LoggedUserController
             }
         }
 
+        $this->set('msg', Labels::getLabel('MSG_File_uploaded_successfully', $this->siteLangId));
         if (true ===  MOBILE_APP_API_CALL) {
             $this->_template->render();
         }
-        $this->set('msg', Labels::getLabel('MSG_File_uploaded_successfully', $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
 
