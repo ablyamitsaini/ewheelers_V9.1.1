@@ -327,10 +327,11 @@
 		display: flex;
 		-ms-flex-wrap: wrap;
 		flex-wrap: wrap;
-		width: 100%;
+		/*width: 100%;*/
 		-webkit-box-pack: justify;
 		-ms-flex-pack: justify;
 		justify-content: space-between;
+		
 	}
 
 	.profile-container__col {

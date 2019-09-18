@@ -7288,7 +7288,7 @@ a.loadmore.loading {
 }
 
 .btngroup--fix .btn {
-	min-width: 120px;
+	min-width: 100px;
 	margin: 0 10px 0 0;
 }
 
