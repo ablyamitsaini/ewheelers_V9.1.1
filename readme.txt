@@ -5,7 +5,7 @@ Enhancements :
     -> For system Banners and slides - used cache by last modified time.
 Bug:
     -> 030531 - Rewards points with discount coupon issue.
-    -> 030531 - Retain cart on login
+    -> 030635 - Retain cart on login
 
 API Feature:
     -> Downnload digital files in app.
