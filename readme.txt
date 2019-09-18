@@ -2,9 +2,12 @@ Enhancements :
     -> Display System image for product and banners
     -> JS/CSS handled browser cache with 304 headers.
     -> APP labels Management.
+
 Bug:
     -> 030531 - Rewards points with discount coupon issue.
     -> 030555 - On updating existing slide info details admin> it warns to have unique identifier
+    -> 030456 - under wallet> display upto 2 digits after decimal
+    
 API Feature:
     -> Downnload digital files in app.
 

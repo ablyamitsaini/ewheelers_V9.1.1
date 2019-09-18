@@ -600,9 +600,11 @@ class CommonHelper extends FatUtility
             $sign = '-';
         }
 
-
         if ($numberFormat && !$stringFormat) {
             $val = number_format($val, 2);
+        } else {
+            $afterDecimal = $val - floor($val);
+            $val = (0 < $afterDecimal ? number_format($val, 2, '.', '') : $val);
         }
 
         if ($stringFormat) {
@@ -1878,7 +1880,7 @@ class CommonHelper extends FatUtility
         }
         return $totalCount;
     }
-    
+
     public static function replaceStringData($str, $replacements = array(), $replaceTags = false)
     {
         foreach ($replacements as $key=>$val) {
