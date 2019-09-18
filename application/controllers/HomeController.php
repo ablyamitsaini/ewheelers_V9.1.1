@@ -38,11 +38,95 @@ class HomeController extends MyAppController
         $this->set('banners', $banners);
         $this->set('collections', $collections);
 
-        if (true ===  MOBILE_APP_API_CALL) { 
+        if (true ===  MOBILE_APP_API_CALL) {
             $this->set('layoutType', Collections::getLayoutTypeArr($this->siteLangId));
         } else {
             $this->_template->addJs(array('js/slick.min.js', 'js/responsive-img.min.js'));
             $this->_template->addCss(array('css/slick.css', 'css/product-detail.css'));
+            $cacheKey = $this->siteLangId.'-'.$this->siteCurrencyId;
+
+            /*[ As all layout in sequence so added in one cache]*/
+            $homePageFirstLayout =  FatCache::get('homePageFirstLayout'.$cacheKey, CONF_HOME_PAGE_CACHE_TIME, '.txt');
+            if (!$homePageFirstLayout) {
+                $homePageProdLayout1 = '';
+                if (isset($collections[Collections::TYPE_PRODUCT_LAYOUT1])) {
+                    $tpl = new FatTemplate('', '');
+                    $tpl->set('siteLangId', $this->siteLangId);
+                    $tpl->set('collections', $collections[Collections::TYPE_PRODUCT_LAYOUT1]);
+                    $homePageProdLayout1 = $this->_template->render(false, false, '_partial/collection/product-layout-1.php', true, true);
+                }
+
+                $homePageCatLayout1 = '';
+                if (isset($collections[Collections::TYPE_CATEGORY_LAYOUT1])) {
+                    $tpl = new FatTemplate('', '');
+                    $tpl->set('siteLangId', $this->siteLangId);
+                    $tpl->set('collections', $collections[Collections::TYPE_CATEGORY_LAYOUT1]);
+                    $homePageCatLayout1 = $tpl->render(false, false, '_partial/collection/category-layout-1.php', true, true);
+                }
+
+                $homePageFirstLayout = $homePageProdLayout1.$homePageCatLayout1;
+                FatCache::set('homePageFirstLayout'.$cacheKey, $homePageFirstLayout, '.txt');
+            }
+
+            $this->set('homePageFirstLayout', $homePageFirstLayout);
+            /*]*/
+
+            /* Product Layout2[ */
+            $homePageProdLayout2 =  FatCache::get('homePageProdLayout2'.$cacheKey, CONF_HOME_PAGE_CACHE_TIME, '.txt');
+            if (!$homePageProdLayout2 && (isset($collections[Collections::TYPE_PRODUCT_LAYOUT2]))) {
+                $tpl = new FatTemplate('', '');
+                $tpl->set('siteLangId', $this->siteLangId);
+                $tpl->set('collections', $collections[Collections::TYPE_PRODUCT_LAYOUT2]);
+                $homePageProdLayout2 = $tpl->render(false, false, '_partial/collection/product-layout-2.php', true, true);
+                FatCache::set('homePageProdLayout2'.$cacheKey, $homePageProdLayout2, '.txt');
+            }
+            $this->set('homePageProdLayout2', $homePageProdLayout2);
+            /* ] */
+
+            /* Shop Layout1[ */
+            $homePageShopLayout1 =  FatCache::get('homePageShopLayout1'.$cacheKey, CONF_HOME_PAGE_CACHE_TIME, '.txt');
+            if (!$homePageShopLayout1 && (isset($collections[Collections::TYPE_SHOP_LAYOUT1]))) {
+                $tpl = new FatTemplate('', '');
+                $tpl->set('siteLangId', $this->siteLangId);
+                $tpl->set('collections', $collections[Collections::TYPE_SHOP_LAYOUT1]);
+                $homePageShopLayout1 = $tpl->render(false, false, '_partial/collection/shop-layout-1.php', true, true);
+                FatCache::set('homePageShopLayout1'.$cacheKey, $homePageShopLayout1, '.txt');
+            }
+            $this->set('homePageShopLayout1', $homePageShopLayout1);
+            /* ] */
+
+            /*[ As all layout in sequence so added in one cache]*/
+            $homePageFooterLayout =  FatCache::get('homePageFooterLayout'.$cacheKey, CONF_HOME_PAGE_CACHE_TIME, '.txt');
+            if (!$homePageFooterLayout) {
+                $homePageCatLayout2 = '';
+                if (isset($collections[Collections::TYPE_CATEGORY_LAYOUT2])) {
+                    $tpl = new FatTemplate('', '');
+                    $tpl->set('siteLangId', $this->siteLangId);
+                    $tpl->set('collections', $collections[Collections::TYPE_CATEGORY_LAYOUT2]);
+                    $homePageCatLayout2 = $tpl->render(false, false, '_partial/collection/category-layout-2.php', true, true);
+                }
+
+                $homePageProdLayout3 = '';
+                if (isset($collections[Collections::TYPE_PRODUCT_LAYOUT3])) {
+                    $tpl = new FatTemplate('', '');
+                    $tpl->set('siteLangId', $this->siteLangId);
+                    $tpl->set('collections', $collections[Collections::TYPE_PRODUCT_LAYOUT3]);
+                    $homePageProdLayout3 = $tpl->render(false, false, '_partial/collection/product-layout-3.php', true, true);
+                }
+
+                $homePageBrandLayout1 = '';
+                if (isset($collections[Collections::TYPE_BRAND_LAYOUT1])) {
+                    $tpl = new FatTemplate('', '');
+                    $tpl->set('siteLangId', $this->siteLangId);
+                    $tpl->set('collections', $collections[Collections::TYPE_BRAND_LAYOUT1]);
+                    $homePageBrandLayout1 = $tpl->render(false, false, '_partial/collection/brand-layout-1.php', true, true);
+                }
+
+                $homePageFooterLayout = $homePageCatLayout2.$homePageProdLayout3.$homePageBrandLayout1;
+                FatCache::set('homePageFooterLayout'.$cacheKey, $homePageFooterLayout, '.txt');
+            }
+            $this->set('homePageFooterLayout', $homePageFooterLayout);
+
         }
 
         $this->_template->render();

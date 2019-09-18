@@ -3,8 +3,8 @@ if( isset( $collections ) && count($collections) ){
 
 	$counter = 1;
 
-	foreach( $collections as $collection_id => $row ){ ?>
-<?php if( isset($row['products']) && count($row['products']) ) {
+	foreach( $collections as $collection_id => $row ){  ?>
+<?php if( isset($row['products']) && count($row['products']) > 0 ) {
 	?>
 
 <section class="section">
