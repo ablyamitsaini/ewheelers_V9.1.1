@@ -4,6 +4,10 @@ if (!empty($cartSummary) && array_key_exists('cartDiscounts', $cartSummary)) {
     $cartSummary['cartDiscounts'] = !empty($cartSummary['cartDiscounts']) ? $cartSummary['cartDiscounts'] : (object)array();
 }
 
+usort($products, function ($a, $b) {
+    return $a['shop_id'] - $b['shop_id'];
+});
+
 foreach ($products as $index => $product) {
     $products[$index]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($product['product_id'], "CLAYOUT3", $product['selprod_id'], 0, $siteLangId));
     $products[$index]['total'] = !empty($product['total']) ? CommonHelper::displayMoneyFormat($product['total']) : 0;
