@@ -2719,7 +2719,7 @@ class Importexport extends ImportexportCommon
                     if (AttachedFile::FILETYPE_BULK_IMAGES_PATH ==  $physical_path[0].'/') {
                         $afileObj = new AttachedFile();
 
-                        $moved = $afileObj->moveAttachment($prodCatalogMediaArr['afile_physical_path'], $fileType, $productId, 0, $prodCatalogMediaArr['afile_name'], $prodCatalogMediaArr['afile_display_order'], false, $prodCatalogMediaArr['afile_lang_id']);
+                        $moved = $afileObj->moveAttachment($prodCatalogMediaArr['afile_physical_path'], $fileType, $productId, $prodCatalogMediaArr['afile_record_subid'], $prodCatalogMediaArr['afile_name'], $prodCatalogMediaArr['afile_display_order'], false, $prodCatalogMediaArr['afile_lang_id']);
 
                         if (false === $moved) {
                             $errMsg = str_replace('{filepath}', $prodCatalogMediaArr['afile_physical_path'], Labels::getLabel("MSG_Invalid_File_{filepath}.", $langId));

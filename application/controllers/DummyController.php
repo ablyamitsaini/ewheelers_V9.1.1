@@ -328,15 +328,7 @@ class DummyController extends MyAppController
 
     public function test()
     {
-        $srch = Banner::getSearchObject($this->siteLangId, true);
-        $srch->doNotCalculateRecords();
-
-    
-
-        $srch->addCondition('banner_blocation_id', '=', 1);
-        echo $srch->getQuery(); exit;
-        $rs = $srch->getResultSet();
-        Banner::setLastModified($banner_id);
+        echo CommonHelper::displayMoneyFormat(13002.00, true, false, false);
         exit;
         $srch = new ProductSearch(1);
         $srch->setDefinedCriteria();

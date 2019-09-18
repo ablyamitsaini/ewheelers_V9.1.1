@@ -6,6 +6,7 @@ Enhancements :
 Bug:
     -> 030531 - Rewards points with discount coupon issue.
     -> 030635 - Retain cart on login
+    -> 030272 - Import procuct media issue fixed.
 
 API Feature:
     -> Downnload digital files in app.
