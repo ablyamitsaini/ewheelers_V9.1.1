@@ -1242,10 +1242,10 @@ class AccountController extends LoggedUserController
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    public function moveToWishList($productId)
+    public function moveToWishList($selProdId)
     {
         $defaultWishListId = $this->getDefaultWishListId();
-        echo $this->addRemoveWishListProduct($productId, $defaultWishListId);
+        echo $this->addRemoveWishListProduct($selProdId, $defaultWishListId);
     }
 
     public function getDefaultWishListId()
