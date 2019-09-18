@@ -3,7 +3,6 @@
 		padding: 2.5rem 0;
 	}
 }
-
 @media only screen and (max-width: 1399px) {
 
 	.ftshops .shop-detail-side {
@@ -19,7 +18,6 @@
 	}
 
 }
-
 @media only screen and (max-width: 1199px) {
 
 	.checkbox,
@@ -308,8 +306,6 @@
 		padding: 0 1rem;
 	}
 
-
-
 	.slider-for,
 	.slider-nav {
 		width: 100%;
@@ -331,7 +327,7 @@
 		-webkit-box-pack: justify;
 		-ms-flex-pack: justify;
 		justify-content: space-between;
-		
+
 	}
 
 	.profile-container__col {
@@ -1074,7 +1070,6 @@
 	}
 
 }
-
 @media only screen and (max-width:1080px) {
 	.logo {
 		width: 100px;
@@ -1117,7 +1112,6 @@
 		flex-direction: column;
 	}
 }
-
 @media only screen and (max-width:1023px) {
 	html {
 		/*overflow: hidden;
@@ -1260,7 +1254,6 @@
 		background-size: cover;*/
 	}
 }
-
 @media only screen and (max-width: 767px) {
 	.fixed-demo-btn {
 		font-size: 0.875rem;
@@ -1967,9 +1960,8 @@
 		overflow-x: auto;*/
 	}
 
-	.breadcrumbs ul li {
-		display: inline-block;
-		vertical-align: top;
+	.breadcrumbs ul li { margin: 0.5rem 0;
+		 
 	}
 
 	.detail-first-fold {
@@ -2217,7 +2209,7 @@
 		-webkit-transform: none;
 		transform: none;
 	}
-
+	.certified-box{ margin-bottom: 1.5rem;}
 
 
 
@@ -2227,6 +2219,8 @@
 	.buy-group .btn .icn {
 		display: none;
 	}
+	
+	.tooltip .hovertxt{ min-width:inherit;}
 
 }
 
