@@ -4,7 +4,7 @@ Enhancements :
     -> APP labels Management.
 Bug:
     -> 030531 - Rewards points with discount coupon issue.
-
+    -> 030555 - On updating existing slide info details admin> it warns to have unique identifier
 API Feature:
     -> Downnload digital files in app.
 
