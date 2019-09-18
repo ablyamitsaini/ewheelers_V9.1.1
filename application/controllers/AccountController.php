@@ -1245,7 +1245,7 @@ class AccountController extends LoggedUserController
     public function moveToWishList($selProdId)
     {
         $defaultWishListId = $this->getDefaultWishListId();
-        echo $this->addRemoveWishListProduct($selProdId, $defaultWishListId);
+        $this->addRemoveWishListProduct($selProdId, $defaultWishListId);
     }
 
     public function getDefaultWishListId()
