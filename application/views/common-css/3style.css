@@ -13148,7 +13148,7 @@ html.quick-view--open {
 .shop-slider .item {
 	position: relative;
 	max-width: 610px;
-	min-width: 320px;
+	/*min-width: 320px;*/
 	margin: 0 15px;
 }
 
