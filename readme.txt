@@ -7,6 +7,7 @@ Bug:
     -> 030531 - Rewards points with discount coupon issue.
     -> 030555 - On updating existing slide info details admin> it warns to have unique identifier
     -> 030456 - under wallet> display upto 2 digits after decimal
+    -> 030520 - in blog section> on search box> place holder needs to be updated
     
 API Feature:
     -> Downnload digital files in app.
