@@ -14010,6 +14010,8 @@ input[type="password"][disabled] {
 	font-weight: 400;
 	margin: 2rem 0;
 	position: relative;
+	display: flex;
+	justify-content: space-between;
 }
 
 h3.faqclose {
@@ -14021,7 +14023,7 @@ h3.faqclose::after {
 	float: right;
 	font-size: 16px;
 	font-weight: 300;
-	line-height: 30px;
+	line-height: 30px; 
 }
 
 h3.faqclose::before {
