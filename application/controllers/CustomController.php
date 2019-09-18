@@ -58,6 +58,7 @@
             }
 
             if (true ===  MOBILE_APP_API_CALL) {
+                $this->set('msg', Labels::getLabel('MSG_your_message_sent_successfully', $this->siteLangId));
                 $this->_template->render();
             }
 

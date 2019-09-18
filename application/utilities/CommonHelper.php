@@ -611,11 +611,11 @@ class CommonHelper extends FatUtility
             $sign = '-';
         }
 
-        $afterDecimal = $val - floor($val);
         if ($numberFormat && !$stringFormat) {
-            $val = (0 < $afterDecimal && $val > 1000)? number_format($val, 2):$val;
+            $val = number_format($val, 2);
         } else {
-            $val = 0 < $afterDecimal ? number_format($val, 2, '.', '') : $val;
+            $afterDecimal = $val - floor($val);
+            $val = (0 < $afterDecimal ? number_format($val, 2, '.', '') : $val);
         }
 
         if ($stringFormat) {

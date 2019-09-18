@@ -421,7 +421,7 @@ class CartController extends MyAppController
             $key = md5($key);
         }
         $quantity = isset($post['quantity']) ? FatUtility::int($post['quantity']) : 1;
-        $cartObj = new Cart();
+        $cartObj = new Cart(UserAuthentication::getLoggedUserId(true), $this->siteLangId, $this->app_user['temp_user_id']);
         if (!$cartObj->update($key, $quantity)) {
             if (true ===  MOBILE_APP_API_CALL) {
                 FatUtility::dieJsonError(strip_tags($cartObj->getError()));

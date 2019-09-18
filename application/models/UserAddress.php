@@ -61,7 +61,7 @@
         if ($ua_is_default) {
             $srch->addCondition(static::tblFld('is_default'), '=', 1);
         }
-        
+        $srch->addOrder(static::tblFld('is_default'), 'DESC');
         $rs = $srch->getResultSet();
 
         if ($ua_id) {
