@@ -197,9 +197,8 @@ class UserAuthentication extends FatModel
             $rowUser['user_ip'] = $ip;
             $rowUser['user_is_guest'] = true;
             $rowUser['user_email'] = $row['credential_email'];
-            $this->setSession($rowUser);
-
             Cart::setCartAttributes($row['user_id']);
+            $this->setSession($rowUser);
             return true;
         }
 
@@ -265,9 +264,8 @@ class UserAuthentication extends FatModel
         $rowUser['user_ip'] = $ip;
         $rowUser['user_is_guest'] = true;
         $rowUser['user_email'] = $row['credential_email'];
-        $this->setSession($rowUser);
-
         Cart::setCartAttributes($row['credential_user_id']);
+        $this->setSession($rowUser);
 
         $this->clearFailedAttempt($ip, $useremail);
 
@@ -371,13 +369,13 @@ class UserAuthentication extends FatModel
 
         $rowUser['user_ip'] = $ip;
         $rowUser['user_email'] = $row['credential_email'];
+        Cart::setCartAttributes($row['credential_user_id'], $tempUserId);
         $this->setSession($rowUser);
         /* $_SESSION[static::SESSION_ELEMENT_NAME] = array(
         'user_id'=>$rowUser['user_id'],
         'user_name'=>$rowUser['user_name'],
         'user_ip'=>$ip
         ); */
-        Cart::setCartAttributes($row['credential_user_id'], $tempUserId);
 
         /* clear failed login attempt for the user [ */
         $this->clearFailedAttempt($ip, $username);
