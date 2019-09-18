@@ -7,6 +7,7 @@ if (1 > $opId) {
 $orderDetail['charges'] = !empty($orderDetail['charges']) ? $orderDetail['charges'] : (object)array();
 $orderDetail['billingAddress'] = !empty($orderDetail['billingAddress']) ? $orderDetail['billingAddress'] : (object)array();
 $orderDetail['shippingAddress'] = !empty($orderDetail['shippingAddress']) ? $orderDetail['shippingAddress'] : (object)array();
+$orderDetail['order_net_amount'] = !empty($orderDetail['order_net_amount']) ? CommonHelper::displayMoneyFormat($orderDetail['order_net_amount'], false, false, false) : 0;
 
 if (!empty($orderDetail['charges'])) {
     $charges = array();
