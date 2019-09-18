@@ -535,11 +535,10 @@ class AttachedFile extends MyAppModel
         $fileMimeType = '';
         if (file_exists($uploadedFilePath . $image_name)) {
             $fileMimeType = mime_content_type($uploadedFilePath . $image_name);
-        }
-
-        if (strpos($_SERVER['REQUEST_URI'], '?t=') === false) {
-            $filemtime = filemtime($uploadedFilePath . $image_name);
-            $_SERVER['REQUEST_URI'] = rtrim($_SERVER['REQUEST_URI'], '/').'/?t='.$filemtime;
+            if (strpos($_SERVER['REQUEST_URI'], '?t=') === false) {
+                $filemtime = filemtime($uploadedFilePath . $image_name);
+                $_SERVER['REQUEST_URI'] = rtrim($_SERVER['REQUEST_URI'], '/').'/?t='.$filemtime;
+            }
         }
 
         static::setHeaders();
