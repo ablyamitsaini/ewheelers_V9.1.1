@@ -229,12 +229,11 @@ class AccountController extends LoggedUserController
         }
         $field_id = $post['field_id'];
 
-        if (!is_uploaded_file($_FILES['file']['tmp_name'])) {
-            /* Message::addErrorMessage(Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId)); */
-            FatUtility::dieJsonError(Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId));
+        $fileHandlerObj = new AttachedFile();
+        if (!$fileHandlerObj->isUploadedFile($_FILES['file']['tmp_name'])) {
+            FatUtility::dieJsonError($fileHandlerObj->getError());
         }
 
-        $fileHandlerObj = new AttachedFile();
         $fileHandlerObj->deleteFile($fileHandlerObj::FILETYPE_SELLER_APPROVAL_FILE, $userId, 0, $field_id);
 
         if (!$res = $fileHandlerObj->saveAttachment(
@@ -814,7 +813,7 @@ class AccountController extends LoggedUserController
         if (true ===  MOBILE_APP_API_CALL) {
             $bankInfo = $this->bankInfo();
             $personalInfo = $this->personalInfo();
-            $personalInfo['userImage'] = CommonHelper::generateFullUrl('image', 'user', array(UserAuthentication::getLoggedUserId(),'thumb',1)).'?t='.time();
+            $personalInfo['userImage'] = CommonHelper::generateFullUrl('image', 'user', array(UserAuthentication::getLoggedUserId(true),'mini',1)).'?t='.time();
             $this->set('personalInfo', empty($personalInfo) ? (object)array() : $personalInfo);
             $this->set('bankInfo', empty($bankInfo) ? (object)array() : $bankInfo);
             $this->set('privacyPolicyLink', FatApp::getConfig('CONF_PRIVACY_POLICY_PAGE', FatUtility::VAR_STRING, ''));
@@ -943,13 +942,11 @@ class AccountController extends LoggedUserController
             $message = Labels::getLabel('LBL_Invalid_Request_Or_File_not_supported', $this->siteLangId);
             FatUtility::dieJsonError($message);
         }
+        $fileHandlerObj = new AttachedFile();
         if ($post['action'] == "demo_avatar") {
-            if (!is_uploaded_file($_FILES['user_profile_image']['tmp_name'])) {
-                $message = Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId);
-                FatUtility::dieJsonError($message);
+            if (!$fileHandlerObj->isUploadedFile($_FILES['user_profile_image']['tmp_name'])) {
+                FatUtility::dieJsonError($fileHandlerObj->getError());
             }
-
-            $fileHandlerObj = new AttachedFile();
 
             if (!$res = $fileHandlerObj->saveImage($_FILES['user_profile_image']['tmp_name'], AttachedFile::FILETYPE_USER_PROFILE_IMAGE, $userId, 0, $_FILES['user_profile_image']['name'], -1, $unique_record = true)
             ) {
@@ -957,20 +954,18 @@ class AccountController extends LoggedUserController
                 FatUtility::dieJsonError($message);
             }
 
-            if (false ===  MOBILE_APP_API_CALL) {
-                $this->set('file', CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId)).'?t='.time());
+            if (true ===  MOBILE_APP_API_CALL) {
+                $this->set('file', CommonHelper::generateFullUrl('image', 'user', array($userId,'mini',1)).'?t='.time());
             } else {
-                $this->set('file', CommonHelper::generateFullUrl('image', 'user', array($userId,'thumb',1)).'?t='.time());
+                $this->set('file', CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId)).'?t='.time());
             }
         }
 
         if ($post['action'] == "avatar") {
-            if (!is_uploaded_file($_FILES['user_profile_image']['tmp_name'])) {
-                $message = Labels::getLabel(Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId), $this->siteLangId);
-                FatUtility::dieJsonError($message);
+            if (!$fileHandlerObj->isUploadedFile($_FILES['user_profile_image']['tmp_name'])) {
+                FatUtility::dieJsonError($fileHandlerObj->getError());
             }
 
-            $fileHandlerObj = new AttachedFile();
 
             if (!$res = $fileHandlerObj->saveImage($_FILES['user_profile_image']['tmp_name'], AttachedFile::FILETYPE_USER_PROFILE_CROPED_IMAGE, $userId, 0, $_FILES['user_profile_image']['name'], -1, $unique_record = true)
             ) {
