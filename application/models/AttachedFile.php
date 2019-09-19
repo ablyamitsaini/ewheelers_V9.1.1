@@ -75,16 +75,22 @@ class AttachedFile extends MyAppModel
     {
         $val = trim($val);
         $last = strtolower($val[strlen($val)-1]);
+        $size = Fatutility::int($val);
         switch ($last) {
+            case 'g':
+                $size *= (1024 * 1024 * 1024);
+                break;
             case 'm':
+                $size *= (1024 * 1024);
+                break;
             case 'k':
-                $val *= 1024;
+                $size *= 1024;
                 break;
             default:
-                $val = 1024;
+                $size = 1024;
                 break;
         }
-        return $val;
+        return $size;
     }
 
     public static function maxFileUploadInBytes()
@@ -125,13 +131,12 @@ class AttachedFile extends MyAppModel
         if (1 > $compareSize || static::maxFileUploadInBytes() < $compareSize) {
             $compareSize = static::maxFileUploadInBytes();
         }
-
         if (filesize($fileTmpName) > $compareSize) {
             $this->error = Labels::getLabel('MSG_INVALID_SIZE', CommonHelper::getLangId());
             return false;
         }
 
-        if (!is_uploaded_file($fileTmpName, $compareSize)) {
+        if (!is_uploaded_file($fileTmpName)) {
             $this->error = Labels::getLabel('MSG_Unable_To_Upload_File', CommonHelper::getLangId());
             return false;
         }
