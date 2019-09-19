@@ -814,7 +814,7 @@ class AccountController extends LoggedUserController
         if (true ===  MOBILE_APP_API_CALL) {
             $bankInfo = $this->bankInfo();
             $personalInfo = $this->personalInfo();
-            $personalInfo['userImage'] = CommonHelper::generateFullUrl('image', 'user', array(UserAuthentication::getLoggedUserId(),'thumb',1)).'?t='.time();
+            $personalInfo['userImage'] = CommonHelper::generateFullUrl('image', 'user', array(UserAuthentication::getLoggedUserId(true),'mini',1)).'?t='.time();
             $this->set('personalInfo', empty($personalInfo) ? (object)array() : $personalInfo);
             $this->set('bankInfo', empty($bankInfo) ? (object)array() : $bankInfo);
             $this->set('privacyPolicyLink', FatApp::getConfig('CONF_PRIVACY_POLICY_PAGE', FatUtility::VAR_STRING, ''));
@@ -957,10 +957,10 @@ class AccountController extends LoggedUserController
                 FatUtility::dieJsonError($message);
             }
 
-            if (false ===  MOBILE_APP_API_CALL) {
-                $this->set('file', CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId)).'?t='.time());
+            if (true ===  MOBILE_APP_API_CALL) {
+                $this->set('file', CommonHelper::generateFullUrl('image', 'user', array($userId,'mini',1)).'?t='.time());
             } else {
-                $this->set('file', CommonHelper::generateFullUrl('image', 'user', array($userId,'thumb',1)).'?t='.time());
+                $this->set('file', CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId)).'?t='.time());
             }
         }
 
