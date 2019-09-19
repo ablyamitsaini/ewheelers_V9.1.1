@@ -328,7 +328,7 @@ class DummyController extends MyAppController
 
     public function test()
     {
-        echo CommonHelper::displayMoneyFormat(13002.00, true, false, false);
+        echo FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'favicon', array(1)), CONF_IMG_CACHE_TIME, '.jpg');
         exit;
         $srch = new ProductSearch(1);
         $srch->setDefinedCriteria();

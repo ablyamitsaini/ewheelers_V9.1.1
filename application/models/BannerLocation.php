@@ -67,7 +67,7 @@ class BannerLocation extends MyAppModel
             $bsrch->addMinimiumWalletbalanceCondition();
             $bsrch->addSkipExpiredPromotionAndBannerCondition();
             $bsrch->joinBudget();
-            $bsrch->addMultipleFields(array('banner_id','banner_blocation_id','banner_type','banner_record_id','banner_url','banner_target','banner_title','promotion_id','daily_cost','weekly_cost','monthly_cost','total_cost'));
+            $bsrch->addMultipleFields(array('banner_id','banner_blocation_id','banner_type','banner_record_id','banner_url','banner_target','banner_title','promotion_id','daily_cost','weekly_cost','monthly_cost','total_cost','banner_img_updated_on'));
             $bsrch->doNotCalculateRecords();
             //$bsrch->doNotLimitRecords();
             $bsrch->joinAttachedFile();
@@ -84,7 +84,7 @@ class BannerLocation extends MyAppModel
 				  END ) )'
             );
 
-            $srch->addMultipleFields(array('banner_id','banner_blocation_id','banner_type','banner_record_id','banner_url','banner_target','banner_title','promotion_id','userBalance','daily_cost','weekly_cost','monthly_cost','total_cost','promotion_budget','promotion_duration'));
+            $srch->addMultipleFields(array('banner_id','banner_blocation_id','banner_type','banner_record_id','banner_url','banner_target','banner_title','promotion_id','userBalance','daily_cost','weekly_cost','monthly_cost','total_cost','promotion_budget','promotion_duration','banner_img_updated_on'));
             if ($val['blocation_banner_count'] > 0) {
                 $pageSize = $val['blocation_banner_count'];
             }
