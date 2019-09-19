@@ -67,6 +67,36 @@ class AttachedFile extends MyAppModel
     {
         parent::__construct(static::DB_TBL, static::DB_TBL_PREFIX . 'id', $fileId);
         $this->objMainTableRecord->setSensitiveFields(array());
+        ini_set('post_max_size', '64M');
+        ini_set('upload_max_filesize', '64M');
+    }
+
+    public static function returnBytes($val)
+    {
+        $val = trim($val);
+        $last = strtolower($val[strlen($val)-1]);
+        switch ($last) {
+            case 'm':
+            case 'k':
+                $val *= 1024;
+                break;
+            default:
+                $val = 1024;
+                break;
+        }
+        return $val;
+    }
+
+    public static function maxFileUploadInBytes()
+    {
+        //select maximum upload size
+        $maxUpload = static::returnBytes(ini_get('upload_max_filesize'));
+        //select post limit
+        $maxPost = static::returnBytes(ini_get('post_max_size'));
+        //select memory limit
+        $memoryLimit = static::returnBytes(ini_get('memory_limit'));
+        // return the smallest of them, this defines the real limit
+        return min($maxUpload, $maxPost, $memoryLimit);
     }
 
     public static function getSearchObject()
@@ -88,11 +118,31 @@ class AttachedFile extends MyAppModel
         return $arr;
     }
 
+    // $compareSize in KiloByte
+    public function isUploadedFile($fileTmpName, $compareSize = 0)
+    {
+        $compareSize = FatUtility::int($compareSize);
+        if (1 > $compareSize || static::maxFileUploadInBytes() < $compareSize) {
+            $compareSize = static::maxFileUploadInBytes();
+        }
+
+        if (filesize($fileTmpName) > $compareSize) {
+            $this->error = Labels::getLabel('MSG_INVALID_SIZE', CommonHelper::getLangId());
+            return false;
+        }
+
+        if (!is_uploaded_file($fileTmpName, $compareSize)) {
+            $this->error = Labels::getLabel('MSG_Unable_To_Upload_File', CommonHelper::getLangId());
+            return false;
+        }
+
+        return true;
+    }
+
     public static function checkSize($file, $compareSize)
     {
         $compareSize = FatUtility::convertToType($compareSize, FatUtility::VAR_FLOAT);
         if (filesize($file) > $compareSize) {
-            $this->error = Labels::getLabel('MSG_INVALID_SIZE', CommonHelper::getLangId());
             return false;
         }
         return true;
@@ -483,7 +533,8 @@ class AttachedFile extends MyAppModel
         header("Expires: " . date('r', strtotime("+30 days")));
     }
 
-    public static function setContentType($fileMimeType){
+    public static function setContentType($fileMimeType)
+    {
         if ($fileMimeType != '') {
             header("content-type: ".$fileMimeType);
         } else {
@@ -491,7 +542,8 @@ class AttachedFile extends MyAppModel
         }
     }
 
-    public static function setLastModified($image_name){
+    public static function setLastModified($image_name)
+    {
         header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($image_name)) . ' GMT', true, 200);
     }
 

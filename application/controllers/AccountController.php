@@ -229,12 +229,11 @@ class AccountController extends LoggedUserController
         }
         $field_id = $post['field_id'];
 
-        if (!is_uploaded_file($_FILES['file']['tmp_name'])) {
-            /* Message::addErrorMessage(Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId)); */
-            FatUtility::dieJsonError(Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId));
+        $fileHandlerObj = new AttachedFile();
+        if (!$fileHandlerObj->isUploadedFile($_FILES['file']['tmp_name'])) {
+            FatUtility::dieJsonError($fileHandlerObj->getError());
         }
 
-        $fileHandlerObj = new AttachedFile();
         $fileHandlerObj->deleteFile($fileHandlerObj::FILETYPE_SELLER_APPROVAL_FILE, $userId, 0, $field_id);
 
         if (!$res = $fileHandlerObj->saveAttachment(
@@ -943,13 +942,11 @@ class AccountController extends LoggedUserController
             $message = Labels::getLabel('LBL_Invalid_Request_Or_File_not_supported', $this->siteLangId);
             FatUtility::dieJsonError($message);
         }
+        $fileHandlerObj = new AttachedFile();
         if ($post['action'] == "demo_avatar") {
-            if (!is_uploaded_file($_FILES['user_profile_image']['tmp_name'])) {
-                $message = Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId);
-                FatUtility::dieJsonError($message);
+            if (!$fileHandlerObj->isUploadedFile($_FILES['user_profile_image']['tmp_name'])) {
+                FatUtility::dieJsonError($fileHandlerObj->getError());
             }
-
-            $fileHandlerObj = new AttachedFile();
 
             if (!$res = $fileHandlerObj->saveImage($_FILES['user_profile_image']['tmp_name'], AttachedFile::FILETYPE_USER_PROFILE_IMAGE, $userId, 0, $_FILES['user_profile_image']['name'], -1, $unique_record = true)
             ) {
@@ -965,12 +962,10 @@ class AccountController extends LoggedUserController
         }
 
         if ($post['action'] == "avatar") {
-            if (!is_uploaded_file($_FILES['user_profile_image']['tmp_name'])) {
-                $message = Labels::getLabel(Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId), $this->siteLangId);
-                FatUtility::dieJsonError($message);
+            if (!$fileHandlerObj->isUploadedFile($_FILES['user_profile_image']['tmp_name'])) {
+                FatUtility::dieJsonError($fileHandlerObj->getError());
             }
 
-            $fileHandlerObj = new AttachedFile();
 
             if (!$res = $fileHandlerObj->saveImage($_FILES['user_profile_image']['tmp_name'], AttachedFile::FILETYPE_USER_PROFILE_CROPED_IMAGE, $userId, 0, $_FILES['user_profile_image']['name'], -1, $unique_record = true)
             ) {
