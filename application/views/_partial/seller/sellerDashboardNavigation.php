@@ -52,11 +52,26 @@ $action = strtolower($action);
                 <div class="menu__item__inner"> <span class="menu-head"><?php echo Labels::getLabel('LBL_Promotions', $siteLangId);?></span></div>
             </li>
             <li class="menu__item <?php echo ($controller == 'seller' && $action == 'specialprice') ? 'is-active' : ''; ?>">
-                <div class="menu__item__inner"><a title="<?php echo Labels::getLabel('LBL_Special_Price', $siteLangId);?>" href="<?php echo CommonHelper::generateUrl('Seller', 'specialPrice'); ?>">
+                <div class="menu__item__inner">
+                    <a title="<?php echo Labels::getLabel('LBL_Special_Price', $siteLangId);?>" href="<?php echo CommonHelper::generateUrl('Seller', 'specialPrice'); ?>">
                         <i class="icn shop"><svg class="svg">
                                 <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-offers" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-offers"></use>
                             </svg>
-                        </i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Special_Price', $siteLangId);?></span></a></div>
+                        </i>
+                        <span class="menu-item__title"><?php echo Labels::getLabel('LBL_Special_Price', $siteLangId);?></span>
+                    </a>
+                </div>
+            </li> 
+            <li class="divider"></li>
+            <li class="menu__item">
+                <div class="menu__item__inner"> <span class="menu-head"><?php echo Labels::getLabel('LBL_Promotions', $siteLangId);?></span></div>
+            </li>
+            <li class="menu__item <?php echo ($controller == 'seller' && $action == 'volumediscount') ? 'is-active' : ''; ?>">
+                <div class="menu__item__inner"><a title="<?php echo Labels::getLabel('LBL_Volume_Discount', $siteLangId);?>" href="<?php echo CommonHelper::generateUrl('Seller', 'volumeDiscount'); ?>">
+                        <i class="icn shop"><svg class="svg">
+                                <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-offers" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-offers"></use>
+                            </svg>
+                        </i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Volume_Discount', $siteLangId);?></span></a></div>
             </li>
             <li class="divider"></li>
              <li class="menu__item">

@@ -346,7 +346,6 @@ class SellerProduct extends MyAppModel
     public static function getAttributesById($recordId, $attr = null, $fetchOptions = true)
     {
         $row = parent::getAttributesById($recordId, $attr);
-
         /* get seller product options[ */
         if ($fetchOptions) {
             $op = static::getSellerProductOptions($recordId, false);
@@ -910,7 +909,22 @@ class SellerProduct extends MyAppModel
 
         $frm->addHiddenField('', 'splprice_selprod_id');
         $frm->addHiddenField('', 'splprice_id');
+        $fld1 = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $langId));
+        $fld2 = $frm->addButton('', 'btn_cancel', Labels::getLabel('LBL_Cancel', $langId), array('onClick' => 'javascript:$("#sellerProductsForm").html(\'\')'));
+        $fld1->attachField($fld2);
+        return $frm;
+    }
 
+    public static function volumeDiscountForm($langId)
+    {
+        $frm = new Form('frmSellerProductSpecialPrice');
+
+        $frm->addHiddenField('', 'voldiscount_selprod_id', 0);
+        $frm->addHiddenField('', 'voldiscount_id', 0);
+        $qtyFld = $frm->addIntegerField(Labels::getLabel("LBL_Minimum_Quantity", $langId), 'voldiscount_min_qty');
+        $qtyFld->requirements()->setPositive();
+        $discountFld = $frm->addFloatField(Labels::getLabel("LBL_Discount_in_(%)", $langId), "voldiscount_percentage");
+        $discountFld->requirements()->setPositive();
         $fld1 = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $langId));
         $fld2 = $frm->addButton('', 'btn_cancel', Labels::getLabel('LBL_Cancel', $langId), array('onClick' => 'javascript:$("#sellerProductsForm").html(\'\')'));
         $fld1->attachField($fld2);
@@ -933,7 +947,6 @@ class SellerProduct extends MyAppModel
         if (0 < $selProdId) {
             $srch->addCondition('selprod_id', '=', $selProdId);
         }
-
         if (!empty($keyword)) {
             $cnd = $srch->addCondition('product_name', 'like', "%$keyword%");
             $cnd->attachCondition('selprod_title', 'LIKE', '%'. $keyword . '%', 'OR');
@@ -948,6 +961,39 @@ class SellerProduct extends MyAppModel
         $srch->addOrder('selprod_active', 'DESC');
         $srch->addOrder('selprod_added_on', 'DESC');
         $srch->setPageSize($pageSize);
+        return $srch;
+    }
+
+    public static function searchVolumeDiscountProducts($langId, $selProdId = 0, $keyword = '', $userId = 0)
+    {
+        $pageSize = FatApp::getConfig('CONF_PAGE_SIZE', FatUtility::VAR_INT, 10);
+        $srch = SellerProduct::getSearchObject($langId);
+        $srch->joinTable(Product::DB_TBL, 'INNER JOIN', 'p.product_id = sp.selprod_product_id', 'p');
+        $srch->joinTable(SellerProductVolumeDiscount::DB_TBL, 'INNER JOIN', 'vd.voldiscount_selprod_id = sp.selprod_id', 'vd');
+        $srch->joinTable(Product::DB_LANG_TBL, 'LEFT OUTER JOIN', 'p.product_id = p_l.productlang_product_id AND p_l.productlang_lang_id = '.$langId, 'p_l');
+        $srch->addMultipleFields(
+            array(
+            'selprod_id', 'voldiscount_min_qty', 'voldiscount_percentage', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title', 'voldiscount_id')
+        );
+
+        if (0 < $selProdId) {
+            $srch->addCondition('selprod_id', '=', $selProdId);
+        }
+
+
+        if ($keyword != '') {
+            $cnd = $srch->addCondition('product_name', 'like', "%$keyword%");
+            $cnd->attachCondition('selprod_title', 'LIKE', '%'. $keyword . '%', 'OR');
+        }
+
+        if (0 < $userId) {
+            $srch->addCondition('selprod_user_id', '=', $userId);
+        }
+
+        $srch->addCondition('selprod_active', '=', applicationConstants::ACTIVE);
+        $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
+        $srch->setPageSize($pageSize);
+        $srch->addOrder('voldiscount_id', 'DESC');
         return $srch;
     }
 }

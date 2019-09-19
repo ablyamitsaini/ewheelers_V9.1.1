@@ -1,5 +1,9 @@
 New Features :
 	> Task - 66013 - Special Price Module
+	> Task - 66013 - Volume Discount Module
+
+Updates:
+    > Message - 1017343 - Volume Discount Module.
 
 Enhancements :
     -> Display System image for product and banners

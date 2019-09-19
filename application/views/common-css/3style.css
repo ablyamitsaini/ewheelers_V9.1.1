@@ -1867,6 +1867,14 @@ body.fixed .top-bar {
 	flex-direction: column;
 }
 
+.cms p {
+	color: var(--txt-color);
+	font-weight: 400;
+	font-size: 0.875rem;
+	line-height: 1.8;
+	margin-bottom: 1rem;
+	word-break: break-word;
+}
 
 .cart-detail .cartdetail__footer {
 	padding: 1rem;
@@ -14129,6 +14137,7 @@ div.faqanswer p {
 	line-height: 2.5rem;
 	display: block;	
 	width: 110px;
+	max-width: 70px;
 	border: solid 1px transparent;
 }
 

@@ -156,5 +156,14 @@ $(document).on('change','.selprodoption_optionvalue_id',function(){
 	    }
 		$("#frmSellerProductsListing").attr({'action': fcom.makeUrl('Seller','specialPrice'), 'target':"_blank"}).removeAttr('onsubmit').submit();
 		loadSellerProducts(document.frmSearch);
+	}
+	
+	addVolumeDiscount = function(){
+		if (typeof $(".selectItem--js:checked").val() === 'undefined') {
+	        $.systemMessage(langLbl.atleastOneRecord, 'alert--danger');
+	        return false;
+	    }
+		$("#frmSellerProductsListing").attr({'action': fcom.makeUrl('Seller','volumeDiscount'), 'target':"_blank"}).removeAttr('onsubmit').submit();
+		loadSellerProducts(document.frmSearchSellerProducts);
 	};
 })();
