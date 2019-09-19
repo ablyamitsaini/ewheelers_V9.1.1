@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ALTER TABLE `tbl_orders_status` ADD `orderstatus_color_code` VARCHAR(10) NULL DEFAULT NULL AFTER `orderstatus_identifier`;
 
 DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'M_APP_NOTIFICATION_THANK_YOU_FOR_REGISTERING';
