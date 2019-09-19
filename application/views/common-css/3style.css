@@ -7080,7 +7080,7 @@ a.loadmore.loading {
 }
 
 .quantity .increase {
-	border-left: solid 1px var(--border-color);
+	border-inline-start: solid 1px var(--border-color);
 }
 
 .quantity .decrease {
@@ -12863,6 +12863,7 @@ html.quick-view--open {
 	/* stops flickering */
 	/*	-webkit-backface-visibility: hidden;*/
 	position: absolute;
+	top: 100%;
 	z-index: 1;
 	background: #fff;
 	box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.05);

@@ -289,7 +289,7 @@
   	-moz-margin-end: -3px;
   	margin-inline-end: -3px;
   	border: solid 1px var(--border-color);
-  	border-radius: 50px 0 0 50px;
+  	border-radius: 50px 0 0 50px;	
   	color: var(--txt-color);
   	vertical-align: top;
   }
@@ -332,7 +332,9 @@
   }
 
   .posted-by span {
-  	border-right: solid 1px var(--border-color);
+  	-webkit-border-end: solid 1px var(--border-color);
+  	   -moz-border-end: solid 1px var(--border-color);
+  	        border-inline-end: solid 1px var(--border-color);
   	-webkit-padding-end: 1rem;
   	-moz-padding-end: 1rem;
   	padding-inline-end: 1rem;
