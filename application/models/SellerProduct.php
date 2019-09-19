@@ -483,27 +483,42 @@ class SellerProduct extends MyAppModel
         return $db->fetch($rs);
     }
 
-    public function deleteSellerProductSpecialPrice($splprice_id, $splprice_selprod_id)
+    public function deleteSellerProductSpecialPrice($splprice_id, $splprice_selprod_id, $userId = 0)
     {
         $splprice_id = FatUtility::int($splprice_id);
         $splprice_selprod_id = FatUtility::int($splprice_selprod_id);
         if (!$splprice_id || !$splprice_selprod_id) {
             trigger_error(Labels::getLabel('ERR_Invalid_Arguments', CommonHelper::getLangId()), E_USER_ERROR);
         }
+        if (0 < $userId) {
+            $selProdUserId = SellerProduct::getAttributesById($splprice_selprod_id, 'selprod_user_id', false);
+            if ($selProdUserId != $userId) {
+                $this->error = Labels::getLabel('ERR_Invalid_Request', CommonHelper::getLangId());
+                return false;
+            }
+        }
         $db = FatApp::getDb();
-        if (!$db->deleteRecords(static::DB_TBL_SELLER_PROD_SPCL_PRICE, array( 'smt' => 'splprice_id = ? AND splprice_selprod_id = ?', 'vals' => array($splprice_id, $splprice_selprod_id) ))) {
+        $smt = 'splprice_id = ? AND splprice_selprod_id = ? ';
+        $smtValues = array($splprice_id, $splprice_selprod_id);
+        if (!$db->deleteRecords(static::DB_TBL_SELLER_PROD_SPCL_PRICE, array( 'smt' => $smt, 'vals' => $smtValues))) {
             $this->error = $db->getError();
             return false;
         }
         return true;
     }
 
-    public function addUpdateSellerProductSpecialPrice($data)
+    public function addUpdateSellerProductSpecialPrice($data, $return = false)
     {
         $db = FatApp::getDb();
         if (!$db->insertFromArray(static::DB_TBL_SELLER_PROD_SPCL_PRICE, $data, false, array(), $data)) {
             $this->error = $db->getError();
             return false;
+        }
+        if (true === $return) {
+            if (!empty($data['splprice_id'])) {
+                return $data['splprice_id'];
+            }
+            return FatApp::getDb()->getInsertId();
         }
         return true;
     }
@@ -737,29 +752,49 @@ class SellerProduct extends MyAppModel
         return FatApp::getDb()->fetch($srch->getResultSet());
     }
 
-    public static function getProductDisplayTitle($selprod_id, $langId)
+    public static function getProductDisplayTitle($selProdId, $langId, $toHtml = false)
     {
         $prodSrch = new ProductSearch($langId, null, null, true, false);
         $prodSrch->joinSellerProducts(0, '', array(), false);
-        $prodSrch->addCondition('selprod_id', '=', $selprod_id);
-        $prodSrch->addMultipleFields(array('product_id','product_identifier', 'IFNULL(product_name, product_identifier) as product_name'));
-        $productRs = $prodSrch->getResultSet();
-        $products = FatApp::getDb()->fetch($productRs);
-        $variantStr = (!empty($products['product_name'])) ? $products['product_name'] : $products['product_identifier'];
-
-        $options = static::getSellerProductOptions($selprod_id, true, $langId);
-        if (is_array($options) && count($options)) {
-            $variantStr .= ' - ';
-            $counter = 1;
-            foreach ($options as $op) {
-                $variantStr .= $op['optionvalue_name'];
-                if ($counter != count($options)) {
-                    $variantStr .= ' - ';
-                }
-                $counter++;
-            }
+        if (is_array($selProdId) && 0 < count($selProdId)) {
+            $prodSrch->addCondition('selprod_id', 'IN', $selProdId);
+        } else {
+            $prodSrch->addCondition('selprod_id', '=', $selProdId);
         }
-        return $variantStr;
+        $prodSrch->addMultipleFields(array('selprod_id', 'product_id','product_identifier', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title'));
+        $prodSrch->addGroupBy('selprod_id');
+        $productRs = $prodSrch->getResultSet();
+        $products = FatApp::getDb()->fetchAll($productRs, 'selprod_id');
+
+        $productTitle = SellerProduct::getProductsOptionsString($products, $langId, $toHtml);
+
+        return (is_array($selProdId)) ? $productTitle : $productTitle[$selProdId];
+    }
+
+    public static function getProductsOptionsString($products, $langId, $toHtml = false)
+    {
+        if (empty($products) || empty($langId)) {
+            return false;
+        }
+        $optionsStringArr = array();
+        foreach ($products as $selProdId => $product) {
+            $variantStr = (!empty($product['product_name'])) ? $product['product_name'] : $product['selprod_title'];
+
+            $options = static::getSellerProductOptions($selProdId, true, $langId);
+            if (is_array($options) && count($options)) {
+                $variantStr .= (true === $toHtml) ? '<br/>' : ' - ';
+                $counter = 1;
+                foreach ($options as $op) {
+                    $variantStr .= (true === $toHtml) ? $op['option_name'].': '.$op['optionvalue_name'] : $op['optionvalue_name'];
+                    if ($counter != count($options)) {
+                        $variantStr .= (true === $toHtml) ? '<br/>' : ' - ';
+                    }
+                    $counter++;
+                }
+            }
+            $optionsStringArr[$selProdId] = $variantStr;
+        }
+        return $optionsStringArr;
     }
 
     public function getVolumeDiscounts()
@@ -843,6 +878,7 @@ class SellerProduct extends MyAppModel
         $records = $db->fetchAll($rs);
         return $srch->recordCount();
     }
+
     public function joinUserWishListProducts($srch, $user_id)
     {
         $wislistPSrchObj = new UserWishListProductSearch();
@@ -854,8 +890,64 @@ class SellerProduct extends MyAppModel
         $wishListSubQuery = $wislistPSrchObj->getQuery();
         $srch->joinTable('(' . $wishListSubQuery . ')', 'LEFT OUTER JOIN', 'uwlp.uwlp_selprod_id = selprod_id', 'uwlp');
     }
+
     public function joinFavouriteProducts($srch, $user_id)
     {
         $srch->joinTable(Product::DB_TBL_PRODUCT_FAVORITE, 'LEFT OUTER JOIN', 'ufp.ufp_selprod_id = selprod_id and ufp.ufp_user_id = '.$user_id, 'ufp');
+    }
+
+    public static function specialPriceForm($langId)
+    {
+        $frm = new Form('frmSellerProductSpecialPrice');
+        $fld = $frm->addFloatField(Labels::getLabel('LBL_Special_Price', $langId).CommonHelper::concatCurrencySymbolWithAmtLbl(), 'splprice_price');
+        $fld->requirements()->setPositive();
+        $fld = $frm->addDateField(Labels::getLabel('LBL_Price_Start_Date', $langId), 'splprice_start_date', '', array('readonly' => 'readonly'));
+        $fld->requirements()->setRequired();
+
+        $fld = $frm->addDateField(Labels::getLabel('LBL_Price_End_Date', $langId), 'splprice_end_date', '', array('readonly' => 'readonly'));
+        $fld->requirements()->setRequired();
+        $fld->requirements()->setCompareWith('splprice_start_date', 'ge', Labels::getLabel('LBL_Price_Start_Date', $langId));
+
+        $frm->addHiddenField('', 'splprice_selprod_id');
+        $frm->addHiddenField('', 'splprice_id');
+
+        $fld1 = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $langId));
+        $fld2 = $frm->addButton('', 'btn_cancel', Labels::getLabel('LBL_Cancel', $langId), array('onClick' => 'javascript:$("#sellerProductsForm").html(\'\')'));
+        $fld1->attachField($fld2);
+        return $frm;
+    }
+
+    public static function searchSpecialPriceProductsObj($langId, $selProdId = 0, $keyword = '', $userId = 0)
+    {
+        $pageSize = FatApp::getConfig('CONF_PAGE_SIZE', FatUtility::VAR_INT, 10);
+        $srch = static::getSearchObject($langId);
+        $srch->joinTable(Product::DB_TBL, 'INNER JOIN', 'p.product_id = sp.selprod_product_id', 'p');
+        $srch->joinTable(SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE, 'INNER JOIN', 'spp.splprice_selprod_id = sp.selprod_id', 'spp');
+        $srch->joinTable(Product::DB_LANG_TBL, 'LEFT OUTER JOIN', 'p.product_id = p_l.productlang_product_id AND p_l.productlang_lang_id = '.$langId, 'p_l');
+
+        $srch->addMultipleFields(
+            array(
+            'selprod_id', 'selprod_price', 'date(splprice_start_date) as splprice_start_date', 'splprice_end_date', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title', 'splprice_id', 'splprice_price')
+        );
+
+        if (0 < $selProdId) {
+            $srch->addCondition('selprod_id', '=', $selProdId);
+        }
+
+        if (!empty($keyword)) {
+            $cnd = $srch->addCondition('product_name', 'like', "%$keyword%");
+            $cnd->attachCondition('selprod_title', 'LIKE', '%'. $keyword . '%', 'OR');
+        }
+
+        if (0 < $userId) {
+            $srch->addCondition('selprod_user_id', '=', $userId);
+        }
+
+        $srch->addCondition('selprod_active', '=', applicationConstants::ACTIVE);
+        $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
+        $srch->addOrder('selprod_active', 'DESC');
+        $srch->addOrder('selprod_added_on', 'DESC');
+        $srch->setPageSize($pageSize);
+        return $srch;
     }
 }

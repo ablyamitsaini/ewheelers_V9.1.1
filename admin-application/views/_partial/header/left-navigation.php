@@ -49,8 +49,8 @@
 					<?php
 					if($objPrivilege->canViewProducts(AdminAuthentication::getLoggedAdminId(), true)){?>
 					<li><a href="<?php echo CommonHelper::generateUrl('products');?>"><?php echo Labels::getLabel('LBL_Products',$adminLangId);?></a></li>
-					<?php }if($objPrivilege->canViewProducts(AdminAuthentication::getLoggedAdminId(), true)){?>
-					<li><a href="<?php echo CommonHelper::generateUrl('sellerProducts');?>"><?php echo Labels::getLabel('LBL_Seller_Inventory',$adminLangId);?></a></li>
+                    <li><a href="<?php echo CommonHelper::generateUrl('sellerProducts', 'index');?>"><?php echo Labels::getLabel('LBL_Seller_Inventory',$adminLangId);?></a></li>
+                    <li><a href="<?php echo CommonHelper::generateUrl('sellerProducts', 'specialPrice');?>"><?php echo Labels::getLabel('LBL_Special_Price',$adminLangId);?></a></li>
 					<?php }/* if($objPrivilege->canViewProducts(AdminAuthentication::getLoggedAdminId(), true)){ ?>
 					<li><a href="<?php echo CommonHelper::generateUrl('sellerProducts','catalog');?>"><?php echo Labels::getLabel('LBL_Add_New_Product',$adminLangId);?></a></li>
 					<?php } */ ?>

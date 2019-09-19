@@ -1366,4 +1366,5 @@ class AdminPrivilege
     {
         return $this->checkPermission($adminId, static::SECTION_USER_REQUESTS, static::PRIVILEGE_WRITE, $returnResult);
     }
+    
 }

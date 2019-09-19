@@ -34,7 +34,6 @@
 </div>
 <script>
 $(document).ready(function(){
-	$('.start_date_js').datepicker('option', {minDate: new Date()});
-	$('.end_date_js').datepicker('option', {minDate: new Date()});
+	setCurrDateFordatePicker();
 });
 </script>

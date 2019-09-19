@@ -5,9 +5,9 @@
 <div class="cards">
 <?php if(count($arrListing) > 0) { ?>
 <div class="cards-header p-4">
-    <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Special_price_setup', $siteLangId); ?></h5>
+    <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Special_price', $siteLangId); ?></h5>
     <div class="action">
-    <a class="btn btn--primary btn--sm" href="javascript:void(0); " onClick="sellerProductSpecialPriceForm(<?php echo $selprod_id; ?>, 0);"><?php echo Labels::getLabel( 'LBL_Add_New_Special_Price', $siteLangId)?></a>
+    <a class="btn btn--primary btn--sm" href="<?php echo CommonHelper::generateUrl('Seller', 'specialPriceList', array($selprod_id)); ?>"><?php echo Labels::getLabel( 'LBL_Manage_Special_Price', $siteLangId)?></a>
     </div>
 </div>
 <?php } ?>
@@ -21,7 +21,7 @@
         'splprice_price' => Labels::getLabel('LBL_Special_Price', $siteLangId),
         'splprice_start_date' => Labels::getLabel('LBL_Start_Date', $siteLangId),
         'splprice_end_date' => Labels::getLabel('LBL_End_Date', $siteLangId),
-        'action' => Labels::getLabel('LBL_Action', $siteLangId),
+        // 'action' => Labels::getLabel('LBL_Action', $siteLangId),
         );
         $tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table--orders'));
         $th = $tbl->appendElement('thead')->appendElement('tr', array('class' => ''));
@@ -49,11 +49,11 @@
                         $td->appendElement('plaintext', array(), FatDate::format($row[$key]), true);
                         break;
                     case 'action':
-                        $ul = $td->appendElement("ul", array("class"=>"actions"), '', true);
+                        /*$ul = $td->appendElement("ul", array("class"=>"actions"), '', true);
                         $li = $ul->appendElement("li");
                         $li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'', 'title'=>Labels::getLabel('LBL_Edit', $siteLangId), "onclick"=>"sellerProductSpecialPriceForm(".$selprod_id.", ".$row['splprice_id'].")"), '<i class="fa fa-edit"></i>', true);
                         $li = $ul->appendElement("li");
-                        $li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'', 'title'=>Labels::getLabel('LBL_Delete', $siteLangId), "onclick"=>"deleteSellerProductSpecialPrice(".$row['splprice_id'].")"), '<i class="fa fa-trash"></i>', true);
+                        $li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'', 'title'=>Labels::getLabel('LBL_Delete', $siteLangId), "onclick"=>"deleteSellerProductSpecialPrice(".$row['splprice_id'].")"), '<i class="fa fa-trash"></i>', true);*/
                         break;
                     default:
                         $td->appendElement('plaintext', array(), $row[$key], true);
