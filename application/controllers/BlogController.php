@@ -460,12 +460,13 @@
 
         $uploadedFile = $_FILES['file']['tmp_name'];
 
-        if (!AttachedFile::checkSize($uploadedFile, 10240000)) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Please_upload_file_size_less_than_10MB', $this->siteLangId));
+        $fileHandlerObj = new AttachedFile();
+        if (!$fileHandlerObj->isUploadedFile($uploadedFile)) {
+            Message::addErrorMessage($fileHandlerObj->getError());
             $this->contributionForm();
             return false;
         }
-
+        
         $contribution = new BlogContribution();
         $contribution->assignValues($post);
         if (!$contribution->save()) {
@@ -488,7 +489,6 @@
             FatUtility::dieJsonError(Message::getHtml());
         }
 
-        $fileHandlerObj = new AttachedFile();
         if (!$res = $fileHandlerObj->saveAttachment($_FILES['file']['tmp_name'], AttachedFile::FILETYPE_BLOG_CONTRIBUTION, $contributionId, 0, $_FILES['file']['name'], -1, $unique_record = true)) {
             Message::addErrorMessage($fileHandlerObj->getError());
             $this->contributionForm();
