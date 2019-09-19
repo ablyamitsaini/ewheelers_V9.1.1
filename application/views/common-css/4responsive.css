@@ -852,7 +852,8 @@
 	}
 
 	.table {
-		display: block;
+		/*display: block;*/
+		display: inline-table;
 		overflow-x: auto;
 	}
 

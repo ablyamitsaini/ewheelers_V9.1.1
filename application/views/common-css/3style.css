@@ -7527,7 +7527,8 @@ a.loadmore.loading {
 
 .message {
 	text-align: center;
-	max-width: 600px; margin: 0 auto;
+	max-width: 600px;
+	margin: 0 auto;
 
 }
 
@@ -7540,6 +7541,96 @@ a.loadmore.loading {
 	font-size: 6em;
 	color: #24b26b;
 	margin: 0 0 10px 0;
+	-webkit-animation: fall-in 1s;
+	-moz-animation: fall-in 1s;
+	-o-animation: fall-in 1s;
+	animation: fall-in 1s;
+
+}
+
+
+@-webkit-keyframes fall-in {
+	0% {
+		-ms-transform: scale(3, 3);
+		-webkit-transform: scale(3, 3);
+		transform: scale(3, 3);
+		opacity: 0;
+	}
+
+	50% {
+		-ms-transform: scale(1, 1);
+		-webkit-transform: scale(1, 1);
+		transform: scale(1, 1);
+		opacity: 1;
+	}
+
+	60% {
+		-ms-transform: scale(1.1, 1.1);
+		-webkit-transform: scale(1.1, 1.1);
+		transform: scale(1.1, 1.1);
+	}
+
+	100% {
+		-ms-transform: scale(1, 1);
+		-webkit-transform: scale(1, 1);
+		transform: scale(1, 1);
+	}
+}
+
+@-moz-keyframes fall-in {
+	0% {
+		-ms-transform: scale(3, 3);
+		-webkit-transform: scale(3, 3);
+		transform: scale(3, 3);
+		opacity: 0;
+	}
+
+	50% {
+		-ms-transform: scale(1, 1);
+		-webkit-transform: scale(1, 1);
+		transform: scale(1, 1);
+		opacity: 1;
+	}
+
+	60% {
+		-ms-transform: scale(1.1, 1.1);
+		-webkit-transform: scale(1.1, 1.1);
+		transform: scale(1.1, 1.1);
+	}
+
+	100% {
+		-ms-transform: scale(1, 1);
+		-webkit-transform: scale(1, 1);
+		transform: scale(1, 1);
+	}
+}
+
+@-o-keyframes fall-in {
+	0% {
+		-ms-transform: scale(3, 3);
+		-webkit-transform: scale(3, 3);
+		transform: scale(3, 3);
+		opacity: 0;
+	}
+
+	50% {
+		-ms-transform: scale(1, 1);
+		-webkit-transform: scale(1, 1);
+		transform: scale(1, 1);
+		opacity: 1;
+	}
+
+	60% {
+		-ms-transform: scale(1.1, 1.1);
+		-webkit-transform: scale(1.1, 1.1);
+		transform: scale(1.1, 1.1);
+	}
+
+	100% {
+		-ms-transform: scale(1, 1);
+		-webkit-transform: scale(1, 1);
+		transform: scale(1, 1);
+	}
 }
 
 .message a {
@@ -14023,7 +14114,7 @@ h3.faqclose::after {
 	float: right;
 	font-size: 16px;
 	font-weight: 300;
-	line-height: 30px; 
+	line-height: 30px;
 }
 
 h3.faqclose::before {
