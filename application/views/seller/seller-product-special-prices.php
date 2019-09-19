@@ -13,7 +13,7 @@
 <?php } ?>
 <div class="cards-content pl-4 pr-4 ">
     <div class="row">
-    <div class="<?php echo (count($arrListing) > 0) ? 'col-md-6' : 'col-md-12' ;?>">
+    <div class="<?php echo (count($arrListing) > 0) ? 'col-md-12' : 'col-md-12' ;?>">
     <div class="form__subcontent">
     <?php
         $arr_flds = array(
