@@ -1267,6 +1267,7 @@ input:checked + .slider:before {
 .cms table td {
 	padding: 10px;
 	font-size: 0.875rem;
+	vertical-align: top;
 }
 
 .svg-loader {
