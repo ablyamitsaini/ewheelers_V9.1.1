@@ -9932,7 +9932,9 @@ html.quick-view--open {
 }
 
 .product-description .favourite {
-	position: static;
+	position: relative;
+	left:0;
+	top: 0;
 }
 
 
