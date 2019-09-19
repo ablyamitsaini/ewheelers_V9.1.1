@@ -3034,6 +3034,7 @@ img {
 
 .products-reviews a.totals-review {
 	color: var(--first-color) !important;
+	display: block;
 
 }
 
@@ -9933,7 +9934,7 @@ html.quick-view--open {
 
 .product-description .favourite {
 	position: relative;
-	left:0;
+	left: 0;
 	top: 0;
 }
 

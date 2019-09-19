@@ -211,7 +211,7 @@
 		margin-bottom: 0;
 	}
 
-	.slider-nav .slick-arrow.slick-prev {
+	.slider-nav .slick-arrow.slick-prev { right:auto;
 		left: 0;
 		top: 0;
 		bottom: 0;
