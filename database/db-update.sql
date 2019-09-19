@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ALTER TABLE `tbl_orders_status` ADD `orderstatus_color_code` VARCHAR(10) NULL DEFAULT NULL AFTER `orderstatus_identifier`;
 
 DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'M_APP_NOTIFICATION_THANK_YOU_FOR_REGISTERING';
@@ -64,3 +65,4 @@ DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE 'MSG_File_deleted_succe
 ALTER TABLE `tbl_language_labels` ADD `label_type` TINYINT(1) NOT NULL DEFAULT '1' AFTER `label_caption`;
 ALTER TABLE `tbl_banners` ADD `banner_img_updated_on` DATETIME NOT NULL AFTER `banner_display_order`;
 ALTER TABLE `tbl_slides` ADD `slide_img_updated_on` DATETIME NOT NULL AFTER `slide_display_order`;
+DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE '%LBL_Add_New_Special_Price%';

@@ -1,3 +1,10 @@
+New Features :
+	> Task - 66013 - Special Price Module
+	> Task - 66013 - Volume Discount Module
+
+Updates:
+    > Message - 1017343 - Volume Discount Module.
+
 Enhancements :
     -> Display System image for product and banners
     -> JS/CSS handled browser cache with 304 headers.
@@ -12,7 +19,7 @@ Bug:
     -> 030456 - under wallet> display upto 2 digits after decimal
     -> 030520 - in blog section> on search box> place holder needs to be updated
     -> 030519 - admin> seller inventory> special price> button and heading are not aligned
-    
+
 API Feature:
     -> Downnload digital files in app.
 

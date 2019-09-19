@@ -82,6 +82,11 @@ $(document).ready(function() {
     });
 });
 
+function setCurrDateFordatePicker() {
+    $('.start_date_js').datepicker('option', {minDate: new Date()});
+	$('.end_date_js').datepicker('option', {minDate: new Date()});
+}
+
 function showFormActionsBtns() {
     if (typeof $(".selectItem--js:checked").val() === 'undefined') {
         $(".formActionBtn-js").addClass('formActions-css');
@@ -841,7 +846,7 @@ $(document).ready(function() {
         if(page == 'product-view'){
             return false;
         }
-        cart.update(key, page); 
+        cart.update(key, page);
     });
 
     $(document).on("change", '.productQty-js', function() {
@@ -874,7 +879,7 @@ $(document).ready(function() {
         }
         var key = $(this).parent().parent('div').find('input').attr('data-key');
         var page = $(this).parent().parent('div').find('input').attr('data-page');
-        
+
         val = parseInt(rval) - 1;
         if (val <= 1) {
             val = 1;
