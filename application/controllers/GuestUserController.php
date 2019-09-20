@@ -1468,8 +1468,8 @@ class GuestUserController extends MyAppController
         $emailFrm = $this->getChangeEmailForm(false);
         $post = $emailFrm->getFormDataFromArray(FatApp::getPostedData());
 
-        if (!$emailFrm->validate($post)) {
-            $message = $emailFrm->getValidationErrors();
+        if (false === $post) {
+            $message = current($emailFrm->getValidationErrors());
             FatUtility::dieJsonError(strip_tags($message));
         }
 
@@ -1488,7 +1488,6 @@ class GuestUserController extends MyAppController
         }
 
         $data = FatApp::getDb()->fetch($rs, 'user_id');
-
         if ($data === false || $data['credential_email'] != '') {
             $message = Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId);
             FatUtility::dieJsonError(strip_tags($message));
