@@ -1901,8 +1901,8 @@ class CommonHelper extends FatUtility
                 $val = strip_tags($val);
             }
             $str = str_replace($key, $val, $str);
-            $str = str_replace(strlower($key), $val, $str);
-            $str = str_replace(strupper($key), $val, $str);
+            $str = str_replace(strtolower($key), $val, $str);
+            $str = str_replace(strtoupper($key), $val, $str);
         }
         return $str;
     }
