@@ -245,7 +245,6 @@ class Navigation
 
         /* ] */
 
-
         $srch = new NavigationLinkSearch($siteLangId);
         $srch->joinTable('('.$prodSrchObj->getQuery().')', 'LEFT OUTER JOIN', 'qryProducts.prodcat_id = nlink_category_id', 'qryProducts');
         //$srch->joinTable( '('.$navCatSrch->getQuery().')', 'LEFT OUTER JOIN', 'catr.product_code like substr(GETCATCODE(prodcat_id),1,6)%', 'catr' );
