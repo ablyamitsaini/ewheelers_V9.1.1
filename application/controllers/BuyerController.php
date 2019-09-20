@@ -297,24 +297,27 @@ class BuyerController extends BuyerBaseController
         $userId = UserAuthentication::getLoggedUserId();
 
         if (1 > $linkId || 1 > $opId) {
-            Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
+            $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
+            FatUtility::dieJsonError(strip_tags($message));
         }
 
         $digitalDownloadLinks = Orders::getOrderProductDigitalDownloadLinks($opId, $linkId);
-
         if ($digitalDownloadLinks == false || empty($digitalDownloadLinks) || $digitalDownloadLinks[0]['order_user_id']!= $userId) {
-            Message::addErrorMessage(Labels::getLabel("MSG_INVALID_ACCESS", $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
+            $message = Labels::getLabel("MSG_INVALID_ACCESS", $this->siteLangId);
+            FatUtility::dieJsonError(strip_tags($message));
         }
         $res = array_shift($digitalDownloadLinks);
-
         if ($res == false || !$res['downloadable']) {
-            Message::addErrorMessage(Labels::getLabel("MSG_Link_is_not_available_to_download", $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
+            $message = Labels::getLabel("MSG_Link_is_not_available_to_download", $this->siteLangId);
+            FatUtility::dieJsonError(strip_tags($message));
         }
         OrderProductDigitalLinks::updateDownloadCount($linkId);
-        FatUtility::dieJsonSuccess(Labels::getLabel("MSG_Successfully_redirected", $this->siteLangId));
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->set('data', ['link' => trim($res['opddl_downloadable_link'])]);
+            $this->_template->render();
+        }
+        $message = Labels::getLabel("MSG_Successfully_redirected", $this->siteLangId);
+        FatUtility::dieJsonSuccess($message);
     }
 
     /* public function myAddresses(){
