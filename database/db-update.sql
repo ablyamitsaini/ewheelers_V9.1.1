@@ -75,3 +75,21 @@ UPDATE `tbl_language_labels` SET `label_key`= 'APP_RETURN_FOR_{return-prod-title
 UPDATE `tbl_language_labels` SET `label_key`= 'APP_NEW_MESSAGE_POSTED_BY_{username}_ON_RETURN_{request-number}',`label_caption`= 'New message posted by {username} on return request {request-number}' WHERE `label_key` = 'APP_NEW_MESSAGE_POASTED_BY_{username}_ON_RETURN_{request_number}';
 UPDATE `tbl_language_labels` SET `label_key`= 'APP_STATUS_FOR_CANCELLATION_{invoice-number}_UPDATED_{request-status}',`label_caption`= 'Status for order cancellation invoice {invoice-number} has been updated to {request-status}' WHERE `label_key` = 'APP_STATUS_FOR_CANCELLATION_{invoice_number}_UPDATED_{request_status}';
 UPDATE `tbl_language_labels` SET `label_key`= 'APP_REWARDS_{reward-points}_HAS_BEEN_{debit-credit-type}_ACCOUNT',`label_caption`= 'Reward points {reward-points} has been {debit-credit-type} to your account' WHERE `label_key` = 'APP_REWARDS_{reward_points}_HAS_BEEN_{debit_credit_type}_ACCOUNT';
+
+DELETE FROM `tbl_language_labels` WHERE `label_key`= 'APP_AMOUNT_{txn-amount}_WITH_{txn-id}_HAS_BEEN_{txn-type}';
+DELETE FROM `tbl_language_labels` WHERE `label_key`= 'APP_AMOUNT_{request-amount}_WITH_{request-id}_HAS_BEEN_{request-status}';
+DELETE FROM `tbl_language_labels` WHERE `label_key`= 'SAPP_RECEIVED_CANCELLATION_FOR_INVOICE_{invoice-number}';
+DELETE FROM `tbl_language_labels` WHERE `label_key`= 'SAPP_RECEIVED_RETURN_FROM_{username}_WITH_REFERENCE_NUMBER_{return-request-id}';
+DELETE FROM `tbl_language_labels` WHERE `label_key`= 'APP_RETURN_FOR_{return-prod-title}_with_{return-request-id}_SUBMITTED';
+DELETE FROM `tbl_language_labels` WHERE `label_key`= 'APP_NEW_MESSAGE_POSTED_BY_{username}_ON_RETURN_{request-number}';
+DELETE FROM `tbl_language_labels` WHERE `label_key`= 'APP_STATUS_FOR_CANCELLATION_{invoice-number}_UPDATED_{request-status}';
+DELETE FROM `tbl_language_labels` WHERE `label_key`= 'APP_REWARDS_{reward-points}_HAS_BEEN_{debit-credit-type}_ACCOUNT';
+
+INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('APP_AMOUNT_{txnamount}_WITH_{txnid}_HAS_BEEN_{txntype}', 1,'Amount {txnamount} with transaction id {txnid} has been {txntype} to your account');
+INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('APP_AMOUNT_{requestamount}_WITH_{requestid}_HAS_BEEN_{requeststatus}', 1,'Withdrawal Amount {requestamount} with request id {requestid} has been {requeststatus}');
+INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('SAPP_RECEIVED_CANCELLATION_FOR_INVOICE_{invoicenumber}', 1,'Cancellation request received for invoice {invoicenumber}');
+INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('SAPP_RECEIVED_RETURN_FROM_{username}_WITH_REFERENCE_NUMBER_{returnrequestid}', 1,'Return request received from {username} with reference number {returnrequestid}');
+INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('APP_RETURN_FOR_{returnprodtitle}_with_{returnrequestid}_SUBMITTED', 1,'Return request for {returnprodtitle} with reference number {returnrequestid} is successfully submitted.');
+INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('APP_NEW_MESSAGE_POSTED_BY_{username}_ON_RETURN_{requestnumber}', 1,'New message posted by {username} on return request {requestnumber}');
+INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('APP_STATUS_FOR_CANCELLATION_{invoicenumber}_UPDATED_{requeststatus}', 1,'Status for order cancellation invoice {invoicenumber} has been updated to {requeststatus}');
+INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('APP_REWARDS_{rewardpoints}_HAS_BEEN_{debitcredittype}_ACCOUNT', 1,'Reward points {rewardpoints} has been {debitcredittype} to your account');
