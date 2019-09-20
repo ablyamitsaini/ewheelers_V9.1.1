@@ -307,7 +307,6 @@ class GuestUserController extends MyAppController
             $firstName = FatApp::getPostedData('first_name', FatUtility::VAR_STRING, '');
             $facebookName = trim($firstName.' '.FatApp::getPostedData('last_name', FatUtility::VAR_STRING, ''));
         }
-
         if ((empty($facebookEmail) && empty($userFacebookId)) || empty($facebookName)) {
             FatUtility::dieJsonError(Labels::getLabel("MSG_INVALID_REQUEST", $this->siteLangId));
         }
@@ -325,15 +324,15 @@ class GuestUserController extends MyAppController
 
         $rs = $srch->getResultSet();
         $row = $db->fetch($rs);
-        // echo $srch->getQuery();die;
+        // CommonHelper::printArray($row, true);
         if ($row) {
             if ($row['credential_active'] != applicationConstants::ACTIVE) {
-                $message = Labels::getLabel("ERR_YOUR_ACCOUNT_HAS_BEEN_DEACTIVATED", $this->siteLangId);
+                $message = Labels::getLabel("ERR_YOUR_ACCOUNT_HAS_BEEN_DEACTIVATED", $this->siteLangId).'<<<';
                 if (true ===  MOBILE_APP_API_CALL) {
                     FatUtility::dieJsonError($message);
                 }
                 Message::addErrorMessage($message);
-                CommonHelper::redirectUserReferer();
+                // CommonHelper::redirectUserReferer();
             }
             if ($row['user_deleted'] == applicationConstants::YES) {
                 $message = Labels::getLabel("ERR_USER_INACTIVE_OR_DELETED", $this->siteLangId);
@@ -341,7 +340,7 @@ class GuestUserController extends MyAppController
                     FatUtility::dieJsonError($message);
                 }
                 Message::addErrorMessage(Labels::getLabel("ERR_USER_INACTIVE_OR_DELETED", $this->siteLangId));
-                CommonHelper::redirectUserReferer();
+                // CommonHelper::redirectUserReferer();
             }
 
             if (0 < $userType) {
@@ -363,7 +362,7 @@ class GuestUserController extends MyAppController
                     FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_User', $this->siteLangId));
                 }
             }
-
+            $userId = $row['user_id'];
             $userObj->setMainTableRecordId($row['user_id']);
 
             $arr = array('user_facebook_id' => $userFacebookId);
@@ -374,7 +373,7 @@ class GuestUserController extends MyAppController
                     FatUtility::dieJsonError($message);
                 }
                 Message::addErrorMessage($message);
-                CommonHelper::redirectUserReferer();
+                // CommonHelper::redirectUserReferer();
             }
         } else {
             $userType = (0 < $userType ? $userType : User::USER_TYPE_BUYER);
@@ -527,8 +526,8 @@ class GuestUserController extends MyAppController
                         FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_User', $this->siteLangId));
                     }
                 }
-
-                $userObj->setMainTableRecordId($row['user_id']);
+                $userId = $row['user_id'];
+                $userObj->setMainTableRecordId($userId);
 
                 $arr = array('user_googleplus_id' => $userGoogleId);
 
@@ -623,10 +622,10 @@ class GuestUserController extends MyAppController
         'user_is_buyer' => (isset($user_type) && $user_type == User::USER_TYPE_BUYER) ? 1:0,
         'user_is_supplier' => (isset($user_type) && $user_type == User::USER_TYPE_SELLER) ? 1:0,
         'user_is_advertiser' => $user_is_advertiser,
-        'user_googleplus_id' => empty($userGoogleId) ? $userGoogleId : '',
-        'user_facebook_id' => empty($userFacebookId) ? $userFacebookId : '',
+        'user_googleplus_id' => !empty($userGoogleId) ? $userGoogleId : '',
+        'user_facebook_id' => !empty($userFacebookId) ? $userFacebookId : '',
         'user_preferred_dashboard' => $userPreferredDashboard,
-        'user_registered_initially_for' => $user_registered_initially_for,
+        'user_registered_initially_for' => $user_registered_initially_for
         );
 
         $userObj->assignValues($userData);

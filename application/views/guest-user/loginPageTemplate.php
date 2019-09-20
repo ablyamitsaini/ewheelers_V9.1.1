@@ -94,8 +94,8 @@
         FB.api('/me?fields=id,name,email, first_name, last_name', function(response) {
             response['type'] = <?php echo User::USER_TYPE_BUYER; ?>;
             fcom.updateWithAjax(fcom.makeUrl('GuestUser', 'loginFacebook'), response, function(t) {
-                console.log(response);
-                // location.href = t.url;
+                // console.log(response);
+                location.href = t.url;
             });
         }, {
             scope: 'public_profile,email'
