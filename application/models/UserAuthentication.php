@@ -562,7 +562,11 @@ class UserAuthentication extends FatModel
             if ($returnNullIfNotLogged) {
                 return null;
             }
-            Message::addErrorMessage(Labels::getLabel('MSG_USER_NOT_LOGGED', CommonHelper::getLangId()));
+            $message = Labels::getLabel('MSG_USER_NOT_LOGGED', CommonHelper::getLangId());
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(strip_tags($message));
+            }
+            Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
         }
 

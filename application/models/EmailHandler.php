@@ -665,7 +665,7 @@ class EmailHandler extends FatModel
             $notificationObj = new Notifications();
             $notificationDataArr = array(
             'unotification_user_id'    =>$orderInfo["order_user_id"],
-            'unotification_body'=>str_replace('{ORDERID}', $orderInfo['order_id'], Labels::getLabel('APP_YOUR_ORDER_{ORDERID}_HAVE_BEEN_PLACED', $langId)),
+            'unotification_body'=>str_replace('{orderid}', $orderInfo['order_id'], Labels::getLabel('APP_YOUR_ORDER_{ORDERID}_HAVE_BEEN_PLACED', $langId)),
             'unotification_type'=>'BUYER_ORDER',
             'unotification_data'=>json_encode(array('orderId'=>$orderInfo['order_id'])),
             );
@@ -736,8 +736,8 @@ class EmailHandler extends FatModel
 
             $this->sendMailToAdminAndAdditionalEmails("primary_order_payment_status_change_admin", $arrReplacements, static::ADD_ADDITIONAL_ALERTS, static::NOT_ONLY_SUPER_ADMIN, $langId);
 
-            $appNotification = str_replace('{ORDERID}', $arrReplacements['{invoice_number}'], Labels::getLabel('APP_PAYMENT_STATUS_FOR_ORDER_{ORDERID}_UPDATED_{STATUS}', $langId));
-            $appNotification = str_replace('{STATUS}', $arrReplacements['{new_order_status}'], $appNotification);
+            $appNotification = str_replace('{orderid}', $arrReplacements['{invoice_number}'], Labels::getLabel('APP_PAYMENT_STATUS_FOR_ORDER_{ORDERID}_UPDATED_{STATUS}', $langId));
+            $appNotification = str_replace('{status}', $arrReplacements['{new_order_status}'], $appNotification);
 
             $notificationObj = new Notifications();
             $notificationDataArr = array(
@@ -859,8 +859,8 @@ class EmailHandler extends FatModel
                     self::sendMailTpl($val["op_shop_owner_email"], "vendor_order_email", $langId, $arrReplacements);
                 }
 
-                $appNotification = str_replace('{PRODUCT}', $val["op_product_name"], Labels::getLabel('SAPP_{PRODUCT}_ORDER_{ORDERID}_HAS_BEEN_PLACED', $langId));
-                $appNotification = str_replace('{ORDERID}', $orderDetail['order_id'], $appNotification);
+                $appNotification = str_replace('{product}', $val["op_product_name"], Labels::getLabel('SAPP_{PRODUCT}_ORDER_{ORDERID}_HAS_BEEN_PLACED', $langId));
+                $appNotification = str_replace('{orderid}', $orderDetail['order_id'], $appNotification);
 
                 $notificationObj = new Notifications();
                 $notificationDataArr = array(
