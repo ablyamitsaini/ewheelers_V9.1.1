@@ -204,6 +204,10 @@ class Navigation
     public static function getNavigation($type = 0, $includeChildCategories = false)
     {
         $siteLangId = CommonHelper::getLangId();
+        $headerNavCache =  FatCache::get('headerNavCache'.$siteLangId, CONF_HOME_PAGE_CACHE_TIME, '.txt');
+        if ($headerNavCache) {
+            return  unserialize($headerNavCache);
+        }
 
         /* SubQuery, Category have products[ */
         $prodSrchObj = new ProductSearch();
@@ -216,23 +220,23 @@ class Navigation
         $prodSrchObj->addGroupBy('prodcat_id');
         $prodSrchObj->addMultipleFields(array('prodcat_code AS prodrootcat_code','count(selprod_id) as productCounts', 'prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name', 'prodcat_parent'));
 
-        $navigationCatCache =  FatCache::get('navigationCatCache'.$siteLangId, CONF_HOME_PAGE_CACHE_TIME, '.txt');
+        /*$navigationCatCache =  FatCache::get('navigationCatCache'.$siteLangId, CONF_HOME_PAGE_CACHE_TIME, '.txt');
         if ($navigationCatCache) {
             $categoriesMainRootArr  = unserialize($navigationCatCache);
-        } else {
-            $rs = $prodSrchObj->getResultSet();
-            $productRows = FatApp::getDb()->fetchAll($rs);
-            $categoriesMainRootArr = array_column($productRows, 'prodrootcat_code');
-            array_walk(
-                $categoriesMainRootArr,
-                function (&$n) {
-                    $n = FatUtility::int(substr($n, 0, 6));
-                }
-            );
-            $categoriesMainRootArr = array_unique($categoriesMainRootArr);
-            array_flip($categoriesMainRootArr);
-            FatCache::set('navigationCatCache'.$siteLangId, serialize($categoriesMainRootArr), '.txt');
-        }
+        } else {*/
+        $rs = $prodSrchObj->getResultSet();
+        $productRows = FatApp::getDb()->fetchAll($rs);
+        $categoriesMainRootArr = array_column($productRows, 'prodrootcat_code');
+        array_walk(
+            $categoriesMainRootArr,
+            function (&$n) {
+                $n = FatUtility::int(substr($n, 0, 6));
+            }
+        );
+        $categoriesMainRootArr = array_unique($categoriesMainRootArr);
+        array_flip($categoriesMainRootArr);
+            /*FatCache::set('navigationCatCache'.$siteLangId, serialize($categoriesMainRootArr), '.txt');
+        }*/
 
         $catWithProductConditoon ='';
         if ($categoriesMainRootArr) {
@@ -303,7 +307,7 @@ class Navigation
                 $navigation[$previous_nav_id]['pages'][$key]['children'] = $childrenCats;
             }
         }
-
+        FatCache::set('headerNavCache'.$siteLangId, serialize($navigation), '.txt');
         return $navigation;
     }
 
