@@ -135,6 +135,8 @@ class MyAppModel extends FatModel
         $db = FatApp::getDb();
 
         $srch = new SearchBase(static::DB_TBL);
+        $srch->doNotCalculateRecords();
+        $srch->setPageSize(1);
         $srch->addCondition(static::tblFld('identifier'), '=', $recordId);
 
         if (null != $attr) {
@@ -165,6 +167,8 @@ class MyAppModel extends FatModel
         $db = FatApp::getDb();
 
         $srch = new SearchBase(static::DB_TBL);
+        $srch->doNotCalculateRecords();
+        $srch->setPageSize(1);
         $srch->addCondition(static::tblFld('id'), '=', $recordId);
 
         if (null != $attr) {
@@ -196,6 +200,8 @@ class MyAppModel extends FatModel
 
         $db = FatApp::getDb();
         $srch = new SearchBase(static::DB_TBL . '_lang', 'ln');
+        $srch->doNotCalculateRecords();
+        $srch->setPageSize(1);
         $prefix = substr(static::DB_TBL_PREFIX, 0, -1);
         $srch->addCondition('ln.'.$prefix . 'lang_' . static::DB_TBL_PREFIX . 'id', '=', $recordId);
         $srch->addCondition('ln.'.$prefix . 'lang_lang_id', '=', FatUtility::int($langId));

@@ -12,6 +12,7 @@ Enhancements :
     -> APP labels Management.
     -> For system Banners and slides - used cache by last modified time.
     -> Home page collections performance updates.
+
 Bug:
     -> 030531 - Rewards points with discount coupon issue.
     -> 030635 - Retain cart on login

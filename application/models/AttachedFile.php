@@ -161,6 +161,7 @@ class AttachedFile extends MyAppModel
         $langId = FatUtility::int($langId);
 
         $srch = new SearchBase(static::DB_TBL);
+        $srch->doNotCalculateRecords();
         $srch->addCondition('afile_type', '=', $fileType);
         $srch->addCondition('afile_record_id', '=', $recordId);
 

@@ -97,11 +97,17 @@ class Labels extends MyAppModel
         $str = '';
         global $langFileData;
         if (!isset($langFileData[$langId])) {
-            $langFileData[$langId] = static::readDataFromFile($langId, $key, $type);
+            $langFileData[$langId] = static::readDataFromFile($langId, $key_original, $type);
         }
 
-        if (isset($langFileData[$langId]) && array_key_exists($key, $langFileData[$langId])) {
-            $str = $langFileData[$langId][$key];
+        if (isset($langFileData[$langId])) {
+            if (array_key_exists($key_original, $langFileData[$langId])) {
+                $str = $langFileData[$langId][$key_original];
+            } else if (array_key_exists(strtoupper($key_original), $langFileData[$langId])) {
+                $str = $langFileData[$langId][strtoupper($key_original)];
+            } else if (array_key_exists(strtolower($key_original), $langFileData[$langId])) {
+                $str = $langFileData[$langId][strtolower($key_original)];
+            }
         }
 
         if (empty($str)) {

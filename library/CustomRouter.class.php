@@ -60,6 +60,8 @@ class CustomRouter
             $customUrl = explode('/', $customUrl);
 
             $srch = UrlRewrite::getSearchObject();
+            $srch->doNotCalculateRecords();
+            $srch->setPageSize(1);
             $srch->addCondition(UrlRewrite::DB_TBL_PREFIX . 'custom', '=', $customUrl[0]);
             $rs = $srch->getResultSet();
             if (!$row = FatApp::getDb()->fetch($rs)) {
