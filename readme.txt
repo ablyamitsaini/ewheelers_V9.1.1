@@ -4,6 +4,7 @@ New Features :
 
 Updates:
     > Message - 1017343 - Volume Discount Module.
+	> App labels updated for all type of notifications
 
 Enhancements :
     -> Display System image for product and banners
