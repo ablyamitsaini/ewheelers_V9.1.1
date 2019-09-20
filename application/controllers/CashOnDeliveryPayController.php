@@ -22,7 +22,13 @@ class CashOnDeliveryPayController extends MyAppController
         }
         /* ] */
 
+        $token = FatApp::getPostedData('_token', FatUtility::VAR_STRING, '');
+        if (!empty($token) && !UserAuthentication::isUserLogged('', $token)) {
+            Message::addErrorMessage(Labels::getLabel('L_Invalid_Token', $this->siteLangId));
+            FatApp::redirectUser(CommonHelper::generateUrl('Buyer', 'ViewOrder', array($orderInfo['id'])));
+        }
         /* Avoid payment for digital products [ */
+
         $userId = UserAuthentication::getLoggedUserId();
         $srch = new OrderProductSearch($this->siteLangId, true);
         $srch->joinOrderUser();
@@ -41,7 +47,7 @@ class CashOnDeliveryPayController extends MyAppController
             }
         }
         /* ] */
-        
+
         $orderPaymentObj->confirmCodOrder($orderId, $this->siteLangId);
 
         FatApp::redirectUser(CommonHelper::generateFullUrl('custom', 'paymentSuccess', array( $orderInfo['id'])));
