@@ -40,6 +40,7 @@ foreach ($optionRows as $key => $option) {
     foreach ($option['values'] as $index => $opVal) {
         $optionRows[$key]['values'][$index]['isAvailable'] = 1;
         $optionRows[$key]['values'][$index]['isSelected'] = 1;
+        $optionRows[$key]['values'][$index]['optionUrlValue'] = $product['selprod_id'];
         if (!in_array($opVal['optionvalue_id'], $product['selectedOptionValues'])) {
             $optionRows[$key]['values'][$index]['isSelected'] = 0;
             $optionUrl = Product::generateProductOptionsUrl($product['selprod_id'], $selectedOptionsArr, $option['option_id'], $opVal['optionvalue_id'], $product['product_id']);
@@ -47,6 +48,8 @@ foreach ($optionRows as $key => $option) {
             if (is_array($optionUrlArr) && count($optionUrlArr) == 2) {
                 $optionRows[$key]['values'][$index]['isAvailable'] = 0;
             }
+            $optionUrl = Product::generateProductOptionsUrl($product['selprod_id'], $selectedOptionsArr, $option['option_id'], $opVal['optionvalue_id'], $product['product_id'], true);
+            $optionRows[$key]['values'][$index]['optionUrlValue'] = $optionUrl;
         }
     }
 }
