@@ -1896,11 +1896,13 @@ class CommonHelper extends FatUtility
 
     public static function replaceStringData($str, $replacements = array(), $replaceTags = false)
     {
-        foreach ($replacements as $key=>$val) {
+        foreach ($replacements as $key => $val) {
             if ($replaceTags) {
                 $val = strip_tags($val);
             }
             $str = str_replace($key, $val, $str);
+            $str = str_replace(strlower($key), $val, $str);
+            $str = str_replace(strupper($key), $val, $str);
         }
         return $str;
     }
