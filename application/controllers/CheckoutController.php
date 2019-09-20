@@ -1331,7 +1331,7 @@ class CheckoutController extends MyAppController
         $this->_template->render(false, false);
     }
 
-    private function getPaymentUrl($pmethod_id)
+    private function getPaymentMethodData($pmethod_id)
     {
         $pmSrch = PaymentMethods::getSearchObject($this->siteLangId);
         $pmSrch->doNotCalculateRecords();
@@ -1377,7 +1377,7 @@ class CheckoutController extends MyAppController
 
         //commonHelper::printArray($orderInfo);
 
-        $paymentMethod = $this->getPaymentUrl($pmethod_id);
+        $paymentMethod = $this->getPaymentMethodData($pmethod_id);
         $frm = $this->getPaymentTabForm($this->siteLangId, $paymentMethod['pmethod_code']);
         $controller = $paymentMethod['pmethod_code'].'Pay';
         $frm->setFormTagAttribute('action', CommonHelper::generateUrl($controller, 'charge', array($order_id)));
@@ -1547,7 +1547,7 @@ class CheckoutController extends MyAppController
             $paymentUrl = '';
             $sendToWeb = 1;
             if (0 < $pmethod_id) {
-                $paymentMethod = $this->getPaymentUrl($pmethod_id);
+                $paymentMethod = $this->getPaymentMethodData($pmethod_id);
                 $controller = $paymentMethod['pmethod_code'].'Pay';
                 $paymentUrl = CommonHelper::generateFullUrl($controller, 'charge', array($order_id));
             }
