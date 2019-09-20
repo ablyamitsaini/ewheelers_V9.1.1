@@ -206,9 +206,9 @@ class Navigation
         $siteLangId = CommonHelper::getLangId();
 
         /* SubQuery, Category have products[ */
-        $prodSrchObj = new ProductSearch($siteLangId);
-        $prodSrchObj->setDefinedCriteria();
-        $prodSrchObj->joinProductToCategory();
+        $prodSrchObj = new ProductSearch();
+        $prodSrchObj->setDefinedCriteria(0 , 0, array('doNotJoinSpecialPrice'=>true));
+        $prodSrchObj->joinProductToCategory($siteLangId);
         $prodSrchObj->doNotCalculateRecords();
         $prodSrchObj->doNotLimitRecords();
         $prodSrchObj->joinSellerSubscription($siteLangId, true);
@@ -216,8 +216,7 @@ class Navigation
         $prodSrchObj->addGroupBy('prodcat_id');
         $prodSrchObj->addMultipleFields(array('prodcat_code AS prodrootcat_code','count(selprod_id) as productCounts', 'prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name', 'prodcat_parent'));
 
-        $navigationCatCache =  FatCache::get('navigationCatCache', CONF_HOME_PAGE_CACHE_TIME, '.txt');
-
+        $navigationCatCache =  FatCache::get('navigationCatCache'.$siteLangId, CONF_HOME_PAGE_CACHE_TIME, '.txt');
         if ($navigationCatCache) {
             $categoriesMainRootArr  = unserialize($navigationCatCache);
         } else {
@@ -232,7 +231,7 @@ class Navigation
             );
             $categoriesMainRootArr = array_unique($categoriesMainRootArr);
             array_flip($categoriesMainRootArr);
-            FatCache::set('navigationCatCache', serialize($categoriesMainRootArr), '.txt');
+            FatCache::set('navigationCatCache'.$siteLangId, serialize($categoriesMainRootArr), '.txt');
         }
 
         $catWithProductConditoon ='';

@@ -192,6 +192,8 @@ class CommonHelper extends FatUtility
         $urlString = trim($urlString,'/'); */
         $urlString = trim(ltrim($url, CONF_WEBROOT_FRONTEND), '/');
         $srch = UrlRewrite::getSearchObject();
+        $srch->doNotCalculateRecords();
+        $srch->setPageSize(1);
         $srch->addCondition(UrlRewrite::DB_TBL_PREFIX . 'original', 'LIKE', $urlString);
         $rs = $srch->getResultSet();
         if ($row = FatApp::getDb()->fetch($rs)) {

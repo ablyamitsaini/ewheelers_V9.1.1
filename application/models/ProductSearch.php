@@ -65,7 +65,7 @@ class ProductSearch extends SearchBase
     public function setDefinedCriteria($joinPrice = 0, $bySeller = 0, $criteria = array(), $checkAvailableFrom = true)
     {
         $joinPrice =  FatUtility::int($joinPrice);
-        if ($joinPrice) {
+        if (0 < $joinPrice) {
             $this->joinForPrice('', $criteria, $checkAvailableFrom);
         } else {
             $this->joinSellerProducts($bySeller, '', $criteria, $checkAvailableFrom);
@@ -231,52 +231,64 @@ class ProductSearch extends SearchBase
             trigger_error(Labels::getLabel('ERR_SellerProducts_can_be_joined_only_once.', $this->commonLangId), E_USER_ERROR);
         }
         $this->sellerProductsJoined = true;
-
-        $now = FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d');
-        if ('' == $splPriceForDate) {
-            $splPriceForDate = $now;
-        }
-        $bySeller = FatUtility::int($bySeller);
-        $srch = new SearchBase(SellerProduct::DB_TBL, 'sprods');
-
-        $fields2 = array();
-        if ($this->langId) {
-            $srch->joinTable(SellerProduct::DB_LANG_TBL, 'LEFT OUTER JOIN', 'sprods.selprod_id = sprods_l.selprodlang_selprod_id AND sprods_l.selprodlang_lang_id = '.$this->langId, 'sprods_l');
-            $fields2 = array('selprod_title','selprod_warranty','selprod_return_policy','sprods_l.selprod_comments as selprodComments',);
+        $joinSpecialPrice = true;
+        if (array_key_exists('doNotJoinSpecialPrice', $criteria) && $criteria['doNotJoinSpecialPrice'] == true) {
+            $joinSpecialPrice = false;
         }
 
-        $srch->joinTable(
-            SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE,
-            'LEFT OUTER JOIN',
-            'm.splprice_selprod_id = selprod_id AND \'' . $splPriceForDate . '\' BETWEEN m.splprice_start_date AND m.splprice_end_date',
-            'm'
-        );
+        if ($joinSpecialPrice == true) {
 
-        $srch->joinTable(
-            SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE,
-            'LEFT OUTER JOIN',
-            's.splprice_selprod_id = selprod_id AND s.splprice_price < m.splprice_price
-             AND \'' . $splPriceForDate . '\' BETWEEN s.splprice_start_date AND s.splprice_end_date',
-            's'
-        );
+            $now = FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d');
+            if ('' == $splPriceForDate) {
+                $splPriceForDate = $now;
+            }
+            $bySeller = FatUtility::int($bySeller);
+            $srch = new SearchBase(SellerProduct::DB_TBL, 'sprods');
 
-        $srch->addCondition('s.splprice_selprod_id', 'IS', 'mysql_func_NULL', 'AND', true);
+            $fields2 = array();
+            if ($this->langId) {
+                $srch->joinTable(SellerProduct::DB_LANG_TBL, 'LEFT OUTER JOIN', 'sprods.selprod_id = sprods_l.selprodlang_selprod_id AND sprods_l.selprodlang_lang_id = '.$this->langId, 'sprods_l');
+                $fields2 = array('selprod_title','selprod_warranty','selprod_return_policy','sprods_l.selprod_comments as selprodComments');
+            }
 
-        $srch->addCondition('selprod_active', '=', applicationConstants::ACTIVE);
-        $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
-        if ($checkAvailableFrom) {
-            $srch->addCondition('selprod_available_from', '<=', $now);
+            $srch->joinTable(
+                SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE,
+                'LEFT OUTER JOIN',
+                'm.splprice_selprod_id = selprod_id AND \'' . $splPriceForDate . '\' BETWEEN m.splprice_start_date AND m.splprice_end_date',
+                'm'
+            );
+
+            $srch->joinTable(
+                SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE,
+                'LEFT OUTER JOIN',
+                's.splprice_selprod_id = selprod_id AND s.splprice_price < m.splprice_price
+                 AND \'' . $splPriceForDate . '\' BETWEEN s.splprice_start_date AND s.splprice_end_date',
+                's'
+            );
+
+            $srch->addCondition('s.splprice_selprod_id', 'IS', 'mysql_func_NULL', 'AND', true);
+
+            $srch->addCondition('selprod_active', '=', applicationConstants::ACTIVE);
+            $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
+            if ($checkAvailableFrom) {
+                $srch->addCondition('selprod_available_from', '<=', $now);
+            }
+
+            $fields1 = array('sprods.*', 'm.*',
+            '(CASE WHEN m.splprice_selprod_id IS NULL THEN 0 ELSE 1 END) AS special_price_found',
+            'IFNULL(m.splprice_price, selprod_price) AS theprice');
+            $srch->addMultipleFields(array_merge($fields1, $fields2));
+
+            $srch->doNotLimitRecords();
+            $srch->doNotCalculateRecords();
+
+            $this->joinTable('(' . $srch->getQuery() . ')', 'LEFT OUTER JOIN', 'p.product_id = pricetbl.selprod_product_id', 'pricetbl');
+        } else {
+            $this->joinTable(SellerProduct::DB_TBL, 'INNER JOIN', 'p.product_id = sprods.selprod_product_id and selprod_active = '.applicationConstants::ACTIVE .' and selprod_deleted = '.applicationConstants::NO, 'sprods');
+            if ($this->langId) {
+                $this->joinTable(SellerProduct::DB_LANG_TBL, 'LEFT OUTER JOIN', 'sprods.selprod_id = sprods_l.selprodlang_selprod_id AND sprods_l.selprodlang_lang_id = '.$this->langId, 'sprods_l');
+            }
         }
-
-        $fields1 = array('sprods.*', 'm.*',
-        '(CASE WHEN m.splprice_selprod_id IS NULL THEN 0 ELSE 1 END) AS special_price_found',
-        'IFNULL(m.splprice_price, selprod_price) AS theprice');
-        $srch->addMultipleFields(array_merge($fields1, $fields2));
-
-        $srch->doNotLimitRecords();
-        $srch->doNotCalculateRecords();
-
-        $this->joinTable('(' . $srch->getQuery() . ')', 'LEFT OUTER JOIN', 'p.product_id = pricetbl.selprod_product_id', 'pricetbl');
         if (0 < $bySeller) {
             $this->addCondition('selprod_user_id', '=', $bySeller);
         } else {
