@@ -100,10 +100,38 @@ $product['selprod_warranty_policies'] = !empty($product['selprod_warranty_polici
 
 $product['product_description'] = strip_tags(html_entity_decode($product['product_description'], ENT_QUOTES, 'utf-8'), applicationConstants::ALLOWED_HTML_TAGS_FOR_APP);
 
+$arr_flds = array(
+    'country_name'=> Labels::getLabel('LBL_Ship_to', $siteLangId),
+    'pship_charges'=> Labels::getLabel('LBL_Cost', $siteLangId),
+    'pship_additional_charges'=> Labels::getLabel('LBL_With_Another_item', $siteLangId),
+);
+
+$shippingRatesDetail = [];
+foreach ($shippingRates as $sn => $row) {
+    foreach ($arr_flds as $key => $val) {
+        switch ($key) {
+            case 'pship_additional_charges':
+            case 'pship_charges':
+                $shippingRatesDetail[$sn][] = [
+                    'title' => $val,
+                    'rate' => CommonHelper::displayMoneyFormat($row[$key]),
+                ];
+                break;
+            case 'country_name':
+                $shippingRatesDetail[$sn][] = [
+                    'title' => $val,
+                    'rate' => strip_tags(Product::getProductShippingTitle($siteLangId, $row)),
+                ];
+                break;
+        }
+    }
+}
+
 $data = array(
     'reviews' => empty($reviews) ? (object)array() : $reviews,
     'codEnabled' => (true === $codEnabled ? 1 : 0),
     'shippingRates' => $shippingRates,
+    'shippingRatesDetail' => $shippingRatesDetail,
     'shippingDetails' => empty($shippingDetails) ? (object)array() : $shippingDetails,
     'optionRows' => $optionRows,
     'productSpecifications' => array(
