@@ -266,10 +266,7 @@ class GuestUserController extends MyAppController
         $userType = FatApp::getPostedData('type', FatUtility::VAR_INT, 0);
         if (true ===  MOBILE_APP_API_CALL) {
             $accessToken = FatApp::getPostedData('accessToken', FatUtility::VAR_STRING, '');
-            if (empty($accessToken)) {
-                FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
-            }
-            if (1 > $userType) {
+            if (empty($accessToken) || 1 > $userType) {
                 FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
             }
             include_once CONF_INSTALLATION_PATH . 'library/facebook/facebook.php';
@@ -300,7 +297,7 @@ class GuestUserController extends MyAppController
             // User info ok? Let's print it (Here we will be adding the login and registering routines)
             $facebookName = $userProfile['name'];
             $userFacebookId = $userProfile['id'];
-            $facebookEmail = $userProfile['email'];
+            $facebookEmail = !empty($userProfile['email']) ? $userProfile['email'] : '';
         } else {
             $facebookEmail = FatApp::getPostedData('email', FatUtility::VAR_STRING, '');
             $userFacebookId = FatApp::getPostedData('id', FatUtility::VAR_STRING, '');
