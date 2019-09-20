@@ -2597,7 +2597,7 @@ class BuyerController extends BuyerBaseController
         }
 
         $emailObj = new EmailHandler();
-        if (!$emailObj->newOrderBuyerAdmin($orderId, $this->siteLangId, false)) {
+        if (!$emailObj->newOrderBuyerAdmin($orderId, $this->siteLangId, false, false)) {
             $message = Labels::getLabel('MSG_Unable_to_notify_customer', $this->siteLangId);
             FatUtility::dieJsonError(strip_tags($message));
         }
