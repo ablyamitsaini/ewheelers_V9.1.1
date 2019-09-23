@@ -1,3 +1,4 @@
+<!-- Release notes TV-9.0.1.20190923 -- >
 New Features :
 	> Task - 66013 - Special Price Module
 	> Task - 66013 - Volume Discount Module

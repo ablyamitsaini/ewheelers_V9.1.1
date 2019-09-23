@@ -51,4 +51,4 @@ $_SESSION['WYSIWYGFileManagerRequirements'] = CONF_INSTALLATION_PATH . 'public/W
 
 
 define('SYSTEM_INIT', true);
-define('CONF_WEB_APP_VERSION', 'TV-9.0.1.20190914');
+define('CONF_WEB_APP_VERSION', 'TV-9.0.1.20190923');
