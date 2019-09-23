@@ -19,6 +19,12 @@ array_walk($jsVariables, function (&$item1, $key) {
 $commonHead1Data = array(
     'siteLangId' => $siteLangId,
     'controllerName' => $controllerName,
+    'jsVariables' => $jsVariables,
+    'extendEditorJs' => $extendEditorJs,
+    'themeDetail' => $themeDetail,
+    'themeActive' => $themeActive,
+    'currencySymbolLeft' => $currencySymbolLeft,
+    'currencySymbolRight' => $currencySymbolRight,
     'canonicalUrl' => isset($canonicalUrl)?$canonicalUrl:'',
 );
 
@@ -26,48 +32,7 @@ $this->includeTemplate('_partial/header/commonHead1.php', $commonHead1Data, fals
 /* This is not included in common head, because, commonhead file not able to access the $this->Controller and $this->action[ */
 echo $this->writeMetaTags();
 /* ] */
-?>
-<style>
-    :root {
-        --first-color: #<?php echo $themeDetail['tcolor_first_color']; ?>;
-        --second-color: #<?php echo $themeDetail['tcolor_second_color']; ?>;
-        --third-color: #<?php echo $themeDetail['tcolor_third_color']; ?>;
-        --txt-color: #<?php echo $themeDetail['tcolor_text_color']; ?>;
-        --txt-color-light: #<?php echo $themeDetail['tcolor_text_light_color']; ?>;
-        --border-color: #<?php echo $themeDetail['tcolor_border_first_color']; ?>;
-        --border-color-second: #<?php echo $themeDetail['tcolor_border_second_color'];?>;
-        --second-btn-color: #<?php echo $themeDetail['tcolor_second_btn_color'];  ?>;
-        --header-txt-color: #<?php echo $themeDetail['tcolor_header_text_color']; ?>;
-        --body-color: #525252;
-        --gray-light: #f8f8f8;
-    }
-</style>
-<?php
-echo $str = '<script type="text/javascript">
-    var langLbl = ' . json_encode($jsVariables) . ';
-    var CONF_AUTO_CLOSE_SYSTEM_MESSAGES = ' . FatApp::getConfig("CONF_AUTO_CLOSE_SYSTEM_MESSAGES", FatUtility::VAR_INT, 0) . ';
-    var CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES = ' . FatApp::getConfig("CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES", FatUtility::VAR_INT, 3) . ';
-    var extendEditorJs = ' . $extendEditorJs . ';
-    var themeActive = ' . $themeActive . ';
-    var currencySymbolLeft = "' . $currencySymbolLeft . '";
-    var currencySymbolRight = "' . $currencySymbolRight . '";
-    if( CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES <= 0  ){
-        CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES = 3;
-    }
-</script>' . "\r\n";
 
-if (FatApp::getConfig("CONF_ENABLE_ENGAGESPOT_PUSH_NOTIFICATION", FatUtility::VAR_STRING, '')) {
-    echo FatApp::getConfig("CONF_ENGAGESPOT_PUSH_NOTIFICATION_CODE", FatUtility::VAR_STRING, '');
-    if (UserAuthentication::getLoggedUserId(true) > 0) { ?>
-        <script type="text/javascript">
-            Engagespot.init()
-            Engagespot.identifyUser('YT_<?php echo UserAuthentication::getLoggedUserId(); ?>');
-        </script>
-        <?php
-    }
-}
-?>
-<?php
 /* This is not included in common head, because, if we are adding any css/js from any controller then that file is not included[ */
 echo $this->getJsCssIncludeHtml(!CONF_DEVELOPMENT_MODE);
 /* ] */
