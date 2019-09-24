@@ -3,6 +3,7 @@
 $arr_flds = array(
     'select_all'=>Labels::getLabel('LBL_Select_all', $adminLangId),
     'product_name' => Labels::getLabel('LBL_Name', $adminLangId),
+    'credential_username' => Labels::getLabel('LBL_Seller', $adminLangId),
     'splprice_start_date' => Labels::getLabel('LBL_Start_Date', $adminLangId),
     'splprice_end_date' => Labels::getLabel('LBL_End_Date', $adminLangId),
     'splprice_price' => Labels::getLabel('LBL_Special_Price', $adminLangId),
@@ -35,6 +36,9 @@ foreach ($arrListing as $sn => $row) {
                 // last Param of getProductDisplayTitle function used to get title in html form.
                 $productName = SellerProduct::getProductDisplayTitle($selProdId, $adminLangId, true);
                 $td->appendElement('plaintext', array(), $productName, true);
+                break;
+            case 'credential_username':
+                $td->appendElement('plaintext', array(), $row[$column], true);
                 break;
             case 'splprice_start_date':
             case 'splprice_end_date':
