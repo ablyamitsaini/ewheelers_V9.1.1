@@ -247,6 +247,13 @@ class Cart extends FatModel
                 if (strpos($keyDecoded, static::CART_KEY_PREFIX_PRODUCT) !== false) {
                     $selprod_id = FatUtility::int(str_replace(static::CART_KEY_PREFIX_PRODUCT, '', $keyDecoded));
                 }
+
+                //To rid of from invalid product detail in listing.
+                if (1 > $selprod_id) {
+                    unset($this->SYSTEM_ARR['cart'][$key]);
+                    continue;
+                }
+
                 /* CommonHelper::printArray($keyDecoded); die; */
                 // if( strpos($keyDecoded, static::CART_KEY_PREFIX_BATCH ) !== FALSE ){
                 // $prodgroup_id = FatUtility::int(str_replace( static::CART_KEY_PREFIX_BATCH, '', $keyDecoded ));
