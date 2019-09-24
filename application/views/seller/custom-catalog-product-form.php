@@ -10,6 +10,11 @@
             <div class="col-md-auto">
                 <div class="action">
                     <a href="<?php echo CommonHelper::generateUrl('seller', 'customCatalogProducts'); ?>" class="btn btn--primary btn--sm"><?php echo Labels::getLabel('LBL_Back_to_Product_Requests', $siteLangId); ?></a>
+                    <?php if(!User::isCatalogRequestSubmittedForApproval($preqId)){?>
+                        <a href="<?php echo CommonHelper::generateUrl('seller','approveCustomCatalogProducts',array($preqId));?>" class="btn btn--primary-border btn--sm">
+                            <strong><?php echo Labels::getLabel( 'LBL_Submit_For_Approval', $siteLangId)?></strong> 
+                        </a>
+                    <?php } ?>
                 </div>
             </div>
         </div>
