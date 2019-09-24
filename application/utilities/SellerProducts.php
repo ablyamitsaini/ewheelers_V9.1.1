@@ -1709,9 +1709,7 @@ trait SellerProducts
             );
         }
         die(json_encode($json));
-
-        return  $arrListing;
-        ;
+        // return  $arrListing;
     }
 
     public function setupSellerProductLinks()
