@@ -2561,7 +2561,7 @@ class SellerProductsController extends AdminBaseController
         }
 
         if ('splprice_price' == $attribute) {
-            $value = CommonHelper::displayMoneyFormat($value);
+            $value = CommonHelper::displayMoneyFormat($value, true, true);
         }
         $json = array(
             'status'=> true,
