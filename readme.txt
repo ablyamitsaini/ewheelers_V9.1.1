@@ -3,7 +3,8 @@ Bug:
     -> 030841 - admin> special price, volume discount > seller name column needs to be there
     -> 030840 - when currency is changed from front end> then it's displaying in INR while on editing it's in $
     -> 030839 - club the special price and vol. discount in single section
-    
+    -> 030838 - when seller clicks on manage special price from product then it redirect to 404
+
 <!-- Release notes TV-9.0.1.20190923 -- >
 New Features :
 	> Task - 66013 - Special Price Module

@@ -7,7 +7,7 @@
 <div class="cards-header p-4">
     <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Special_price', $siteLangId); ?></h5>
     <div class="action">
-    <a class="btn btn--primary btn--sm" href="<?php echo CommonHelper::generateUrl('Seller', 'specialPriceList', array($selprod_id)); ?>"><?php echo Labels::getLabel( 'LBL_Manage_Special_Price', $siteLangId)?></a>
+    <a class="btn btn--primary btn--sm" href="<?php echo CommonHelper::generateUrl('Seller', 'specialPrice', array($selprod_id)); ?>"><?php echo Labels::getLabel( 'LBL_Manage_Special_Price', $siteLangId)?></a>
     </div>
 </div>
 <?php } ?>
