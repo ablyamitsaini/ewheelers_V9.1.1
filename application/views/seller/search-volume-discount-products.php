@@ -7,7 +7,7 @@ $arr_flds = array(
     'action' => Labels::getLabel('LBL_Action', $siteLangId),
 );
 
-$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table--orders table--hovered volDiscountList-js'));
+$tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table--hovered volDiscountList-js'));
 $thead = $tbl->appendElement('thead');
 $th = $thead->appendElement('tr', array('class' => ''));
 
@@ -60,7 +60,7 @@ foreach ($arrListing as $sn => $row) {
     }
 }
 if (count($arrListing) == 0) {
-    $tbl->appendElement('tr')->appendElement(
+    $tbl->appendElement('tr', array('class' => 'noResult--js'))->appendElement(
         'td',
         array('colspan'=>count($arr_flds)),
         Labels::getLabel('LBL_No_Record_Found', $siteLangId)

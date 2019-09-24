@@ -1,3 +1,6 @@
+Bug:
+    -> 030847 - Retain No Record Found if new volume discount or special price added for any product.
+
 <!-- Release notes TV-9.0.1.20190923 -- >
 New Features :
 	> Task - 66013 - Special Price Module
