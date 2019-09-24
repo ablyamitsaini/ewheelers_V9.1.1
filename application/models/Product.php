@@ -1410,6 +1410,7 @@ END,   special_price_found ) as special_price_found'
             $srch->addGroupBy('keywordmatched');
             $srch->addOrder('keywordmatched', 'desc');
         }
+
         return $srch;
     }
     public static function getActiveCount($sellerId, $prodId = 0)

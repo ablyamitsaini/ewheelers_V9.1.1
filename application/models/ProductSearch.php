@@ -143,7 +143,7 @@ class ProductSearch extends SearchBase
             $srch->joinTable(
                 Collections::DB_TBL_COLLECTION_TO_SELPROD,
                 'INNER JOIN',
-                Collections::DB_TBL_COLLECTION_TO_SELPROD_PREFIX.'selprod_id = selprod_id and '.Collections::DB_TBL_COLLECTION_TO_SELPROD_PREFIX.'collection_id = '.$criteria['collection_product_id']
+                Collections::DB_TBL_COLLECTION_TO_SELPROD_PREFIX.'selprod_id = sprods.selprod_id and '.Collections::DB_TBL_COLLECTION_TO_SELPROD_PREFIX.'collection_id = '.$criteria['collection_product_id']
             );
         }
 
@@ -151,31 +151,32 @@ class ProductSearch extends SearchBase
 
         if (array_key_exists('shop_id', $criteria) && $criteria['shop_id'] > 0) {
             $shopId = FatUtility::int($criteria['shop_id']);
-            $shopCondition = ' and shop_id = '.FatApp::getDb()->quoteVariable($shopId);
+            $shopCondition = ' and ts.shop_id = '.FatApp::getDb()->quoteVariable($shopId);
         }
 
-        $srch->joinTable(Product::DB_TBL, 'INNER JOIN', 'product_id = selprod_product_id AND product_active = '.applicationConstants::ACTIVE.' and product_deleted = '.applicationConstants::NO.' and product_approved = '.PRODUCT::APPROVED, 'tp');
-        $srch->joinTable(User::DB_TBL, 'INNER JOIN', 'selprod_user_id = user_id AND user_is_supplier = '.applicationConstants::YES);
-        $srch->joinTable(User::DB_TBL_CRED, 'INNER JOIN', 'credential_user_id = user_id and credential_active = '.applicationConstants::ACTIVE.' and credential_verified = '.applicationConstants::YES);
-        $srch->joinTable(Shop::DB_TBL, 'INNER JOIN', 'user_id = shop_user_id and shop_active = '.applicationConstants::YES.' AND shop_supplier_display_status = '.applicationConstants::YES . $shopCondition);
-        $srch->joinTable(Countries::DB_TBL, 'INNER JOIN', 'shop_country_id = country_id and country_active = '.applicationConstants::YES);
-        $srch->joinTable(States::DB_TBL, 'INNER JOIN', 'shop_state_id = state_id and state_active = '.applicationConstants::YES);
-        $srch->joinTable(Brand::DB_TBL, 'INNER JOIN', 'product_brand_id = brand_id and brand_active = '.applicationConstants::YES.' and brand_deleted = '.applicationConstants::NO, 'tb');
-        $srch->joinTable(Product::DB_TBL_PRODUCT_TO_CATEGORY, 'INNER JOIN', 'ptc_product_id = product_id');
-        $srch->joinTable(ProductCategory::DB_TBL, 'INNER JOIN', 'prodcat_id = ptc_prodcat_id and prodcat_active = '.applicationConstants::YES.' and prodcat_deleted = '.applicationConstants::NO, 'tc');
+        $srch->joinTable(Product::DB_TBL, 'INNER JOIN', 'tp.product_id = sprods.selprod_product_id AND tp.product_active = '.applicationConstants::ACTIVE.' and tp.product_deleted = '.applicationConstants::NO.' and tp.product_approved = '.PRODUCT::APPROVED, 'tp');
+        $srch->joinTable(User::DB_TBL, 'INNER JOIN', 'tu.user_id = sprods.selprod_user_id AND tu.user_is_supplier = '.applicationConstants::YES, 'tu');
+        $srch->joinTable(User::DB_TBL_CRED, 'INNER JOIN', 'tuc.credential_user_id = tu.user_id and tuc.credential_active = '.applicationConstants::ACTIVE.' and tuc.credential_verified = '.applicationConstants::YES, 'tuc');
+        $srch->joinTable(Shop::DB_TBL, 'INNER JOIN', 'ts.shop_user_id = tu.user_id and ts.shop_active = '.applicationConstants::YES.' AND ts.shop_supplier_display_status = '.applicationConstants::YES . $shopCondition, 'ts');
+        $srch->joinTable(Countries::DB_TBL, 'INNER JOIN', 'tcn.country_id = ts.shop_country_id and tcn.country_active = '.applicationConstants::YES, 'tcn');
+        $srch->joinTable(States::DB_TBL, 'INNER JOIN', 'tst.state_id = ts.shop_state_id and tst.state_active = '.applicationConstants::YES, 'tst');
+        $srch->joinTable(Brand::DB_TBL, 'INNER JOIN', 'tb.brand_id = tp.product_brand_id and tb.brand_active = '.applicationConstants::YES.' and tb.brand_deleted = '.applicationConstants::NO, 'tb');
+        $srch->joinTable(Product::DB_TBL_PRODUCT_TO_CATEGORY, 'INNER JOIN', 'tptc.ptc_product_id = tp.product_id', 'tptc');
+        $srch->joinTable(ProductCategory::DB_TBL, 'INNER JOIN', 'tc.prodcat_id = tptc.ptc_prodcat_id and tc.prodcat_active = '.applicationConstants::YES.' and tc.prodcat_deleted = '.applicationConstants::NO, 'tc');
         /*$srch->addMultipleFields(array('selprod_product_id','MIN(IFNULL(splprice_price, selprod_price)) AS theprice','(CASE WHEN splprice_selprod_id IS NULL THEN 0 ELSE 1 END) AS special_price_found'));*/
-        $srch->addMultipleFields(array('selprod_product_id','(CASE WHEN splprice_selprod_id IS NULL THEN 0 ELSE 1 END) AS special_price_found'));
+        $srch->addMultipleFields(array('sprods.selprod_product_id','(CASE WHEN splprice_selprod_id IS NULL THEN 0 ELSE 1 END) AS special_price_found'));
 
         if (!empty($criteria['keyword'])) {
-            $srch->addFld('if(selprod_title LIKE '.FatApp::getDb()->quoteVariable('%'.$criteria['keyword'].'%').',  IFNULL(splprice_price, selprod_price), MIN(IFNULL(splprice_price, selprod_price)) ) as theprice');
+            $srch->addFld('if(sp_l.selprod_title LIKE '.FatApp::getDb()->quoteVariable('%'.$criteria['keyword'].'%').',  IFNULL(splprice_price, sprods.selprod_price), MIN(IFNULL(tsp.splprice_price, sprods.selprod_price)) ) as theprice');
         } else {
-            $srch->addFld('MIN(IFNULL(splprice_price, selprod_price)) AS theprice');
+            $srch->addFld('MIN(IFNULL(tsp.splprice_price, sprods.selprod_price)) AS theprice');
         }
 
         $srch->joinTable(
             SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE,
             'LEFT OUTER JOIN',
-            'splprice_selprod_id = selprod_id AND \'' . $splPriceForDate . '\' BETWEEN splprice_start_date AND splprice_end_date and splprice_price < selprod_price'
+            'tsp.splprice_selprod_id = sprods.selprod_id AND \'' . $splPriceForDate . '\' BETWEEN tsp.splprice_start_date AND tsp.splprice_end_date and tsp.splprice_price < sprods.selprod_price',
+            'tsp'
         );
         $srch->addCondition('sprods.selprod_active', '=', applicationConstants::ACTIVE);
         $srch->addCondition('sprods.selprod_deleted', '=', applicationConstants::NO);
@@ -211,9 +212,9 @@ class ProductSearch extends SearchBase
         $srch->doNotLimitRecords();
         $srch->doNotCalculateRecords();
         if (isset($criteria['collection_product_id']) && $criteria['collection_product_id'] >0) {
-            $srch->addGroupBy('selprod_id');
+            $srch->addGroupBy('sprods.selprod_id');
         } else {
-            $srch->addGroupBy('selprod_product_id');
+            $srch->addGroupBy('sprods.selprod_product_id');
         }
         $tmpQry = $srch->getQuery();
 
