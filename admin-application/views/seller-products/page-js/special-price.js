@@ -130,6 +130,9 @@ $(document).on('blur', ".js--splPriceCol:not(.date_js)", function(){
                 document.getElementById('frmSplPriceListing').reset()
                 $('table.splPriceList-js tbody').prepend(t.data);
                 $('.date_js').datepicker('option', {minDate: new Date()});
+                if (0 < $('.noResult--js').length) {
+                    $('.noResult--js').remove();
+                }
             }
 			$(document).trigger('close.facebox');
             if (0 < frm.addMultiple.value) {

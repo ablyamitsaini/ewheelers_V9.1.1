@@ -67,7 +67,7 @@ foreach ($arrListing as $sn => $row) {
     }
 }
 if (count($arrListing) == 0) {
-    $tbl->appendElement('tr')->appendElement(
+    $tbl->appendElement('tr', array('class' => 'noResult--js'))->appendElement(
         'td',
         array('colspan'=>count($arr_flds)),
         Labels::getLabel('LBL_No_Record_Found', $adminLangId)

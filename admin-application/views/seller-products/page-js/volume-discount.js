@@ -141,6 +141,9 @@ $(document).on('blur', ".js--volDiscountCol", function(){
                 }
                 document.getElementById('frmVolDiscountListing').reset()
                 $('table.volDiscountList-js tbody').prepend(t.data);
+                if (0 < $('.noResult--js').length) {
+                    $('.noResult--js').remove();
+                }
             }
 			$(document).trigger('close.facebox');
             if (0 < frm.addMultiple.value) {
