@@ -62,10 +62,6 @@ $action = strtolower($action);
                     </a>
                 </div>
             </li> 
-            <li class="divider"></li>
-            <li class="menu__item">
-                <div class="menu__item__inner"> <span class="menu-head"><?php echo Labels::getLabel('LBL_Promotions', $siteLangId);?></span></div>
-            </li>
             <li class="menu__item <?php echo ($controller == 'seller' && $action == 'volumediscount') ? 'is-active' : ''; ?>">
                 <div class="menu__item__inner"><a title="<?php echo Labels::getLabel('LBL_Volume_Discount', $siteLangId);?>" href="<?php echo CommonHelper::generateUrl('Seller', 'volumeDiscount'); ?>">
                         <i class="icn shop"><svg class="svg">
