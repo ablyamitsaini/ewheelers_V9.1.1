@@ -480,7 +480,7 @@ class AffiliateController extends AffiliateBaseController
         $frm->addHiddenField('', 'page', 1);
         $frm->addHiddenField('', 'user_id', '');
         $fldSubmit = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Search', $this->siteLangId));
-        $fldCancel = $frm->addButton("", "btn_clear", Labels::getLabel("LBL_Clear_Search", $this->siteLangId), array('onclick'=>'clearSearch();'));
+        $fldCancel = $frm->addButton("", "btn_clear", Labels::getLabel("LBL_Clear", $this->siteLangId), array('onclick'=>'clearSearch();'));
 
         return $frm;
     }
