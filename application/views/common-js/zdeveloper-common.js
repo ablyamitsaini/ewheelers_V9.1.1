@@ -1209,4 +1209,14 @@ $(document).ajaxComplete(function() {
     if (0 < $('div.block--empty').length && 0 < $('div.scroll-hint-icon-wrap').length){
         $('div.scroll-hint-icon-wrap').remove();
     }
+    if (0 < $("#facebox").length) {
+        if ($("#facebox").is(":visible")) {
+            $('html').addClass('pop-on');
+        } else {
+            $('html').removeClass('pop-on');
+        }
+        $("#facebox .close.close--white").on("click", function(){
+            $("html").removeClass('pop-on');
+        });
+    }
 });
