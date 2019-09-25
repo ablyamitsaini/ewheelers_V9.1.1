@@ -6,6 +6,7 @@ $(document).on('keyup', "input[name='product_name']", function(){
     var currObj = $(this);
     var parentForm = currObj.closest('form').attr('id');
     if('' != currObj.val()){
+        currObj.siblings('ul.dropdown-menu').remove();
         currObj.autocomplete({'source': function(request, response) {
         		$.ajax({
         			url: fcom.makeUrl('SellerProducts', 'autoCompleteProducts'),
