@@ -55,7 +55,7 @@ foreach ($childArr as $index => $childOrder) {
 
     $childArr[$index]['priceDetail'] = array(
         array(
-            'key' => Labels::getLabel('LBL_Quantity', $siteLangId),
+            'key' => Labels::getLabel('LBL_Ordered_Quantity', $siteLangId),
             'value' => $childOrder['op_qty'],
         ),
         array(
