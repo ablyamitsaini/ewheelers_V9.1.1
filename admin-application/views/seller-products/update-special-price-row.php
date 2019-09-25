@@ -10,6 +10,9 @@
         <?php echo html_entity_decode($data['product_name']); ?>
     </td>
     <td>
+        <?php echo $data['credential_username']; ?>
+    </td>
+    <td>
         <?php $startDate = date('Y-m-d', strtotime($data['splprice_start_date'])); ?>
         <div class="js--editCol edit-hover"><?php echo $startDate; ?></div>
         <?php

@@ -959,8 +959,9 @@ class SellerProduct extends MyAppModel
 
         $srch->addCondition('selprod_active', '=', applicationConstants::ACTIVE);
         $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
-        $srch->addOrder('selprod_active', 'DESC');
-        $srch->addOrder('selprod_added_on', 'DESC');
+        // $srch->addOrder('selprod_active', 'DESC');
+        // $srch->addOrder('selprod_added_on', 'DESC');
+        $srch->addOrder('splprice_id', 'DESC');
         $srch->setPageSize($pageSize);
         return $srch;
     }

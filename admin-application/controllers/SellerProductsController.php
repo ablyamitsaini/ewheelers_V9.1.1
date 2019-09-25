@@ -969,14 +969,33 @@ class SellerProductsController extends AdminBaseController
         $product = FatApp::getDb()->fetch($rs);
 
         if (!isset($post['splprice_price']) || $post['splprice_price'] < $product['product_min_selling_price'] || $post['splprice_price'] >= $product['selprod_price']) {
-            FatUtility::dieJsonError(Labels::getLabel('MSG_Special_price_must_between_min_selling_price_and_selling_price', $this->adminLangId));
+            $str = Labels::getLabel('MSG_Price_must_between_min_selling_price_{minsellingprice}_and_selling_price_{sellingprice}', $this->adminLangId);
+            $minSellingPrice = CommonHelper::displayMoneyFormat($product['product_min_selling_price'], false, true, true);
+            $sellingPrice = CommonHelper::displayMoneyFormat($product['selprod_price'], false, true, true);
+
+            $message = CommonHelper::replaceStringData($str, array('{minsellingprice}' => $minSellingPrice, '{sellingprice}' => $sellingPrice));
+            FatUtility::dieJsonError($message);
         }
 
         /* Check if same date already exists [ */
         $tblRecord = new TableRecord(SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE);
 
-        $smt = 'splprice_selprod_id = ? AND ((splprice_start_date between ? AND ?) OR (splprice_end_date between ? AND ?)) ';
-        $smtValues = array($selprod_id, $post['splprice_start_date'], $post['splprice_end_date'], $post['splprice_start_date'], $post['splprice_end_date']);
+        $smt = 'splprice_selprod_id = ? AND ';
+        $smt .= '(
+                                ((splprice_start_date between ? AND ?) OR (splprice_end_date between ? AND ?))
+                                OR
+                                ((? BETWEEN splprice_start_date AND splprice_end_date) OR (? BETWEEN  splprice_start_date AND splprice_end_date))
+                            )';
+        $smtValues = array(
+            $selprod_id,
+            $post['splprice_start_date'],
+            $post['splprice_end_date'],
+            $post['splprice_start_date'],
+            $post['splprice_end_date'],
+            $post['splprice_start_date'],
+            $post['splprice_end_date'],
+        );
+
         if (0 < $splprice_id) {
             $smt .= 'AND splprice_id != ?';
             $smtValues[] = $splprice_id;
@@ -2482,7 +2501,18 @@ class SellerProductsController extends AdminBaseController
         }
         // last Param of getProductDisplayTitle function used to get title in html form.
         $productName = SellerProduct::getProductDisplayTitle($data['splprice_selprod_id'], $this->adminLangId, true);
+
+        $srch = SellerProduct::getSearchObject();
+        $srch->joinTable(User::DB_TBL_CRED, 'LEFT OUTER JOIN', 'tuc.credential_user_id = sp.selprod_user_id', 'tuc');
+        $srch->addMultipleFields(array('credential_username'));
+        $srch->addCondition('selprod_id', '=', $data['splprice_selprod_id']);
+        $srch->setPageSize(1);
+        $rs = $srch->getResultSet();
+        $row = FatApp::getDb()->fetch($rs);
+
+        $data['credential_username'] = $row['credential_username'];
         $data['product_name'] = $productName;
+
         $this->set('data', $data);
         $this->set('splPriceId', $splPriceId);
         $json = array(
@@ -2515,6 +2545,15 @@ class SellerProductsController extends AdminBaseController
         // last Param of getProductDisplayTitle function used to get title in html form.
         $productName = SellerProduct::getProductDisplayTitle($data['voldiscount_selprod_id'], $this->adminLangId, true);
 
+        $srch = SellerProduct::getSearchObject();
+        $srch->joinTable(User::DB_TBL_CRED, 'LEFT OUTER JOIN', 'tuc.credential_user_id = sp.selprod_user_id', 'tuc');
+        $srch->addMultipleFields(array('credential_username'));
+        $srch->addCondition('selprod_id', '=', $data['voldiscount_selprod_id']);
+        $srch->setPageSize(1);
+        $rs = $srch->getResultSet();
+        $row = FatApp::getDb()->fetch($rs);
+
+        $data['credential_username'] = $row['credential_username'];
         $data['product_name'] = $productName;
         $this->set('data', $data);
         $this->set('volDiscountId', $volDiscountId);

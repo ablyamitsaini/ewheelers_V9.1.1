@@ -2266,7 +2266,8 @@ trait SellerProducts
         $srch = SellerProduct::searchVolumeDiscountProducts($this->siteLangId, $selProdId, $keyword, $userId);
 
         $srch->setPageNumber($page);
-
+        $srch->addOrder('voldiscount_id', 'DESC');
+        
         $db = FatApp::getDb();
         $rs = $srch->getResultSet();
         $arrListing = $db->fetchAll($rs);
