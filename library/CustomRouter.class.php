@@ -61,9 +61,9 @@ class CustomRouter
 
             $srch = UrlRewrite::getSearchObject();
             $srch->doNotCalculateRecords();
-            $srch->addFld('urlrewrite_custom');
+            $srch->addMultipleFields(array('urlrewrite_custom','urlrewrite_original'));
             $srch->setPageSize(1);
-            $srch->addCondition(UrlRewrite::DB_TBL_PREFIX . 'custom', '=', $customUrl[0]);        
+            $srch->addCondition(UrlRewrite::DB_TBL_PREFIX . 'custom', '=', $customUrl[0]);
             $rs = $srch->getResultSet();
             if (!$row = FatApp::getDb()->fetch($rs)) {
                 return;
@@ -94,7 +94,7 @@ class CustomRouter
             if ($controller == '') {
                 $controller = 'Content';
             }
-
+            
             if ($action == '') {
                 $action = 'error404';
             }

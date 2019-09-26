@@ -125,51 +125,56 @@ class BannerController extends MyAppController
 
     public function categories()
     {
-        $bannerListing = $this->getBanners('Category_Page_Left');
+        $bannerListing = $this->getBanners('Category_Page_Left', $this->siteLangId);
         $this->set('bannerListing', $bannerListing);
         $this->_template->render(false, false);
     }
 
     public function Products()
     {
-        $bannerListing = $this->getBanners('Product_Page_Right');
+        $bannerListing = $this->getBanners('Product_Page_Right', $this->siteLangId);
         $this->set('bannerListing', $bannerListing);
         $this->_template->render(false, false);
     }
 
     public function allProducts()
     {
-        $bannerListing = $this->getBanners('All_Products_Left');
+        $bannerListing = $this->getBanners('All_Products_Left', $this->siteLangId);
         $this->set('bannerListing', $bannerListing);
         $this->_template->render(false, false);
     }
 
     public function blogPage()
     {
-        $bannerListing = $this->getBanners('Blog_Section_Right');
+        $bannerListing = $this->getBanners('Blog_Section_Right', $this->siteLangId);
         $this->set('bannerListing', $bannerListing);
         $this->_template->render(false, false);
     }
 
     public function Brands()
     {
-        $bannerListing = $this->getBanners('Brand_Page_Left');
+        $bannerListing = $this->getBanners('Brand_Page_Left', $this->siteLangId);
         $this->set('bannerListing', $bannerListing);
         $this->_template->render(false, false);
     }
 
     public function searchListing()
     {
-        $bannerListing = $this->getBanners('Search_Page_Left');
+        $bannerListing = $this->getBanners('Search_Page_Left', $this->siteLangId);
 
         $this->set('bannerListing', $bannerListing);
         $this->_template->render(false, false);
     }
 
-    private function getBanners($type)
+    private function getBanners($type, $langId)
     {
         if ($type == '') {
             return;
+        }
+
+        $bannerDataCache =  FatCache::get('bannersCache'.$type.'_'.$langId, CONF_IMG_CACHE_TIME, '.txt');
+        if ($bannerDataCache) {
+            return unserialize($bannerDataCache);
         }
 
         $db = FatApp::getDb();
@@ -182,10 +187,10 @@ class BannerController extends MyAppController
             return;
         }
 
-        $srch = Banner::getSearchObject($this->siteLangId, true);
+        $srch = Banner::getSearchObject($langId, true);
         $srch->doNotCalculateRecords();
 
-        if ($bannerLocation['blocation_banner_count']>0) {
+        if ($bannerLocation['blocation_banner_count'] > 0) {
             $srch->setPageSize($bannerLocation['blocation_banner_count']);
         }
 
@@ -193,6 +198,7 @@ class BannerController extends MyAppController
         $rs = $srch->getResultSet();
 
         return $bannerListing = $db->fetchAll($rs, 'banner_id');
+        FatCache::set('bannersCache'.$type.'_'.$langId, serialize($bannerListing), '.txt');
     }
 
     public function locationFrames($frameId, $sizeType='')

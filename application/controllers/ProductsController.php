@@ -1581,7 +1581,7 @@ class ProductsController extends MyAppController
             if ($categoryId) {
                 $productCategorySearch = new ProductCategorySearch($this->siteLangId);
                 $productCategorySearch->addCondition('prodcat_id', '=', $categoryId);
-                $productCategorySearch->addMultipleFields(array('prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','prodcat_description','prodcat_code'));
+                $productCategorySearch->addMultipleFields(array('prodcat_id','COALESCE(prodcat_name, prodcat_identifier) as prodcat_name','prodcat_description','prodcat_code'));
                 $productCategorySearchRs = $productCategorySearch->getResultSet();
                 $category = $db->fetch($productCategorySearchRs);
                 $category['banner'] = AttachedFile::getAttachment(AttachedFile::FILETYPE_CATEGORY_BANNER, $categoryId);
