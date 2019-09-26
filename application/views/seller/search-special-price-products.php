@@ -54,7 +54,7 @@ foreach ($arrListing as $sn => $row) {
                 break;
             case 'splprice_price':
                 $input = '<input type="text" data-id="'.$splPriceId.'" value="'.$row[$column].'" data-selprodid="'.$selProdId.'" name="'.$column.'" data-oldval="'.$row[$column].'" class="js--splPriceCol hidden sp-input"/>';
-                $td->appendElement('div', array("class" => 'js--editCol edit-hover', "title" => Labels::getLabel('LBL_Click_To_Edit', $siteLangId)), CommonHelper::displayMoneyFormat($row[$column]), true);
+                $td->appendElement('div', array("class" => 'js--editCol edit-hover', "title" => Labels::getLabel('LBL_Click_To_Edit', $siteLangId)), CommonHelper::displayMoneyFormat($row[$column], true, true), true);
                 $td->appendElement('plaintext', array(), $input, true);
                 break;
             case 'action':
@@ -76,7 +76,7 @@ foreach ($arrListing as $sn => $row) {
     }
 }
 if (count($arrListing) == 0) {
-    $tbl->appendElement('tr')->appendElement(
+    $tbl->appendElement('tr', array('class' => 'noResult--js'))->appendElement(
         'td',
         array('colspan'=>count($arr_flds)),
         Labels::getLabel('LBL_No_Record_Found', $siteLangId)

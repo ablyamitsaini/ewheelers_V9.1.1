@@ -4263,7 +4263,9 @@ class SellerController extends SellerBaseController
         $product = FatApp::getDb()->fetch($rs);
 
         if (!isset($post['splprice_price']) || $post['splprice_price'] < $product['product_min_selling_price'] || $post['splprice_price'] >= $product['selprod_price']) {
-            FatUtility::dieJsonError(Labels::getLabel('MSG_Special_price_must_between_min_selling_price_and_selling_price', $this->siteLangId));
+            $str = Labels::getLabel('MSG_Price_must_between_min_selling_price_{minsellingprice}_and_selling_price_{sellingprice}', $this->siteLangId);
+            $message = CommonHelper::replaceStringData($str, array('{minsellingprice}' => CommonHelper::displayMoneyFormat($product['product_min_selling_price'], false, true, true), '{sellingprice}' => CommonHelper::displayMoneyFormat($product['selprod_price'], false, true, true)));
+            FatUtility::dieJsonError($message);
         }
 
         /* Check if same date already exists [ */
@@ -4346,7 +4348,7 @@ class SellerController extends SellerBaseController
         }
 
         if ('splprice_price' == $attribute) {
-            $value = CommonHelper::displayMoneyFormat($value);
+            $value = CommonHelper::displayMoneyFormat($value, true, true);
         }
         $json = array(
             'status'=> true,

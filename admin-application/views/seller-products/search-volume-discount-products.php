@@ -2,6 +2,7 @@
 $arr_flds = array(
     'select_all'=>Labels::getLabel('LBL_Select_all', $adminLangId),
     'product_name' => Labels::getLabel('LBL_Name', $adminLangId),
+    'credential_username' => Labels::getLabel('LBL_Seller', $adminLangId),
     'voldiscount_min_qty' => Labels::getLabel('LBL_Minimum_Quantity', $adminLangId),
     'voldiscount_percentage' => Labels::getLabel('LBL_Discount', $adminLangId).' (%)',
     'action' => Labels::getLabel('LBL_Action', $adminLangId),
@@ -35,6 +36,9 @@ foreach ($arrListing as $sn => $row) {
                 $productName = SellerProduct::getProductDisplayTitle($selProdId, $adminLangId, true);
                 $td->appendElement('plaintext', array(), $productName, true);
                 break;
+            case 'credential_username':
+                $td->appendElement('plaintext', array(), $row[$key], true);
+                break;
             case 'voldiscount_min_qty':
             case 'voldiscount_percentage':
                 $input = '<input type="text" data-id="'.$volDiscountId.'" value="'.$row[$key].'" data-selprodid="'.$selProdId.'" name="'.$key.'" class="js--volDiscountCol hide vd-input" data-oldval="'.$row[$key].'"/>';
@@ -67,7 +71,7 @@ foreach ($arrListing as $sn => $row) {
     }
 }
 if (count($arrListing) == 0) {
-    $tbl->appendElement('tr')->appendElement(
+    $tbl->appendElement('tr', array('class' => 'noResult--js'))->appendElement(
         'td',
         array('colspan'=>count($arr_flds)),
         Labels::getLabel('LBL_No_Record_Found', $adminLangId)

@@ -3,6 +3,7 @@
 $arr_flds = array(
     'select_all'=>Labels::getLabel('LBL_Select_all', $adminLangId),
     'product_name' => Labels::getLabel('LBL_Name', $adminLangId),
+    'credential_username' => Labels::getLabel('LBL_Seller', $adminLangId),
     'splprice_start_date' => Labels::getLabel('LBL_Start_Date', $adminLangId),
     'splprice_end_date' => Labels::getLabel('LBL_End_Date', $adminLangId),
     'splprice_price' => Labels::getLabel('LBL_Special_Price', $adminLangId),
@@ -36,6 +37,9 @@ foreach ($arrListing as $sn => $row) {
                 $productName = SellerProduct::getProductDisplayTitle($selProdId, $adminLangId, true);
                 $td->appendElement('plaintext', array(), $productName, true);
                 break;
+            case 'credential_username':
+                $td->appendElement('plaintext', array(), $row[$column], true);
+                break;
             case 'splprice_start_date':
             case 'splprice_end_date':
                 $date = date('Y-m-d', strtotime($row[$column]));
@@ -55,7 +59,7 @@ foreach ($arrListing as $sn => $row) {
                 break;
             case 'splprice_price':
                 $input = '<input type="text" data-id="'.$splPriceId.'" value="'.$row[$column].'" data-selprodid="'.$selProdId.'" name="'.$column.'" data-oldval="'.$row[$column].'" class="js--splPriceCol hide sp-input"/>';
-                $td->appendElement('div', array("class" => 'js--editCol edit-hover', "title" => Labels::getLabel('LBL_Click_To_Edit', $adminLangId)), CommonHelper::displayMoneyFormat($row[$column]), true);
+                $td->appendElement('div', array("class" => 'js--editCol edit-hover', "title" => Labels::getLabel('LBL_Click_To_Edit', $adminLangId)), CommonHelper::displayMoneyFormat($row[$column], true, true), true);
                 $td->appendElement('plaintext', array(), $input, true);
                 break;
             case 'action':
@@ -84,7 +88,7 @@ foreach ($arrListing as $sn => $row) {
     }
 }
 if (count($arrListing) == 0) {
-    $tbl->appendElement('tr')->appendElement(
+    $tbl->appendElement('tr', array('class' => 'noResult--js'))->appendElement(
         'td',
         array('colspan'=>count($arr_flds)),
         Labels::getLabel('LBL_No_Record_Found', $adminLangId)

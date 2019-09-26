@@ -93,3 +93,6 @@ INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`
 INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('APP_NEW_MESSAGE_POSTED_BY_{username}_ON_RETURN_{requestnumber}', 1,'New message posted by {username} on return request {requestnumber}');
 INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('APP_STATUS_FOR_CANCELLATION_{invoicenumber}_UPDATED_{requeststatus}', 1,'Status for order cancellation invoice {invoicenumber} has been updated to {requeststatus}');
 INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('APP_REWARDS_{rewardpoints}_HAS_BEEN_{debitcredittype}_ACCOUNT', 1,'Reward points {rewardpoints} has been {debitcredittype} to your account');
+/* Release notes TV-9.0.1.20190923 */
+
+DELETE FROM `tbl_language_labels` WHERE `label_key` = "MSG_Special_price_must_between_min_selling_price_and_selling_price";
