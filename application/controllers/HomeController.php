@@ -290,7 +290,9 @@ class HomeController extends MyAppController
     private function getCollections($productSrchObj)
     {
         $langId = $this->siteLangId;
-        $collectionCache =  FatCache::get('collectionCache_'.$langId, CONF_HOME_PAGE_CACHE_TIME, '.txt');
+
+        $apiCall = (true === MOBILE_APP_API_CALL) ? 1 : 0;
+        $collectionCache =  FatCache::get('collectionCache_'.$langId.'_'.$apiCall, CONF_HOME_PAGE_CACHE_TIME, '.txt');
 
         if ($collectionCache) {
             return  unserialize($collectionCache);
@@ -556,7 +558,7 @@ class HomeController extends MyAppController
             $i++;
         }
 
-        FatCache::set('collectionCache_'.$langId, serialize($collections), '.txt');
+        FatCache::set('collectionCache_'.$langId.'_'.$apiCall, serialize($collections), '.txt');
         return $collections;
     }
 

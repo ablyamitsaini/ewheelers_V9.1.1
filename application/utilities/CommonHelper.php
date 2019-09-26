@@ -192,6 +192,7 @@ class CommonHelper extends FatUtility
         $urlString = trim($urlString,'/'); */
         $urlString = trim(ltrim($url, CONF_WEBROOT_FRONTEND), '/');
         $srch = UrlRewrite::getSearchObject();
+        $srch->addMultipleFields(array('urlrewrite_custom'));
         $srch->doNotCalculateRecords();
         $srch->setPageSize(1);
         $srch->addCondition(UrlRewrite::DB_TBL_PREFIX . 'original', 'LIKE', $urlString);

@@ -61,6 +61,7 @@ class CustomRouter
 
             $srch = UrlRewrite::getSearchObject();
             $srch->doNotCalculateRecords();
+            $srch->addMultipleFields(array('urlrewrite_custom','urlrewrite_original'));
             $srch->setPageSize(1);
             $srch->addCondition(UrlRewrite::DB_TBL_PREFIX . 'custom', '=', $customUrl[0]);
             $rs = $srch->getResultSet();
@@ -93,7 +94,7 @@ class CustomRouter
             if ($controller == '') {
                 $controller = 'Content';
             }
-
+            
             if ($action == '') {
                 $action = 'error404';
             }
