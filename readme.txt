@@ -6,7 +6,8 @@ Bug:
     -> 030838 - when seller clicks on manage special price from product then it redirect to 404
     -> 030815 - Catalog requested by seller is not listing in admin
     -> 030638 - in arabic language> Throughout the website Vertical loader overlaps text
-    
+    -> 030973 - Rewards on purschase.
+
 <!-- Release notes TV-9.0.1.20190923 -- >
 New Features :
 	> Task - 66013 - Special Price Module
