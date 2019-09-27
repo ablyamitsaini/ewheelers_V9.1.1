@@ -71,6 +71,8 @@ class applicationConstants
 
     const ALLOWED_HTML_TAGS_FOR_APP = '<b><strong><i><u><small><br><p><h1><h2><h3><h4><h5><h6><div><a>';
 
+    const MOBILE_SCREEN_WIDTH = 768;
+
     public static function getWeightUnitsArr($langId)
     {
         $langId = FatUtility::int($langId);

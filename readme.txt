@@ -11,6 +11,7 @@ Bug:
     -> 030917 - Multiple special price are getting added for same date
     -> 030636 - If any popup is open then background page should not be scrolable
     -> 030632 - Drag&Drop functionality not working in mobile device for seller options(frontend)
+    -> 030629 - In mobile devices > when we click on any option in drawer menu then drawer should get close.
 
 <!-- Release notes TV-9.0.1.20190923 -- >
 New Features :

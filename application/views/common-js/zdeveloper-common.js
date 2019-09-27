@@ -1,17 +1,4 @@
-$(document).ready(function() {
-    /*if('' == getCookie('openSidebar') || 1 == getCookie('openSidebar')){
-    	document.cookie = "openSidebar=1";
-    	$('.js-hamburger.hamburger-toggle').addClass('is-opened');
-    	$('body.is-dashboard').removeClass('sidebar-is-reduced').addClass('sidebar-is-expanded');
-    }else{
-    	$('.js-hamburger.hamburger-toggle').removeClass('is-opened');
-    	$('body.is-dashboard').removeClass('sidebar-is-expanded').addClass('sidebar-is-reduced');
-    }*/
-
-    $(document).on('click', '.js-hamburger', function() {
-        fcom.ajax(fcom.makeUrl('Home', 'setupSidebarVisibility'), '', function(res) {});
-    });
-
+$(document).ready(function() {        
     setTimeout(function() {
         $('body').addClass('loaded');
     }, 1000);
