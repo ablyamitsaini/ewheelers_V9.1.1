@@ -7,6 +7,7 @@ Bug:
     -> 030815 - Catalog requested by seller is not listing in admin
     -> 030638 - in arabic language> Throughout the website Vertical loader overlaps text
     -> 030973 - Rewards on purschase.
+    -> 030631 - Datepicker calender set layout direction.
 
 <!-- Release notes TV-9.0.1.20190923 -- >
 New Features :
