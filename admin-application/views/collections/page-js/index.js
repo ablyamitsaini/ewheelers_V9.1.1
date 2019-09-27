@@ -295,6 +295,12 @@ $(document).ready(function() {
     collectionMediaForm = function(collectionId) {
         fcom.ajax(fcom.makeUrl('Collections', 'mediaForm', [collectionId]), '', function(t) {
             $.facebox(t);
+            var parentSiblings = $(".displayMediaOnly--js").closest("div.row").siblings('div.row:not(:first)');
+            if (0 < $(".displayMediaOnly--js:checked").val()) {
+                parentSiblings.show();
+            } else {
+                parentSiblings.hide();
+            }
         });
     };
 
@@ -347,6 +353,17 @@ $(document).ready(function() {
         $("#frmCollectionListing").attr("action",fcom.makeUrl('Collections','deleteSelected')).submit();
     };
 
+    displayMediaOnly = function(collectionId, obj) {
+        var parentSiblings = $(obj).closest("div.row").siblings('div.row:not(:first)');
+        if (obj.checked) {
+            parentSiblings.show();
+            value = 1;
+        } else {
+            parentSiblings.hide();
+            value = 0;
+        }
+        $.ajax({url: fcom.makeUrl('Collections', 'displayMediaOnly', [collectionId, value])});
+    };
 })();
 
 $(document).on('click', '.File-Js', function() {

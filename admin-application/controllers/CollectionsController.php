@@ -731,16 +731,17 @@ class CollectionsController extends AdminBaseController
             FatUtility::dieWithError(Message::getHtml());
         }
 
-        if (!false == $collectionDetails) {
+        if (false != $collectionDetails) {
             $collectionImages = AttachedFile::getAttachment(AttachedFile::FILETYPE_COLLECTION_IMAGE, $collectionId);
             $this->set('collectionImages', $collectionImages);
-            $collectionBgImages = AttachedFile::getAttachment(AttachedFile::FILETYPE_COLLECTION_BG_IMAGE, $collectionId);
-            $this->set('collectionBgImages', $collectionBgImages);
+            /*$collectionBgImages = AttachedFile::getAttachment(AttachedFile::FILETYPE_COLLECTION_BG_IMAGE, $collectionId);
+            $this->set('collectionBgImages', $collectionBgImages);*/
         }
 
         $this->set('imgUpdatedOn', Collections::getAttributesById($collectionId, 'collection_img_updated_on'));
         $this->set('collection_id', $collectionId);
-        $this->set('collectionMediaFrm', $this->getMediaForm($collectionId));
+        $this->set('displayMediaOnly', $collectionDetails['collection_display_media_only']);
+        $this->set('collectionMediaFrm', $this->getMediaForm());
         $this->set('languages', Language::getAllNames());
         $this->_template->render(false, false);
     }
@@ -753,17 +754,18 @@ class CollectionsController extends AdminBaseController
     return $frm;
     } */
 
-    private function getMediaForm($collectionId = 0)
+    private function getMediaForm()
     {
         $frm = new Form('frmCollectionMedia');
         $languagesAssocArr = Language::getAllNames();
         $frm->addHTML('', 'collection_image_heading', '');
+        $frm->addCheckBox(Labels::getLabel("LBL_Display_Media_Only", $this->adminLangId), 'collection_display_media_only', 1, array(), false, 0);
         $frm->addSelectBox(Labels::getLabel('LBL_Language', $this->adminLangId), 'image_lang_id', array( 0 => Labels::getLabel('LBL_All_Languages', $this->adminLangId) ) + $languagesAssocArr, '', array(), '');
         $frm->addButton(
             Labels::getLabel('LBL_Image', $this->adminLangId),
             'collection_image',
             'Upload File',
-            array('class'=>'File-Js','id'=>'collection_image','data-file_type'=>AttachedFile::FILETYPE_COLLECTION_IMAGE, 'data-collection_id' => $collectionId )
+            array('class'=>'File-Js','id'=>'collection_image','data-file_type'=>AttachedFile::FILETYPE_COLLECTION_IMAGE)
         );
         $frm->addHtml('', 'collection_image_display_div', '');
 
@@ -827,8 +829,7 @@ class CollectionsController extends AdminBaseController
             FatUtility::dieJsonError(Message::getHtml());
         }
 
-        $collectionObj = new Collections($collection_id);
-        $collectionObj->addUpdateData(array('collection_img_updated_on' => date('Y-m-d H:i:s')));
+        Collections::setLastUpdatedOn($collection_id);
 
         $this->set('file', $_FILES['file']['name']);
         $this->set('collection_id', $collection_id);
@@ -850,8 +851,9 @@ class CollectionsController extends AdminBaseController
             Message::addErrorMessage($fileHandlerObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
-        $collectionObj = new Collections($collection_id);
-        $collectionObj->addUpdateData(array('collection_img_updated_on' => date('Y-m-d H:i:s')));
+
+        Collections::setLastUpdatedOn($collection_id);
+
         $this->set('msg', Labels::getLabel('MSG_Deleted_Successfully', $this->adminLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
@@ -1016,5 +1018,18 @@ class CollectionsController extends AdminBaseController
                 return Collections::LIMIT_BRAND_LAYOUT1;
             break;
         }
+    }
+
+    public function displayMediaOnly($collectionId, $value = 0)
+    {
+        $collectionId = FatUtility::int($collectionId);
+        if (1 > $collectionId) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Request', $this->adminLangId));
+        }
+
+        $collectionObj = new Collections($collectionId);
+        $collectionObj->addUpdateData(array('collection_display_media_only' => $value));
+        $this->set('msg', Labels::getLabel('MSG_Updated_Successfully', $this->adminLangId));
+        $this->_template->render(false, false, 'json-success.php');
     }
 }

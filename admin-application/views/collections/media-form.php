@@ -14,7 +14,15 @@ $collectionImageDisplayDiv->developerTags['col'] = 12;
 $languageFld = $collectionMediaFrm->getField('image_lang_id');
 $languageFld->setFieldTagAttribute('class', 'language-js');
 
+$displayMediaOnlyObj = $collectionMediaFrm->getField('collection_display_media_only');
+$displayMediaOnlyObj->setFieldTagAttribute('class', 'displayMediaOnly--js');
+$displayMediaOnlyObj->setFieldTagAttribute('onclick', 'displayMediaOnly('.$collection_id.', this)');
+if (0 < $displayMediaOnly) {
+    $displayMediaOnlyObj->setFieldTagAttribute('checked', 'checked');
+}
+
 $fld = $collectionMediaFrm->getField('collection_image');
+$fld->setFieldTagAttribute('data-collection_id', $collection_id);
 $preferredDimensionsStr = '<small class="text--small">'.sprintf(Labels::getLabel('LBL_Preferred_Dimensions_%s', $adminLangId), '640*480').'</small>';
 $fld->htmlAfterField = $preferredDimensionsStr;
 

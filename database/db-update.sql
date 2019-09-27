@@ -97,3 +97,4 @@ INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`
 
 DELETE FROM `tbl_language_labels` WHERE `label_key` = "MSG_Special_price_must_between_min_selling_price_and_selling_price";
 ALTER TABLE `tbl_collections`  ADD `collection_img_updated_on` DATETIME on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP  AFTER `collection_layout_type`;
+ALTER TABLE `tbl_collections` ADD `collection_display_media_only` TINYINT(1) NOT NULL AFTER `collection_layout_type`;
