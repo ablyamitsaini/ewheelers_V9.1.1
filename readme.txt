@@ -10,7 +10,8 @@ Bug:
     -> 030502 - on referral> clear search text in button is cropped.
     -> 030917 - Multiple special price are getting added for same date
     -> 030636 - If any popup is open then background page should not be scrolable
-    
+    -> 030632 - Drag&Drop functionality not working in mobile device for seller options(frontend)
+
 <!-- Release notes TV-9.0.1.20190923 -- >
 New Features :
 	> Task - 66013 - Special Price Module

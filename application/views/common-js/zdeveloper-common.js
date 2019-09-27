@@ -1206,9 +1206,13 @@ $(document).ready(function() {
 });
 $(document).ajaxComplete(function() {
     new ScrollHint('.table');
+
+    //Remove scrolling on table with hand icon
     if (0 < $('div.block--empty').length && 0 < $('div.scroll-hint-icon-wrap').length){
         $('div.scroll-hint-icon-wrap').remove();
     }
+
+    //Remove Scrolling When Facebox Popup opened
     if (0 < $("#facebox").length) {
         if ($("#facebox").is(":visible")) {
             $('html').addClass('pop-on');
@@ -1218,5 +1222,5 @@ $(document).ajaxComplete(function() {
         $("#facebox .close.close--white").on("click", function(){
             $("html").removeClass('pop-on');
         });
-    }
+    }    
 });

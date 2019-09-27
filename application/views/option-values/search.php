@@ -4,7 +4,7 @@ $arr_flds = array(
         'optionvalue_identifier' => Labels::getLabel('LBL_OPTION_VALUE_NAME', $langId),
         'action'  =>  Labels::getLabel('LBL_ACTION', $langId),
     );
-$tbl = new HtmlElement('table', array('width' => '100%', 'class' => 'table table--orders table-responsive', 'id' => 'optionvalues'));
+$tbl = new HtmlElement('table', array('width' => '100%', 'class' => 'table table--orders table-responsive sortable--js', 'id' => 'optionvalues'));
 $th = $tbl->appendElement('thead')->appendElement('tr');
 foreach ($arr_flds as $val) {
     $e = $th->appendElement('th', array(), $val);
@@ -61,19 +61,24 @@ if (count($arr_listing) == 0) {
 </script>
 <script>
     $(document).ready(function() {
-        $('#optionvalues').tableDnD({
-            onDrop: function(table, row) {
-                var order = $.tableDnD.serialize('id');
-                fcom.ajax(fcom.makeUrl('OptionValues', 'setOptionsOrder'), order, function(res) {
-                    var ans = $.parseJSON(res);
-                    if (ans.status == 1) {
-                        $.mbsmessage(ans.msg, true, 'alert--success');
-                    } else {
-                        $.mbsmessage(ans.msg, true, 'alert--danger');
-                    }
-                });
-            },
-            dragHandle: ".dragHandle",
-        });
+        $(".sortable--js tbody").sortable({
+           stop: function() {
+               var orderStr = '';
+               $(this).find('tr').each(function(index, value) {
+                   if (0 < index) {
+                       orderStr += '&';
+                   }
+                   orderStr += 'optionvalues[]='+$(this).attr("id");
+               });
+               fcom.ajax(fcom.makeUrl('OptionValues', 'setOptionsOrder'), orderStr, function(res) {
+                   var ans = $.parseJSON(res);
+                   if (ans.status == 1) {
+                       $.mbsmessage(ans.msg, true, 'alert--success');
+                   } else {
+                       $.mbsmessage(ans.msg, true, 'alert--danger');
+                   }
+               });
+           }
+       }).disableSelection();
     });
 </script>
