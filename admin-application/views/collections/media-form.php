@@ -18,6 +18,10 @@ $fld = $collectionMediaFrm->getField('collection_image');
 $preferredDimensionsStr = '<small class="text--small">'.sprintf(Labels::getLabel('LBL_Preferred_Dimensions_%s', $adminLangId), '640*480').'</small>';
 $fld->htmlAfterField = $preferredDimensionsStr;
 
+$headingArea = $collectionMediaFrm->getField('collection_image_heading');
+$str = '<small class="text--small">'.Labels::getLabel('LBL_Used_For_Mobile_Applications', $adminLangId).'</small>';
+$headingArea->value = $str;
+
 /*$collectionBgImageHeadingFld = $collectionMediaFrm->getField('collection_bg_image_heading');
 $collectionBgImageHeadingFld->developerTags['col'] = 12;
 $collectionBgImageHeadingFld->value = '<br/><br/><h2>'.Labels::getLabel('LBL_Collection_Background_Image_Management(If_any)', $adminLangId).'</h2>';

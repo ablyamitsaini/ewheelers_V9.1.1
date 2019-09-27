@@ -757,7 +757,7 @@ class CollectionsController extends AdminBaseController
     {
         $frm = new Form('frmCollectionMedia');
         $languagesAssocArr = Language::getAllNames();
-        // $frm->addHTML('', 'collection_image_heading', '');
+        $frm->addHTML('', 'collection_image_heading', '');
         $frm->addSelectBox(Labels::getLabel('LBL_Language', $this->adminLangId), 'image_lang_id', array( 0 => Labels::getLabel('LBL_All_Languages', $this->adminLangId) ) + $languagesAssocArr, '', array(), '');
         $frm->addButton(
             Labels::getLabel('LBL_Image', $this->adminLangId),
