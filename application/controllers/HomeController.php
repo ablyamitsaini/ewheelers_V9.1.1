@@ -638,7 +638,6 @@ class HomeController extends MyAppController
             $bottom_banners =  BannerLocation::getPromotionalBanners(BannerLocation::HOME_PAGE_BOTTOM_BANNER, $langId);
         }
         $banners = array_merge($top_banners, $middle_banners, $bottom_banners);
-        CommonHelper::printArray($banners); die;
         return $banners;
     }
 
