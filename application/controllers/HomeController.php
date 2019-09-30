@@ -328,7 +328,7 @@ class HomeController extends MyAppController
                 $collections[] = $collection;
                 $i++;
                 continue;
-            }
+            } 
 
             switch ($collection['collection_type']) {
                 case Collections::COLLECTION_TYPE_PRODUCT:
