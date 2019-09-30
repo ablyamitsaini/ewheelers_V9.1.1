@@ -126,7 +126,6 @@ class HomeController extends MyAppController
                 FatCache::set('homePageFooterLayout'.$cacheKey, $homePageFooterLayout, '.txt');
             }
             $this->set('homePageFooterLayout', $homePageFooterLayout);
-
         }
 
         $this->_template->render();
@@ -629,8 +628,17 @@ class HomeController extends MyAppController
     {
         $langId = $this->siteLangId;
         $top_banners =  BannerLocation::getPromotionalBanners(BannerLocation::HOME_PAGE_TOP_BANNER, $langId);
-        $bottom_banners =  BannerLocation::getPromotionalBanners(BannerLocation::HOME_PAGE_BOTTOM_BANNER, $langId);
-        $banners = array_merge($top_banners, $bottom_banners);
+        $middle_banners = array();
+        if (true ===  MOBILE_APP_API_CALL) {
+            $middle_banners =  BannerLocation::getMobileAppMiddleBanners(BannerLocation::HOME_PAGE_BOTTOM_BANNER, $langId, 1);
+            $banners = $middle_banners['Home_Page_Middle_Banner']['banners'];
+            $skip = array_column($banners, 'banner_id');
+            $bottom_banners =  BannerLocation::getPromotionalBanners(BannerLocation::HOME_PAGE_BOTTOM_BANNER, $langId, 1, $skip);
+        } else {
+            $bottom_banners =  BannerLocation::getPromotionalBanners(BannerLocation::HOME_PAGE_BOTTOM_BANNER, $langId);
+        }
+        $banners = array_merge($top_banners, $middle_banners, $bottom_banners);
+        CommonHelper::printArray($banners); die;
         return $banners;
     }
 
