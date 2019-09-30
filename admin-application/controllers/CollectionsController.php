@@ -808,10 +808,10 @@ class CollectionsController extends AdminBaseController
         $image_width = $image_info[0];
         $image_height = $image_info[1];
 
-        if (AttachedFile::APP_IMAGE_WIDTH < $image_width || AttachedFile::APP_IMAGE_HEIGHT < $image_height) {
+        /*if (AttachedFile::APP_IMAGE_WIDTH < $image_width || AttachedFile::APP_IMAGE_HEIGHT < $image_height) {
             Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Dimensions', $this->adminLangId));
             FatUtility::dieJsonError(Message::getHtml());
-        }
+        }*/
 
         $fileHandlerObj = new AttachedFile();
         if (!$res = $fileHandlerObj->saveAttachment(

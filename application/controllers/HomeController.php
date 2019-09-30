@@ -324,11 +324,11 @@ class HomeController extends MyAppController
             }
 
             if (true ===  MOBILE_APP_API_CALL && 0 < $collection['collection_display_media_only']) {
-                $collection['collectionImage'] = CommonHelper::generateFullUrl('image', 'collectionReal', array( $collection_id, $langId,  'ORIGINAL', AttachedFile::FILETYPE_COLLECTION_IMAGE));
+                $collection['collection_image'] = CommonHelper::generateFullUrl('image', 'collectionReal', array( $collection_id, $langId,  'ORIGINAL', AttachedFile::FILETYPE_COLLECTION_IMAGE));
                 $collections[] = $collection;
                 $i++;
                 continue;
-            } 
+            }
 
             switch ($collection['collection_type']) {
                 case Collections::COLLECTION_TYPE_PRODUCT:
