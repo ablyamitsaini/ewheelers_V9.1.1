@@ -1460,7 +1460,7 @@ END,   special_price_found ) as special_price_found'
         return false;
     }
 
-    public static function updateMinPrices($sellerId = 0)
+    /*public static function updateMinPrices($sellerId = 0)
     {
         $criteria = array();
         $shop = Shop::getAttributesByUserId($sellerId);
@@ -1488,5 +1488,5 @@ END,   special_price_found ) as special_price_found'
         FatApp::getDb()->query($qry);
         $query = "DELETE m FROM ".static::DB_PRODUCT_MIN_PRICE." m LEFT OUTER JOIN (".$tmpQry.") ON pmp_product_id = selprod_product_id WHERE m.pmp_product_id IS NULL";
         FatApp::getDb()->query($query);
-    }
+    }*/
 }

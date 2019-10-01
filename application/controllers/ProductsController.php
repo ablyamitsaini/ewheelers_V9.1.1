@@ -91,12 +91,18 @@ class ProductsController extends MyAppController
     {
         $db = FatApp::getDb();
         $post = FatApp::getPostedData();
+        $cacheKey = $this->siteLangId;
 
         $get = FatApp::getParameters();
         $headerFormParamsAssocArr = Product::convertArrToSrchFiltersAssocArr($get);
         $headerFormParamsAssocArr = array_merge($headerFormParamsAssocArr, $post);
 
-        $prodSrchObj = new ProductSearch($this->siteLangId);
+        $langId = 0;
+        if (array_key_exists('keyword', $headerFormParamsAssocArr) && !empty($headerFormParamsAssocArr['keyword'])) {
+            $langId = $this->siteLangId;
+        }
+
+        $prodSrchObj = new ProductSearch($langId);
         $prodSrchObj->setDefinedCriteria(0, 0, $headerFormParamsAssocArr, true);
         $prodSrchObj->joinProductToCategory();
         $prodSrchObj->joinSellerSubscription(0, false, true);
@@ -107,40 +113,56 @@ class ProductsController extends MyAppController
         if (array_key_exists('category', $post)) {
             $prodSrchObj->addCategoryCondition($post['category']);
             $categoryId = FatUtility::int($post['category']);
+            $cacheKey.= '-'.$categoryId;
         }
 
         $shopId = FatApp::getPostedData('shop_id', FatUtility::VAR_INT, 0);
         if (0 < $shopId) {
             $prodSrchObj->addShopIdCondition($shopId);
+            $cacheKey.= '-'.$shopId;
         }
 
         $topProducts = FatApp::getPostedData('top_products', FatUtility::VAR_INT, 0);
         if (0 < $topProducts) {
             $prodSrchObj->joinProductRating();
             $prodSrchObj->addCondition('prod_rating', '>=', 3);
+            $cacheKey.= '-r';
         }
 
         $brandId = FatApp::getPostedData('brand_id', FatUtility::VAR_INT, 0);
         if (0 < $brandId) {
             $prodSrchObj->addBrandCondition($brandId);
+            $cacheKey.= '-'.$brandId;
         }
 
         $featured = FatApp::getPostedData('featured', FatUtility::VAR_INT, 0);
         if (0 < $featured) {
             $prodSrchObj->addCondition('product_featured', '=', applicationConstants::YES);
+            $cacheKey.= '-f';
         }
 
         $keyword = '';
-        if (array_key_exists('keyword', $headerFormParamsAssocArr)) {
+        if (array_key_exists('keyword', $headerFormParamsAssocArr) && !empty($headerFormParamsAssocArr['keyword'])) {
             $keyword = $headerFormParamsAssocArr['keyword'];
             $prodSrchObj->addKeywordSearch($keyword);
+            $cacheKey.= '-'.urlencode($keyword);
         }
 
         /* Categories Data[ */
-        $catSrch = clone $prodSrchObj;
-        $catSrch->addGroupBy('c.prodcat_id');
-        $categoriesArr = ProductCategory::getTreeArr($this->siteLangId, $categoryId, false, $catSrch, true);
-        $categoriesArr = (true ===  MOBILE_APP_API_CALL) ? array_values($categoriesArr) : $categoriesArr;
+        $catFilter =  FatCache::get('catFilter'.$cacheKey, CONF_FILTER_CACHE_TIME, '.txt');
+        if (!$catFilter) {
+            $catSrch = clone $prodSrchObj;
+            if (0 == $langId) {
+                $catSrch->joinProductToCategoryLang($this->siteLangId);
+            }
+            $catSrch->addGroupBy('c.prodcat_id');
+            $categoriesArr = ProductCategory::getTreeArr($this->siteLangId, $categoryId, false, $catSrch, true);
+            $categoriesArr = (true ===  MOBILE_APP_API_CALL) ? array_values($categoriesArr) : $categoriesArr;
+            FatCache::set('catFilter'.$cacheKey, serialize($categoriesArr), '.txt');
+        } else {
+            $categoriesArr = unserialize($catFilter);
+        }
+
         /* ] */
 
         /*$recordSrch = clone $prodSrchObj;
@@ -174,6 +196,9 @@ class ProductsController extends MyAppController
         }
 
         $brandSrch = clone $prodSrchObj;
+        if (0 == $langId) {
+            $brandSrch->joinBrandsLang($this->siteLangId);
+        }
         $brandSrch->addGroupBy('brand_id');
         $brandSrch->addMultipleFields(array( 'brand_id', 'ifNull(brand_name,brand_identifier) as brand_name', 'brand_short_description'));
         if ($brandId) {
@@ -196,47 +221,57 @@ class ProductsController extends MyAppController
 
         /* {Can modify the logic fetch data directly from query . will implement later}
         Option Filters Data[ */
-        $options = array();
-        if ($categoryId && ProductCategory::isLastChildCategory($categoryId)) {
-            $selProdCodeSrch = clone $prodSrchObj;
-            $selProdCodeSrch->addGroupBy('selprod_code');
-            $selProdCodeSrch->addMultipleFields(array('product_id','selprod_code'));
-            $selProdCodeRs = $selProdCodeSrch->getResultSet();
-            $selProdCodeArr = $db->fetchAll($selProdCodeRs);
+        $options =  FatCache::get('options'.$categoryId.'-'.$this->siteLangId, CONF_FILTER_CACHE_TIME, '.txt');
+        if (!$options) {
+            $options = array();
+            if ($categoryId && ProductCategory::isLastChildCategory($categoryId)) {
+                $selProdCodeSrch = clone $prodSrchObj;
+                $selProdCodeSrch->addGroupBy('selprod_code');
+                $selProdCodeSrch->addMultipleFields(array('product_id','selprod_code'));
+                $selProdCodeRs = $selProdCodeSrch->getResultSet();
+                $selProdCodeArr = $db->fetchAll($selProdCodeRs);
 
-            if (!empty($selProdCodeArr)) {
-                foreach ($selProdCodeArr as $val) {
-                    $optionsVal = SellerProduct::getSellerProductOptionsBySelProdCode($val['selprod_code'], $this->siteLangId, true);
-                    $options = $options+$optionsVal;
+                if (!empty($selProdCodeArr)) {
+                    foreach ($selProdCodeArr as $val) {
+                        $optionsVal = SellerProduct::getSellerProductOptionsBySelProdCode($val['selprod_code'], $this->siteLangId, true);
+                        $options = $options+$optionsVal;
+                    }
                 }
             }
+
+            usort(
+                $options,
+                function ($a, $b) {
+                    if ($a['optionvalue_id'] == $b['optionvalue_id']) {
+                        return 0;
+                    }
+                    return ($a['optionvalue_id'] < $b['optionvalue_id'])?-1:1;
+                }
+            );
+            FatCache::set('options'.$categoryId.'-'.$this->siteLangId, serialize($options), '.txt');
+        } else {
+            $options = unserialize($options);
         }
-
-        usort(
-            $options,
-            function ($a, $b) {
-                if ($a['optionvalue_id'] == $b['optionvalue_id']) {
-                    return 0;
-                }
-                return ($a['optionvalue_id'] < $b['optionvalue_id'])?-1:1;
-            }
-        );
-
         /* $optionSrch->joinSellerProductOptionsWithSelProdCode();
         $optionSrch->addGroupBy('optionvalue_id'); */
         /*]*/
 
         /* Condition filters data[ */
-        $conditionSrch = clone $prodSrchObj;
-        $conditionSrch->addGroupBy('selprod_condition');
-        $conditionSrch->addOrder('selprod_condition');
-        $conditionSrch->addMultipleFields(array('selprod_condition'));
-        /* if needs to show product counts under any condition[ */
-        //$conditionSrch->addFld('count(selprod_condition) as totalProducts');
-        /* ] */
-        $conditionRs = $conditionSrch->getResultSet();
-        $conditionsArr = $db->fetchAll($conditionRs);
-
+        $conditions =  FatCache::get('conditions'.$cacheKey, CONF_FILTER_CACHE_TIME, '.txt');
+        if (!$conditions) {
+            $conditionSrch = clone $prodSrchObj;
+            $conditionSrch->addGroupBy('selprod_condition');
+            $conditionSrch->addOrder('selprod_condition');
+            $conditionSrch->addMultipleFields(array('selprod_condition'));
+            /* if needs to show product counts under any condition[ */
+            //$conditionSrch->addFld('count(selprod_condition) as totalProducts');
+            /* ] */
+            $conditionRs = $conditionSrch->getResultSet();
+            $conditionsArr = $db->fetchAll($conditionRs);
+            FatCache::set('conditions'.$cacheKey, serialize($conditionsArr), '.txt');
+        } else {
+            $conditionsArr = unserialize($conditions);
+        }
         /* ] */
 
         /* Price Filters[ */
@@ -272,12 +307,18 @@ class ProductsController extends MyAppController
         }
 
         /* ] */
-        /* Price Filters[ */
-        $availabilitySrch = clone $prodSrchObj;
-        $availabilitySrch->addGroupBy('in_stock');
-        $availabilitySrch->addMultipleFields(array('if(selprod_stock > 0,1,0) as in_stock'));
-        $availabilityRs = $availabilitySrch->getResultSet();
-        $availabilityArr = $db->fetchAll($availabilityRs);
+        /* Availability Filters[ */
+        $availabilities =  FatCache::get('availabilities'.$cacheKey, CONF_FILTER_CACHE_TIME, '.txt');
+        if (!$availabilities) {
+            $availabilitySrch = clone $prodSrchObj;
+            $availabilitySrch->addGroupBy('in_stock');
+            $availabilitySrch->addMultipleFields(array('if(selprod_stock > 0,1,0) as in_stock'));
+            $availabilityRs = $availabilitySrch->getResultSet();
+            $availabilityArr = $db->fetchAll($availabilityRs);
+            FatCache::set('availabilities'.$cacheKey, serialize($availabilityArr), '.txt');
+        } else {
+            $availabilityArr = unserialize($availabilities);
+        }
         /*] */
 
 
