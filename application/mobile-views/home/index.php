@@ -62,7 +62,7 @@ foreach ($banners as $location => $bannerLocationDetail) {
     }
 }
 
-$data = array_merge($data, $banners);
+$data = array_merge($data, $banners, $orderProducts);
 
 if (empty($sponsoredProds) && empty($sponsoredShops) && empty($slides) && empty($collections) && empty($banners)) {
     $status = applicationConstants::OFF;
