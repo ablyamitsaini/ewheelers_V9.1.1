@@ -1949,7 +1949,7 @@ class MobileAppApiController extends MyAppController
 
             $fileHandlerObj = new AttachedFile();
 
-            if (!$res = $fileHandlerObj->saveImage($_FILES['user_profile_image']['tmp_name'], AttachedFile::FILETYPE_USER_PROFILE_IMAGE, $userId, 0, $_FILES['user_profile_image']['name'], -1, $unique_record = true)
+            if (!$res = $fileHandlerObj->saveImage($_FILES['user_profile_image']['tmp_name'], AttachedFile::FILETYPE_USER_PROFILE_IMAGE, $userId, 0, $_FILES['user_profile_image']['name'], -1, true)
             ) {
                 FatUtility::dieJsonError($fileHandlerObj->getError());
             }
@@ -1970,7 +1970,7 @@ class MobileAppApiController extends MyAppController
                 FatUtility::dieJsonError(Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId));
             }
             $fileHandlerObj = new AttachedFile();
-            if (!$res = $fileHandlerObj->saveImage($_FILES['user_profile_image']['tmp_name'], AttachedFile::FILETYPE_USER_PROFILE_CROPED_IMAGE, $userId, 0, $_FILES['user_profile_image']['name'], -1, $unique_record = true)
+            if (!$res = $fileHandlerObj->saveImage($_FILES['user_profile_image']['tmp_name'], AttachedFile::FILETYPE_USER_PROFILE_CROPED_IMAGE, $userId, 0, $_FILES['user_profile_image']['name'], -1, true)
             ) {
                 FatUtility::dieJsonError($fileHandlerObj->getError());
             }
@@ -5173,7 +5173,7 @@ class MobileAppApiController extends MyAppController
             }
 
             $fileHandlerObj = new AttachedFile();
-            if (!$res = $fileHandlerObj->saveAttachment($_FILES['file']['tmp_name'], AttachedFile::FILETYPE_BUYER_RETURN_PRODUCT, $orrequest_id, 0, $_FILES['file']['name'], -1, $unique_record = true)) {
+            if (!$res = $fileHandlerObj->saveAttachment($_FILES['file']['tmp_name'], AttachedFile::FILETYPE_BUYER_RETURN_PRODUCT, $orrequest_id, 0, $_FILES['file']['name'], -1, true)) {
                 FatUtility::dieJsonError($fileHandlerObj->getError());
             }
         }

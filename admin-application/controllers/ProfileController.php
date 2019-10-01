@@ -139,7 +139,7 @@ class ProfileController extends AdminBaseController
 
             $fileHandlerObj = new AttachedFile();
 
-            if(!$res = $fileHandlerObj->saveImage($_FILES['user_profile_image']['tmp_name'], AttachedFile::FILETYPE_ADMIN_PROFILE_IMAGE, $this->_adminId, 0, $_FILES['user_profile_image']['name'], -1, $unique_record = true)
+            if(!$res = $fileHandlerObj->saveImage($_FILES['user_profile_image']['tmp_name'], AttachedFile::FILETYPE_ADMIN_PROFILE_IMAGE, $this->_adminId, 0, $_FILES['user_profile_image']['name'], -1, true)
             ) {
                 Message::addErrorMessage($fileHandlerObj->getError());
                 FatUtility::dieJsonError(Message::getHtml());
@@ -155,7 +155,7 @@ class ProfileController extends AdminBaseController
 
             $fileHandlerObj = new AttachedFile();
 
-            if(!$res = $fileHandlerObj->saveImage($_FILES['user_profile_image']['tmp_name'], AttachedFile::FILETYPE_ADMIN_PROFILE_CROPED_IMAGE, $this->_adminId, 0, $_FILES['user_profile_image']['name'], -1, $unique_record = true)
+            if(!$res = $fileHandlerObj->saveImage($_FILES['user_profile_image']['tmp_name'], AttachedFile::FILETYPE_ADMIN_PROFILE_CROPED_IMAGE, $this->_adminId, 0, $_FILES['user_profile_image']['name'], -1, true)
             ) {
                 Message::addErrorMessage($fileHandlerObj->getError());
                 FatUtility::dieJsonError(Message::getHtml());

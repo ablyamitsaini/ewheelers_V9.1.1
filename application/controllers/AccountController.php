@@ -948,7 +948,7 @@ class AccountController extends LoggedUserController
                 FatUtility::dieJsonError($fileHandlerObj->getError());
             }
 
-            if (!$res = $fileHandlerObj->saveImage($_FILES['user_profile_image']['tmp_name'], AttachedFile::FILETYPE_USER_PROFILE_IMAGE, $userId, 0, $_FILES['user_profile_image']['name'], -1, $unique_record = true)
+            if (!$res = $fileHandlerObj->saveImage($_FILES['user_profile_image']['tmp_name'], AttachedFile::FILETYPE_USER_PROFILE_IMAGE, $userId, 0, $_FILES['user_profile_image']['name'], -1, true)
             ) {
                 $message = Labels::getLabel($fileHandlerObj->getError(), $this->siteLangId);
                 FatUtility::dieJsonError($message);
@@ -967,7 +967,7 @@ class AccountController extends LoggedUserController
             }
 
 
-            if (!$res = $fileHandlerObj->saveImage($_FILES['user_profile_image']['tmp_name'], AttachedFile::FILETYPE_USER_PROFILE_CROPED_IMAGE, $userId, 0, $_FILES['user_profile_image']['name'], -1, $unique_record = true)
+            if (!$res = $fileHandlerObj->saveImage($_FILES['user_profile_image']['tmp_name'], AttachedFile::FILETYPE_USER_PROFILE_CROPED_IMAGE, $userId, 0, $_FILES['user_profile_image']['name'], -1, true)
             ) {
                 $message = Labels::getLabel($fileHandlerObj->getError(), $this->siteLangId);
                 FatUtility::dieJsonError($message);

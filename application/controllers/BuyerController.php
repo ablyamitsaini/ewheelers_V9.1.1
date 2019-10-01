@@ -1787,7 +1787,7 @@ class BuyerController extends BuyerBaseController
             }
 
             $fileHandlerObj = new AttachedFile();
-            if (!$res = $fileHandlerObj->saveAttachment($_FILES['file']['tmp_name'], AttachedFile::FILETYPE_BUYER_RETURN_PRODUCT, $orrequest_id, 0, $_FILES['file']['name'], -1, $unique_record = true)) {
+            if (!$res = $fileHandlerObj->saveAttachment($_FILES['file']['tmp_name'], AttachedFile::FILETYPE_BUYER_RETURN_PRODUCT, $orrequest_id, 0, $_FILES['file']['name'], -1, true)) {
                 if (true ===  MOBILE_APP_API_CALL) {
                     FatUtility::dieJsonError(strip_tags($fileHandlerObj->getError()));
                 }
