@@ -13,6 +13,8 @@ class BannerLocation extends MyAppModel
     const HOME_PAGE_BOTTOM_BANNER = 2;
     const PRODUCT_DETAIL_PAGE_BANNER = 3;
 
+    const MOBILE_API_BANNER_PAGESIZE = 1;
+
     public function __construct($id = 0)
     {
         parent::__construct(static::DB_TBL, static::DB_TBL_PREFIX . 'id', $id);

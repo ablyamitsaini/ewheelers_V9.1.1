@@ -630,10 +630,10 @@ class HomeController extends MyAppController
         $top_banners =  BannerLocation::getPromotionalBanners(BannerLocation::HOME_PAGE_TOP_BANNER, $langId);
         $middle_banners = array();
         if (true ===  MOBILE_APP_API_CALL) {
-            $middle_banners =  BannerLocation::getMobileAppMiddleBanners(BannerLocation::HOME_PAGE_BOTTOM_BANNER, $langId, 1);
+            $middle_banners =  BannerLocation::getMobileAppMiddleBanners(BannerLocation::HOME_PAGE_BOTTOM_BANNER, $langId, BannerLocation::MOBILE_API_BANNER_PAGESIZE);
             $banners = $middle_banners['Home_Page_Middle_Banner']['banners'];
             $skip = array_column($banners, 'banner_id');
-            $bottom_banners =  BannerLocation::getPromotionalBanners(BannerLocation::HOME_PAGE_BOTTOM_BANNER, $langId, 1, $skip);
+            $bottom_banners =  BannerLocation::getPromotionalBanners(BannerLocation::HOME_PAGE_BOTTOM_BANNER, $langId, BannerLocation::MOBILE_API_BANNER_PAGESIZE, $skip);
         } else {
             $bottom_banners =  BannerLocation::getPromotionalBanners(BannerLocation::HOME_PAGE_BOTTOM_BANNER, $langId);
         }
