@@ -322,7 +322,7 @@ class DummyController extends MyAppController
 
     public function index()
     {
-
+        Product::updateMinPrices();
     }
 
 
