@@ -56,6 +56,7 @@ class HomeController extends MyAppController
                     }
                 }
             }
+            $orderProducts['pendingForReviews'] = $orderProducts;
             $this->set('layoutType', Collections::getLayoutTypeArr($this->siteLangId));
             $this->set('orderProducts', $orderProducts);
         } else {
