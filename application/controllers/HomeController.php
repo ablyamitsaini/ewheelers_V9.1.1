@@ -39,11 +39,11 @@ class HomeController extends MyAppController
         $this->set('collections', $collections);
 
         if (true ===  MOBILE_APP_API_CALL) {
-            $orderProducts = array();
+            $orderProducts['pendingForReviews'] = array();
             if (0 < $loggedUserId && (FatApp::getConfig('CONF_ALLOW_REVIEWS', FatUtility::VAR_INT, 0))) {
-                $orderProducts = OrderProduct::pendingForReviews($loggedUserId, $this->siteLangId);
-                if (count($orderProducts)) {
-                    foreach ($orderProducts as $key => $orderProduct) {
+                $orderProducts['pendingForReviews'] = OrderProduct::pendingForReviews($loggedUserId, $this->siteLangId);
+                if (count($orderProducts['pendingForReviews'])) {
+                    foreach ($orderProducts['pendingForReviews'] as $key => $orderProduct) {
                         $options = SellerProduct::getSellerProductOptions($orderProduct['op_selprod_id'], true, $this->siteLangId);
                         $optionTitle = '';
                         if (is_array($options) && count($options)) {
@@ -51,12 +51,11 @@ class HomeController extends MyAppController
                                 $optionTitle .= $op['option_name'].': '.$op['optionvalue_name'].', ';
                             }
                         }
-                        $orderProducts[$key]['optionsTitle'] = rtrim($optionTitle, ', ');
-                        $orderProducts[$key]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($orderProduct['selprod_product_id'], "THUMB", $orderProduct['op_selprod_id'], 0, $this->siteLangId));
+                        $orderProducts['pendingForReviews'][$key]['optionsTitle'] = rtrim($optionTitle, ', ');
+                        $orderProducts['pendingForReviews'][$key]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($orderProduct['selprod_product_id'], "THUMB", $orderProduct['op_selprod_id'], 0, $this->siteLangId));
                     }
                 }
             }
-            $orderProducts['pendingForReviews'] = $orderProducts;
             $this->set('layoutType', Collections::getLayoutTypeArr($this->siteLangId));
             $this->set('orderProducts', $orderProducts);
         } else {
