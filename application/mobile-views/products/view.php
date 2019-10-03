@@ -123,6 +123,13 @@ $product['selprod_warranty_policies'] = !empty($product['selprod_warranty_polici
 
 $product['product_description'] = strip_tags(html_entity_decode($product['product_description'], ENT_QUOTES, 'utf-8'), applicationConstants::ALLOWED_HTML_TAGS_FOR_APP);
 
+if (!empty($product['moreSellersArr']) && 0 < count($product['moreSellersArr'])) {
+    foreach ($product['moreSellersArr'] as &$value) {
+        $value['selprod_price'] = CommonHelper::displayMoneyFormat($value['selprod_price'], false, false, false);
+        $value['theprice'] = CommonHelper::displayMoneyFormat($value['theprice'], false, false, false);
+    }
+}
+
 
 $data = array(
     'reviews' => empty($reviews) ? (object)array() : $reviews,
