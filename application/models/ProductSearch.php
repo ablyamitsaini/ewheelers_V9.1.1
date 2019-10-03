@@ -111,7 +111,7 @@ class ProductSearch extends SearchBase
     }
 
     /* Only used for product listing page for Home page, categories or search page*/
-    public function joinForPrice($splPriceForDate = '', $criteria = array(), $checkAvailableFrom = true)
+    public function joinForPrice($splPriceForDate = '', $criteria = array(), $checkAvailableFrom = true, $useTempTable = true)
     {
         if ($this->sellerProductsJoined) {
             trigger_error(Labels::getLabel('ERR_SellerProducts_can_be_joined_only_once.', $this->commonLangId), E_USER_ERROR);
@@ -138,12 +138,31 @@ class ProductSearch extends SearchBase
 
         if ($this->langId) {
             $this->joinTable(SellerProduct::DB_LANG_TBL, 'LEFT OUTER JOIN', 'msellprod.selprod_id = sprods_l.selprodlang_selprod_id AND sprods_l.selprodlang_lang_id = '.$this->langId, 'sprods_l');
-            $fields2 = array('selprod_title','selprod_warranty','selprod_return_policy','sprods_l.selprod_comments as selprodComments',);
+            $fields2 = array('selprod_title','selprod_warranty','selprod_return_policy','sprods_l.selprod_comments as selprodComments');
         }
-        $this->joinTable(SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE, 'LEFT OUTER JOIN', 'msplpric.splprice_selprod_id = msellprod.selprod_id AND \'' . $splPriceForDate . '\' BETWEEN msplpric.splprice_start_date AND msplpric.splprice_end_date AND msplpric.splprice_price < msellprod.selprod_price', 'msplpric');
+
         if (isset($criteria['optionvalue']) && $criteria['optionvalue'] !='') {
             $this->addOptionCondition($criteria['optionvalue']);
         }
+
+        /*if ($useTempTable === true){
+            $this->joinBasedOnPriceCondition($splPriceForDate, $criteria, $checkAvailableFrom);
+        } else {
+            $this->joinTable(Product::DB_PRODUCT_MIN_PRICE, 'INNER JOIN', 'pminp.pmp_product_id = p.product_id', 'pminp');
+            $this->joinTable(SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE, 'LEFT OUTER JOIN', 'msplpric.splprice_selprod_id = msellprod.selprod_id and pminp.pmp_splprice_id = msplpric.splprice_id', 'msplpric');
+            $this->addFld('pminp.pmp_min_price AS theprice');
+        }*/
+        $this->joinBasedOnPriceCondition($splPriceForDate, $criteria, $checkAvailableFrom);
+    }
+
+    public function joinBasedOnPriceCondition($splPriceForDate = '', $criteria = array(), $checkAvailableFrom = true)
+    {
+        $now = FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d');
+        if ('' == $splPriceForDate) {
+            $splPriceForDate = $now;
+        }
+
+        $this->joinTable(SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE, 'LEFT OUTER JOIN', 'msplpric.splprice_selprod_id = msellprod.selprod_id AND \'' . $splPriceForDate . '\' BETWEEN msplpric.splprice_start_date AND msplpric.splprice_end_date AND msplpric.splprice_price < msellprod.selprod_price', 'msplpric');
 
         $srch = new SearchBase(SellerProduct::DB_TBL, 'sprods');
 
@@ -215,7 +234,7 @@ class ProductSearch extends SearchBase
         }*/
 
         if ($checkAvailableFrom) {
-            $srch->addCondition('sprods.selprod_available_from', '<=', $now);
+            $srch->addCondition('sprods.selprod_available_from', '<=', $splPriceForDate);
         }
         $srch->doNotLimitRecords();
         $srch->doNotCalculateRecords();
@@ -370,7 +389,8 @@ class ProductSearch extends SearchBase
         }
     }
 
-    public function joinShopsLang($langId){
+    public function joinShopsLang($langId)
+    {
         $this->joinTable(Shop::DB_TBL_LANG, 'LEFT OUTER JOIN', 'shop.shop_id = s_l.shoplang_shop_id AND shoplang_lang_id = '. $langId, 's_l');
     }
 
@@ -394,7 +414,8 @@ class ProductSearch extends SearchBase
         }
     }
 
-    public function joinShopCountryLang($langId) {
+    public function joinShopCountryLang($langId)
+    {
         $langId = FatUtility::int($langId);
         $this->joinTable(Countries::DB_TBL_LANG, 'LEFT OUTER JOIN', 'shop_country.country_id = shop_country_l.countrylang_country_id AND shop_country_l.countrylang_lang_id = '.$langId, 'shop_country_l');
     }
@@ -442,8 +463,12 @@ class ProductSearch extends SearchBase
         $this->joinTable(Brand::DB_TBL, $join, 'p.product_brand_id = brand.brand_id '.$brandActiveCondition.' '.$brandDeletedCondition, 'brand');
 
         if ($langId) {
-            $this->joinTable(Brand::DB_LANG_TBL, 'LEFT OUTER JOIN', 'brand.brand_id = tb_l.brandlang_brand_id AND brandlang_lang_id = '.$langId, 'tb_l');
+            $this->joinBrandsLang($langId);
         }
+    }
+
+    public function joinBrandsLang($langId){
+        $this->joinTable(Brand::DB_LANG_TBL, 'LEFT OUTER JOIN', 'brand.brand_id = tb_l.brandlang_brand_id AND brandlang_lang_id = '.$langId, 'tb_l');
     }
 
     public function joinProductToCategory($langId = 0, $isActive = true, $isDeleted = true, $useInnerJoin = true)
@@ -470,8 +495,12 @@ class ProductSearch extends SearchBase
         $this->joinTable(ProductCategory::DB_TBL, $join, 'c.prodcat_id = ptc.ptc_prodcat_id '.$categoryActiveCondition.' '.$categoryDeletedCondition, 'c');
 
         if ($langId) {
-            $this->joinTable(ProductCategory::DB_LANG_TBL, 'LEFT OUTER JOIN', 'c_l.prodcatlang_prodcat_id = c.prodcat_id AND prodcatlang_lang_id = '.$langId, 'c_l');
+            $this->joinProductToCategoryLang($langId);
         }
+    }
+
+    public function joinProductToCategoryLang($langId){
+        $this->joinTable(ProductCategory::DB_LANG_TBL, 'LEFT OUTER JOIN', 'c_l.prodcatlang_prodcat_id = c.prodcat_id AND prodcatlang_lang_id = '.$langId, 'c_l');
     }
 
     public function joinFavouriteProducts($user_id)
