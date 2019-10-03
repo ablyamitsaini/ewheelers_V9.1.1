@@ -1,20 +1,21 @@
 Bug:
     -> 030847 - Retain No Record Found if new volume discount or special price added for any product.
-    -> 030841 - admin> special price, volume discount > seller name column needs to be there
-    -> 030840 - when currency is changed from front end> then it's displaying in INR while on editing it's in $
-    -> 030839 - club the special price and vol. discount in single section
-    -> 030838 - when seller clicks on manage special price from product then it redirect to 404
+    -> 030841 - Admin> special price, volume discount > seller name column needs to be there
+    -> 030840 - When currency is changed from front end> then it's displaying in INR while on editing it's in $
+    -> 030839 - Club the special price and vol. discount in single section
+    -> 030838 - When seller clicks on manage special price from product then it redirect to 404
     -> 030815 - Catalog requested by seller is not listing in admin
-    -> 030638 - in arabic language> Throughout the website Vertical loader overlaps text
-    -> 030832 - shadow is there around the search result on searching item
-    -> 030502 - on referral> clear search text in button is cropped.
+    -> 030638 - In arabic language> Throughout the website Vertical loader overlaps text
+    -> 030832 - Shadow is there around the search result on searching item
+    -> 030502 - On referral> clear search text in button is cropped.
     -> 030917 - Multiple special price are getting added for same date
     -> 030636 - If any popup is open then background page should not be scrolable
     -> 030632 - Drag&Drop functionality not working in mobile device for seller options(frontend)
     -> 030629 - In mobile devices > when we click on any option in drawer menu then drawer should get close.
     -> 030980 - When reviews are disabled from admin then they shouldn't be listed on front end
-    -> 030918 - getting error on shop policy page
-    
+    -> 030918 - Getting error on shop policy page
+    -> 030864 - Special price is not getting added for product which one having future date
+
 New Features :
 	> Task - 64235 - Collection Image management for Mobile Application in admin.
 

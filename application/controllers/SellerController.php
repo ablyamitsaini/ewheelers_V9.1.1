@@ -4243,6 +4243,7 @@ class SellerController extends SellerBaseController
 
     private function updateSelProdSplPrice($post, $return = false)
     {
+        $userId = UserAuthentication::getLoggedUserId();
         $selprod_id = !empty($post['splprice_selprod_id']) ? FatUtility::int($post['splprice_selprod_id']) : 0;
         $splprice_id = !empty($post['splprice_id']) ? FatUtility::int($post['splprice_id']) : 0;
 
@@ -4255,12 +4256,18 @@ class SellerController extends SellerBaseController
         }
 
         $prodSrch = new ProductSearch($this->siteLangId);
-        $prodSrch->joinSellerProducts();
+        $prodSrch->joinSellerProducts($userId, '', array(), false);
         $prodSrch->addCondition('selprod_id', '=', $selprod_id);
-        $prodSrch->addMultipleFields(array('product_min_selling_price', 'selprod_price'));
+        $prodSrch->addMultipleFields(array('product_min_selling_price', 'selprod_price', 'selprod_available_from'));
         $prodSrch->setPageSize(1);
         $rs = $prodSrch->getResultSet();
         $product = FatApp::getDb()->fetch($rs);
+
+        if (strtotime($post['splprice_start_date']) < strtotime($product['selprod_available_from'])) {
+            $str = Labels::getLabel('MSG_Special_Price_Date_Must_Be_Greater_Or_Than_Equal_To_{availablefrom}', $this->siteLangId);
+            $message = CommonHelper::replaceStringData($str, array('{availablefrom}' => date('Y-m-d', strtotime($product['selprod_available_from']))));
+            FatUtility::dieJsonError($message);
+        }
 
         if (!isset($post['splprice_price']) || $post['splprice_price'] < $product['product_min_selling_price'] || $post['splprice_price'] >= $product['selprod_price']) {
             $str = Labels::getLabel('MSG_Price_must_between_min_selling_price_{minsellingprice}_and_selling_price_{sellingprice}', $this->siteLangId);
