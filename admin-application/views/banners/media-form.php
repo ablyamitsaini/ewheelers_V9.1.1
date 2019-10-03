@@ -10,6 +10,7 @@ $langFld = $mediaFrm->getField('lang_id');
 $langFld->addFieldTagAttribute('class', 'language-js');
 
 $screenFld = $mediaFrm->getField('banner_screen');
+$screenFld->addFieldTagAttribute('class', 'display-js');
 
 if ($blocation_id == BannerLocation::HOME_PAGE_MIDDLE_BANNER) {
     $screenFld->setFieldTagAttribute('disabled', 'disabled');
