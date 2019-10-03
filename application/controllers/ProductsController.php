@@ -1015,6 +1015,7 @@ class ProductsController extends MyAppController
                 $prodSrch->joinTable(SelProdReview::DB_TBL, 'LEFT OUTER JOIN', 'spr.spreview_selprod_id = selprod_id AND spr.spreview_product_id = product_id', 'spr');
                 $prodSrch->joinTable(SelProdRating::DB_TBL, 'LEFT OUTER JOIN', 'sprating.sprating_spreview_id = spr.spreview_id', 'sprating');
                 $prodSrch->addFld(array('IFNULL(ROUND(AVG(sprating_rating),2),0) as prod_rating'));
+                $prodSrch->addGroupBy('selprod_id');
             }
 
             $prodSrch->doNotLimitRecords();
@@ -1043,7 +1044,6 @@ class ProductsController extends MyAppController
                     return (array_search($key1, $ids) > array_search($key2, $ids));
                 }
             );
-
             return $products;
         }
     }

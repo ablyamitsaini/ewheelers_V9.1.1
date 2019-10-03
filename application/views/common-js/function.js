@@ -1,3 +1,37 @@
+if (getCookie("screenWidth") != screen.width) {
+	$.ajax({url: fcom.makeUrl('Custom', 'updateScreenResolution', [screen.width, screen.height])});
+}
+
+var Dashboard = function() {
+	var menuChangeActive = function menuChangeActive(el) {
+		var hasSubmenu = $(el).hasClass("has-submenu");
+		$(global.menuClass + " .is-active").removeClass("is-active");
+		$(el).addClass("is-active");
+	};
+	var sidebarChangeWidth = function sidebarChangeWidth() {
+		var $menuItemsTitle = $("li .menu-item__title");
+		if ($("body").hasClass('sidebar-is-reduced')) {
+			$("body").removeClass('sidebar-is-reduced').addClass('sidebar-is-expanded');
+			var visibility = 1;
+		} else {
+			$("body").removeClass('sidebar-is-expanded').addClass('sidebar-is-reduced');
+			var visibility = 0;
+		}
+		$.ajax({url: fcom.makeUrl('Custom', 'setupSidebarVisibility', [visibility])});
+		// $("body").toggleClass("sidebar-is-reduced sidebar-is-expanded");
+		$(".hamburger-toggle").toggleClass("is-opened");
+	};
+	return {
+		init: function init() {
+			$(document).on("click", ".js-hamburger", sidebarChangeWidth);
+			$(document).on("click", ".js-menu li", function(e) {
+			 	menuChangeActive(e.currentTarget);
+			});
+		}
+	};
+}();
+Dashboard.init();
+
 $(document).on('click','.menu-toggle ',function() {
 	if(!$(this).parent().hasClass("is--active") && $(".collections-ui").hasClass("is--active")){
 		$(".collections-ui").removeClass("is--active")
@@ -101,7 +135,7 @@ $("document").ready(function(){
                 $("html").toggleClass("toggled-user");
             }
 
-            
+
             return false;
         });
 	});
@@ -149,7 +183,7 @@ $("document").ready(function(){
 
 	/* for footer */
 	if( $(window).width() < 767 ){
-	 /* FOR FOOTER TOGGLES */  
+	 /* FOR FOOTER TOGGLES */
 		$('.toggle__trigger-js').click(function(){
 		  if($(this).hasClass('is-active')){
 			  $(this).removeClass('is-active');
@@ -491,4 +525,19 @@ function moveToTargetDivssss(target, outer ,layout){
 		scrollLeft: Math.max(0,q )
 	}, 800);
 	return false;
+}
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var ca = document.cookie.split(';');
+  for(var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
 }

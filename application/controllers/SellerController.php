@@ -4264,17 +4264,34 @@ class SellerController extends SellerBaseController
 
         if (!isset($post['splprice_price']) || $post['splprice_price'] < $product['product_min_selling_price'] || $post['splprice_price'] >= $product['selprod_price']) {
             $str = Labels::getLabel('MSG_Price_must_between_min_selling_price_{minsellingprice}_and_selling_price_{sellingprice}', $this->siteLangId);
-            $message = CommonHelper::replaceStringData($str, array('{minsellingprice}' => CommonHelper::displayMoneyFormat($product['product_min_selling_price'], false, true, true), '{sellingprice}' => CommonHelper::displayMoneyFormat($product['selprod_price'], false, true, true)));
+            $minSellingPrice = CommonHelper::displayMoneyFormat($product['product_min_selling_price'], false, true, true);
+            $sellingPrice = CommonHelper::displayMoneyFormat($product['selprod_price'], false, true, true);
+
+            $message = CommonHelper::replaceStringData($str, array('{minsellingprice}' => $minSellingPrice, '{sellingprice}' => $sellingPrice));
             FatUtility::dieJsonError($message);
         }
 
         /* Check if same date already exists [ */
         $tblRecord = new TableRecord(SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE);
 
-        $smt = 'splprice_selprod_id = ? AND ((splprice_start_date between ? AND ?) OR (splprice_end_date between ? AND ?)) ';
-        $smtValues = array($selprod_id, $post['splprice_start_date'], $post['splprice_end_date'], $post['splprice_start_date'], $post['splprice_end_date']);
+        $smt = 'splprice_selprod_id = ? AND ';
+        $smt .= '(
+                                ((splprice_start_date between ? AND ?) OR (splprice_end_date between ? AND ?))
+                                OR
+                                ((? BETWEEN splprice_start_date AND splprice_end_date) OR (? BETWEEN  splprice_start_date AND splprice_end_date))
+                            )';
+        $smtValues = array(
+            $selprod_id,
+            $post['splprice_start_date'],
+            $post['splprice_end_date'],
+            $post['splprice_start_date'],
+            $post['splprice_end_date'],
+            $post['splprice_start_date'],
+            $post['splprice_end_date'],
+        );
+
         if (0 < $splprice_id) {
-            $smt .= 'AND splprice_id != ?';
+            $smt .= ' AND splprice_id != ?';
             $smtValues[] = $splprice_id;
         }
         $condition = array(

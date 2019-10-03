@@ -686,6 +686,19 @@ $(document).ready(function() {
 
 });
 
+$(document).ajaxComplete(function() {
+    if (0 < $("#facebox").length) {
+        if ($("#facebox").is(":visible")) {
+            $('html').addClass('pop-on');
+        } else {
+            $('html').removeClass('pop-on');
+        }
+        $("#facebox .close").on("click", function(){
+            $("html").removeClass('pop-on');
+        });
+    }
+});
+
 function setSiteDefaultLang(langId) {
     fcom.displayProcessing();
     fcom.updateWithAjax(fcom.makeUrl('Home', 'setLanguage', [langId]), '', function(res) {

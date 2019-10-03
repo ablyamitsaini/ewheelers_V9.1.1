@@ -1,17 +1,4 @@
-$(document).ready(function() {
-    /*if('' == getCookie('openSidebar') || 1 == getCookie('openSidebar')){
-    	document.cookie = "openSidebar=1";
-    	$('.js-hamburger.hamburger-toggle').addClass('is-opened');
-    	$('body.is-dashboard').removeClass('sidebar-is-reduced').addClass('sidebar-is-expanded');
-    }else{
-    	$('.js-hamburger.hamburger-toggle').removeClass('is-opened');
-    	$('body.is-dashboard').removeClass('sidebar-is-expanded').addClass('sidebar-is-reduced');
-    }*/
-
-    $(document).on('click', '.js-hamburger', function() {
-        fcom.ajax(fcom.makeUrl('Home', 'setupSidebarVisibility'), '', function(res) {});
-    });
-
+$(document).ready(function() {        
     setTimeout(function() {
         $('body').addClass('loaded');
     }, 1000);
@@ -1206,7 +1193,21 @@ $(document).ready(function() {
 });
 $(document).ajaxComplete(function() {
     new ScrollHint('.table');
+
+    //Remove scrolling on table with hand icon
     if (0 < $('div.block--empty').length && 0 < $('div.scroll-hint-icon-wrap').length){
         $('div.scroll-hint-icon-wrap').remove();
     }
+
+    //Remove Scrolling When Facebox Popup opened
+    if (0 < $("#facebox").length) {
+        if ($("#facebox").is(":visible")) {
+            $('html').addClass('pop-on');
+        } else {
+            $('html').removeClass('pop-on');
+        }
+        $("#facebox .close.close--white").on("click", function(){
+            $("html").removeClass('pop-on');
+        });
+    }    
 });

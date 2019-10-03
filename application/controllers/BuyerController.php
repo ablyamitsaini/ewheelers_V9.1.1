@@ -187,6 +187,22 @@ class BuyerController extends BuyerBaseController
             $primaryOrderDisplay = true;
         }
 
+        if (true ===  MOBILE_APP_API_CALL) {
+            $srch->joinTable(
+                OrderReturnRequest::DB_TBL,
+                'LEFT OUTER JOIN',
+                'orr.orrequest_op_id = op.op_id',
+                'orr'
+            );
+            $srch->joinTable(
+                OrderCancelRequest::DB_TBL,
+                'LEFT OUTER JOIN',
+                'ocr.ocrequest_op_id = op.op_id',
+                'ocr'
+            );
+            $srch->addFld(array('*','IFNULL(orrequest_id, 0) as return_request', 'IFNULL(ocrequest_id, 0) as cancel_request'));
+        }
+
         $rs = $srch->getResultSet();
 
         $childOrderDetail = FatApp::getDb()->fetchAll($rs, 'op_id');

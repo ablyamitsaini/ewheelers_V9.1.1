@@ -58,10 +58,14 @@ class AttachedFile extends MyAppModel
     const FILETYPE_BULK_IMAGES = 51;
     const FILETYPE_BRAND_IMAGE = 52;
     const FILETYPE_SHOP_COLLECTION_IMAGE = 53;
+    const FILETYPE_APP_COLLECTION_IMAGE = 54;
     const FILETYPE_PRODCAT_IMAGE_PATH = 'category/';
     const FILETYPE_PRODUCT_IMAGE_PATH = 'product/';
     const FILETYPE_BLOG_POST_IMAGE_PATH = 'blog-post/';
     const FILETYPE_BULK_IMAGES_PATH = 'bulk-images/';
+
+    const APP_IMAGE_WIDTH = 640;
+    const APP_IMAGE_HEIGHT = 480;
 
     public function __construct($fileId = 0)
     {

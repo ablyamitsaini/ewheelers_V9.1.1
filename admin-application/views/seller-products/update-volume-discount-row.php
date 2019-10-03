@@ -8,6 +8,9 @@
         <?php echo html_entity_decode($data['product_name']); ?>
     </td>
     <td>
+        <?php echo $data['credential_username']; ?>
+    </td>
+    <td>
         <div class="js--editCol edit-hover"><?php echo $data['voldiscount_min_qty']; ?></div>
         <input type="text" data-id="<?php echo $volDiscountId; ?>" value="<?php echo $data['voldiscount_min_qty']; ?>" data-selprodid="<?php echo $data['voldiscount_selprod_id']; ?>" name="voldiscount_min_qty" class="js--volDiscountCol hide vd-input" data-oldval="<?php echo $data['voldiscount_min_qty']; ?>"/>
     </td>

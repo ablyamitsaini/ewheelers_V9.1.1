@@ -77,7 +77,7 @@ foreach ($products as $index => $product) {
 $data = array(
     'products' => !empty(array_filter($products)) ? array_values($products) : array(),
     'cartSummary' => $cartSummary,
-    'shippingAddressDetail' => !empty(array_filter($shippingAddressDetail)) ? $shippingAddressDetail : (object)array(),
+    'shippingAddressDetail' => !empty($shippingAddressDetail) && !empty(array_filter($shippingAddressDetail)) ? $shippingAddressDetail : (object)array(),
 );
 
 

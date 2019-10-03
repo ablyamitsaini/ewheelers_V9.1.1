@@ -54,6 +54,28 @@ foreach ($optionRows as $key => $option) {
     }
 }
 
+$arr_flds = array(
+    'country_name'=> Labels::getLabel('LBL_Ship_to', $siteLangId),
+    'pship_charges'=> Labels::getLabel('LBL_Cost', $siteLangId),
+    'pship_additional_charges'=> Labels::getLabel('LBL_With_Another_item', $siteLangId),
+);
+$shippingRatesDetail = [];
+foreach ($shippingRates as $sn => $row) {
+    foreach ($arr_flds as $key => $val) {
+        switch ($key) {
+            case 'pship_additional_charges':
+            case 'pship_charges':
+                $shippingRatesDetail[$key]['title'] = $val;
+                $shippingRatesDetail[$key]['rate'][] = CommonHelper::displayMoneyFormat($row[$key]);
+                break;
+            case 'country_name':
+                $shippingRatesDetail[$key]['title'] = $val;
+                $shippingRatesDetail[$key]['rate'][] = strip_tags(Product::getProductShippingTitle($siteLangId, $row));
+                break;
+        }
+    }
+}
+
 if (!empty($product)) {
     $product['selprod_price'] = CommonHelper::displayMoneyFormat($product['selprod_price'], false, false, false);
     $product['theprice'] = CommonHelper::displayMoneyFormat($product['theprice'], false, false, false);
@@ -77,7 +99,8 @@ if (!empty($product)) {
     } else if (count($shippingRates) > 0) {
         $product['productPolicies'][] = array(
             'title' => Labels::getLabel('LBL_Shipping_Rates', $siteLangId),
-            'icon' => CONF_WEBROOT_URL.'images/shipping-policies.png'
+            'icon' => CONF_WEBROOT_URL.'images/shipping-policies.png',
+            'shippingRatesDetail' => $shippingRatesDetail,
         );
     }
     if (0 < $codEnabled) {
@@ -100,38 +123,11 @@ $product['selprod_warranty_policies'] = !empty($product['selprod_warranty_polici
 
 $product['product_description'] = strip_tags(html_entity_decode($product['product_description'], ENT_QUOTES, 'utf-8'), applicationConstants::ALLOWED_HTML_TAGS_FOR_APP);
 
-$arr_flds = array(
-    'country_name'=> Labels::getLabel('LBL_Ship_to', $siteLangId),
-    'pship_charges'=> Labels::getLabel('LBL_Cost', $siteLangId),
-    'pship_additional_charges'=> Labels::getLabel('LBL_With_Another_item', $siteLangId),
-);
-
-$shippingRatesDetail = [];
-foreach ($shippingRates as $sn => $row) {
-    foreach ($arr_flds as $key => $val) {
-        switch ($key) {
-            case 'pship_additional_charges':
-            case 'pship_charges':
-                $shippingRatesDetail[$sn][] = [
-                    'title' => $val,
-                    'rate' => CommonHelper::displayMoneyFormat($row[$key]),
-                ];
-                break;
-            case 'country_name':
-                $shippingRatesDetail[$sn][] = [
-                    'title' => $val,
-                    'rate' => strip_tags(Product::getProductShippingTitle($siteLangId, $row)),
-                ];
-                break;
-        }
-    }
-}
 
 $data = array(
     'reviews' => empty($reviews) ? (object)array() : $reviews,
     'codEnabled' => (true === $codEnabled ? 1 : 0),
-    'shippingRates' => $shippingRates,
-    'shippingRatesDetail' => $shippingRatesDetail,
+    // 'shippingRates' => $shippingRates,
     'shippingDetails' => empty($shippingDetails) ? (object)array() : $shippingDetails,
     'optionRows' => $optionRows,
     'productSpecifications' => array(

@@ -10,7 +10,13 @@ $action = strtolower($action);
         }
         ?> <div class="logo-dashboard"><a href="<?php echo $logoUrl; ?>"><img src="<?php echo CommonHelper::generateFullUrl('Image', 'siteLogo', array($siteLangId), CONF_WEBROOT_FRONT_URL); ?>"
                     alt="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>" title="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId) ?>"></a></div>
-        <div class="js-hamburger hamburger-toggle <?php echo empty(FatUtility::int($_COOKIE['openSidebar'])) ? '' : 'is-opened'; ?>"><span class="bar-top"></span><span class="bar-mid"></span><span class="bar-bot"></span></div>
+        <?php 
+            $isOpened = '';
+            if (!empty(FatUtility::int($_COOKIE['openSidebar'])) && array_key_exists('screenWidth', $_COOKIE) && applicationConstants::MOBILE_SCREEN_WIDTH < FatUtility::int($_COOKIE['screenWidth'])){
+                $isOpened = 'is-opened';
+            }
+        ?>
+        <div class="js-hamburger hamburger-toggle <?php echo $isOpened; ?>"><span class="bar-top"></span><span class="bar-mid"></span><span class="bar-bot"></span></div>
     </div>
     <div class="sidebar__content custom-scrollbar" data-simplebar>
         <nav class="dashboard-menu">
@@ -62,27 +68,4 @@ $action = strtolower($action);
             </ul>
         </nav>
     </div>
-    <script>
-        var Dashboard = function() {
-            var menuChangeActive = function menuChangeActive(el) {
-                var hasSubmenu = $(el).hasClass("has-submenu");
-                $(global.menuClass + " .is-active").removeClass("is-active");
-                $(el).addClass("is-active");
-            };
-            var sidebarChangeWidth = function sidebarChangeWidth() {
-                var $menuItemsTitle = $("li .menu-item__title");
-                $("body").toggleClass("sidebar-is-reduced sidebar-is-expanded");
-                $(".hamburger-toggle").toggleClass("is-opened");
-            };
-            return {
-                init: function init() {
-                    $(".js-hamburger").on("click", sidebarChangeWidth);
-                    $(".js-menu li").on("click", function(e) {
-                        menuChangeActive(e.currentTarget);
-                    });
-                }
-            };
-        }();
-        Dashboard.init();
-    </script>
 </div>

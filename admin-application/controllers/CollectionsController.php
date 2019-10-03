@@ -745,6 +745,27 @@ class CollectionsController extends AdminBaseController
         $this->_template->render(false, false);
     }
 
+    public function appMediaForm($collectionId = 0)
+    {
+        $collectionId = FatUtility::int($collectionId);
+
+        $collectionDetails = Collections::getAttributesById($collectionId);
+        if (!false == $collectionDetails && ($collectionDetails['collection_active'] != applicationConstants::ACTIVE || $collectionDetails['collection_deleted'] == applicationConstants::YES)) {
+            Message::addErrorMessage($this->str_invalid_request_id);
+            FatUtility::dieWithError(Message::getHtml());
+        }
+
+        if (false != $collectionDetails) {
+            $collectionImages = AttachedFile::getAttachment(AttachedFile::FILETYPE_COLLECTION_IMAGE, $collectionId);
+            $this->set('collectionImages', $collectionImages);
+        }
+
+        $this->set('collection_id', $collectionId);
+        $this->set('collectionMediaFrm', $this->getAppMediaForm($collectionId));
+        $this->set('languages', Language::getAllNames());
+        $this->_template->render(false, false);
+    }
+
     /* private function getMediaForm( $collectionId = 0 ){
     $frm = new Form('frmCollectionMedia');
     $frm->addHiddenField('','collection_id',$collectionId);
@@ -775,6 +796,22 @@ class CollectionsController extends AdminBaseController
         return $frm;
     }
 
+    private function getAppMediaForm($collectionId = 0)
+    {
+        $frm = new Form('frmCollectionMedia');
+        $languagesAssocArr = Language::getAllNames();
+        $frm->addSelectBox(Labels::getLabel('LBL_Language', $this->adminLangId), 'image_lang_id', array( 0 => Labels::getLabel('LBL_Universal', $this->adminLangId) ) + $languagesAssocArr, '', array(), '');
+        $frm->addButton(
+            Labels::getLabel('LBL_Image', $this->adminLangId),
+            'app_collection_image',
+            'Upload File',
+            array('class'=>'File-Js','id'=>'app_collection_image','data-file_type'=>AttachedFile::FILETYPE_APP_COLLECTION_IMAGE, 'data-collection_id' => $collectionId )
+        );
+        $frm->addHtml('', 'collection_image_display_div', '');
+
+        return $frm;
+    }
+
     public function uploadImage()
     {
         $post = FatApp::getPostedData();
@@ -791,7 +828,7 @@ class CollectionsController extends AdminBaseController
             FatUtility::dieJsonError(Message::getHtml());
         }
 
-        $allowedFileTypeArr = array( AttachedFile::FILETYPE_COLLECTION_IMAGE, AttachedFile::FILETYPE_COLLECTION_BG_IMAGE );
+        $allowedFileTypeArr = array( AttachedFile::FILETYPE_COLLECTION_IMAGE, AttachedFile::FILETYPE_COLLECTION_BG_IMAGE, AttachedFile::FILETYPE_APP_COLLECTION_IMAGE );
 
         if (!in_array($file_type, $allowedFileTypeArr)) {
             Message::addErrorMessage($this->str_invalid_request);
@@ -800,6 +837,14 @@ class CollectionsController extends AdminBaseController
 
         if (!is_uploaded_file($_FILES['file']['tmp_name'])) {
             Message::addErrorMessage(Labels::getLabel('LBL_Please_Select_A_File', $this->adminLangId));
+            FatUtility::dieJsonError(Message::getHtml());
+        }
+        $image_info = getimagesize($_FILES["file"]["tmp_name"]);
+        $image_width = $image_info[0];
+        $image_height = $image_info[1];
+
+        if (AttachedFile::APP_IMAGE_WIDTH < $image_width || AttachedFile::APP_IMAGE_HEIGHT < $image_height) {
+            Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Dimensions', $this->adminLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
 
@@ -825,7 +870,7 @@ class CollectionsController extends AdminBaseController
         $this->_template->render(false, false, 'json-success.php');
     }
 
-    public function removeImage($collection_id = 0, $lang_id = 0)
+    public function removeImage($collection_id = 0, $lang_id = 0, $fileType = '')
     {
         $collection_id = FatUtility::int($collection_id);
         $lang_id = FatUtility::int($lang_id);
@@ -835,7 +880,8 @@ class CollectionsController extends AdminBaseController
         }
 
         $fileHandlerObj = new AttachedFile();
-        if (!$fileHandlerObj->deleteFile(AttachedFile::FILETYPE_COLLECTION_IMAGE, $collection_id, 0, 0, $lang_id)) {
+        $fileType = empty($fileType) ? AttachedFile::FILETYPE_COLLECTION_IMAGE : $fileType;
+        if (!$fileHandlerObj->deleteFile($fileType, $collection_id, 0, 0, $lang_id)) {
             Message::addErrorMessage($fileHandlerObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }

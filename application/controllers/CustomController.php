@@ -757,4 +757,15 @@
         $this->set('data', $data);
         $this->_template->render();
     }
+
+    public function setupSidebarVisibility($openSidebar = 1)
+    {
+        setcookie('openSidebar', $openSidebar, 0, CONF_WEBROOT_URL);
+    }
+
+    public function updateScreenResolution($width, $height)
+    {
+        setcookie('screenWidth', $width, 0, CONF_WEBROOT_URL);
+        setcookie('screenHeight', $height, 0, CONF_WEBROOT_URL);
+    }
 }

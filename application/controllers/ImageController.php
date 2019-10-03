@@ -936,9 +936,9 @@ class ImageController extends FatController
     }
 
 
-    public function collectionReal($recordId, $langId = 0, $sizeType = '')
+    public function collectionReal($recordId, $langId = 0, $sizeType = '', $fileType = '')
     {
-        $this->displayCollectionImage($recordId, $langId, $sizeType, false);
+        $this->displayCollectionImage($recordId, $langId, $sizeType, false, $fileType);
     }
 
     public function collection($recordId, $langId = 0, $sizeType = '')
@@ -946,11 +946,12 @@ class ImageController extends FatController
         $this->displayCollectionImage($recordId, $langId, $sizeType);
     }
 
-    public function displayCollectionImage($collectionId, $langId = 0, $sizeType = '', $displayUniversalImage = true)
+    public function displayCollectionImage($collectionId, $langId = 0, $sizeType = '', $displayUniversalImage = true, $fileType = '')
     {
         $collectionId = FatUtility::int($collectionId);
+        $fileType = empty($fileType) ? AttachedFile::FILETYPE_COLLECTION_IMAGE : $fileType;
         //$file_row = AttachedFile::getAttachment( AttachedFile::FILETYPE_COLLECTION_IMAGE, $collectionId );
-        $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_COLLECTION_IMAGE, $collectionId, 0, $langId, $displayUniversalImage);
+        $file_row = AttachedFile::getAttachment($fileType, $collectionId, 0, $langId, $displayUniversalImage);
         $image_name = isset($file_row['afile_physical_path']) ?  $file_row['afile_physical_path'] : '';
 
         switch (strtoupper($sizeType)) {

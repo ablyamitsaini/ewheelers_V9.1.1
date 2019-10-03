@@ -35,16 +35,17 @@ if ($controllerName == 'Checkout') {
     $bodyClass = 'is-checkout';
 }
 
+if(!array_key_exists('screenWidth', $_COOKIE)){
+    setcookie('screenWidth', 769, 0, CONF_WEBROOT_URL);
+}
+
 if (isset($isUserDashboard) && $isUserDashboard) {
     $bodyClass = 'is-dashboard';
-
     $expanded = 'sidebar-is-reduced';
-
     if(!array_key_exists('openSidebar', $_COOKIE)){
         setcookie('openSidebar', 1, 0, CONF_WEBROOT_URL);
     }
-
-    if(array_key_exists('openSidebar', $_COOKIE) && 0 < $_COOKIE['openSidebar']){
+    if(array_key_exists('openSidebar', $_COOKIE) && 0 < $_COOKIE['openSidebar'] && array_key_exists('screenWidth', $_COOKIE) && applicationConstants::MOBILE_SCREEN_WIDTH < $_COOKIE['screenWidth']){
         $expanded = 'sidebar-is-expanded';
     }
 
