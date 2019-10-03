@@ -42,7 +42,7 @@ $frmSearch->developerTags['fld_default_col'] = 4;
                                 $url=CommonHelper::generateUrl('banners');
                                 $innerLiAddBack->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Back', $adminLangId),'onclick'=>'redirectBack("'.$url.'")'), Labels::getLabel('LBL_Back', $adminLangId), true);
                             echo $ul->getHtml();
-                     ?>
+                        ?>
                     </div>
                     <div class="sectionbody">
                         <div class="tablewrap">

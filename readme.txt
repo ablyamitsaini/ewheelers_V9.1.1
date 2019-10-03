@@ -14,6 +14,9 @@ Bug:
     -> 030629 - In mobile devices > when we click on any option in drawer menu then drawer should get close.
     -> 030980 - When reviews are disabled from admin then they shouldn't be listed on front end
 
+New Features :
+	> Task - 64235 - Collection Image management for Mobile Application in admin.
+    
 <!-- Release notes TV-9.0.1.20190923 -- >
 New Features :
 	> Task - 66013 - Special Price Module

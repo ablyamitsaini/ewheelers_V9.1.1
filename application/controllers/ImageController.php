@@ -938,7 +938,7 @@ class ImageController extends FatController
 
     public function collectionReal($recordId, $langId = 0, $sizeType = '', $fileType = '')
     {
-        $this->displayCollectionImage($recordId, $langId, $sizeType, false, $fileType);
+        $this->displayCollectionImage($recordId, $langId, $sizeType, true, $fileType);
     }
 
     public function collection($recordId, $langId = 0, $sizeType = '')

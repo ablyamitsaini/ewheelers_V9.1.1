@@ -96,3 +96,9 @@ INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`
 /* Release notes TV-9.0.1.20190923 */
 
 DELETE FROM `tbl_language_labels` WHERE `label_key` = "MSG_Special_price_must_between_min_selling_price_and_selling_price";
+ALTER TABLE `tbl_collections`  ADD `collection_img_updated_on` DATETIME on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP  AFTER `collection_layout_type`;
+ALTER TABLE `tbl_collections` ADD `collection_display_media_only` TINYINT(1) NOT NULL AFTER `collection_layout_type`;
+
+
+INSERT INTO `tbl_banner_locations` (`blocation_id`, `blocation_key`, `blocation_identifier`, `blocation_banner_count`, `blocation_promotion_cost`, `blocation_active`) VALUES ('4', 'Home_Page_Middle_Banner', 'Home page middle banner (Only for Mobile API)', '1', '20', '1');
+INSERT INTO `tbl_banner_location_dimensions` (`bldimension_blocation_id`, `bldimension_device_type`, `blocation_banner_width`, `blocation_banner_height`) VALUES ('4', '1', '600', '338'), ('4', '2', '600', '338'), ('4', '3', '600', '338');

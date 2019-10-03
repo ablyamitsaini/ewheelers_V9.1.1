@@ -39,7 +39,25 @@ class HomeController extends MyAppController
         $this->set('collections', $collections);
 
         if (true ===  MOBILE_APP_API_CALL) {
+            $orderProducts['pendingForReviews'] = array();
+            if (0 < $loggedUserId && (FatApp::getConfig('CONF_ALLOW_REVIEWS', FatUtility::VAR_INT, 0))) {
+                $orderProducts['pendingForReviews'] = OrderProduct::pendingForReviews($loggedUserId, $this->siteLangId);
+                if (count($orderProducts['pendingForReviews'])) {
+                    foreach ($orderProducts['pendingForReviews'] as $key => $orderProduct) {
+                        $options = SellerProduct::getSellerProductOptions($orderProduct['op_selprod_id'], true, $this->siteLangId);
+                        $optionTitle = '';
+                        if (is_array($options) && count($options)) {
+                            foreach ($options as $op) {
+                                $optionTitle .= $op['option_name'].': '.$op['optionvalue_name'].', ';
+                            }
+                        }
+                        $orderProducts['pendingForReviews'][$key]['optionsTitle'] = rtrim($optionTitle, ', ');
+                        $orderProducts['pendingForReviews'][$key]['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($orderProduct['selprod_product_id'], "THUMB", $orderProduct['op_selprod_id'], 0, $this->siteLangId));
+                    }
+                }
+            }
             $this->set('layoutType', Collections::getLayoutTypeArr($this->siteLangId));
+            $this->set('orderProducts', $orderProducts);
         } else {
             $this->_template->addJs(array('js/slick.min.js', 'js/responsive-img.min.js'));
             $this->_template->addCss(array('css/slick.css', 'css/product-detail.css'));
@@ -126,7 +144,6 @@ class HomeController extends MyAppController
                 FatCache::set('homePageFooterLayout'.$cacheKey, $homePageFooterLayout, '.txt');
             }
             $this->set('homePageFooterLayout', $homePageFooterLayout);
-
         }
 
         $this->_template->render();
@@ -304,13 +321,12 @@ class HomeController extends MyAppController
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
         $srch->addOrder('collection_display_order', 'ASC');
-        $srch->addMultipleFields(array('collection_id', 'IFNULL(collection_name,collection_identifier) as collection_name','IFNULL( collection_description, "" ) as collection_description','IFNULL(collection_link_caption, "") as collection_link_caption','collection_link_url', 'collection_layout_type','collection_type','collection_criteria','collection_child_records','collection_primary_records'));
+        $srch->addMultipleFields(array('collection_id', 'IFNULL(collection_name,collection_identifier) as collection_name','IFNULL( collection_description, "" ) as collection_description','IFNULL(collection_link_caption, "") as collection_link_caption','collection_link_url', 'collection_layout_type','collection_type','collection_criteria','collection_child_records','collection_primary_records', 'collection_display_media_only'));
         $rs = $srch->getResultSet();
         $collectionsArr = $db->fetchAll($rs, 'collection_id');
         if (empty($collectionsArr)) {
             return array();
         }
-
         $collections = array();
 
         $productCatSrchObj = ProductCategory::getSearchObject(false, $langId);
@@ -321,6 +337,13 @@ class HomeController extends MyAppController
         $i = 0;
         foreach ($collectionsArr as $collection_id => $collection) {
             if (!$collection['collection_primary_records']) {
+                continue;
+            }
+
+            if (true ===  MOBILE_APP_API_CALL && 0 < $collection['collection_display_media_only']) {
+                $collection['collection_image'] = CommonHelper::generateFullUrl('image', 'collectionReal', array( $collection_id, $langId,  'ORIGINAL', AttachedFile::FILETYPE_COLLECTION_IMAGE));
+                $collections[] = $collection;
+                $i++;
                 continue;
             }
 
@@ -623,8 +646,14 @@ class HomeController extends MyAppController
     {
         $langId = $this->siteLangId;
         $top_banners =  BannerLocation::getPromotionalBanners(BannerLocation::HOME_PAGE_TOP_BANNER, $langId);
-        $bottom_banners =  BannerLocation::getPromotionalBanners(BannerLocation::HOME_PAGE_BOTTOM_BANNER, $langId);
-        $banners = array_merge($top_banners, $bottom_banners);
+        $middle_banners = array();
+        $pageSize = 0;
+        if (true ===  MOBILE_APP_API_CALL) {
+            $pageSize = BannerLocation::MOBILE_API_BANNER_PAGESIZE;
+            $middle_banners =  BannerLocation::getPromotionalBanners(BannerLocation::HOME_PAGE_MIDDLE_BANNER, $langId, $pageSize);
+        }
+        $bottom_banners =  BannerLocation::getPromotionalBanners(BannerLocation::HOME_PAGE_BOTTOM_BANNER, $langId, $pageSize);
+        $banners = array_merge($top_banners, $middle_banners, $bottom_banners);
         return $banners;
     }
 
@@ -710,7 +739,11 @@ class HomeController extends MyAppController
         $prodObj->addBudgetCondition();
         $prodObj->doNotCalculateRecords();
         $prodObj->addMultipleFields(array('selprod_id as proSelProdId','promotion_id','promotion_record_id'));
+
         $productPageSize = FatApp::getConfig('CONF_PPC_PRODUCTS_HOME_PAGE', FatUtility::VAR_INT, 6);
+        if (true ===  MOBILE_APP_API_CALL) {
+            $productPageSize = 4;
+        }
 
         if (1 > $productPageSize) {
             return array();

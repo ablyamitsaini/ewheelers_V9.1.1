@@ -398,4 +398,16 @@ class Collections extends MyAppModel
         $data = $db->fetchAll($rs);
         return $data;
     }
+
+    public static function setLastUpdatedOn($collectionId)
+    {
+        $collectionId = FatUtility::int($collectionId);
+        if (1 > $collectionId) {
+            return false;
+        }
+
+        $collectionObj = new Collections($collectionId);
+        $collectionObj->addUpdateData(array('collection_img_updated_on' => date('Y-m-d H:i:s')));
+        return true;
+    }
 }

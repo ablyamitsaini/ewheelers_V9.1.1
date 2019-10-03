@@ -813,7 +813,8 @@ class BannersController extends AdminBaseController
         $bannerTypeArr = $this->bannerTypeArr();
         $frm->addSelectBox(Labels::getLabel('LBL_Language', $this->adminLangId), 'lang_id', $bannerTypeArr, '', array(), '');
         $screenArr = applicationConstants::getDisplaysArr($this->adminLangId);
-        $frm->addSelectBox(Labels::getLabel("LBL_Display_For", $this->adminLangId), 'banner_screen', $screenArr, '', array(), '');
+        $displayFor = ($blocation_id == BannerLocation::HOME_PAGE_MIDDLE_BANNER) ? applicationConstants::SCREEN_MOBILE : '';
+        $frm->addSelectBox(Labels::getLabel("LBL_Display_For", $this->adminLangId), 'banner_screen', $screenArr, $displayFor, array(), '');
         $fld =  $frm->addButton(Labels::getLabel('LBL_Banner_Image', $this->adminLangId), 'banner_image', Labels::getLabel('LBL_Upload_File', $this->adminLangId), array('class'=>'bannerFile-Js','id'=>'banner_image','data-banner_id'=>$banner_id,'data-blocation_id'=>$blocation_id));
         return $frm;
     }
