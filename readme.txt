@@ -12,6 +12,7 @@ Bug:
     -> 030636 - If any popup is open then background page should not be scrolable
     -> 030632 - Drag&Drop functionality not working in mobile device for seller options(frontend)
     -> 030629 - In mobile devices > when we click on any option in drawer menu then drawer should get close.
+    -> 030980 - When reviews are disabled from admin then they shouldn't be listed on front end
 
 <!-- Release notes TV-9.0.1.20190923 -- >
 New Features :
