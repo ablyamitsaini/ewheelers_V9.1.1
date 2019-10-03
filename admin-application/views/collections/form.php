@@ -39,7 +39,16 @@ $frm->developerTags['fld_default_col'] = 12;
                             <?php echo Labels::getLabel('LBL_'.$langName, $adminLangId); ?></a>
                             </li>
                         <?php } ?>
-                        <li><a class="<?php  echo $inactive; ?>" href="javascript:void(0)" <?php if( $collection_id > 0 ){ ?> onclick="collectionMediaForm(<?php echo $collection_id ?>);" <?php }?>><?php echo Labels::getLabel('LBL_Media',$adminLangId);  ?></a></li>
+                        <?php if (!in_array($collection_type, Collections::COLLECTION_WITHOUT_MEDIA)) { ?>
+                            <li>
+                                <a class="<?php  echo $inactive; ?>" href="javascript:void(0)"
+                                    <?php if ($collection_id > 0) { ?>
+                                        onclick="collectionMediaForm(<?php echo $collection_id ?>);"
+                                    <?php } ?>>
+                                        <?php echo Labels::getLabel('LBL_Media', $adminLangId);  ?>
+                                </a>
+                            </li>
+                        <?php } ?>
                     </ul>
                     <div class="tabs_panel_wrap">
                         <div class="tabs_panel"> <?php echo $frm->getFormHtml(); ?> </div>

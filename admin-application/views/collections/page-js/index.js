@@ -355,14 +355,17 @@ $(document).ready(function() {
 
     displayMediaOnly = function(collectionId, obj) {
         var parentSiblings = $(obj).closest("div.row").siblings('div.row:not(:first)');
-        if (obj.checked) {
-            parentSiblings.show();
-            value = 1;
-        } else {
-            parentSiblings.hide();
-            value = 0;
-        }
-        $.ajax({url: fcom.makeUrl('Collections', 'displayMediaOnly', [collectionId, value])});
+        var value = (obj.checked) ? 1 : 0;
+        fcom.ajax(fcom.makeUrl('Collections', 'displayMediaOnly', [collectionId, value]), '', function(t) {
+			var ans = $.parseJSON(t);
+            if(0 == ans.status){
+                $.systemMessage(ans.msg,'alert--danger');
+                $(obj).prop('checked', false);
+                return false
+            } else{
+                (0 < value) ? parentSiblings.show() : parentSiblings.hide();
+            }
+		});
     };
 })();
 

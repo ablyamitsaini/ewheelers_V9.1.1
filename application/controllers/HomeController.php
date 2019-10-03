@@ -340,7 +340,7 @@ class HomeController extends MyAppController
                 continue;
             }
 
-            if (true ===  MOBILE_APP_API_CALL && 0 < $collection['collection_display_media_only']) {
+            if (true ===  MOBILE_APP_API_CALL && 0 < $collection['collection_display_media_only'] && !in_array($collection['collection_type'], Collections::COLLECTION_WITHOUT_MEDIA)) {
                 $collection['collection_image'] = CommonHelper::generateFullUrl('image', 'collectionReal', array( $collection_id, $langId,  'ORIGINAL', AttachedFile::FILETYPE_COLLECTION_IMAGE));
                 $collections[] = $collection;
                 $i++;

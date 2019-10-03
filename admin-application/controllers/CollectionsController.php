@@ -226,6 +226,10 @@ class CollectionsController extends AdminBaseController
             $langFrm->fill($langData);
         }
 
+        $collectionType = (0 < $collectionId) ? Collections::getAttributesById($collectionId, 'collection_type') : Collections::COLLECTION_TYPE_PRODUCT;
+
+        $this->set('collectionType', $collectionType);
+
         $this->set('languages', Language::getAllNames());
         $this->set('collectionId', $collectionId);
         $this->set('lang_id', $lang_id);
@@ -793,6 +797,12 @@ class CollectionsController extends AdminBaseController
             FatUtility::dieJsonError(Message::getHtml());
         }
 
+        $collectionType = (0 < $collection_id) ? Collections::getAttributesById($collection_id, 'collection_type') : Collections::COLLECTION_TYPE_PRODUCT;
+        if (in_array($collectionType, Collections::COLLECTION_WITHOUT_MEDIA)) {
+            Message::addErrorMessage(Labels::getLabel('LBL_Not_Allowed_To_Update_Media_For_This_Collection', $this->adminLangId));
+            FatUtility::dieJsonError(Message::getHtml());
+        }
+
         $allowedFileTypeArr = array(AttachedFile::FILETYPE_COLLECTION_IMAGE, AttachedFile::FILETYPE_COLLECTION_BG_IMAGE);
 
         if (!in_array($file_type, $allowedFileTypeArr)) {
@@ -1025,6 +1035,10 @@ class CollectionsController extends AdminBaseController
         $collectionId = FatUtility::int($collectionId);
         if (1 > $collectionId) {
             FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Request', $this->adminLangId));
+        }
+        $collectionType = (0 < $collectionId) ? Collections::getAttributesById($collectionId, 'collection_type') : Collections::COLLECTION_TYPE_PRODUCT;
+        if (in_array($collectionType, Collections::COLLECTION_WITHOUT_MEDIA)) {
+            FatUtility::dieJsonError(Labels::getLabel('LBL_Not_Allowed_To_Update_Media_For_This_Collection', $this->adminLangId));
         }
 
         $collectionObj = new Collections($collectionId);

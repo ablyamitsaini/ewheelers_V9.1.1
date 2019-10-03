@@ -43,6 +43,11 @@ class Collections extends MyAppModel
     const COLLECTION_CRITERIA_PRICE_LOW_TO_HIGH = 1;
     const COLLECTION_CRITERIA_PRICE_HIGH_TO_LOW = 2;
 
+    const COLLECTION_WITHOUT_MEDIA = [
+            Collections::COLLECTION_TYPE_SHOP,
+            Collections::COLLECTION_TYPE_BRAND
+        ];
+
     public function __construct($id = 0)
     {
         parent::__construct(static::DB_TBL, static::DB_TBL_PREFIX . 'id', $id);
