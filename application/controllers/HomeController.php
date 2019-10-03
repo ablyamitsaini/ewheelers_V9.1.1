@@ -647,14 +647,12 @@ class HomeController extends MyAppController
         $langId = $this->siteLangId;
         $top_banners =  BannerLocation::getPromotionalBanners(BannerLocation::HOME_PAGE_TOP_BANNER, $langId);
         $middle_banners = array();
+        $pageSize = 0;
         if (true ===  MOBILE_APP_API_CALL) {
-            $middle_banners =  BannerLocation::getMobileAppMiddleBanners(BannerLocation::HOME_PAGE_BOTTOM_BANNER, $langId, BannerLocation::MOBILE_API_BANNER_PAGESIZE);
-            $banners = $middle_banners['Home_Page_Middle_Banner']['banners'];
-            $skip = array_column($banners, 'banner_id');
-            $bottom_banners =  BannerLocation::getPromotionalBanners(BannerLocation::HOME_PAGE_BOTTOM_BANNER, $langId, BannerLocation::MOBILE_API_BANNER_PAGESIZE, $skip);
-        } else {
-            $bottom_banners =  BannerLocation::getPromotionalBanners(BannerLocation::HOME_PAGE_BOTTOM_BANNER, $langId);
+            $pageSize = BannerLocation::MOBILE_API_BANNER_PAGESIZE;
+            $middle_banners =  BannerLocation::getPromotionalBanners(BannerLocation::HOME_PAGE_MIDDLE_BANNER, $langId, $pageSize);
         }
+        $bottom_banners =  BannerLocation::getPromotionalBanners(BannerLocation::HOME_PAGE_BOTTOM_BANNER, $langId, $pageSize);
         $banners = array_merge($top_banners, $middle_banners, $bottom_banners);
         return $banners;
     }
