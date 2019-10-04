@@ -22,6 +22,7 @@ Bug:
     -> 030977 - Default affiliate commission entry is not there.
     -> 030567 - In Arabic language > Scroll bar should be display on RTL Mode
     -> 030560 - In Arabic language> on blogs page> subscribe button and text field are not properly arranged
+    -> 030504 - Design changes of Save Changes and Cancel buttons
     
 New Features :
 	> Task - 64235 - Collection Image management for Mobile Application in admin.
