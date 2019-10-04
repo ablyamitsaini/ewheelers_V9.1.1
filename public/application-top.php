@@ -32,6 +32,7 @@ ini_set('session.cookie_httponly', true);
 ini_set('session.cookie_path', CONF_WEBROOT_FRONT_URL);
 session_start();
 /* FatApp::getDb()->query("SET NAMES utf8mb4");  */
+FatApp::getDb()->logQueries(true,CONF_UPLOADS_PATH.'logQuery.txt');
 
 /* --- Redirect SSL --- */
 $protocol = (FatApp::getConfig('CONF_USE_SSL', FatUtility::VAR_INT, 0)==1)?'https://':'http://';
