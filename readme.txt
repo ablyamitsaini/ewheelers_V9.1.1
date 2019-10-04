@@ -1,3 +1,4 @@
+<!---- Release notes TV-9.0.1.20191004 -- >
 Bug:
     -> 030847 - Retain No Record Found if new volume discount or special price added for any product.
     -> 030841 - admin> special price, volume discount > seller name column needs to be there
