@@ -1,4 +1,4 @@
-$(document).ready(function() {        
+$(document).ready(function() {
     setTimeout(function() {
         $('body').addClass('loaded');
     }, 1000);
@@ -67,6 +67,10 @@ $(document).ready(function() {
       $(this).parent().parent().siblings().children().children().next().slideUp();
       return false;
     });
+
+    if ('rtl' == langLbl.layoutDirection && 0 < $("[data-simplebar='init']").length) {
+        $("[data-simplebar='init']").attr('data-simplebar-direction', 'rtl');
+    }
 });
 
 function setCurrDateFordatePicker() {
@@ -1209,5 +1213,5 @@ $(document).ajaxComplete(function() {
         $("#facebox .close.close--white").on("click", function(){
             $("html").removeClass('pop-on');
         });
-    }    
+    }
 });
