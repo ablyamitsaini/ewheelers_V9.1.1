@@ -6,26 +6,7 @@ class HomeController extends MyAppController
         $db = FatApp::getDb();
         $loggedUserId = UserAuthentication::getLoggedUserId(true);
 
-        $productSrchObj = new ProductSearch($this->siteLangId);
-        $productSrchObj->joinProductToCategory();
-        /* $productSrchObj->doNotCalculateRecords();
-        $productSrchObj->setPageSize( 10 ); */
-        $productSrchObj->setDefinedCriteria();
-        $productSrchObj->joinSellerSubscription($this->siteLangId, true);
-        $productSrchObj->addSubscriptionValidCondition();
-        // $productSrchObj->joinProductRating();
-
-        if (FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO) {
-            $productSrchObj->joinFavouriteProducts($loggedUserId);
-            $productSrchObj->addFld('ufp_id');
-        } else {
-            $productSrchObj->joinUserWishListProducts($loggedUserId);
-            $productSrchObj->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
-        }
-
-        $productSrchObj->addCondition('selprod_deleted', '=', applicationConstants::NO);
-        $productSrchObj->addMultipleFields(array('product_id','selprod_id','IFNULL(product_name, product_identifier) as product_name','IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title','product_image_updated_on','special_price_found', 'splprice_display_list_price','splprice_display_dis_val','splprice_display_dis_type','theprice','selprod_price','selprod_stock','selprod_condition','prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','selprod_sold_count','IF(selprod_stock > 0, 1, 0) AS in_stock'));
-
+        $productSrchObj = $this->getProductSearchObj($loggedUserId);
         $collections = $this->getCollections($productSrchObj);
         $sponsoredShops = $this->getSponsoredShops($productSrchObj);
         $sponsoredProds = $this->getSponsoredProducts($productSrchObj);
@@ -147,6 +128,32 @@ class HomeController extends MyAppController
         }
 
         $this->_template->render();
+    }
+
+    private function getProductSearchObj($loggedUserId)
+    {
+        $loggedUserId = FatUtility::int($loggedUserId);
+
+        $productSrchObj = new ProductSearch($this->siteLangId);
+        $productSrchObj->joinProductToCategory();
+        /* $productSrchObj->doNotCalculateRecords();
+        $productSrchObj->setPageSize( 10 ); */
+        $productSrchObj->setDefinedCriteria();
+        $productSrchObj->joinSellerSubscription($this->siteLangId, true);
+        $productSrchObj->addSubscriptionValidCondition();
+        // $productSrchObj->joinProductRating();
+
+        if (FatApp::getConfig('CONF_ADD_FAVORITES_TO_WISHLIST', FatUtility::VAR_INT, 1) == applicationConstants::NO) {
+            $productSrchObj->joinFavouriteProducts($loggedUserId);
+            $productSrchObj->addFld('ufp_id');
+        } else {
+            $productSrchObj->joinUserWishListProducts($loggedUserId);
+            $productSrchObj->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
+        }
+
+        $productSrchObj->addCondition('selprod_deleted', '=', applicationConstants::NO);
+        $productSrchObj->addMultipleFields(array('product_id','selprod_id','IFNULL(product_name, product_identifier) as product_name','IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title','product_image_updated_on','special_price_found', 'splprice_display_list_price','splprice_display_dis_val','splprice_display_dis_type','theprice','selprod_price','selprod_stock','selprod_condition','prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','selprod_sold_count','IF(selprod_stock > 0, 1, 0) AS in_stock'));
+        return $productSrchObj;
     }
 
     public function languages()
@@ -724,7 +731,7 @@ class HomeController extends MyAppController
         return $sponsoredShops;
     }
 
-    private function getSponsoredProducts($productSrchObj)
+    private function getSponsoredProductsObj($productSrchObj)
     {
         $langId = $this->siteLangId;
         $prodObj  = new PromotionSearch($langId);
@@ -740,32 +747,65 @@ class HomeController extends MyAppController
         $prodObj->doNotCalculateRecords();
         $prodObj->addMultipleFields(array('selprod_id as proSelProdId','promotion_id','promotion_record_id'));
 
-        $productPageSize = FatApp::getConfig('CONF_PPC_PRODUCTS_HOME_PAGE', FatUtility::VAR_INT, 6);
-        if (true ===  MOBILE_APP_API_CALL) {
-            $productPageSize = 4;
-        }
-
-        if (1 > $productPageSize) {
-            return array();
-        }
-
-        $db = FatApp::getDb();
         $productSrchSponObj = clone $productSrchObj;
-        if (true ===  MOBILE_APP_API_CALL) {
-            $productSrchSponObj->joinProductRating();
-            $productSrchSponObj->addFld('IFNULL(prod_rating, 0) as prod_rating');
-        }
         $productSrchSponObj->joinTable('(' . $prodObj->getQuery().') ', 'INNER JOIN', 'selprod_id = ppr.proSelProdId ', 'ppr');
         $productSrchSponObj->addFld(array('promotion_id','promotion_record_id'));
         $productSrchSponObj->addOrder('theprice', 'ASC');
         $productSrchSponObj->joinSellers();
         $productSrchSponObj->joinSellerSubscription($langId);
         $productSrchSponObj->addGroupBy('selprod_id');
+        $productSrchSponObj->addOrder('', 'rand()');
+        return $productSrchSponObj;
+    }
+
+    // For Home Page
+    private function getSponsoredProducts($productSrchObj)
+    {
+        $productPageSize = (true ===  MOBILE_APP_API_CALL) ? 4 : FatApp::getConfig('CONF_PPC_PRODUCTS_HOME_PAGE', FatUtility::VAR_INT, 6);
+
+        if (1 > $productPageSize) {
+            return array();
+        }
+
+        $db = FatApp::getDb();
+        $productSrchSponObj = $this->getSponsoredProductsObj($productSrchObj);
+        if (true ===  MOBILE_APP_API_CALL) {
+            $productSrchSponObj->joinProductRating();
+            $productSrchSponObj->addFld('IFNULL(prod_rating, 0) as prod_rating');
+        }
         $productSrchSponObj->doNotCalculateRecords();
         $productSrchSponObj->setPageSize($productPageSize);
-        $productSrchSponObj->addOrder('', 'rand()');
         $rs = $productSrchSponObj->getResultSet();
         return $db->fetchAll($rs);
+    }
+
+    // Used for APP
+    public function getAllSponsoredProducts()
+    {
+        $loggedUserId = UserAuthentication::getLoggedUserId(true);
+
+        $page = FatApp::getPostedData('page', FatUtility::VAR_INT, 1);
+        $page = ($page < 2) ? 1 : $page;
+
+        $pagesize = FatApp::getConfig('conf_page_size', FatUtility::VAR_INT, 10);
+
+        $productSrchObj = $this->getProductSearchObj($loggedUserId);
+
+        $productSrchSponObj = $this->getSponsoredProductsObj($productSrchObj);
+        $productSrchSponObj->joinProductRating();
+        $productSrchSponObj->addFld('IFNULL(prod_rating, 0) as prod_rating');
+        $productSrchSponObj->setPageNumber($page);
+        $productSrchSponObj->setPageSize($pagesize);
+
+        $rs = $productSrchSponObj->getResultSet();
+        $sponsoredProds = FatApp::getDb()->fetchAll($rs);
+
+        $this->set('sponsoredProds', $sponsoredProds);
+        $this->set('page', $page);
+        $this->set('pageCount', $productSrchSponObj->pages());
+        $this->set('recordCount', $productSrchSponObj->recordCount());
+        $this->set('postedData', FatApp::getPostedData());
+        $this->_template->render();
     }
 
     public function getImage()
