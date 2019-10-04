@@ -324,7 +324,7 @@ class GuestUserController extends MyAppController
         // CommonHelper::printArray($row, true);
         if ($row) {
             if ($row['credential_active'] != applicationConstants::ACTIVE) {
-                $message = Labels::getLabel("ERR_YOUR_ACCOUNT_HAS_BEEN_DEACTIVATED", $this->siteLangId).'<<<';
+                $message = Labels::getLabel("ERR_YOUR_ACCOUNT_HAS_BEEN_DEACTIVATED", $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
                     FatUtility::dieJsonError($message);
                 }
