@@ -9,7 +9,7 @@ $arr_flds = array(
 );
 
 $tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table-responsive table--hovered splPriceList-js'));
-$th = $tbl->appendElement('thead')->appendElement('tr', array('class' => 'hide--mobile'));
+$th = $tbl->appendElement('thead')->appendElement('tr', array('class' => ''));
 foreach ($arr_flds as $column => $lblTitle) {
     if ('select_all' == $column) {
         $th->appendElement('th')->appendElement('plaintext', array(), '<label class="checkbox"><input title="'.$lblTitle.'" type="checkbox" onclick="selectAll($(this))" class="selectAll-js"><i class="input-helper"></i></label>', true);
