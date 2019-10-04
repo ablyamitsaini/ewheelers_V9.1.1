@@ -18,7 +18,8 @@ Bug:
     -> 030862 - Special Price & Volume Discount list label updated
     -> 030850 - In Special Price & Volume Discount listing, search by seller option should be there.
     -> 030848 - When invalid amount is added for special price then it sets the previous added amount without currency symbol(Admin & Frontend)
-    -> 030849 - Latest added Special Price & Volume Discount are not listing on top in admin 
+    -> 030849 - Latest added Special Price & Volume Discount are not listing on top in admin
+    -> 030977 - Default affiliate commission entry is not there.
 
 New Features :
 	> Task - 64235 - Collection Image management for Mobile Application in admin.
