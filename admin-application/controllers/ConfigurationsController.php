@@ -190,6 +190,13 @@ class ConfigurationsController extends AdminBaseController
             }
         }
 
+        if (isset($post['CONF_SITE_ROBOTS_TXT'])) {
+            $filePath = CONF_INSTALLATION_PATH.'public/robots.txt';
+            $robotfile = fopen($filePath, "w");
+            fwrite($robotfile, $post['CONF_SITE_ROBOTS_TXT']);
+            fclose($robotfile);
+        }
+
         if (!$record->update($post)) {
             Message::addErrorMessage($record->getError());
             FatUtility::dieJsonError(Message::getHtml());
@@ -581,6 +588,9 @@ class ConfigurationsController extends AdminBaseController
 
                 $fld2 = $frm->addTextarea(Labels::getLabel('LBL_Site_Tracker_Code', $this->adminLangId), 'CONF_SITE_TRACKER_CODE');
                 $fld2->htmlAfterField = '<small>'.Labels::getLabel("LBL_This_is_the_site_tracker_script,_used_to_track_and_analyze_data_about_how_people_are_getting_to_your_website._e.g.,_Google_Analytics.", $this->adminLangId).' http://www.google.com/analytics/</small>';
+
+                $robotsFld = $frm->addTextarea(Labels::getLabel('LBL_Robots_Txt', $this->adminLangId), 'CONF_SITE_ROBOTS_TXT');
+                $robotsFld->htmlAfterField = '<small>'.Labels::getLabel("LBL_This_will_update_your_Robots.txt_file._Added_to_help_search_engines_index_your_site_more_appropriately.", $this->adminLangId).'</small>';
                 break;
 
             case Configurations::FORM_PRODUCT:
