@@ -102,6 +102,7 @@ class AdminPrivilege
     const SECTION_PRODUCT_TEMP_IMAGES = 98;
     const SECTION_IMPORT_INSTRUCTIONS = 99;
     const SECTION_UPLOAD_BULK_IMAGES = 100;
+    const SECTION_SITEMAP = 101;
 
     const PRIVILEGE_NONE = 0;
     const PRIVILEGE_READ = 1;
@@ -1366,5 +1367,15 @@ class AdminPrivilege
     {
         return $this->checkPermission($adminId, static::SECTION_USER_REQUESTS, static::PRIVILEGE_WRITE, $returnResult);
     }
-    
+
+    public function canViewSitemap($adminId = 0, $returnResult = false)
+    {
+        return $this->checkPermission($adminId, static::SECTION_SITEMAP, static::PRIVILEGE_READ, $returnResult);
+    }
+
+    public function canEditSitemap($adminId = 0, $returnResult = false)
+    {
+        return $this->checkPermission($adminId, static::SECTION_SITEMAP, static::PRIVILEGE_WRITE, $returnResult);
+    }
+
 }
