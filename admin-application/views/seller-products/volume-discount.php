@@ -41,7 +41,7 @@ if (0 < $selProd_id) {
                 <!--<div class="col-sm-12">-->
                 <section class="section">
                     <div class="sectionhead">
-                        <h4><?php echo Labels::getLabel('LBL_Seller_Products_List', $adminLangId); ?> </h4>
+                        <h4><?php echo Labels::getLabel('LBL_Volume_Discount_List', $adminLangId); ?> </h4>
                         <?php
                         if ($canEdit) {
                             $ul = new HtmlElement("ul", array("class"=>"actions actions--centered"));

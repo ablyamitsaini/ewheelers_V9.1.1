@@ -15,6 +15,7 @@ Bug:
     -> 030980 - When reviews are disabled from admin then they shouldn't be listed on front end
     -> 030918 - Getting error on shop policy page
     -> 030864 - Special price is not getting added for product which one having future date
+    -> 030862 - Special Price & Volume Discount list label updated
 
 New Features :
 	> Task - 64235 - Collection Image management for Mobile Application in admin.
