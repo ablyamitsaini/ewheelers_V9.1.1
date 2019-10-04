@@ -1,5 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
-$prodSpecFrm->setFormTagAttribute('class', 'form web_form form_horizontal');
+$prodSpecFrm->setFormTagAttribute('class', 'form form_horizontal');
 $prodSpecFrm->setFormTagAttribute('onsubmit', 'return submitSpecificationForm(this); return(false);');
 $prodSpecFrm->developerTags['fld_default_col']=6;
 

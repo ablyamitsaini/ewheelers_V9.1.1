@@ -84,7 +84,7 @@ if (count($arrListing) == 0) {
 }
 
 $frm = new Form('frmSplPriceListing', array('id'=>'frmSplPriceListing'));
-$frm->setFormTagAttribute('class', 'web_form last_td_nowrap');
+$frm->setFormTagAttribute('class', 'form');
 
 echo $frm->getFormTag();
 echo $tbl->getHtml(); ?>

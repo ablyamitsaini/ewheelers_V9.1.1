@@ -11,7 +11,7 @@
     $disPerc = $frm->getField('voldiscount_percentage');
     $disPerc->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Add_Discount_Percentage', $siteLangId));
 
-    $frm->setFormTagAttribute('class', 'web_form');
+    $frm->setFormTagAttribute('class', 'form');
     $frm->setFormTagAttribute('id', 'frmAddVolumeDiscount-'.$selProdId);
     $frm->setFormTagAttribute('name', 'frmAddVolumeDiscount-'.$selProdId);
     $frm->setFormTagAttribute('onsubmit', 'updateVolumeDiscountRow(this, '.$selProdId.'); return(false);');

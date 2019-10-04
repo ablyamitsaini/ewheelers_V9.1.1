@@ -107,7 +107,7 @@
     }
 
     $frm = new Form('frmCollectionsListing', array('id'=>'frmCollectionsListing'));
-    $frm->setFormTagAttribute('class', 'web_form last_td_nowrap');
+    $frm->setFormTagAttribute('class', 'form');
     $frm->setFormTagAttribute('onsubmit', 'formAction(this, searchShopCollections ); return(false);');
     $frm->setFormTagAttribute('action', CommonHelper::generateUrl('Seller', 'toggleBulkCollectionStatuses'));
     $frm->addHiddenField('', 'collection_status', '');
