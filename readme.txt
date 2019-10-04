@@ -24,6 +24,7 @@ Bug:
     -> 030560 - In Arabic language> on blogs page> subscribe button and text field are not properly arranged
     -> 030504 - Design changes of Save Changes and Cancel buttons
     -> 030501 - On "Rewards Points" page > columns should get display on whole screen and column name should not be scrollable.
+    -> 030087 - Logo is displaying very large in Email template
 
 New Features :
 	> Task - 64235 - Collection Image management for Mobile Application in admin.
