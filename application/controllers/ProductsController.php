@@ -8,7 +8,8 @@ class ProductsController extends MyAppController
 
     public function index()
     {
-        $this->productsData(__FUNCTION__);
+        //$this->productsData(__FUNCTION__);
+        $this->featured();
     }
 
     public function search()
@@ -147,23 +148,8 @@ class ProductsController extends MyAppController
             $prodSrchObj->addKeywordSearch($keyword);
             $cacheKey.= '-'.urlencode($keyword);
         }
+        $catSrch = clone $prodSrchObj;
 
-        /* Categories Data[ */
-        $categoriesArr = array();
-        $catFilter =  FatCache::get('catFilter'.$cacheKey, CONF_FILTER_CACHE_TIME, '.txt');
-        if (!$catFilter) {
-            $catSrch = clone $prodSrchObj;
-            if (0 == $langId) {
-                $catSrch->joinProductToCategoryLang($this->siteLangId);
-            }
-            $catSrch->addGroupBy('c.prodcat_id');
-            $categoriesArr = ProductCategory::getTreeArr($this->siteLangId, $categoryId, false, $catSrch, true);
-            $categoriesArr = (true ===  MOBILE_APP_API_CALL) ? array_values($categoriesArr) : $categoriesArr;
-            FatCache::set('catFilter'.$cacheKey, serialize($categoriesArr), '.txt');
-        } else {
-            $categoriesArr = unserialize($catFilter);
-        }
-        /* ] */
 
         /*$recordSrch = clone $prodSrchObj;
         $recordSrch->addMultipleFields(array('product_id'));
@@ -326,6 +312,23 @@ class ProductsController extends MyAppController
             $availabilityArr = unserialize($availabilities);
         }
         /*] */
+
+        /* Categories Data[ */
+        $categoriesArr = array();
+        $catFilter =  FatCache::get('catFilter'.$cacheKey, CONF_FILTER_CACHE_TIME, '.txt');
+        if (!$catFilter) {
+
+            if (0 == $langId) {
+                $catSrch->joinProductToCategoryLang($this->siteLangId);
+            }
+            $catSrch->addGroupBy('c.prodcat_id');
+            $categoriesArr = ProductCategory::getTreeArr($this->siteLangId, $categoryId, false, $catSrch, true);
+            $categoriesArr = (true ===  MOBILE_APP_API_CALL) ? array_values($categoriesArr) : $categoriesArr;
+            FatCache::set('catFilter'.$cacheKey, serialize($categoriesArr), '.txt');
+        } else {
+            $categoriesArr = unserialize($catFilter);
+        }
+        /* ] */
 
         $optionValueCheckedArr = array();
         if (array_key_exists('optionvalue', $headerFormParamsAssocArr)) {
