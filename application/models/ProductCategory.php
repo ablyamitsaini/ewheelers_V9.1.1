@@ -193,10 +193,9 @@ class ProductCategory extends MyAppModel
         }
 
         if ($excludeCatHavingNoProducts) {
-            $prodSrchObj = new ProductSearch($langId);
-            $prodSrchObj->setDefinedCriteria();
+            $prodSrchObj = new ProductSearch();
+            $prodSrchObj->setDefinedCriteria(0, 0, array('doNotJoinSpecialPrice'=> true));
             $prodSrchObj->doNotCalculateRecords();
-
             $prodSrchObj->doNotLimitRecords();
             $prodSrchObj->joinProductToCategory();
             $prodSrchObj->joinSellerSubscription($langId, true);
@@ -219,7 +218,7 @@ class ProductCategory extends MyAppModel
             $prodCatSrch->addOrder('prodcat_name');
             $prodCatSrch->addOrder('prodcat_identifier');
         }
-
+        
         $rs = $prodCatSrch->getResultSet();
         $categoriesArr = FatApp::getDb()->fetchAll($rs, 'prodcat_id');
         static::addMissingParentDetails($categoriesArr, $langId);
