@@ -244,7 +244,11 @@ padding-left: 0;
 	background-position: top right;
 	background-size: 16px;
 }
-.listing--check li.is-active a:after{ left: auto; right: 6px;}
+
+.listing--check li.is-active a:after {
+	left: auto;
+	right: 6px;
+}
 
 .box.box--list .links--vertical {
 	margin: 0;
@@ -390,11 +394,11 @@ input[type="text"].p-cards.meastro {
 }
 
 .selected-panel-action {
-	text-align: left; 
+	text-align: left;
 }
 
 .payment_methods_list li a {}
- 
+
 .payment_methods_list li a:before {
 	left: auto;
 	right: 15px;

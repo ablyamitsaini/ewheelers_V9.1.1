@@ -132,8 +132,10 @@
 }
 
 #facebox .content.productQuickView {
-	width: 900px; padding: 0 15px;
+	width: 900px;
+	padding: 0 15px;
 }
+#facebox .content.collection-ui-popup{ padding: 15px;}
 
 #facebox .content.loginpopup {
 	padding: 0;
