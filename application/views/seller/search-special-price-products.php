@@ -53,7 +53,7 @@ foreach ($arrListing as $sn => $row) {
                 $td->appendElement('plaintext', array(), $editListingFrm->getFieldHtml($column), true);
                 break;
             case 'splprice_price':
-                $input = '<input type="text" data-id="'.$splPriceId.'" value="'.$row[$column].'" data-selprodid="'.$selProdId.'" name="'.$column.'" data-oldval="'.$row[$column].'" class="js--splPriceCol hidden sp-input"/>';
+                $input = '<input type="text" data-id="'.$splPriceId.'" value="'.$row[$column].'" data-selprodid="'.$selProdId.'" name="'.$column.'" data-oldval="'.$row[$column].'" data-displayoldval="'.CommonHelper::displayMoneyFormat($row[$column], true, true).'" class="js--splPriceCol hidden sp-input"/>';
                 $td->appendElement('div', array("class" => 'js--editCol edit-hover', "title" => Labels::getLabel('LBL_Click_To_Edit', $siteLangId)), CommonHelper::displayMoneyFormat($row[$column], true, true), true);
                 $td->appendElement('plaintext', array(), $input, true);
                 break;

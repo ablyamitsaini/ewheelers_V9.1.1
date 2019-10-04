@@ -149,6 +149,8 @@ $(document).on('blur', ".js--splPriceCol:not(.date_js)", function(){
     updateValues = function(currObj) {
         var value = currObj.val();
         var oldValue = currObj.attr('data-oldval');
+        var displayOldValue = currObj.attr('data-displayoldval');
+        displayOldValue = typeof displayOldValue == 'undefined' ? oldValue : displayOldValue;
         var attribute = currObj.attr('name');
         var id = currObj.data('id');
         var selProdId = currObj.data('selprodid');
@@ -162,7 +164,8 @@ $(document).on('blur', ".js--splPriceCol:not(.date_js)", function(){
                 var ans = $.parseJSON(t);
                 if( ans.status != 1 ){
                     $.systemMessage(ans.msg,'alert--danger',true);
-                    value = updatedValue = oldValue;
+                    value = oldValue;
+                    updatedValue = displayOldValue;
                 } else {
                     updatedValue = ans.data.value;
                     currObj.attr('data-oldval', value);
