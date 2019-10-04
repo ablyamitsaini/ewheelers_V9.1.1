@@ -29,6 +29,39 @@ $(document).on('keyup', "input[name='product_name']", function(){
     }
 });
 
+$(document).on('keyup', "input[name='product_seller']", function(){
+    var currObj = $(this);
+    currObj.siblings('ul.dropdown-menu').remove();
+    currObj.autocomplete({
+        'source': function(request, response) {
+            if( '' != request ){
+                $.ajax({
+                    url: fcom.makeUrl('Products', 'autoCompleteSellerJson'),
+                    data: {keyword: request},
+                    dataType: 'json',
+                    type: 'post',
+                    success: function(json) {
+                        response($.map(json, function(item) {
+                            var email = '';
+                            if( null !== item['credential_email'] ){
+                                email = ' ('+item['credential_email']+')';
+                            }
+                            return { label: item['credential_username'] + email,    value: item['credential_user_id']    };
+                        }));
+                    },
+                });
+            }else{
+                $("input[name='product_seller_id']").val('');
+            }
+        },
+        'select': function(item) {
+            $("input[name='product_seller_id']").val( item['value'] );
+            $("input[name='product_seller']").val( item['label'] );
+        }
+    });
+});
+
+
 $(document).on('click', 'table.volDiscountList-js tr td .js--editCol', function(){
     $(this).addClass('hide');
     var input = $(this).siblings('input[type="text"]');
@@ -86,6 +119,7 @@ $(document).on('blur', ".js--volDiscountCol", function(){
             location.href = fcom.makeUrl('SellerProducts','volumeDiscount');
         } else {
     		document.frmSearch.reset();
+            document.frmSearch.product_seller_id.value = '';
     		searchVolumeDiscountProducts(document.frmSearch);
         }
 	};
@@ -93,7 +127,7 @@ $(document).on('blur', ".js--volDiscountCol", function(){
 		if(typeof page==undefined || page == null){
 			page =1;
 		}
-		var frm = document.frmSearchSpecialPricePaging;
+		var frm = document.frmSearchVolumeDiscountPaging;
 		$(frm.page).val(page);
 		searchVolumeDiscountProducts(frm);
 	}
