@@ -25,8 +25,9 @@ Bug:
     -> 030504 - Design changes of Save Changes and Cancel buttons
     -> 030501 - On "Rewards Points" page > columns should get display on whole screen and column name should not be scrollable.
     -> 030087 - Logo is displaying very large in Email template
-    -> 030861 - Seller> on special price/volume discount> there needs to be some space between 'keyword", "search", "clear" buttons and between "select product", "price start date","price end date","special price". 
-
+    -> 030861 - Seller> on special price/volume discount> there needs to be some space between 'keyword", "search", "clear" buttons and between "select product", "price start date","price end date","special price".
+    -> 030911 - On product details page, under recently viewed product,height needs to be same and name should be in 2 lines only
+    
 New Features :
 	> Task - 64235 - Collection Image management for Mobile Application in admin.
 

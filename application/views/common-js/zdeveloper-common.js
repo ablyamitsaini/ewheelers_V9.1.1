@@ -131,7 +131,7 @@ function recentlyViewedProducts(selprodId) {
 
     fcom.ajax(fcom.makeUrl('Products', 'recentlyViewedProducts', [selprodId]), '', function(ans) {
         $("#recentlyViewedProductsDiv").html(ans);
-        $('.js-collection-corner:not(.slick-initialized)').slick(getSlickSliderSettings(6, 1, langLbl.layoutDirection, true));
+        $('.js-collection-corner:not(.slick-initialized)').slick(getSlickSliderSettings(5, 1, langLbl.layoutDirection, true));
     });
 }
 
