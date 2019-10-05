@@ -29,6 +29,7 @@ Bug:
     -> 030911 - On product details page, under recently viewed product,height needs to be same and name should be in 2 lines only
     -> 030563 - In arabic language, custom scroll bar displaying on on the wrong side
     -> 031119 - By deleting all Special Price or Volume Discount rows one by one, at last no message displayed for no record found
+    -> 031123 - On deleting special price consecutively, error triggered.
 
 New Features :
 	> Task - 64235 - Collection Image management for Mobile Application in admin.
