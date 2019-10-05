@@ -2,9 +2,9 @@
 class ValidateElement extends FatUtility
 {
     // const PHONE_REGEX = '^(\+\d{1,2}\s)?\(?\d{3}\)?[\s#-]\d{3}[\s#-]\d{4}$';
-    const PHONE_NO_FORMAT = '(XXX) XXX-XXXX';
+    const PHONE_NO_FORMAT = '';
     const PHONE_NO_LENGTH = 14;
-    const PHONE_REGEX = '^\(\d\d\d\) \d\d\d-\d\d\d\d$';
+    const PHONE_REGEX = '^(?!0+$)[0-9]{1,14}$';
     const ZIP_REGEX = '^[a-zA-Z0-9]+$';
     const CITY_NAME_REGEX = '^([^0-9]*)$';
     const PASSWORD_REGEX = '^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%-_]{8,15}$';
