@@ -68,8 +68,8 @@ $(document).ready(function() {
       return false;
     });
 
-    if ('rtl' == langLbl.layoutDirection && 0 < $("[data-simplebar='init']").length) {
-        $("[data-simplebar='init']").attr('data-simplebar-direction', 'rtl');
+    if ('rtl' == langLbl.layoutDirection && 0 < $("[data-simplebar]").length  && 1 > $("[data-simplebar-direction='rtl']").length) {
+        $("[data-simplebar]").attr('data-simplebar-direction', 'rtl');
     }
 });
 
