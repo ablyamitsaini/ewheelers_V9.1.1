@@ -102,3 +102,8 @@ ALTER TABLE `tbl_collections` ADD `collection_display_media_only` TINYINT(1) NOT
 
 INSERT INTO `tbl_banner_locations` (`blocation_id`, `blocation_key`, `blocation_identifier`, `blocation_banner_count`, `blocation_promotion_cost`, `blocation_active`) VALUES ('4', 'Home_Page_Middle_Banner', 'Home page middle banner (Only for Mobile API)', '1', '20', '1');
 INSERT INTO `tbl_banner_location_dimensions` (`bldimension_blocation_id`, `bldimension_device_type`, `blocation_banner_width`, `blocation_banner_height`) VALUES ('4', '1', '600', '338'), ('4', '2', '600', '338'), ('4', '3', '600', '338');
+
+ALTER TABLE `tbl_banners` ADD `banner_url_type` TINYINT(2) NOT NULL AFTER `banner_record_id`;
+UPDATE `tbl_banners` SET `banner_url_type` = '1';
+ALTER TABLE `tbl_slides` ADD `slide_url_type` TINYINT(2) NOT NULL AFTER `slide_record_id`;
+UPDATE `tbl_slides` SET `slide_url_type` = '1';

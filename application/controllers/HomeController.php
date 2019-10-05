@@ -606,7 +606,7 @@ class HomeController extends MyAppController
         $srchSlide->addSkipExpiredPromotionAndSlideCondition();
         $srchSlide->joinBudget();
         $srchSlide->joinAttachedFile();
-        $srchSlide->addMultipleFields(array('slide_id','slide_record_id','slide_type','IFNULL(promotion_name, promotion_identifier) as promotion_name,IFNULL(slide_title, slide_identifier) as slide_title','slide_target','slide_url','promotion_id','daily_cost','weekly_cost','monthly_cost','total_cost','slide_img_updated_on'));
+        $srchSlide->addMultipleFields(array('slide_id','slide_record_id', 'slide_url_type','slide_type','IFNULL(promotion_name, promotion_identifier) as promotion_name,IFNULL(slide_title, slide_identifier) as slide_title','slide_target','slide_url','promotion_id','daily_cost','weekly_cost','monthly_cost','total_cost','slide_img_updated_on'));
 
         $totalSlidesPageSize = FatApp::getConfig('CONF_TOTAL_SLIDES_HOME_PAGE', FatUtility::VAR_INT, 4);
         $ppcSlidesPageSize = FatApp::getConfig('CONF_PPC_SLIDES_HOME_PAGE', FatUtility::VAR_INT, 4);
@@ -615,7 +615,7 @@ class HomeController extends MyAppController
         $adminSlides = array();
 
         $slidesSrch = new SearchBase('('.$srchSlide->getQuery().') as t');
-        $slidesSrch->addMultipleFields(array('slide_id','slide_type','slide_record_id','slide_url','slide_target','slide_title','promotion_id','userBalance','daily_cost','weekly_cost','monthly_cost','total_cost','promotion_budget' ,'promotion_duration','slide_img_updated_on'));
+        $slidesSrch->addMultipleFields(array('slide_id','slide_type','slide_record_id','slide_url_type','slide_url','slide_target','slide_title','promotion_id','userBalance','daily_cost','weekly_cost','monthly_cost','total_cost','promotion_budget' ,'promotion_duration','slide_img_updated_on'));
         $slidesSrch->addOrder('', 'rand()');
 
         if (0 < $ppcSlidesPageSize) {

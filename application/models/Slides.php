@@ -8,6 +8,12 @@ class Slides extends MyAppModel
     const TYPE_SLIDE = 1;
     const TYPE_PPC = 2;
 
+    const URL_TYPE_EXTERNAL = 1;
+    const URL_TYPE_SHOP = 2;
+    const URL_TYPE_PRODUCT = 3;
+    const URL_TYPE_CATEGORY = 4;
+    const URL_TYPE_BRAND = 5;
+
     public function __construct($id = 0)
     {
         parent::__construct(static::DB_TBL, static::DB_TBL_PREFIX . 'id', $id);
@@ -20,8 +26,24 @@ class Slides extends MyAppModel
             $langId = FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG');
         }
         return array(
-        static::TYPE_SLIDE    =>    Labels::getLabel('LBL_Slide', $langId),
-        static::TYPE_PPC    =>    Labels::getLabel('LBL_Promotion', $langId),
+            static::TYPE_SLIDE => Labels::getLabel('LBL_Slide', $langId),
+            static::TYPE_PPC => Labels::getLabel('LBL_Promotion', $langId),
+        );
+    }
+
+    public static function getUrlTypeArr($langId)
+    {
+        $langId = FatUtility::int($langId);
+        if ($langId < 1) {
+            $langId = FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG');
+        }
+
+        return array(
+            static::URL_TYPE_EXTERNAL => Labels::getLabel('LBL_External_Url', $langId),
+            static::URL_TYPE_SHOP => Labels::getLabel('LBL_Shop', $langId),
+            static::URL_TYPE_PRODUCT => Labels::getLabel('LBL_Product', $langId),
+            static::URL_TYPE_CATEGORY => Labels::getLabel('LBL_Category', $langId),
+            static::URL_TYPE_BRAND => Labels::getLabel('LBL_Brand', $langId),
         );
     }
 

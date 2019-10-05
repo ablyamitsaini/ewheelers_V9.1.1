@@ -6,6 +6,26 @@ $slideFrm->developerTags['fld_default_col'] = 12;
 
 $slide_identifier = $slideFrm->getField('slide_identifier');
 $slide_identifier->setUnique('tbl_slides', 'slide_identifier', 'slide_id', 'slide_id', 'slide_id');
+
+$extUrlField = $slideFrm->getField('slide_url');
+$extUrlField->addFieldTagAttribute('placeholder', 'http://');
+$extUrlField->setWrapperAttribute('class', 'slideUrlFields slideUrlField-'.Slides::URL_TYPE_EXTERNAL);
+
+$shopUrlField = $slideFrm->getField('urlTypeShop');
+$shopUrlField->setWrapperAttribute('class', 'slideUrlFields slideUrlField-'.Slides::URL_TYPE_SHOP);
+
+$prodUrlField = $slideFrm->getField('urlTypeProduct');
+$prodUrlField->setWrapperAttribute('class', 'slideUrlFields slideUrlField-'.Slides::URL_TYPE_PRODUCT);
+
+$catUrlField = $slideFrm->getField('urlTypeCategory');
+$catUrlField->setWrapperAttribute('class', 'slideUrlFields slideUrlField-'.Slides::URL_TYPE_CATEGORY);
+
+$brandUrlField = $slideFrm->getField('urlTypeBrand');
+$brandUrlField->setWrapperAttribute('class', 'slideUrlFields slideUrlField-'.Slides::URL_TYPE_BRAND);
+
+$urlTargetField = $slideFrm->getField('slide_target');
+$urlTargetField->setWrapperAttribute('class', 'urlTargetField');
+
 ?>
 <section class="section">
     <div class="sectionhead">
@@ -44,3 +64,81 @@ $slide_identifier->setUnique('tbl_slides', 'slide_identifier', 'slide_id', 'slid
             </div>
         </div>
     </section>
+    <script type="text/javascript">
+        $("document").ready(function(){
+            var URL_TYPE_EXTERNAL = <?php echo Slides::URL_TYPE_EXTERNAL; ?>;
+            $("select[name='slide_url_type']").change(function(){
+                var slideUrlType = $(this).val();
+                $(".slideUrlFields").hide();
+                $(".slideUrlField-"+slideUrlType).show();
+
+                (URL_TYPE_EXTERNAL != slideUrlType) ? $('.urlTargetField').hide() : $('.urlTargetField').show();
+            });
+
+            $("select[name='slide_url_type']").trigger('change');
+
+            $("input[name='urlTypeProduct']").autocomplete({
+                'source': function(request, response) {
+                    $.ajax({
+                        url: fcom.makeUrl('SellerProducts', 'autoCompleteProducts'),
+                        data: {keyword: request,fIsAjax:1},
+                        dataType: 'json',
+                        type: 'post',
+                        success: function(json) {
+                            response($.map(json, function(item) {
+                                return { label: item['name'] ,    value: item['id']    };
+                            }));
+                        },
+                    });
+                },
+                'select': function(item) {
+                    $("input[name='urlTypeProduct']").val(item['label']);
+                    $("input[name='slide_url_value']").val(item['value']);
+                }
+            });
+
+            $("input[name='urlTypeShop']").autocomplete({
+                'source': function(request, response) {
+                    $.ajax({
+                        url: fcom.makeUrl('Shops', 'autoComplete'),
+                        data: { keyword: request, fIsAjax:1},
+                        dataType: 'json',
+                        type: 'post',
+                        success: function(json) {
+                            response($.map(json, function(item) {
+                                return { label: item['name'] ,    value: item['id']    };
+                            }));
+                        },
+                    });
+                },
+                'select': function(item) {
+                    $("input[name='urlTypeShop']").val( item['label'] );
+                    $("input[name='slide_url_value']").val( item['value'] );
+                }
+            });
+
+            $("select[name='urlTypeCategory']").change(function(){
+                $("input[name='slide_url_value']").val($(this).val());
+            });
+
+            $("input[name='urlTypeBrand']").autocomplete({
+                'source': function(request, response) {
+                    $.ajax({
+                        url: fcom.makeUrl('Brands', 'autocomplete'),
+                        data: {keyword: request,fIsAjax:1},
+                        dataType: 'json',
+                        type: 'post',
+                        success: function(json) {
+                            response($.map(json, function(item) {
+                                return {label: item['name'] , value: item['id']};
+                            }));
+                        },
+                    });
+                },
+                'select': function( item ) {
+                    $("input[name='urlTypeBrand']").val( item['label'] );
+                    $("input[name='slide_url_value']").val( item['value'] );
+                }
+            });
+        });
+    </script>
