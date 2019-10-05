@@ -142,7 +142,10 @@ $(document).on('blur', ".js--volDiscountCol", function(){
 			return false;
 		}
 		fcom.updateWithAjax(fcom.makeUrl('SellerProducts', 'deleteSellerProductVolumeDiscount'), 'voldiscount_id=' + voldiscount_id, function(t) {
-            $('tr#row-'+voldiscount_id).remove();
+            $('form#frmVolDiscountListing table tr#row-'+voldiscount_id).remove();
+            if (1 > $('form#frmVolDiscountListing table tbody tr').length) {
+                searchVolumeDiscountProducts(document.frmSearch);
+            }
 		});
 	}
     deleteVolumeDiscountRows = function(){

@@ -97,7 +97,10 @@ $(document).on('blur', ".js--splPriceCol:not(.date_js)", function(){
 			return false;
 		}
 		fcom.updateWithAjax(fcom.makeUrl('Seller', 'deleteSellerProductSpecialPrice'), 'splprice_id=' + splPrice_id, function(t) {
-            $('tr#row-'+splPrice_id).remove();
+            $('form#frmSplPriceListing table tr#row-'+splPrice_id).remove();
+            if (1 > $('form#frmSplPriceListing table tbody tr').length) {
+                searchSpecialPriceProducts(document.frmSearch);
+            }
 		});
 	}
     deleteSpecialPriceRows = function(){
@@ -111,10 +114,10 @@ $(document).on('blur', ".js--splPriceCol:not(.date_js)", function(){
         fcom.ajax(fcom.makeUrl('Seller', 'deleteSpecialPriceRows'), data, function(t) {
             var ans = $.parseJSON(t);
 			if( ans.status == 1 ){
-				$.mbsmessage(ans.msg, 'alert--success');
+				$.mbsmessage(ans.msg, true, 'alert--success');
                 $('.formActionBtn-js').addClass('formActions-css');
 			} else {
-                $.mbsmessage(ans.msg, 'alert--danger');
+                $.mbsmessage(ans.msg, true, 'alert--danger');
 			}
             searchSpecialPriceProducts(document.frmSearch);
         });

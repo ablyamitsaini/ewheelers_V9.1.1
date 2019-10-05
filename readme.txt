@@ -28,6 +28,7 @@ Bug:
     -> 030861 - Seller> on special price/volume discount> there needs to be some space between 'keyword", "search", "clear" buttons and between "select product", "price start date","price end date","special price".
     -> 030911 - On product details page, under recently viewed product,height needs to be same and name should be in 2 lines only
     -> 030563 - In arabic language, custom scroll bar displaying on on the wrong side
+    -> 031119 - By deleting all Special Price or Volume Discount rows one by one, at last no message displayed for no record found
 
 New Features :
 	> Task - 64235 - Collection Image management for Mobile Application in admin.
