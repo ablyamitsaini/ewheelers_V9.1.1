@@ -626,7 +626,7 @@
 	}
 
 	.search--btn {
-		width: 50px;
+		width: 40px;
 		height: 40px;
 		font-size: 0;
 		padding: 0;
@@ -1317,18 +1317,6 @@
 
 	.section-head .section__heading h2 {
 		font-weight: 500;
-	}
-
-	.search--btn {
-		position: absolute;
-		right: 0;
-		top: 0;
-	}
-
-	.main-search-form .search--keyword {
-		-webkit-padding-end: 50px;
-		-moz-padding-end: 50px;
-		padding-inline-end: 50px;
 	}
 
 	.short-links > ul {

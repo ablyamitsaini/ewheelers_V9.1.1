@@ -1587,6 +1587,8 @@ body.fixed .top-bar {
 
 .main-search-form {
 	display: flex;
+	align-items: center;
+	
 }
 
 .fixed .form--search-popup {
@@ -14070,6 +14072,7 @@ input[type="password"][disabled] {
 .main-search__field {
 	position: relative;
 	width: 100%;
+	flex: 1;
 }
 
 /*FAQs*/
