@@ -30,6 +30,7 @@ Bug:
     -> 030563 - In arabic language, custom scroll bar displaying on on the wrong side
     -> 031119 - By deleting all Special Price or Volume Discount rows one by one, at last no message displayed for no record found
     -> 031123 - On deleting special price consecutively, error triggered.
+    -> 031115 - Displaying invalid access> on submitting catalog request from seller for the first time.
 
 New Features :
 	> Task - 64235 - Collection Image management for Mobile Application in admin.
