@@ -526,15 +526,15 @@
 					</ul>
 				</li>
 			<?php }?>
-            
-            <li class="haschild"><a href="javascript:void(0);"><?php echo Labels::getLabel('LBL_Support_Link', $adminLangId);?></a>
+
+            <?php /*<li class="haschild"><a href="javascript:void(0);"><?php echo Labels::getLabel('LBL_Support_Link', $adminLangId);?></a>
                 <ul>
                     <li><a target="_blank" href="http://www.yo-kart.com/recent-updates.html"><?php echo Labels::getLabel('LBL_Version_Update', $adminLangId);?></a></li>
                     <li><a target="_blank" href="http://faq.yo-kart.com/"><?php echo Labels::getLabel('LBL_FAQs', $adminLangId);?></a></li>
                     <li><a target="_blank" href="http://www.yo-kart.com/addons-integrations.html"><?php echo Labels::getLabel('LBL_Add_Ons', $adminLangId);?></a></li>
                     <li><a href="<?php echo CommonHelper::generateUrl('Support'); ?>"><?php echo Labels::getLabel('LBL_Report_An_Issue', $adminLangId);?></a></li>
                 </ul>
-            </li>
+            </li>*/ ?>
         </ul>
             </div>
         </aside>
