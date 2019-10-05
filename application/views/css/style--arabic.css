@@ -671,7 +671,7 @@ input[type="text"].p-cards.meastro {
 }
 
 .fld-date {
-	background-position: calc(12px) 11px;
+	/*background-position: calc(12px) 11px;*/
 }
 
 .testimonials-item .user {
@@ -996,6 +996,12 @@ input[type="text"].p-cards.meastro {
 		right: 35px;
 	}
 	.hamburger-toggle.is-opened{ right: 0;}
+	.fld-date {
+		background: none !important;
+		-webkit-padding-end: 10px;
+		   -moz-padding-end: 10px;
+		        padding-inline-end: 10px;
+	}
 }
 
 /*dashboard arabic end*/
