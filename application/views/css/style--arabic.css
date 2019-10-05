@@ -62,6 +62,10 @@ th,
 	left: 20px;
 }
 
+.form--search-popup .form__cover input[type="submit"] {
+	left: 0;
+	right: auto;
+}
 
 .seller-login {
 	text-align: left;
@@ -69,37 +73,6 @@ th,
 
 .login-account {
 	margin-left: 0;
-}
-
-.item-yk-head-lable {
-	left: 20px;
-	right: auto;
-}
-
-.box--tabled .box__cell:first-child {
-	border-right: none;
-	border-left: 1px solid var(--border-color);
-	padding-left: 70px;
-	padding-right: 0;
-}
-
-.box--tabled .box__cell .listing--icons {
-	padding-right: 50px;
-}
-
-.form--normal input[type="submit"] {
-	margin-right: 0;
-	margin-left: 20px;
-}
-
-.listing--icons li .fa {
-	float: right;
-	margin: 0 0 0 20px;
-}
-
-.right_panel_head_right {
-	float: left;
-	text-align: left;
 }
 
 /*
@@ -138,17 +111,6 @@ padding-left: 0;
 .section__head .btn--positioned {
 	left: 0;
 	right: auto;
-}
-
-.form--search-popup .form__cover input[type="submit"] {
-	left: 0;
-	right: auto;
-}
-
-.ftshops .ftshops_logo {
-	float: right;
-	margin-right: 0;
-	margin-left: 20px;
 }
 
 .breadcrumbs ul li:before {
@@ -484,25 +446,6 @@ input[type="text"].p-cards.meastro {
 	text-align: left;
 }
 
-.sidebar {
-	left: auto;
-	right: 0;
-}
-
-.logo-dashboard {
-	left: auto;
-	right: 10px;
-}
-
-.dashboard-menu .accordianbody li a {
-	padding-left: 0;
-	padding-right: 70px;
-}
-
-.header-icons-group {
-	margin-left: 0;
-	margin-right: auto;
-}
 
 .dropdown__target {
 	left: auto;
@@ -539,9 +482,7 @@ input[type="text"].p-cards.meastro {
 	margin-left: 0.5rem;
 }
 
-.sidebar-is-expanded .header-dashboard {
-	padding-left: 20px;
-}
+
 
 .alert--process:before {
 	left: auto;
@@ -909,9 +850,6 @@ input[type="text"].p-cards.meastro {
 	.shop-information .shop-info {
 		text-align: right;
 	}
-
-
-
 }
 
 @media only screen and (max-width: 767px) {
@@ -937,7 +875,6 @@ input[type="text"].p-cards.meastro {
 		right: auto;
 		left: 15px;
 	}
-
 
 	.short-links > ul > li.dropdown--user:last-child {
 		margin-right: auto;
@@ -1000,3 +937,65 @@ input[type="text"].p-cards.meastro {
 		margin-right: auto;
 	}
 }
+
+/*dashboard arabic*/
+.checkbox input,
+.radio input,
+.checkbox .input-helper:before,
+.radio .input-helper:before,
+.bullet-list li:before,
+.container--cms ul li:before,
+.box.box--list .links--vertical li .fa {
+	right: 0;
+	left: auto;
+}
+
+
+.checkbox input,
+.radio input {
+	margin-right: 0;
+	margin-left: 0.5rem;
+}
+
+.radio .input-helper::after {
+	right: 4px;
+	left: auto;
+}
+
+.checkbox .input-helper:after {
+	right: 3px;
+	left: auto;
+}
+
+.sidebar {
+	left: auto;
+	right: 0;
+}
+
+.sidebar-is-expanded .header-dashboard {
+	padding-left: 20px;
+}
+
+.logo-dashboard {
+	left: auto;
+	right: 10px;
+}
+
+.dashboard-menu .accordianbody li a {
+	padding-left: 0;
+	padding-right: 70px;
+}
+
+.header-icons-group {
+	margin-left: 0;
+	margin-right: auto;
+}
+
+@media only screen and (max-width: 1080px) {
+	.hamburger-toggle {
+		right: 35px;
+	}
+	.hamburger-toggle.is-opened{ right: 0;}
+}
+
+/*dashboard arabic end*/

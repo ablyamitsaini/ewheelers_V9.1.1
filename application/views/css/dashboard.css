@@ -942,7 +942,7 @@ ul.listing--bullet li:before {
 }
 
 .hamburger-toggle.is-opened {
-	left: 3px;
+	left:0;
 }
 
 .hamburger-toggle.is-opened [class*='bar-'] {

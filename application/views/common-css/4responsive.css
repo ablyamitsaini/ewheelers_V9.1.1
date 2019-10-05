@@ -4,7 +4,6 @@
 	}
 }
 @media only screen and (max-width: 1399px) {
-
 	.ftshops .shop-detail-side {
 		max-width: 260px;
 	}
@@ -1112,6 +1111,7 @@
 		-ms-flex-direction: column;
 		flex-direction: column;
 	}
+	.fld-date{ background: none !important;}
 }
 @media only screen and (max-width:1023px) {
 	html {
@@ -2211,7 +2211,7 @@
 		transform: none;
 	}
 	.certified-box{ margin-bottom: 1.5rem;}
-
+	
 
 
 }
