@@ -380,7 +380,7 @@ INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`,
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_GOT_IT','1','Got it',2);
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_OFF','1',' off',2);
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_ENJOY','1','Enjoy ',2);
-INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_PERCENTAGE APP_CONDITION_APPLY','1','Condition Apply',2);
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_CONDITION_APPLY','1','Condition Apply',2);
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_TRANS_ID','1','Txn id: ',2);
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_TRACKING_NO','1','Tracking No: ',2);
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_VIEW_RATING','1','View Rating',2);
@@ -712,7 +712,7 @@ INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `l
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_GOT_IT','2',2,'فهمتك');
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_OFF','2',2,' إيقاف');
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_ENJOY','2',2,'استمتع');
-INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_PERCENTAGE APP_CONDITION_APPLY','2,2','حالة تطبيق');
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_CONDITION_APPLY','2',2,'حالة تطبيق');
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_TRANS_ID','2',2,'TXN معرف:');
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_TRACKING_NO','2',2,'تتبع أي:');
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_VIEW_RATING','2',2,'عرض التصويت');
