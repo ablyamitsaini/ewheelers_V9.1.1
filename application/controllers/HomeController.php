@@ -227,6 +227,7 @@ class HomeController extends MyAppController
             $filePath = Labels::JSON_FILE_DIR_NAME.'/'.Labels::TYPE_APP.'/'.$fileName;
 
             AttachedFile::downloadAttachment($filePath, $fileName);
+            exit;
         }
 
         $data = array(
