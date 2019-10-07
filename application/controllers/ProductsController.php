@@ -246,6 +246,7 @@ class ProductsController extends MyAppController
         $priority  = array_column($brandsArr, 'priority');
         $name = array_column($brandsArr, 'brand_name');
         array_multisort($priority, SORT_DESC, $name, SORT_ASC, $brandsArr);
+        $priority = $name = array();
         /* ] */
 
         /* {Can modify the logic fetch data directly from query . will implement later}
@@ -316,6 +317,7 @@ class ProductsController extends MyAppController
         $priceArr = array();
         $priceArr['minPrice']  = min(array_column($priceArrRes, 'theprice'));
         $priceArr['maxPrice'] = max(array_column($priceArrRes, 'theprice'));
+        $priceArrRes = array();
 
         $priceInFilter = false;
         $filterDefaultMinValue = $priceArr['minPrice'];
