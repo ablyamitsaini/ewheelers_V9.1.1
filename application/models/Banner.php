@@ -21,12 +21,6 @@ class Banner extends MyAppModel
     const BANNER_HOME_PAGE_LAYOUT_2 = 2;
     const BANNER_PRODUCT_PAGE_LAYOUT_1 = 3;
 
-    const URL_TYPE_EXTERNAL = 1;
-    const URL_TYPE_SHOP = 2;
-    const URL_TYPE_PRODUCT = 3;
-    const URL_TYPE_CATEGORY = 4;
-    const URL_TYPE_BRAND = 5;
-
     public function __construct($id = 0)
     {
         parent::__construct(static::DB_TBL, static::DB_TBL_PREFIX . 'id', $id);
@@ -43,23 +37,7 @@ class Banner extends MyAppModel
         static::TYPE_PPC    =>    Labels::getLabel('LBL_Promotion', $langId),
         );
     }
-
-    public static function getUrlTypeArr($langId)
-    {
-        $langId = FatUtility::int($langId);
-        if ($langId < 1) {
-            $langId = FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG');
-        }
-
-        return array(
-            static::URL_TYPE_EXTERNAL => Labels::getLabel('LBL_External_Url', $langId),
-            static::URL_TYPE_SHOP => Labels::getLabel('LBL_Shop', $langId),
-            static::URL_TYPE_PRODUCT => Labels::getLabel('LBL_Product', $langId),
-            static::URL_TYPE_CATEGORY => Labels::getLabel('LBL_Category', $langId),
-            static::URL_TYPE_BRAND => Labels::getLabel('LBL_Brand', $langId),
-        );
-    }
-
+    
     public static function getSearchObject($langId = 0, $isActive = true)
     {
         $srch = new SearchBase(static::DB_TBL, 'b');

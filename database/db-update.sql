@@ -773,3 +773,6 @@ INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `l
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_YOU_HAVE_NO_ADDRESS','2',2,'لقد أية عناوين أضافت');
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_YOU_HAVE_NO_COUPONS','2',2,'لا يوجد لديك كوبونات');
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_YOU_HAVE_NO_REWARD_POINTS','2',2,'لا يوجد لديك نقاط المكافآت');
+
+ALTER TABLE `tbl_slides` DROP `slide_url_type`;
+ALTER TABLE `tbl_banners` DROP `banner_url_type`;

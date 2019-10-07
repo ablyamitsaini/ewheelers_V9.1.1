@@ -63,40 +63,6 @@ class SlidesController extends AdminBaseController
             if ($data === false) {
                 FatUtility::dieWithError($this->str_invalid_request);
             }
-
-            switch ($data['slide_url_type']) {
-                case Slides::URL_TYPE_SHOP:
-                    $srch = Shop::getSearchObject(false, $this->adminLangId);
-                    $srch->addMultipleFields(array('IFNULL(shop_name,shop_identifier) as shop_name'));
-                    $srch->addCondition('shop_id', '=', $data['slide_url']);
-                    $srch->setPageSize(1);
-                    $rs = $srch->getResultSet();
-                    $shop = FatApp::getDb()->fetch($rs);
-                    $data['urlTypeShop'] = $shop['shop_name'];
-                    break;
-                case Slides::URL_TYPE_PRODUCT:
-                    $title = SellerProduct::getProductDisplayTitle($data['slide_url'], $this->adminLangId);
-                    $data['urlTypeProduct'] = $title;
-                    break;
-                case Slides::URL_TYPE_CATEGORY:
-                    $data['urlTypeCategory'] = $data['slide_url'];
-                    break;
-                case Slides::URL_TYPE_BRAND:
-                    $brandObj = new Brand();
-                    $srch = $brandObj->getSearchObject();
-                    $srch->joinTable(Brand::DB_TBL . '_lang', 'LEFT OUTER JOIN', 'brandlang_brand_id = brand_id AND brandlang_lang_id = ' . $this->adminLangId);
-                    $srch->addMultipleFields(array('IFNULL(brand_name, brand_identifier) as brand_name'));
-                    $srch->addCondition('brand_id', '=', $data['slide_url']);
-                    $srch->setPageSize(1);
-                    $rs = $srch->getResultSet();
-                    $brand = FatApp::getDb()->fetch($rs);
-                    $data['urlTypeBrand'] = $brand['brand_name'];
-                    break;
-                default:
-                    $data['slide_url'] = $data['slide_url'];
-                    break;
-            }
-
             $slideFrm->fill($data);
         }
 
@@ -116,9 +82,6 @@ class SlidesController extends AdminBaseController
         if (false === $post) {
             Message::addErrorMessage(current($frm->getValidationErrors()));
             FatUtility::dieJsonError(Message::getHtml());
-        }
-        if (!empty($post['slide_url_value']) && Slides::URL_TYPE_EXTERNAL != $post['slide_url_type']) {
-            $post['slide_url'] = $post['slide_url_value'];
         }
 
         $slide_id = $post['slide_id'];
@@ -505,65 +468,10 @@ class SlidesController extends AdminBaseController
         $frm = new Form('frmSlide');
         $frm->addHiddenField('', 'slide_id');
         $frm->addHiddenField('', 'slide_type', Slides::TYPE_SLIDE);
-        $frm->addHiddenField('', 'slide_url_value');
-
         $frm->addRequiredField(Labels::getLabel('LBL_Slide_Identifier', $this->adminLangId), 'slide_identifier');
-
-        $urlTypeArr = Slides::getUrlTypeArr($this->adminLangId);
-
-        $urlTypeFld = $frm->addSelectBox(Labels::getLabel('LBL_Type', $this->adminLangId), 'slide_url_type', $urlTypeArr, '', array(), '');
-
-        $frm->addTextBox(Labels::getLabel('LBL_External_Url', $this->adminLangId), 'slide_url')->requirements()->setRequired();
-        $externalReqObj = new FormFieldRequirement('slide_url', Labels::getLabel('LBL_External', $this->adminLangId));
-        $externalReqObj->setRequired();
-        $externalUnReqObj = new FormFieldRequirement('slide_url', Labels::getLabel('LBL_External', $this->adminLangId));
-        $externalUnReqObj->setRequired(false);
-
-        $frm->addTextBox(Labels::getLabel('LBL_Shop', $this->adminLangId), 'urlTypeShop')->requirements()->setRequired();
-        $shopReqObj = new FormFieldRequirement('urlTypeShop', Labels::getLabel('LBL_Shop', $this->adminLangId));
-        $shopReqObj->setRequired();
-        $shopUnReqObj = new FormFieldRequirement('urlTypeShop', Labels::getLabel('LBL_Shop', $this->adminLangId));
-        $shopUnReqObj->setRequired(false);
-
-        $frm->addTextBox(Labels::getLabel('LBL_Product', $this->adminLangId), 'urlTypeProduct')->requirements()->setRequired();
-        $prodReqObj = new FormFieldRequirement('urlTypeProduct', Labels::getLabel('LBL_Product', $this->adminLangId));
-        $prodReqObj->setRequired();
-        $prodUnReqObj = new FormFieldRequirement('urlTypeProduct', Labels::getLabel('LBL_Product', $this->adminLangId));
-        $prodUnReqObj->setRequired(false);
-
-        $prodCatObj = new ProductCategory();
-        $arrCategories = $prodCatObj->getCategoriesForSelectBox($this->adminLangId);
-        $categories = $prodCatObj->makeAssociativeArray($arrCategories);
-
-        $frm->addSelectBox(Labels::getLabel('LBL_Category', $this->adminLangId), 'urlTypeCategory', array( 0 => Labels::getLabel('LBL_Select_Category', $this->adminLangId) ) + $categories, '', array(), '')->requirements()->setRequired();
-        $catReqObj = new FormFieldRequirement('urlTypeCategory', Labels::getLabel('LBL_Category', $this->adminLangId));
-        $catReqObj->setRequired();
-        $catUnReqObj = new FormFieldRequirement('urlTypeCategory', Labels::getLabel('LBL_Category', $this->adminLangId));
-        $catUnReqObj->setRequired(false);
-
-        $frm->addTextBox(Labels::getLabel('LBL_Brand', $this->adminLangId), 'urlTypeBrand')->requirements()->setRequired();
-        $brandReqObj = new FormFieldRequirement('urlTypeBrand', Labels::getLabel('LBL_Brand', $this->adminLangId));
-        $brandReqObj->setRequired();
-        $brandUnReqObj = new FormFieldRequirement('urlTypeBrand', Labels::getLabel('LBL_Brand', $this->adminLangId));
-        $brandUnReqObj->setRequired(false);
-
-        $urlTypeFld->requirements()->addOnChangerequirementUpdate(Slides::URL_TYPE_EXTERNAL, 'eq', 'slide_url', $externalReqObj);
-        $urlTypeFld->requirements()->addOnChangerequirementUpdate(Slides::URL_TYPE_EXTERNAL, 'ne', 'slide_url', $externalUnReqObj);
-
-        $urlTypeFld->requirements()->addOnChangerequirementUpdate(Slides::URL_TYPE_SHOP, 'eq', 'urlTypeShop', $shopReqObj);
-        $urlTypeFld->requirements()->addOnChangerequirementUpdate(Slides::URL_TYPE_SHOP, 'ne', 'urlTypeShop', $shopUnReqObj);
-
-        $urlTypeFld->requirements()->addOnChangerequirementUpdate(Slides::URL_TYPE_PRODUCT, 'eq', 'urlTypeProduct', $prodReqObj);
-        $urlTypeFld->requirements()->addOnChangerequirementUpdate(Slides::URL_TYPE_PRODUCT, 'ne', 'urlTypeProduct', $prodUnReqObj);
-
-        $urlTypeFld->requirements()->addOnChangerequirementUpdate(Slides::URL_TYPE_CATEGORY, 'eq', 'urlTypeCategory', $catReqObj);
-        $urlTypeFld->requirements()->addOnChangerequirementUpdate(Slides::URL_TYPE_CATEGORY, 'ne', 'urlTypeCategory', $catUnReqObj);
-
-        $urlTypeFld->requirements()->addOnChangerequirementUpdate(Slides::URL_TYPE_BRAND, 'eq', 'urlTypeBrand', $brandReqObj);
-        $urlTypeFld->requirements()->addOnChangerequirementUpdate(Slides::URL_TYPE_BRAND, 'ne', 'urlTypeBrand', $brandUnReqObj);
-
-        /*$fld = $frm->addTextBox(Labels::getLabel('LBL_Slide_URL', $this->adminLangId), 'slide_url');
-        $fld->setFieldTagAttribute('placeholder', 'http://');*/
+        
+        $fld = $frm->addTextBox(Labels::getLabel('LBL_Slide_URL', $this->adminLangId), 'slide_url');
+        $fld->setFieldTagAttribute('placeholder', 'http://');
 
         $linkTargetsArr = applicationConstants::getLinkTargetsArr($this->adminLangId);
         $frm->addSelectBox(Labels::getLabel('LBL_Open_In', $this->adminLangId), 'slide_target', $linkTargetsArr, '', array(), '');

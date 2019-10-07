@@ -6,22 +6,6 @@ $frm->developerTags['fld_default_col'] = 12;
 
 $extUrlField = $frm->getField('banner_url');
 $extUrlField->addFieldTagAttribute('placeholder', 'http://');
-$extUrlField->setWrapperAttribute('class', 'bannerUrlFields bannerUrlField-'.Banner::URL_TYPE_EXTERNAL);
-
-$shopUrlField = $frm->getField('urlTypeShop');
-$shopUrlField->setWrapperAttribute('class', 'bannerUrlFields bannerUrlField-'.Banner::URL_TYPE_SHOP);
-
-$prodUrlField = $frm->getField('urlTypeProduct');
-$prodUrlField->setWrapperAttribute('class', 'bannerUrlFields bannerUrlField-'.Banner::URL_TYPE_PRODUCT);
-
-$catUrlField = $frm->getField('urlTypeCategory');
-$catUrlField->setWrapperAttribute('class', 'bannerUrlFields bannerUrlField-'.Banner::URL_TYPE_CATEGORY);
-
-$brandUrlField = $frm->getField('urlTypeBrand');
-$brandUrlField->setWrapperAttribute('class', 'bannerUrlFields bannerUrlField-'.Banner::URL_TYPE_BRAND);
-
-$urlTargetField = $frm->getField('banner_target');
-$urlTargetField->setWrapperAttribute('class', 'urlTargetField');
 ?>
 <section class="section">
     <div class="sectionhead">
@@ -55,81 +39,3 @@ $urlTargetField->setWrapperAttribute('class', 'urlTargetField');
         </div>
     </div>
 </section>
-<script type="text/javascript">
-    $("document").ready(function(){
-        var URL_TYPE_EXTERNAL = <?php echo Banner::URL_TYPE_EXTERNAL; ?>;
-        $("select[name='banner_url_type']").change(function(){
-            var bannerUrlType = $(this).val();
-            $(".bannerUrlFields").hide();
-            $(".bannerUrlField-"+bannerUrlType).show();
-
-            (URL_TYPE_EXTERNAL != bannerUrlType) ? $('.urlTargetField').hide() : $('.urlTargetField').show();
-        });
-
-        $("select[name='banner_url_type']").trigger('change');
-
-        $("input[name='urlTypeProduct']").autocomplete({
-            'source': function(request, response) {
-                $.ajax({
-                    url: fcom.makeUrl('SellerProducts', 'autoCompleteProducts'),
-                    data: {keyword: request,fIsAjax:1},
-                    dataType: 'json',
-                    type: 'post',
-                    success: function(json) {
-                        response($.map(json, function(item) {
-                            return { label: item['name'] ,    value: item['id']    };
-                        }));
-                    },
-                });
-            },
-            'select': function(item) {
-                $("input[name='urlTypeProduct']").val(item['label']);
-                $("input[name='banner_url_value']").val(item['value']);
-            }
-        });
-
-        $("input[name='urlTypeShop']").autocomplete({
-            'source': function(request, response) {
-                $.ajax({
-                    url: fcom.makeUrl('Shops', 'autoComplete'),
-                    data: { keyword: request, fIsAjax:1},
-                    dataType: 'json',
-                    type: 'post',
-                    success: function(json) {
-                        response($.map(json, function(item) {
-                            return { label: item['name'] ,    value: item['id']    };
-                        }));
-                    },
-                });
-            },
-            'select': function(item) {
-                $("input[name='urlTypeShop']").val( item['label'] );
-                $("input[name='banner_url_value']").val( item['value'] );
-            }
-        });
-
-        $("select[name='urlTypeCategory']").change(function(){
-            $("input[name='banner_url_value']").val($(this).val());
-        });
-
-        $("input[name='urlTypeBrand']").autocomplete({
-            'source': function(request, response) {
-                $.ajax({
-                    url: fcom.makeUrl('Brands', 'autocomplete'),
-                    data: {keyword: request,fIsAjax:1},
-                    dataType: 'json',
-                    type: 'post',
-                    success: function(json) {
-                        response($.map(json, function(item) {
-                            return {label: item['name'] , value: item['id']};
-                        }));
-                    },
-                });
-            },
-            'select': function( item ) {
-                $("input[name='urlTypeBrand']").val( item['label'] );
-                $("input[name='banner_url_value']").val( item['value'] );
-            }
-        });
-    });
-</script>
