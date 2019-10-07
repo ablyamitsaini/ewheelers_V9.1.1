@@ -36,6 +36,9 @@ Bug:
 New Features :
 	> Task - 64235 - Collection Image management for Mobile Application in admin.
 
+Enhancements :
+    -> Handling language labels file for APP
+
 <!-- Release notes TV-9.0.1.20190923 -- >
 New Features :
 	> Task - 66013 - Special Price Module
