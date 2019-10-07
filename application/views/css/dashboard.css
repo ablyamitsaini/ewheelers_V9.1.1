@@ -659,6 +659,10 @@ ul.listing--bullet li:before {
 	transform-origin: bottom right;
 }
 
+.c-header-links li a i {
+	font-size: 1rem;
+	color: var(--first-color);
+}
 
 
 
@@ -942,7 +946,7 @@ ul.listing--bullet li:before {
 }
 
 .hamburger-toggle.is-opened {
-	left:0;
+	left: 0;
 }
 
 .hamburger-toggle.is-opened [class*='bar-'] {
@@ -4477,6 +4481,7 @@ a.link:after {
 		margin-inline-start: 30px;
 	}
 }
+
 @media only screen and (max-width:1080px) {
 	.sidebar-is-expanded .header-dashboard {
 		padding-inline-start: 20px;

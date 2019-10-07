@@ -1588,7 +1588,7 @@ body.fixed .top-bar {
 .main-search-form {
 	display: flex;
 	align-items: center;
-	
+
 }
 
 .fixed .form--search-popup {
@@ -9509,7 +9509,10 @@ html.quick-view--open {
 	align-items: center;
 }
 
-.quick-col-1 { padding-top: 15px; padding-bottom: 15px;}
+.quick-col-1 {
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
 
 .quick-col-2 {
 	height: 100%;
@@ -14230,6 +14233,7 @@ div.faqanswer p {
 #st_gdpr_iframe {
 	display: none;
 }
+
 .edit-hover {
 	border-radius: 4px;
 	padding: 0 10px;
@@ -14245,6 +14249,75 @@ div.faqanswer p {
 	border-color: var(--border-color);
 }
 
-input.vd-input, input.sp-input {
+input.vd-input,
+input.sp-input {
 	width: 110px !important;
+}
+
+/**/
+
+.social-profiles {
+	text-align: center;
+}
+
+.social-icons {
+	padding: 0;
+	list-style: none;
+	margin: 0.5em 0;
+}
+
+.social-icons li {
+	display: inline-block;
+	margin: 0 0.15em;
+	position: relative;
+	font-size: 1.2em;
+}
+
+.social-icons i {
+	color: #fff;
+	position: absolute;
+
+	-webkit-transition: all 265ms ease-out;
+	transition: all 265ms ease-out;
+}
+
+.social-icons a {
+	display: flex;
+
+	justify-content: center;
+
+	align-items: center;
+}
+
+.social-icons a:before {
+	transform: scale(1);
+	-ms-transform: scale(1);
+	-webkit-transform: scale(1);
+	content: " ";
+	width: 40px;
+	height: 40px;
+	border-radius: 100%;
+	display: block;
+	background: var(--first-color);
+	-webkit-transition: all 265ms ease-out;
+	transition: all 265ms ease-out;
+}
+
+.social-icons a:hover:before {
+	-webkit-transform: scale(0);
+	transform: scale(0);
+	-webkit-transition: all 265ms ease-in;
+	transition: all 265ms ease-in;
+}
+
+.social-icons a:hover i {
+	transform: scale(2.2);
+	-ms-transform: scale(2.2);
+	-webkit-transform: scale(2.2);
+	color: #ff003c;
+	background: var(--first-color);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	-webkit-transition: all 265ms ease-in;
+	transition: all 265ms ease-in;
 }
