@@ -49,7 +49,7 @@ if ($controllerName == 'Products' && $actionName == 'view') {
     </style>
     <?php
     echo $str = '<script type="text/javascript">
-        var langLbl = ' . json_encode($jsVariables) . ';
+        var langLbl = ' . FatUtility::convertToJson($jsVariables, JSON_UNESCAPED_UNICODE) . ';
         var CONF_AUTO_CLOSE_SYSTEM_MESSAGES = ' . FatApp::getConfig("CONF_AUTO_CLOSE_SYSTEM_MESSAGES", FatUtility::VAR_INT, 0) . ';
         var CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES = ' . FatApp::getConfig("CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES", FatUtility::VAR_INT, 3) . ';
         var extendEditorJs = ' . $extendEditorJs . ';

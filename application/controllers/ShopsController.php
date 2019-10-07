@@ -544,7 +544,7 @@ class ShopsController extends MyAppController
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
         $loggedUserId = UserAuthentication::getLoggedUserId();
         if (false == $post) {
-            FatUtility::dieJsonError(strip_tags(current($frm->getValidationErrors())));
+            LibHelper::dieJsonError(current($frm->getValidationErrors()));
         }
 
         $shop_id = FatUtility::int($post['shop_id']);
@@ -608,7 +608,7 @@ class ShopsController extends MyAppController
         if ($message_id) {
             $emailObj = new EmailHandler();
             if (!$emailObj->SendMessageNotification($message_id, $this->siteLangId)) {
-                FatUtility::dieJsonError(strip_tags($emailObj->getError()));
+                LibHelper::dieJsonError($emailObj->getError());
             }
         }
         $this->set('msg', Labels::getLabel('MSG_Message_Submitted_Successfully!', $this->siteLangId));
@@ -644,12 +644,12 @@ class ShopsController extends MyAppController
         $loggedUserId = UserAuthentication::getLoggedUserId();
 
         if (false == $post) {
-            FatUtility::dieJsonError(strip_tags(current($frm->getValidationErrors())));
+            LibHelper::dieJsonError(current($frm->getValidationErrors()));
         }
 
         $shop_id = FatUtility::int($post['shop_id']);
         if (1 > $shop_id) {
-            FatUtility::dieJsonError(strip_tags(Labels::getLabel('LBL_Invalid_Shop', $this->siteLangId)));
+            LibHelper::dieJsonError(Labels::getLabel('LBL_Invalid_Shop', $this->siteLangId));
         }
 
         $srch = new ShopSearch($this->siteLangId);
@@ -662,7 +662,7 @@ class ShopsController extends MyAppController
         $shopData = FatApp::getDb()->fetch($shopRs);
 
         if (!$shopData) {
-            FatUtility::dieJsonError(strip_tags(Labels::getLabel('LBL_Invalid_Shop', $this->siteLangId)));
+            LibHelper::dieJsonError(Labels::getLabel('LBL_Invalid_Shop', $this->siteLangId));
         }
 
         $sReportObj = new ShopReport();

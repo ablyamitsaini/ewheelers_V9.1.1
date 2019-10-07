@@ -329,7 +329,7 @@ class HomeController extends MyAppController
         $srch->doNotLimitRecords();
         $srch->addOrder('collection_display_order', 'ASC');
         $srch->addMultipleFields(array('collection_id', 'IFNULL(collection_name,collection_identifier) as collection_name','IFNULL( collection_description, "" ) as collection_description','IFNULL(collection_link_caption, "") as collection_link_caption','collection_link_url', 'collection_layout_type','collection_type','collection_criteria','collection_child_records','collection_primary_records', 'collection_display_media_only'));
-        $rs = $srch->getResultSet();
+        $rs = $srch->getResultSet();        
         $collectionsArr = $db->fetchAll($rs, 'collection_id');
         if (empty($collectionsArr)) {
             return array();

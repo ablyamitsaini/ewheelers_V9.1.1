@@ -108,7 +108,7 @@ class CartController extends MyAppController
             if (!$user_is_buyer) {
                 $errMsg = Labels::getLabel('MSG_Please_login_with_buyer_account_to_add_products_to_cart', $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($errMsg));
+                    LibHelper::dieJsonError($errMsg);
                 }
                 Message::addErrorMessage($errMsg);
                 if (FatUtility::isAjaxCall()) {
@@ -256,14 +256,14 @@ class CartController extends MyAppController
                     $str = Labels::getLabel('LBL_Please_add_minimum_{minimumquantity}', $this->siteLangId);
                     $str = str_replace("{minimumquantity}", $minimum_quantity, $str);
                     if (true ===  MOBILE_APP_API_CALL) {
-                        FatUtility::dieJsonError(strip_tags($str));
+                        LibHelper::dieJsonError($str);
                     }
                     $productErr['addon'][$productId] = $str." ".FatUtility::decodeHtmlEntities($sellerProductRow['product_name']);
                 } else {
                     $str = Labels::getLabel('LBL_Please_add_minimum_{minimumquantity}', $this->siteLangId);
                     $str = str_replace("{minimumquantity}", $minimum_quantity, $str);
                     if (true ===  MOBILE_APP_API_CALL) {
-                        FatUtility::dieJsonError(strip_tags($str));
+                        LibHelper::dieJsonError($str);
                     }
                     $productErr['product'] = $str." ".FatUtility::decodeHtmlEntities($sellerProductRow['product_name']);
                 }
@@ -308,7 +308,7 @@ class CartController extends MyAppController
             $this->set('msg', CommonHelper::renderHtml(Message::getHtml($productErr)));
             if (!$ProductAdded) {
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags(current($productErr)));
+                    LibHelper::dieJsonError(current($productErr));
                 }
                 Message::addErrorMessage($productErr);
                 FatUtility::dieWithError(Message::getHtml());
@@ -354,7 +354,7 @@ class CartController extends MyAppController
             }
             if (!$cartObj->remove($key)) {
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($cartObj->getError()));
+                    LibHelper::dieJsonError($cartObj->getError());
                 }
                 Message::addMessage($cartObj->getError());
                 FatUtility::dieWithError(Message::getHtml());
@@ -424,7 +424,7 @@ class CartController extends MyAppController
         $cartObj = new Cart(UserAuthentication::getLoggedUserId(true), $this->siteLangId, $this->app_user['temp_user_id']);
         if (!$cartObj->update($key, $quantity)) {
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($cartObj->getError()));
+                LibHelper::dieJsonError($cartObj->getError());
             }
             Message::addErrorMessage($cartObj->getError());
             FatUtility::dieWithError(Message::getHtml());
@@ -434,7 +434,7 @@ class CartController extends MyAppController
 
         if (!empty($cartObj->getWarning())) {
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($cartObj->getWarning()));
+                LibHelper::dieJsonError($cartObj->getWarning());
             }
             Message::addInfo($cartObj->getWarning());
             FatUtility::dieWithError(Message::getHtml());

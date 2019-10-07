@@ -14,7 +14,7 @@ class WalletPayController extends MyAppController
         if (!$orderId || ((isset($_SESSION['shopping_cart']) && $orderId != $_SESSION['shopping_cart']["order_id"])&& (isset($_SESSION['subscription_shopping_cart']))  && $orderId != $_SESSION['subscription_shopping_cart']["order_id"])) {
             $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             if ($isAjaxCall) {
@@ -26,7 +26,7 @@ class WalletPayController extends MyAppController
         if (!UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()) {
             $message = Labels::getLabel('MSG_Your_Session_seems_to_be_expired.', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             if ($isAjaxCall) {
@@ -54,7 +54,7 @@ class WalletPayController extends MyAppController
         if (!$orderInfo) {
             $message = Labels::getLabel('MSG_Invalid_Access.', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             if ($isAjaxCall) {
@@ -120,7 +120,7 @@ class WalletPayController extends MyAppController
         if (!UserAuthentication::isUserLogged()) {
             $message = Labels::getLabel('MSG_Your_Session_seems_to_be_expired', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             if ($isAjaxCall) {
@@ -131,7 +131,7 @@ class WalletPayController extends MyAppController
         if ($orderId == '' || ((isset($_SESSION['wallet_recharge_cart']) && !empty($_SESSION['wallet_recharge_cart']) && $orderId != $_SESSION['wallet_recharge_cart']["order_id"]))) {
             $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -155,7 +155,7 @@ class WalletPayController extends MyAppController
         if (!$orderInfo) {
             $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             if ($isAjaxCall) {

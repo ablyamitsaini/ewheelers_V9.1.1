@@ -1842,14 +1842,13 @@ class CommonHelper extends FatUtility
         return false;
     }
 
-    public static function jsonEncodeUnicode($data, $convertToType = true)
+    public static function jsonEncodeUnicode($data, $convertToType = false)
     {
-        if (false === $convertToType) {
-            die(json_encode($data));
+        if (true === $convertToType) {
+            $data = static::cleanArray($data);
         }
 
-        $data = static::cleanArray($data);
-        die(FatUtility::convertToJson($data, 0));
+        die(LibHelper::convertToJson($data, JSON_UNESCAPED_UNICODE));
     }
 
     public static function cleanArray($obj)
