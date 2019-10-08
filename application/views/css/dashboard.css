@@ -1994,7 +1994,7 @@ a.box--share:hover {
 
 
 
-.actions li a.icn-highlighted:hover {
+.actions li a.icn-highlighted:hover {background: var(--first-color);
 	color: #fff;
 }
 
