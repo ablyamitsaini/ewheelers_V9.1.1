@@ -37,6 +37,7 @@ Bug:
     -> 030774 - While Cloning seller inventory, datepicker is not displaying.
     -> 030738 - In Arabic, While adding shipping in case of product request or custom product setup "shopping info charges" is not getting displayed properly
     -> 030978 - Affiliate commission history is displaying wrong data in admin
+    -> 031150 -Shipping address should not be displayed in case of digital order product.
 
 New Features :
 	> Task - 64235 - Collection Image management for Mobile Application in admin.
