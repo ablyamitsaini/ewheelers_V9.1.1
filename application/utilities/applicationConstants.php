@@ -73,6 +73,12 @@ class applicationConstants
 
     const MOBILE_SCREEN_WIDTH = 768;
 
+    const URL_TYPE_EXTERNAL = 1;
+    const URL_TYPE_SHOP = 2;
+    const URL_TYPE_PRODUCT = 3;
+    const URL_TYPE_CATEGORY = 4;
+    const URL_TYPE_BRAND = 5;
+
     public static function getWeightUnitsArr($langId)
     {
         $langId = FatUtility::int($langId);
