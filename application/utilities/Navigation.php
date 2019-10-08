@@ -211,7 +211,7 @@ class Navigation
 
         /* SubQuery, Category have products[ */
         $prodSrchObj = new ProductSearch();
-        $prodSrchObj->setDefinedCriteria(0 , 0, array('doNotJoinSpecialPrice'=>true));
+        $prodSrchObj->setDefinedCriteria(0, 0, array('doNotJoinSpecialPrice'=>true));
         $prodSrchObj->joinProductToCategory($siteLangId);
         $prodSrchObj->doNotCalculateRecords();
         $prodSrchObj->doNotLimitRecords();
@@ -219,7 +219,7 @@ class Navigation
         $prodSrchObj->addSubscriptionValidCondition();
         $prodSrchObj->addGroupBy('prodcat_id');
         $prodSrchObj->addMultipleFields(array('prodcat_code AS prodrootcat_code','count(selprod_id) as productCounts', 'prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name', 'prodcat_parent'));
-
+        $prodSrchObj->addOrder('prodcat_display_order', 'asc');
         $navigationCatCache =  FatCache::get('navigationCatCache'.$siteLangId, CONF_HOME_PAGE_CACHE_TIME, '.txt');
         if ($navigationCatCache) {
             $categoriesMainRootArr  = unserialize($navigationCatCache);
@@ -235,13 +235,13 @@ class Navigation
             );
             $categoriesMainRootArr = array_unique($categoriesMainRootArr);
             array_flip($categoriesMainRootArr);
-                FatCache::set('navigationCatCache'.$siteLangId, serialize($categoriesMainRootArr), '.txt');
+            FatCache::set('navigationCatCache'.$siteLangId, serialize($categoriesMainRootArr), '.txt');
         }
 
-            $catWithProductConditoon ='';
-            if ($categoriesMainRootArr) {
-                $catWithProductConditoon = " and nlink_category_id in(".implode($categoriesMainRootArr, ",").")";
-            }
+        $catWithProductConditoon ='';
+        if ($categoriesMainRootArr) {
+            $catWithProductConditoon = " and nlink_category_id in(".implode($categoriesMainRootArr, ",").")";
+        }
 
         /* ] */
 
