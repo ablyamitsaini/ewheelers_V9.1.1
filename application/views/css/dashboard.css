@@ -664,6 +664,12 @@ ul.listing--bullet li:before {
 	color: var(--first-color);
 }
 
+.c-header-links li a .icn svg {
+	width: 20px;
+	height: 20px;
+	fill: var(--txt-color);
+}
+
 
 
 
@@ -1994,7 +2000,8 @@ a.box--share:hover {
 
 
 
-.actions li a.icn-highlighted:hover {background: var(--first-color);
+.actions li a.icn-highlighted:hover {
+	background: var(--first-color);
 	color: #fff;
 }
 
