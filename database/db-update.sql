@@ -96,3 +96,4 @@ INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`
 /* Release notes TV-9.0.1.20190923 */
 
 DELETE FROM `tbl_language_labels` WHERE `label_key` = "MSG_Special_price_must_between_min_selling_price_and_selling_price";
+INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('MSG_Withdrawal_Request_Max', 1,'Your withdrawal request amount is greater than maximum allowed %s.');

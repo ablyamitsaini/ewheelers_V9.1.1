@@ -754,8 +754,12 @@ class ConfigurationsController extends AdminBaseController
                 $fld->htmlAfterField = "<br><small>".Labels::getLabel("LBL_Maximum_seller_request_attempts_allowed", $this->adminLangId)."</small>";
 
                 $frm->addHtml('', 'Withdrawal', '<h3>'.Labels::getLabel("LBL_Withdrawal", $this->adminLangId).'</h3>');
+
                 $fld = $frm->addIntegerField(Labels::getLabel("LBL_Minimum_Withdrawal_Amount", $this->adminLangId).' ['.$this->siteDefaultCurrencyCode.']', 'CONF_MIN_WITHDRAW_LIMIT', '');
                 $fld->htmlAfterField = "<small> ".Labels::getLabel("LBL_This_is_the_minimum_withdrawable_amount.", $this->adminLangId)."</small>";
+
+                $fld = $frm->addIntegerField(Labels::getLabel("LBL_Maximum_Withdrawal_Amount", $this->adminLangId).' ['.$this->siteDefaultCurrencyCode.']', 'CONF_MAX_WITHDRAW_LIMIT', '');
+                $fld->htmlAfterField = "<small> ".Labels::getLabel("LBL_This_is_the_maximum_withdrawable_amount.", $this->adminLangId)."</small>";
 
                 $fld = $frm->addIntegerField(Labels::getLabel("LBL_Minimum_Interval_[Days]", $this->adminLangId), 'CONF_MIN_INTERVAL_WITHDRAW_REQUESTS', '');
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_is_the_minimum_interval_in_days_between_two_withdrawal_requests.", $this->adminLangId)."</small>";

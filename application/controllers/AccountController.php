@@ -649,13 +649,19 @@ class AccountController extends LoggedUserController
             $message = sprintf(Labels::getLabel('MSG_Withdrawal_Request_Less', $this->siteLangId), CommonHelper::displayMoneyFormat($minimumWithdrawLimit));
             FatUtility::dieJsonError($message);
         }
+        
+        $maximumWithdrawLimit = FatApp::getConfig("CONF_MAX_WITHDRAW_LIMIT");
+        if (($maximumWithdrawLimit < $post["withdrawal_amount"])) {
+            $message = sprintf(Labels::getLabel('MSG_Withdrawal_Request_Max', $this->siteLangId), CommonHelper::displayMoneyFormat($maximumWithdrawLimit));
+            FatUtility::dieJsonError($message);
+        }
 
         if (($post["withdrawal_amount"] > $balance)) {
             $message = Labels::getLabel('MSG_Withdrawal_Request_Greater', $this->siteLangId);
             FatUtility::dieJsonError($message);
         }
 
-        $accountNumber = FatApp::getPostedData('ub_account_number', FatUtility::VAR_INT, 0);
+        $accountNumber = FatApp::getPostedData('ub_account_number', FatUtility::VAR_STRING, 0);
 
         if ((string)$accountNumber != $post['ub_account_number']) {
             $message = Labels::getLabel('MSG_Invalid_Account_Number', $this->siteLangId);
@@ -1125,7 +1131,7 @@ class AccountController extends LoggedUserController
             $message = Labels::getLabel(current($frm->getValidationErrors()), $this->siteLangId);
             FatUtility::dieJsonError($message);
         }
-        $accountNumber = FatApp::getPostedData('ub_account_number', FatUtility::VAR_INT, 0);
+        $accountNumber = FatApp::getPostedData('ub_account_number', FatUtility::VAR_STRING, 0);
 
         if ((string)$accountNumber != $post['ub_account_number']) {
             $message = Labels::getLabel('MSG_Invalid_Account_Number', $this->siteLangId);
