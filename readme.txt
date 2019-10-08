@@ -34,6 +34,7 @@ Bug:
     -> 031117 - Cost price is displaying 0 on editing requested catalog after approval.
     -> 030860 - On product details page, Under Recommended Products, unwanted white space above image is displaying.
     -> 030856 - No record found is displaying while records are there.
+    -> 030774 - While Cloning seller inventory, datepicker is not displaying.  
 
 New Features :
 	> Task - 64235 - Collection Image management for Mobile Application in admin.
