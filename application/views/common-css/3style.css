@@ -14122,7 +14122,7 @@ input[type="password"][disabled] {
 	margin: 2rem 0;
 	position: relative;
 	display: flex;
-	justify-content: space-between;
+	align-items: center;
 }
 
 h3.faqclose {
@@ -14131,10 +14131,20 @@ h3.faqclose {
 
 h3.faqclose::after {
 	content: "\2715";
-	float: right;
-	font-size: 16px;
+	font-size: 11px;
 	font-weight: 300;
 	line-height: 30px;
+	margin-inline-start: 1rem;
+	border: solid 1px var(--body-color);
+	border-radius: 50%;
+	width: 22px;
+	height: 22px;
+	display: flex;
+	align-items: center;
+
+	justify-content: center;
+
+	color: var(--body-color);
 }
 
 h3.faqclose::before {
