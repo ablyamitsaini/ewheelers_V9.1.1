@@ -351,7 +351,7 @@ class GuestUserController extends MyAppController
                 $invalidUser = false;
                 if (in_array($userType, array_keys($userTypeArr)) && $row[$userTypeArr[$userType]] == applicationConstants::NO) {
                     $invalidUser = true;
-                } else if (!in_array($userType, array_keys($userTypeArr)) && $row['user_registered_initially_for'] != $userType) {
+                } elseif (!in_array($userType, array_keys($userTypeArr)) && $row['user_registered_initially_for'] != $userType) {
                     $invalidUser = true;
                 }
 
@@ -476,6 +476,10 @@ class GuestUserController extends MyAppController
         $userGoogleId = $user['id'];
         $userGoogleName = $user['name'];
 
+        if ($user['name'] == '') {
+            $exp = explode("@", $user['email']);
+            $userGoogleName = substr($exp[0], 0, 80);
+        }
 
         if (isset($userGoogleEmail) && (!empty($userGoogleEmail))) {
             $db = FatApp::getDb();
@@ -515,7 +519,7 @@ class GuestUserController extends MyAppController
                     $invalidUser = false;
                     if (in_array($userType, array_keys($userTypeArr)) && $row[$userTypeArr[$userType]] == applicationConstants::NO) {
                         $invalidUser = true;
-                    } else if (!in_array($userType, array_keys($userTypeArr)) && $row['user_registered_initially_for'] != $userType) {
+                    } elseif (!in_array($userType, array_keys($userTypeArr)) && $row['user_registered_initially_for'] != $userType) {
                         $invalidUser = true;
                     }
 
