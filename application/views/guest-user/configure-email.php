@@ -1,26 +1,25 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 <?php /* $this->includeTemplate('_partial/dashboardNavigation.php'); */ ?>
-<main id="main-area" class="main" role="main">
- <div class="content-wrapper content-space">
-	<div class="row justify-content-between mb-3">
-		<div class="col-md-auto">
-			<?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-			<h2 class="content-header-title"><?php echo Labels::getLabel('Lbl_Change_Email',$siteLangId);?></h2>
-		</div>
-	</div>
-	<div class="content-body">
-		<div class="cards">
-			<div class="cards-header p-4">
-				<h5 class="cards-title"><?php echo Labels::getLabel('Lbl_Seller_Approval_Form',$siteLangId);?></h5>
-			</div>
-			<div class="cards-content pl-4 pr-4 ">
-				<div class="row">
-					<div class="col-md-8" id="changeEmailFrmBlock">
-						<?php echo Labels::getLabel('LBL_Loading..',$siteLangId); ?>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-  </div>
-</main>
+<div id="body" class="body" role="main">
+   <section class="bg--second pt-3 pb-3">
+       <div class="container">
+           <div class="section-head section--white--head section--head--center mb-0">
+               <div class="section__heading">
+                   <h2 class="mb-0"><?php echo Labels::getLabel('Lbl_Change_Email', $siteLangId);?></h2>
+                   <p>
+                       <?php echo Labels::getLabel('Lbl_Seller_Approval_Form', $siteLangId);?>
+                   </p>
+               </div>
+           </div>
+       </div>
+   </section>
+   <section class="section">
+       <div class="container">
+           <div class="row justify-content-center">
+               <div class="col-md-4" id="changeEmailFrmBlock">
+                   <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?>
+               </div>
+           </div>
+       </div>
+   </section>
+</div>
