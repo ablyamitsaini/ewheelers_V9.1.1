@@ -416,7 +416,7 @@ class ReviewsController extends MyAppController
         $tblRecObj->assignValues(array('sprh_spreview_id'=>$reviewId , 'sprh_user_id'=>$userId, 'sprh_helpful'=>$isHelpful));
         if (!$tblRecObj->addNew(array(), array('sprh_helpful'=>$isHelpful))) {
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($tblRecObj->getError()));
+                LibHelper::dieJsonError($tblRecObj->getError());
             }
             Message::addErrorMessage($tblRecObj->getError());
             FatUtility::dieWithError(Message::getHtml());

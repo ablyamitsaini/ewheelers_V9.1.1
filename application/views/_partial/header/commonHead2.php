@@ -52,8 +52,12 @@ if (isset($isUserDashboard) && $isUserDashboard) {
     $bodyClass = $bodyClass.' '.$expanded;
 }
 
+if (CommonHelper::demoUrl()) {
+    $bodyClass.= ' have-fixed-btn';
+}
+
 ?>
-<body class="<?php echo $bodyClass; ?>">
+<body class="<?php echo $bodyClass; ?> ">
     <?php
         $alertClass = '';
         if (Message::getInfoCount() > 0) $alertClass = 'alert--info';

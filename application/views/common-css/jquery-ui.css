@@ -2201,7 +2201,7 @@ a.ui-button:active,
 @media(max-width:767px) {
 	.ui-datepicker {
 		min-width: 300px;
-		z-index: 11 !important;
+		/* z-index: 11 !important; */
 	}
 
 	.ui-datepicker td .ui-state-default {

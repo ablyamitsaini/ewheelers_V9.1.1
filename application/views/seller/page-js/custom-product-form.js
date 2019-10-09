@@ -318,108 +318,104 @@
 		});
 	}
 	shippingautocomplete = function(shipping_row) {
+		$('input[name="product_shipping[' + shipping_row + '][country_name]"]').focusout(function() {
+			    setTimeout(function(){ $('.suggestions').hide(); }, 500);
+		});
 
-	$('input[name="product_shipping[' + shipping_row + '][country_name]"]').focusout(function() {
-		    setTimeout(function(){ $('.suggestions').hide(); }, 500);
-	});
+		$('input[name="product_shipping[' + shipping_row + '][company_name]"]').focusout(function() {
+			    setTimeout(function(){ $('.suggestions').hide(); }, 500);
+		});
 
-	$('input[name="product_shipping[' + shipping_row + '][company_name]"]').focusout(function() {
-		    setTimeout(function(){ $('.suggestions').hide(); }, 500);
-	});
-
-	$('input[name="product_shipping[' + shipping_row + '][processing_time]"]').focusout(function() {
-		    setTimeout(function(){ $('.suggestions').hide(); }, 500);
-	});
-	$('input[name="product_shipping[' + shipping_row + '][country_name]"]').autocomplete({
-		'source': function(request, response) {
-
-			$.ajax({
-				url: fcom.makeUrl('seller', 'countries_autocomplete'),
-				data: {keyword: request,fIsAjax:1,includeEverywhere:true},
-				dataType: 'json',
-				type: 'post',
-				success: function(json) {
-
-					response($.map(json, function(item) {
-
-						return {
-							label: item['name'] ,
-							value: item['id']
-							};
-					}));
-				},
-			});
-		},
-		'select': function(item) {
-			$('input[name="product_shipping[' + shipping_row + '][country_name]"]').val(item.label);
-			$('input[name="product_shipping[' + shipping_row + '][country_id]"]').val(item.value);
-		}
-	});
-
-
-	$('input[name="product_shipping[' + shipping_row + '][company_name]"]').autocomplete({
+		$('input[name="product_shipping[' + shipping_row + '][processing_time]"]').focusout(function() {
+			    setTimeout(function(){ $('.suggestions').hide(); }, 500);
+		});
+		$('input[name="product_shipping[' + shipping_row + '][country_name]"]').autocomplete({
 			'source': function(request, response) {
 
-			$.ajax({
-				url: fcom.makeUrl('seller', 'shippingCompanyAutocomplete'),
-				data: {keyword: request,fIsAjax:1},
-				dataType: 'json',
-				type: 'post',
-				success: function(json) {
+				$.ajax({
+					url: fcom.makeUrl('seller', 'countries_autocomplete'),
+					data: {keyword: request,fIsAjax:1,includeEverywhere:true},
+					dataType: 'json',
+					type: 'post',
+					success: function(json) {
 
-					response($.map(json, function(item) {
+						response($.map(json, function(item) {
 
-						return {
-							label: item['name'] ,
-							value: item['id']
-							};
-					}));
-				},
-			});
-		},
-		'select': function(item) {
-
-			$('input[name="product_shipping[' + shipping_row + '][company_name]"]').val(item.label);
-				$('input[name="product_shipping[' + shipping_row + '][company_id]"]').val(item.value);
-
-
-		}
-
-	});
-
-	$('input[name="product_shipping[' + shipping_row + '][processing_time]"]').autocomplete({
-			'source': function(request, response) {
-
-			$.ajax({
-				url: fcom.makeUrl('seller', 'shippingMethodDurationAutocomplete'),
-				data: {keyword: request,fIsAjax:1},
-				dataType: 'json',
-				type: 'post',
-				success: function(json) {
-
-					response($.map(json, function(item) {
-
-						return {
-							label: item['name']+'['+ item['duraion']+']' ,
-							value: item['id']
-							};
-					}));
-				},
-			});
-		},
-		'select': function(item) {
-
-			$('input[name="product_shipping[' + shipping_row + '][processing_time]"]').val(item.label);
-				$('input[name="product_shipping[' + shipping_row + '][processing_time_id]"]').val(item.value);
+							return {
+								label: item['name'] ,
+								value: item['id']
+								};
+						}));
+					},
+				});
+			},
+			'select': function(item) {
+				$('input[name="product_shipping[' + shipping_row + '][country_name]"]').val(item.label);
+				$('input[name="product_shipping[' + shipping_row + '][country_id]"]').val(item.value);
+			}
+		});
 
 
-		}
+		$('input[name="product_shipping[' + shipping_row + '][company_name]"]').autocomplete({
+				'source': function(request, response) {
 
-	});
+				$.ajax({
+					url: fcom.makeUrl('seller', 'shippingCompanyAutocomplete'),
+					data: {keyword: request,fIsAjax:1},
+					dataType: 'json',
+					type: 'post',
+					success: function(json) {
+
+						response($.map(json, function(item) {
+
+							return {
+								label: item['name'] ,
+								value: item['id']
+								};
+						}));
+					},
+				});
+			},
+			'select': function(item) {
+
+				$('input[name="product_shipping[' + shipping_row + '][company_name]"]').val(item.label);
+					$('input[name="product_shipping[' + shipping_row + '][company_id]"]').val(item.value);
 
 
+			}
 
-}
+		});
+
+		$('input[name="product_shipping[' + shipping_row + '][processing_time]"]').autocomplete({
+				'source': function(request, response) {
+
+				$.ajax({
+					url: fcom.makeUrl('seller', 'shippingMethodDurationAutocomplete'),
+					data: {keyword: request,fIsAjax:1},
+					dataType: 'json',
+					type: 'post',
+					success: function(json) {
+
+						response($.map(json, function(item) {
+
+							return {
+								label: item['name']+'['+ item['duraion']+']' ,
+								value: item['id']
+								};
+						}));
+					},
+				});
+			},
+			'select': function(item) {
+
+				$('input[name="product_shipping[' + shipping_row + '][processing_time]"]').val(item.label);
+					$('input[name="product_shipping[' + shipping_row + '][processing_time_id]"]').val(item.value);
+
+
+			}
+
+		});
+	}
 
  /*  End of  Product shipping  */
 /* Custom Product Options */

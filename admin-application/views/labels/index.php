@@ -47,7 +47,9 @@
                         }
 
                         $innerLiImport=$innerUl->appendElement('li');
-                        $innerLiImport->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_Update_Labels_File', $adminLangId),"onclick"=>"updateFile()"), Labels::getLabel('LBL_Update_Labels_File', $adminLangId), true);
+                        $innerLiImport->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_UPDATE_WEB_LABEL_FILE', $adminLangId),"onclick"=>"updateFile()"), Labels::getLabel('LBL_UPDATE_WEB_LABEL_FILE', $adminLangId), true);
+                        $innerLiImport=$innerUl->appendElement('li');
+                        $innerLiImport->appendElement('a', array('href'=>'javascript:void(0)','class'=>'button small green','title'=>Labels::getLabel('LBL_UPDATE_APP_LABEL_FILE', $adminLangId),"onclick"=>"updateFile(".Labels::TYPE_APP.")"), Labels::getLabel('LBL_UPDATE_APP_LABEL_FILE', $adminLangId), true);
 
                         echo $ul->getHtml(); ?>
                     </div>

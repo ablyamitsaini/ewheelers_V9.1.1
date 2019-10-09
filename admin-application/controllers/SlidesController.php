@@ -469,6 +469,7 @@ class SlidesController extends AdminBaseController
         $frm->addHiddenField('', 'slide_id');
         $frm->addHiddenField('', 'slide_type', Slides::TYPE_SLIDE);
         $frm->addRequiredField(Labels::getLabel('LBL_Slide_Identifier', $this->adminLangId), 'slide_identifier');
+        
         $fld = $frm->addTextBox(Labels::getLabel('LBL_Slide_URL', $this->adminLangId), 'slide_url');
         $fld->setFieldTagAttribute('placeholder', 'http://');
 

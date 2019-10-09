@@ -1,12 +1,12 @@
 Bug:
-    -> 030974 - categories are not displaying properly in admin 
-<!---- Release notes TV-9.0.1.20191004 -- >
+    -> 030974 - categories are not displaying properly in admin
+
 Bug:
     -> 030847 - Retain No Record Found if new volume discount or special price added for any product.
-    -> 030841 - admin> special price, volume discount > seller name column needs to be there
-    -> 030840 - when currency is changed from front end> then it's displaying in INR while on editing it's in $
-    -> 030839 - club the special price and vol. discount in single section
-    -> 030838 - when seller clicks on manage special price from product then it redirect to 404
+    -> 030841 - Admin> special price, volume discount > seller name column needs to be there
+    -> 030840 - When currency is changed from front end> then it's displaying in INR while on editing it's in $
+    -> 030839 - Club the special price and vol. discount in single section
+    -> 030838 - When seller clicks on manage special price from product then it redirect to 404
     -> 030815 - Catalog requested by seller is not listing in admin
     -> 030638 - in arabic language> Throughout the website Vertical loader overlaps text
     -> 030973 - Rewards on purschase.
@@ -17,6 +17,46 @@ Bug:
     -> 030636 - If any popup is open then background page should not be scrolable
     -> 030632 - Drag&Drop functionality not working in mobile device for seller options(frontend)
     -> 030629 - In mobile devices > when we click on any option in drawer menu then drawer should get close.
+    -> 030980 - When reviews are disabled from admin then they shouldn't be listed on front end
+    -> 030918 - Getting error on shop policy page
+    -> 030864 - Special price is not getting added for product which one having future date
+    -> 030862 - Special Price & Volume Discount list label updated
+    -> 030850 - In Special Price & Volume Discount listing, search by seller option should be there.
+    -> 030848 - When invalid amount is added for special price then it sets the previous added amount without currency symbol(Admin & Frontend)
+    -> 030849 - Latest added Special Price & Volume Discount are not listing on top in admin
+    -> 030977 - Default affiliate commission entry is not there.
+    -> 030567 - In Arabic language > Scroll bar should be display on RTL Mode
+    -> 030560 - In Arabic language> on blogs page> subscribe button and text field are not properly arranged
+    -> 030504 - Design changes of Save Changes and Cancel buttons
+    -> 030501 - On "Rewards Points" page > columns should get display on whole screen and column name should not be scrollable.
+    -> 030087 - Logo is displaying very large in Email template
+    -> 030861 - Seller> on special price/volume discount> there needs to be some space between 'keyword", "search", "clear" buttons and between "select product", "price start date","price end date","special price".
+    -> 030911 - On product details page, under recently viewed product,height needs to be same and name should be in 2 lines only
+    -> 030563 - In arabic language, custom scroll bar displaying on on the wrong side
+    -> 031119 - By deleting all Special Price or Volume Discount rows one by one, at last no message displayed for no record found
+    -> 031123 - On deleting special price consecutively, error triggered.
+    -> 031115 - Displaying invalid access> on submitting catalog request from seller for the first time.
+    -> 031117 - Cost price is displaying 0 on editing requested catalog after approval.
+    -> 030860 - On product details page, Under Recommended Products, unwanted white space above image is displaying.
+    -> 030856 - No record found is displaying while records are there.
+    -> 030774 - While Cloning seller inventory, datepicker is not displaying.
+    -> 030738 - In Arabic, While adding shipping in case of product request or custom product setup "shopping info charges" is not getting displayed properly
+    -> 030978 - Affiliate commission history is displaying wrong data in admin
+    -> 031150 -Shipping address should not be displayed in case of digital order product.
+    -> 031267 - On shop detail page, Shop identifier is displayed instead of shop name entered by the seller.
+    -> 031233 - Last message from the conversation is still displayed in message listing whether admin deletes all messages from conversation.
+    -> 030858 - On selling price page, Date fields calender icon overlaps content place holder.
+    -> 030726 - While uploading profile image "rotate right" button is not displaying properly.
+    -> 030794 - Configure email page layout distorted when user get logged In through fb (number)
+    -> 030628 - Overlay should be displayed behind side in mobile devices when we click on drawer.
+    -> 030518 - On quick view popup, product image alignment is not proper.
+    -> 031294 - Two labels are displaying together without having space. While adding links from custom product form.
+New Features :
+	> Task - 64235 - Collection Image management for Mobile Application in admin.
+    > Task - 66034 - Search based on most discounted products.
+
+Enhancements :
+    -> Handling language labels file for APP
 
 <!-- Release notes TV-9.0.1.20190923 -- >
 New Features :

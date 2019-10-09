@@ -20,8 +20,8 @@ class Slides extends MyAppModel
             $langId = FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG');
         }
         return array(
-        static::TYPE_SLIDE    =>    Labels::getLabel('LBL_Slide', $langId),
-        static::TYPE_PPC    =>    Labels::getLabel('LBL_Promotion', $langId),
+            static::TYPE_SLIDE => Labels::getLabel('LBL_Slide', $langId),
+            static::TYPE_PPC => Labels::getLabel('LBL_Promotion', $langId),
         );
     }
 

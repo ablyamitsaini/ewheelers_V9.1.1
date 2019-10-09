@@ -179,4 +179,16 @@ class Brand extends MyAppModel
         return $arr;
     }
 
+    public static function getBrandName($brandId, $langId, $isActive = true)
+    {
+        $srch = static::getListingObj($langId, null, $isActive);
+        $srch->addCondition('b.'.static::DB_TBL_PREFIX.'id', '=', $brandId);
+        $rs = $srch->getResultSet();
+        $row = FatApp::getDb()->fetch($rs);
+        if ($row) {
+            return $row['brand_name'];
+        } else {
+            return false;
+        }
+    }
 }

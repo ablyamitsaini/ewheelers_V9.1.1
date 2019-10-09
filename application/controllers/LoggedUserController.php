@@ -49,7 +49,7 @@ class LoggedUserController extends MyAppController
         if (empty($userInfo['credential_email'])) {
             $message = Labels::getLabel('MSG_Please_Configure_Your_Email', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'configureEmail'));

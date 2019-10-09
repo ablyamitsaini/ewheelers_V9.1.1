@@ -366,9 +366,15 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                             <div class="h6 m-0 -color-light"><?php echo Labels::getLabel('LBL_Seller', $siteLangId);?></div>
                                             <h6 class="m-0">
                                                 <a href="<?php echo CommonHelper::generateUrl('shops', 'View', array($shop['shop_id'])); ?>"><?php echo $shop['shop_name'];?></a>
-                                                <div class="products__rating -display-inline m-0"> - <i class="icn"><svg class="svg">
-                                                            <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
-                                                        </svg></i> <span class="rate"><?php echo round($shop_rating,1),'','', '';  if($shopTotalReviews){ ?><?php } ?> </span>
+                                                <div class="products__rating -display-inline m-0">
+                                                    <?php if (0 < FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) { ?>
+                                                        - <i class="icn">
+                                                            <svg class="svg">
+                                                                <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
+                                                            </svg>
+                                                        </i> 
+                                                        <span class="rate"><?php echo round($shop_rating,1),'','', '';  if($shopTotalReviews){ ?><?php } ?> </span>
+                                                    <?php } ?>
                                                 </div>
 
                                             </h6>

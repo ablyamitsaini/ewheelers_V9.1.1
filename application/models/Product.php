@@ -1383,7 +1383,7 @@ END,   special_price_found ) as special_price_found'
                 $sortOrder = 'asc';
             }
 
-            if (!in_array($sortBy, array('keyword','price','popularity','rating'))) {
+            if (!in_array($sortBy, array('keyword','price','popularity','rating', 'discounted'))) {
                 $sortOrder = 'keyword_relevancy';
             }
 
@@ -1396,6 +1396,9 @@ END,   special_price_found ) as special_price_found'
                     break;
                 case 'popularity':
                     $srch->addOrder('selprod_sold_count', $sortOrder);
+                    break;
+                case 'discounted':
+                    $srch->addOrder('special_price_found', 'DESC');
                     break;
                 case 'rating':
                     $srch->addOrder('prod_rating', $sortOrder);

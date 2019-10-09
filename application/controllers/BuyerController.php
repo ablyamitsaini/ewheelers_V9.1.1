@@ -129,7 +129,7 @@ class BuyerController extends BuyerBaseController
         if (!$orderId) {
             $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             CommonHelper::redirectUserReferer();
@@ -141,7 +141,7 @@ class BuyerController extends BuyerBaseController
             if ($orderId != $opOrderId) {
                 $message = Labels::getLabel('MSG_Invalid_Order', $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    LibHelper::dieJsonError($message);
                 }
                 Message::addErrorMessage($message);
                 CommonHelper::redirectUserReferer();
@@ -158,7 +158,7 @@ class BuyerController extends BuyerBaseController
         if (!$orderDetail || ($orderDetail && $orderDetail['order_user_id'] != $userId)) {
             $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             CommonHelper::redirectUserReferer();
@@ -217,7 +217,7 @@ class BuyerController extends BuyerBaseController
         if (empty($childOrderDetail) || 1 > count($childOrderDetail)) {
             $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             CommonHelper::redirectUserReferer();
@@ -246,13 +246,15 @@ class BuyerController extends BuyerBaseController
         if ($opId > 0 && $childOrderDetail['op_product_type'] == Product::PRODUCT_TYPE_DIGITAL) {
             $digitalDownloadLinks = Orders::getOrderProductDigitalDownloadLinks($childOrderDetail['op_id']);
         }
-
+        $productType = !empty($childOrderDetail['selprod_product_id']) ? Product::getAttributesById($childOrderDetail['selprod_product_id'], 'product_type') : 0;
+        // CommonHelper::printArray($orderDetail, true);
         $this->set('orderDetail', $orderDetail);
         $this->set('childOrderDetail', $childOrderDetail);
         $this->set('orderStatuses', $orderStatuses);
         $this->set('primaryOrder', $primaryOrderDisplay);
         $this->set('digitalDownloads', $digitalDownloads);
         $this->set('digitalDownloadLinks', $digitalDownloadLinks);
+        $this->set('productType', $productType);
         $this->set('languages', Language::getAllNames());
         $this->set('yesNoArr', applicationConstants::getYesNoArr($this->siteLangId));
 
@@ -314,18 +316,18 @@ class BuyerController extends BuyerBaseController
 
         if (1 > $linkId || 1 > $opId) {
             $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
-            FatUtility::dieJsonError(strip_tags($message));
+            LibHelper::dieJsonError($message);
         }
 
         $digitalDownloadLinks = Orders::getOrderProductDigitalDownloadLinks($opId, $linkId);
         if ($digitalDownloadLinks == false || empty($digitalDownloadLinks) || $digitalDownloadLinks[0]['order_user_id']!= $userId) {
             $message = Labels::getLabel("MSG_INVALID_ACCESS", $this->siteLangId);
-            FatUtility::dieJsonError(strip_tags($message));
+            LibHelper::dieJsonError($message);
         }
         $res = array_shift($digitalDownloadLinks);
         if ($res == false || !$res['downloadable']) {
             $message = Labels::getLabel("MSG_Link_is_not_available_to_download", $this->siteLangId);
-            FatUtility::dieJsonError(strip_tags($message));
+            LibHelper::dieJsonError($message);
         }
         OrderProductDigitalLinks::updateDownloadCount($linkId);
         if (true ===  MOBILE_APP_API_CALL) {
@@ -684,7 +686,7 @@ class BuyerController extends BuyerBaseController
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
         if (false === $post) {
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags(current($frm->getValidationErrors())));
+                LibHelper::dieJsonError(current($frm->getValidationErrors()));
             }
             Message::addErrorMessage(current($frm->getValidationErrors()));
             FatUtility::dieWithError(Message::getHtml());
@@ -702,7 +704,7 @@ class BuyerController extends BuyerBaseController
         if (!$opDetail || CommonHelper::isMultidimArray($opDetail)) {
             $message = Labels::getLabel('MSG_ERROR_INVALID_ACCESS', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -712,7 +714,7 @@ class BuyerController extends BuyerBaseController
             if (!in_array($opDetail["op_status_id"], (array)Orders::getBuyerAllowedOrderCancellationStatuses(true))) {
                 $message = Labels::getLabel('MSG_Order_Cancellation_cannot_placed', $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    LibHelper::dieJsonError($message);
                 }
                 Message::addErrorMessage($message);
                 FatUtility::dieWithError(Message::getHtml());
@@ -721,7 +723,7 @@ class BuyerController extends BuyerBaseController
             if (!in_array($opDetail["op_status_id"], (array)Orders::getBuyerAllowedOrderCancellationStatuses())) {
                 $message = Labels::getLabel('MSG_Order_Cancellation_cannot_placed', $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    LibHelper::dieJsonError($message);
                 }
                 Message::addErrorMessage($message);
                 FatUtility::dieWithError(Message::getHtml());
@@ -731,7 +733,7 @@ class BuyerController extends BuyerBaseController
         if (!in_array($opDetail["op_status_id"], (array)Orders::getBuyerAllowedOrderCancellationStatuses())) {
             $message = Labels::getLabel('MSG_Order_Cancellation_cannot_placed', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -745,7 +747,7 @@ class BuyerController extends BuyerBaseController
         if (FatApp::getDb()->fetch($ocRequestRs)) {
             $message = Labels::getLabel('MSG_You_have_already_sent_the_cancellation_request_for_this_order', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -772,7 +774,7 @@ class BuyerController extends BuyerBaseController
         if (!$ocrequest_id) {
             $message = Labels::getLabel('MSG_Something_went_wrong,_please_contact_admin', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -781,7 +783,7 @@ class BuyerController extends BuyerBaseController
         $emailObj = new EmailHandler();
         if (!$emailObj->sendOrderCancellationNotification($ocrequest_id, $this->siteLangId)) {
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($emailObj->getError()));
+                LibHelper::dieJsonError($emailObj->getError());
             }
             Message::addErrorMessage($emailObj->getError());
             FatUtility::dieWithError(Message::getHtml());
@@ -799,7 +801,7 @@ class BuyerController extends BuyerBaseController
         if (!Notification::saveNotifications($notificationData)) {
             $message = Labels::getLabel('MSG_NOTIFICATION_COULD_NOT_BE_SENT', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($emailObj->getError()));
+                LibHelper::dieJsonError($emailObj->getError());
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -1014,7 +1016,7 @@ class BuyerController extends BuyerBaseController
         if (!$request) {
             $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatApp::redirectUser(CommonHelper::generateUrl('Buyer', 'orderReturnRequests'));
@@ -1109,7 +1111,7 @@ class BuyerController extends BuyerBaseController
         if (!$request) {
             $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatApp::redirectUser(CommonHelper::generateUrl('Buyer', 'viewOrderReturnRequest', array($orrequest_id)));
@@ -1119,7 +1121,7 @@ class BuyerController extends BuyerBaseController
         if (!$orrObj->withdrawRequest($request['orrequest_id'], $user_id, $this->siteLangId, $request['op_id'], $request['order_language_id'])) {
             $message = Labels::getLabel($orrObj->getError(), $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatApp::redirectUser(CommonHelper::generateUrl('Buyer', 'viewOrderReturnRequest', array($orrequest_id)));
@@ -1130,7 +1132,7 @@ class BuyerController extends BuyerBaseController
         if (!$emailNotificationObj->sendOrderReturnRequestStatusChangeNotification($request['orrequest_id'], $this->siteLangId)) {
             $message = Labels::getLabel($emailNotificationObj->getError(), $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             CommonHelper::redirectUserReferer();
@@ -1148,7 +1150,7 @@ class BuyerController extends BuyerBaseController
 
         if (!Notification::saveNotifications($notificationData)) {
             $message = Labels::getLabel('MSG_NOTIFICATION_COULD_NOT_BE_SENT', $this->siteLangId);
-            FatUtility::dieJsonError(strip_tags($message));
+            LibHelper::dieJsonError($message);
         }
         if (true ===  MOBILE_APP_API_CALL) {
             $this->_template->render();
@@ -1206,7 +1208,7 @@ class BuyerController extends BuyerBaseController
         if (false === $post) {
             $message = current($frm->getValidationErrors());
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -1229,7 +1231,7 @@ class BuyerController extends BuyerBaseController
         if (!$requestRow) {
             $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -1238,7 +1240,7 @@ class BuyerController extends BuyerBaseController
         if ($requestRow['orrequest_status'] == OrderReturnRequest::RETURN_REQUEST_STATUS_REFUNDED || $requestRow['orrequest_status'] == OrderReturnRequest::RETURN_REQUEST_STATUS_WITHDRAWN) {
             $message = Labels::getLabel('MSG_Message_cannot_be_posted_now,_as_order_is_refunded_or_withdrawn.', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -1256,7 +1258,7 @@ class BuyerController extends BuyerBaseController
         if (!$oReturnRequestMsgObj->save()) {
             $message = $oReturnRequestMsgObj->getError();
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -1265,7 +1267,7 @@ class BuyerController extends BuyerBaseController
         if (!$orrmsg_id) {
             $message = Labels::getLabel('MSG_Something_went_wrong,_please_contact_admin', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -1277,7 +1279,7 @@ class BuyerController extends BuyerBaseController
         if (!$emailNotificationObj->sendReturnRequestMessageNotification($orrmsg_id, $this->siteLangId)) {
             $message = $emailNotificationObj->getError();
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -1296,7 +1298,7 @@ class BuyerController extends BuyerBaseController
         if (!Notification::saveNotifications($notificationData)) {
             $message = Labels::getLabel('MSG_NOTIFICATION_COULD_NOT_BE_SENT', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             FatUtility::dieWithError(Message::getHtml());
@@ -1392,7 +1394,7 @@ class BuyerController extends BuyerBaseController
         if (1 > $opId) {
             $message = Labels::getLabel('MSG_ERROR_INVALID_ACCESS', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             CommonHelper::redirectUserReferer();
@@ -1412,7 +1414,7 @@ class BuyerController extends BuyerBaseController
         if (!$opDetail || CommonHelper::isMultidimArray($opDetail) || !(FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0))) {
             $message = Labels::getLabel('MSG_ERROR_INVALID_ACCESS', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             CommonHelper::redirectUserReferer();
@@ -1428,7 +1430,7 @@ class BuyerController extends BuyerBaseController
         if (1 > FatUtility::int($selProdId)) {
             $message = Labels::getLabel('MSG_ERROR_INVALID_ACCESS', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             CommonHelper::redirectUserReferer();
@@ -1444,7 +1446,7 @@ class BuyerController extends BuyerBaseController
             }
             $message = sprintf(Labels::getLabel('MSG_Feedback_can_be_placed_', $this->siteLangId), implode(',', $statusNames));
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             CommonHelper::redirectUserReferer();
@@ -1458,7 +1460,7 @@ class BuyerController extends BuyerBaseController
                 $errStr =  Labels::getLabel("LBL_Word_{abusiveword}_is/are_not_allowed_to_post", $this->siteLangId);
                 $errStr = str_replace("{abusiveword}", '"'.implode(", ", $enteredAbusiveWordsArr).'"', $errStr);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($errStr));
+                    LibHelper::dieJsonError($errStr);
                 }
                 Message::addErrorMessage($errStr);
                 CommonHelper::redirectUserReferer();
@@ -1483,7 +1485,7 @@ class BuyerController extends BuyerBaseController
         if (!$canSubmitFeedback) {
             $message = Labels::getLabel('MSG_Already_submitted_order_feedback', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             CommonHelper::redirectUserReferer();
@@ -1522,7 +1524,7 @@ class BuyerController extends BuyerBaseController
             $db->rollbackTransaction();
             $this->orderFeedback($opId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($selProdReview->getError()));
+                LibHelper::dieJsonError($selProdReview->getError());
             }
             Message::addErrorMessage($selProdReview->getError());
             return true;
@@ -1540,7 +1542,7 @@ class BuyerController extends BuyerBaseController
                     $db->rollbackTransaction();
                     $this->orderFeedback($opId);
                     if (true ===  MOBILE_APP_API_CALL) {
-                        FatUtility::dieJsonError(strip_tags($selProdRating->getError()));
+                        LibHelper::dieJsonError($selProdRating->getError());
                     }
                     return true;
                 }
@@ -1574,7 +1576,7 @@ class BuyerController extends BuyerBaseController
                 Message::addErrorMessage($message);
                 $this->orderFeedback($opId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    LibHelper::dieJsonError($message);
                 }
                 return true;
             }
@@ -1592,7 +1594,7 @@ class BuyerController extends BuyerBaseController
                 Message::addErrorMessage($message);
                 $this->orderFeedback($opId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    LibHelper::dieJsonError($message);
                 }
                 return true;
             }
@@ -1699,14 +1701,14 @@ class BuyerController extends BuyerBaseController
 
         if (!$opDetail || CommonHelper::isMultidimArray($opDetail)) {
             $message = Labels::getLabel('MSG_ERROR_INVALID_ACCESS', $this->siteLangId);
-            FatUtility::dieJsonError(strip_tags($message));
+            LibHelper::dieJsonError($message);
         }
 
         $frm = $this->getOrderReturnRequestForm($this->siteLangId, $opDetail);
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
         if (false === $post) {
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags(current($frm->getValidationErrors())));
+                LibHelper::dieJsonError(current($frm->getValidationErrors()));
             }
             Message::addErrorMessage(current($frm->getValidationErrors()));
             FatUtility::dieJsonError(Message::getHtml());
@@ -1741,7 +1743,7 @@ class BuyerController extends BuyerBaseController
                 $status_names[] = $orderStatuses[$status];
             }
             $message = sprintf(Labels::getLabel('MSG_Return_Refund_cannot_placed', $this->siteLangId), implode(',', $status_names));
-            FatUtility::dieJsonError(strip_tags($message));
+            LibHelper::dieJsonError($message);
         }
 
         $oReturnRequestSrch = new OrderReturnRequestSearch();
@@ -1751,7 +1753,7 @@ class BuyerController extends BuyerBaseController
         $oReturnRequestRs = $oReturnRequestSrch->getResultSet();
         if (FatApp::getDb()->fetch($oReturnRequestRs)) {
             $message = Labels::getLabel('MSG_Already_submitted_return_request_order', $this->siteLangId);
-            FatUtility::dieJsonError(strip_tags($message));
+            LibHelper::dieJsonError($message);
         }
 
 
@@ -1775,7 +1777,7 @@ class BuyerController extends BuyerBaseController
         $orrequest_id = $oReturnRequestObj->getMainTableRecordId();
         if (!$orrequest_id) {
             $message = Labels::getLabel('MSG_Something_went_wrong,_please_contact_admin', $this->siteLangId);
-            FatUtility::dieJsonError(strip_tags($message));
+            LibHelper::dieJsonError($message);
         }
 
         /* attach file with request [ */
@@ -1787,7 +1789,7 @@ class BuyerController extends BuyerBaseController
             if (filesize($uploadedFile) > 10240000) {
                 $message = Labels::getLabel('MSG_Please_upload_file_size_less_than_10MB', $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    LibHelper::dieJsonError($message);
                 }
                 Message::addErrorMessage($message);
                 FatUtility::dieJsonError(Message::getHtml());
@@ -1796,7 +1798,7 @@ class BuyerController extends BuyerBaseController
             if (getimagesize($uploadedFile) === false && in_array($uploadedFileExt, array('.zip'))) {
                 $message = Labels::getLabel('MSG_Only_Image_extensions_and_zip_is_allowed', $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($message));
+                    LibHelper::dieJsonError($message);
                 }
                 Message::addErrorMessage($message);
                 FatUtility::dieJsonError(Message::getHtml());
@@ -1805,7 +1807,7 @@ class BuyerController extends BuyerBaseController
             $fileHandlerObj = new AttachedFile();
             if (!$res = $fileHandlerObj->saveAttachment($_FILES['file']['tmp_name'], AttachedFile::FILETYPE_BUYER_RETURN_PRODUCT, $orrequest_id, 0, $_FILES['file']['name'], -1, true)) {
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($fileHandlerObj->getError()));
+                    LibHelper::dieJsonError($fileHandlerObj->getError());
                 }
                 Message::addErrorMessage($fileHandlerObj->getError());
                 FatUtility::dieJsonError(Message::getHtml());
@@ -1826,7 +1828,7 @@ class BuyerController extends BuyerBaseController
         $oReturnRequestMsgObj->assignValues($returnRequestMsgDataToSave);
         if (!$oReturnRequestMsgObj->save()) {
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($oReturnRequestMsgObj->getError()));
+                LibHelper::dieJsonError($oReturnRequestMsgObj->getError());
             }
             Message::addErrorMessage($oReturnRequestMsgObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
@@ -1834,7 +1836,7 @@ class BuyerController extends BuyerBaseController
         $orrmsg_id = $oReturnRequestMsgObj->getMainTableRecordId();
         if (!$orrmsg_id) {
             $message = Labels::getLabel('MSG_Something_went_wrong,_please_contact_admin', $this->siteLangId);
-            FatUtility::dieJsonError(strip_tags($message));
+            LibHelper::dieJsonError($message);
         }
         /* ] */
 
@@ -1847,7 +1849,7 @@ class BuyerController extends BuyerBaseController
         $emailNotificationObj = new EmailHandler();
         if (!$emailNotificationObj->sendOrderReturnRequestNotification($orrmsg_id, $opDetail['order_language_id'])) {
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($oReturnRequestMsgObj->getError()));
+                LibHelper::dieJsonError($oReturnRequestMsgObj->getError());
             }
             Message::addErrorMessage($emailNotificationObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
@@ -1868,7 +1870,7 @@ class BuyerController extends BuyerBaseController
 
         if (!Notification::saveNotifications($notificationData)) {
             $message = Labels::getLabel('MSG_NOTIFICATION_COULD_NOT_BE_SENT', $this->siteLangId);
-            FatUtility::dieJsonError(strip_tags($message));
+            LibHelper::dieJsonError($message);
         }
 
         $msg = Labels::getLabel('MSG_Your_return_request_submitted', $this->siteLangId);
@@ -2457,7 +2459,7 @@ class BuyerController extends BuyerBaseController
         if (!$orderId) {
             $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             return;
@@ -2470,7 +2472,7 @@ class BuyerController extends BuyerBaseController
         if (!$orderDetail || ($orderDetail && $orderDetail['order_user_id'] != $userId)) {
             $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($message));
+                LibHelper::dieJsonError($message);
             }
             Message::addErrorMessage($message);
             return;
@@ -2612,13 +2614,13 @@ class BuyerController extends BuyerBaseController
     {
         if (empty($orderId)) {
             $message = Labels::getLabel('MSG_Invalid_Access', $this->siteLangId);
-            FatUtility::dieJsonError(strip_tags($message));
+            LibHelper::dieJsonError($message);
         }
 
         $emailObj = new EmailHandler();
         if (!$emailObj->newOrderBuyerAdmin($orderId, $this->siteLangId, false, false)) {
             $message = Labels::getLabel('MSG_Unable_to_notify_customer', $this->siteLangId);
-            FatUtility::dieJsonError(strip_tags($message));
+            LibHelper::dieJsonError($message);
         }
         $this->set('msg', Labels::getLabel('MSG_Email_Sent', $this->siteLangId));
         $this->_template->render();

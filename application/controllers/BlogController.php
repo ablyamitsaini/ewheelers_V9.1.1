@@ -6,6 +6,9 @@
         $this->set('blogPage', true);
         $this->set('bodyClass', 'is--blog');
         $this->_template->addCss('css/blog.css');
+        if ('rtl' == CommonHelper::getLayoutDirection()) {
+            $this->_template->addCss('css/blog1-arabic.css');
+        }
         $this->_template->addJs('js/blog.js');
     }
 

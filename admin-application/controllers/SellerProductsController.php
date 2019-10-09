@@ -1043,6 +1043,9 @@ class SellerProductsController extends AdminBaseController
             FatUtility::dieWithError(Labels::getLabel('MSG_Invalid_Request', $this->adminLangId));
         }
         $specialPriceRow = SellerProduct::getSellerProductSpecialPriceById($splPriceId);
+        if (empty($specialPriceRow) || 1 > count($specialPriceRow)) {
+            FatUtility::dieWithError(Labels::getLabel('MSG_Already_Deleted', $this->siteLangId));
+        }
         $this->deleteSpecialPrice($splPriceId, $specialPriceRow['selprod_id']);
         $this->set('selprod_id', $specialPriceRow['selprod_id']);
         $this->set('msg', Labels::getLabel('LBL_Special_Price_Record_Deleted', $this->adminLangId));
@@ -2426,7 +2429,8 @@ class SellerProductsController extends AdminBaseController
         $page = FatApp::getPostedData('page', FatUtility::VAR_INT, 1);
         $selProdId = FatApp::getPostedData('selprod_id', FatUtility::VAR_INT, 0);
         $keyword = FatApp::getPostedData('keyword', FatUtility::VAR_STRING, '');
-        $srch = SellerProduct::searchSpecialPriceProductsObj($this->adminLangId, $selProdId, $keyword);
+        $sellerId = FatApp::getPostedData('product_seller_id', FatUtility::VAR_INT, 0);
+        $srch = SellerProduct::searchSpecialPriceProductsObj($this->adminLangId, $selProdId, $keyword, $sellerId);
         $srch->setPageNumber($page);
         $db = FatApp::getDb();
         $rs = $srch->getResultSet();
@@ -2447,8 +2451,8 @@ class SellerProductsController extends AdminBaseController
         $page = FatApp::getPostedData('page', FatUtility::VAR_INT, 1);
         $selProdId = FatApp::getPostedData('selprod_id', FatUtility::VAR_INT, 0);
         $keyword = FatApp::getPostedData('keyword', FatUtility::VAR_STRING, '');
-
-        $srch = SellerProduct::searchVolumeDiscountProducts($this->adminLangId, $selProdId, $keyword);
+        $sellerId = FatApp::getPostedData('product_seller_id', FatUtility::VAR_INT, 0);
+        $srch = SellerProduct::searchVolumeDiscountProducts($this->adminLangId, $selProdId, $keyword, $sellerId);
 
         $srch->setPageNumber($page);
         $srch->addOrder('voldiscount_id', 'DESC');
@@ -2472,6 +2476,8 @@ class SellerProductsController extends AdminBaseController
         $frm = new Form('frmSearch', array('id'=>'frmSearch'));
         $frm->setRequiredStarWith('caption');
         $frm->addTextBox(Labels::getLabel('LBL_Keyword', $this->adminLangId), 'keyword');
+        $frm->addTextBox(Labels::getLabel('LBL_User', $this->adminLangId), 'product_seller', '');
+        $frm->addHiddenField('', 'product_seller_id');
         $fld_submit = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Search', $this->adminLangId));
         $fld_cancel = $frm->addButton("", "btn_clear", Labels::getLabel('LBL_Clear_Search', $this->adminLangId), array('onclick'=>'clearSearch();'));
         $fld_submit->attachField($fld_cancel);
@@ -2483,6 +2489,8 @@ class SellerProductsController extends AdminBaseController
         $frm = new Form('frmSearch', array('id'=>'frmSearch'));
         $frm->setRequiredStarWith('caption');
         $frm->addTextBox(Labels::getLabel('LBL_Keyword', $this->adminLangId), 'keyword');
+        $frm->addTextBox(Labels::getLabel('LBL_User', $this->adminLangId), 'product_seller', '');
+        $frm->addHiddenField('', 'product_seller_id');
         $fld_submit = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Search', $this->adminLangId));
         $fld_cancel = $frm->addButton("", "btn_clear", Labels::getLabel('LBL_Clear_Search', $this->adminLangId), array('onclick'=>'clearSearch();'));
         $fld_submit->attachField($fld_cancel);

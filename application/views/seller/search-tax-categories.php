@@ -11,7 +11,7 @@ if (FatApp::getConfig('CONF_TAX_COLLECTED_BY_SELLER', FatUtility::VAR_INT, 0)) {
 }
 
 $tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table--orders'));
-$th = $tbl->appendElement('thead')->appendElement('tr', array('class' => 'hide--mobile'));
+$th = $tbl->appendElement('thead')->appendElement('tr', array('class' => ''));
 foreach ($arr_flds as $val) {
     $e = $th->appendElement('th', array(), $val);
 }

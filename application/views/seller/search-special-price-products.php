@@ -9,7 +9,7 @@ $arr_flds = array(
 );
 
 $tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table table-responsive table--hovered splPriceList-js'));
-$th = $tbl->appendElement('thead')->appendElement('tr', array('class' => 'hide--mobile'));
+$th = $tbl->appendElement('thead')->appendElement('tr', array('class' => ''));
 foreach ($arr_flds as $column => $lblTitle) {
     if ('select_all' == $column) {
         $th->appendElement('th')->appendElement('plaintext', array(), '<label class="checkbox"><input title="'.$lblTitle.'" type="checkbox" onclick="selectAll($(this))" class="selectAll-js"><i class="input-helper"></i></label>', true);
@@ -53,7 +53,7 @@ foreach ($arrListing as $sn => $row) {
                 $td->appendElement('plaintext', array(), $editListingFrm->getFieldHtml($column), true);
                 break;
             case 'splprice_price':
-                $input = '<input type="text" data-id="'.$splPriceId.'" value="'.$row[$column].'" data-selprodid="'.$selProdId.'" name="'.$column.'" data-oldval="'.$row[$column].'" class="js--splPriceCol hidden sp-input"/>';
+                $input = '<input type="text" data-id="'.$splPriceId.'" value="'.$row[$column].'" data-selprodid="'.$selProdId.'" name="'.$column.'" data-oldval="'.$row[$column].'" data-displayoldval="'.CommonHelper::displayMoneyFormat($row[$column], true, true).'" class="js--splPriceCol hidden sp-input"/>';
                 $td->appendElement('div', array("class" => 'js--editCol edit-hover', "title" => Labels::getLabel('LBL_Click_To_Edit', $siteLangId)), CommonHelper::displayMoneyFormat($row[$column], true, true), true);
                 $td->appendElement('plaintext', array(), $input, true);
                 break;
@@ -84,7 +84,7 @@ if (count($arrListing) == 0) {
 }
 
 $frm = new Form('frmSplPriceListing', array('id'=>'frmSplPriceListing'));
-$frm->setFormTagAttribute('class', 'web_form last_td_nowrap');
+$frm->setFormTagAttribute('class', 'form');
 
 echo $frm->getFormTag();
 echo $tbl->getHtml(); ?>

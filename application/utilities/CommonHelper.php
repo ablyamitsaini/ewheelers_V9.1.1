@@ -50,7 +50,6 @@ class CommonHelper extends FatUtility
                 self::$appToken = ($_SERVER['HTTP_X_TOKEN'] != '')?$_SERVER['HTTP_X_TOKEN']:'';
             }
         } else {
-
             if (isset($_COOKIE['defaultAdminSiteLang'])) {
                 $languages = Language::getAllNames();
                 if (array_key_exists($_COOKIE['defaultAdminSiteLang'], $languages)) {
@@ -1843,14 +1842,13 @@ class CommonHelper extends FatUtility
         return false;
     }
 
-    public static function jsonEncodeUnicode($data, $convertToType = true)
+    public static function jsonEncodeUnicode($data, $convertToType = false)
     {
-        if (false === $convertToType) {
-            die(json_encode($data));
+        if (true === $convertToType) {
+            $data = static::cleanArray($data);
         }
 
-        $data = static::cleanArray($data);
-        die(FatUtility::convertToJson($data, 0));
+        die(LibHelper::convertToJson($data, JSON_UNESCAPED_UNICODE));
     }
 
     public static function cleanArray($obj)
@@ -1906,5 +1904,74 @@ class CommonHelper extends FatUtility
             $str = str_replace(strtoupper($key), $val, $str);
         }
         return $str;
+    }
+
+    public static function getUrlTypeData($url)
+    {
+        if (strpos($url, "?") !== false) {
+            $url = str_replace('?', '/?', $url);
+        }
+
+        /* [ Check url rewritten by the system and "/" discarded in url rewrite*/
+        $customUrl = substr($url, strlen(CommonHelper::generateFullUrl()));
+        $customUrl = rtrim($customUrl, '/');
+        $customUrl = explode('/', $customUrl);
+        $srch = UrlRewrite::getSearchObject();
+        $srch->doNotCalculateRecords();
+        $srch->setPageSize(1);
+        $srch->addCondition(UrlRewrite::DB_TBL_PREFIX . 'custom', '=', $customUrl[0]);
+        $rs = $srch->getResultSet();
+
+        if (!$row = FatApp::getDb()->fetch($rs)) {
+            return array(
+                'url' => $url,
+                'urlType'=> applicationConstants::URL_TYPE_EXTERNAL
+            );
+        }
+
+        $url = $row['urlrewrite_original'];
+        $arr = explode('/', $url);
+
+        $controller = (isset($arr[0]))?$arr[0]:'';
+        array_shift($arr);
+
+        $action = (isset($arr[0]))?$arr[0]:'';
+        array_shift($arr);
+
+        $queryString = $arr;
+
+        if ($controller != '' && $action == '') {
+            $action = 'index';
+        }
+
+        if ($controller == '') {
+            $controller = 'Content';
+        }
+
+        $recordId = $queryString[0];
+        switch ($controller.'/'.$action) {
+            case 'category/view':
+                $urlType = applicationConstants::URL_TYPE_CATEGORY;
+                break;
+            case 'brands/view':
+                $urlType = applicationConstants::URL_TYPE_BRAND;
+                break;
+            case 'shops/view':
+                $urlType = applicationConstants::URL_TYPE_SHOP;
+                break;
+            case 'products/view':
+                $urlType = applicationConstants::URL_TYPE_PRODUCT;
+                break;
+            default:
+                $recordId = applicationConstants::NO;
+                $urlType = applicationConstants::URL_TYPE_EXTERNAL;
+                break;
+        }
+
+        return array(
+            'url' => $url,
+            'recordId'=> $recordId,
+            'urlType'=> $urlType
+        );
     }
 }

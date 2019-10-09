@@ -262,36 +262,37 @@ if (true == $primaryOrder) {
                         ?> <div class="info--order">
                                 <p><?php echo $billingAddress;?></p>
                             </div>
-                        </div> <?php  if (!empty($orderDetail['shippingAddress'])) {
-                            ?> <div class="col-lg-6 col-md-6 mb-4">
-                            <h5><?php echo Labels::getLabel('LBL_Shipping_Details', $siteLangId); ?></h5> <?php $shippingAddress = $orderDetail['shippingAddress']['oua_name'].'<br>';
-                            if ($orderDetail['shippingAddress']['oua_address1']!='') {
-                                $shippingAddress.=$orderDetail['shippingAddress']['oua_address1'].'<br>';
-                            }
+                        </div>
+                        <?php if (!empty($orderDetail['shippingAddress']) && $productType != Product::PRODUCT_TYPE_DIGITAL) {?>
+                            <div class="col-lg-6 col-md-6 mb-4">
+                                <h5><?php echo Labels::getLabel('LBL_Shipping_Details', $siteLangId); ?></h5> <?php $shippingAddress = $orderDetail['shippingAddress']['oua_name'].'<br>';
+                                if ($orderDetail['shippingAddress']['oua_address1']!='') {
+                                    $shippingAddress.=$orderDetail['shippingAddress']['oua_address1'].'<br>';
+                                }
 
-                            if ($orderDetail['shippingAddress']['oua_address2']!='') {
-                                $shippingAddress.=$orderDetail['shippingAddress']['oua_address2'].'<br>';
-                            }
+                                if ($orderDetail['shippingAddress']['oua_address2']!='') {
+                                    $shippingAddress.=$orderDetail['shippingAddress']['oua_address2'].'<br>';
+                                }
 
-                            if ($orderDetail['shippingAddress']['oua_city']!='') {
-                                $shippingAddress.=$orderDetail['shippingAddress']['oua_city'].',';
-                            }
+                                if ($orderDetail['shippingAddress']['oua_city']!='') {
+                                    $shippingAddress.=$orderDetail['shippingAddress']['oua_city'].',';
+                                }
 
-                            if ($orderDetail['shippingAddress']['oua_zip']!='') {
-                                $shippingAddress.=$orderDetail['shippingAddress']['oua_state'];
-                            }
+                                if ($orderDetail['shippingAddress']['oua_zip']!='') {
+                                    $shippingAddress.=$orderDetail['shippingAddress']['oua_state'];
+                                }
 
-                            if ($orderDetail['shippingAddress']['oua_zip']!='') {
-                                $shippingAddress.= '-'.$orderDetail['shippingAddress']['oua_zip'];
-                            }
+                                if ($orderDetail['shippingAddress']['oua_zip']!='') {
+                                    $shippingAddress.= '-'.$orderDetail['shippingAddress']['oua_zip'];
+                                }
 
-                            if ($orderDetail['shippingAddress']['oua_phone']!='') {
-                                $shippingAddress.= '<br>'.$orderDetail['shippingAddress']['oua_phone'];
-                            } ?> <div class="info--order">
-                                <p><?php echo $shippingAddress; ?></p>
+                                if ($orderDetail['shippingAddress']['oua_phone']!='') {
+                                    $shippingAddress.= '<br>'.$orderDetail['shippingAddress']['oua_phone'];
+                                } ?> <div class="info--order">
+                                    <p><?php echo $shippingAddress; ?></p>
+                                </div>
                             </div>
-                        </div> <?php
-                        } ?>
+                        <?php } ?>
                     </div> <?php if (!empty($orderDetail['comments'])) {
                             ?> <div class="gap">
                     </div>
