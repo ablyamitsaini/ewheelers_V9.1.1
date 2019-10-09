@@ -39,6 +39,7 @@ Bug:
     -> 030978 - Affiliate commission history is displaying wrong data in admin
     -> 031150 -Shipping address should not be displayed in case of digital order product.
     -> 031267 - On shop detail page, Shop identifier is displayed instead of shop name entered by the seller.
+    -> 031233 - Last message from the conversation is still displayed in message listing whether admin deletes all messages from conversation.
 
 New Features :
 	> Task - 64235 - Collection Image management for Mobile Application in admin.

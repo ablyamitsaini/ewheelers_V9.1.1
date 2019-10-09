@@ -54,6 +54,7 @@ class MessagesController extends AdminBaseController
         if (!empty($post['thread_id'])) {
             $srch->addCondition('tth.thread_id', '=', $post['thread_id']);
         }
+        $srch->addCondition('ttm.message_deleted', '=', 0);
         if (!empty($post['keyword'])) {
             $condition=$srch->addCondition('tth.thread_subject', 'like', '%'.$post['keyword'].'%');
             $condition->attachCondition('ttm.message_text', 'like', '%'.$post['keyword'].'%');
