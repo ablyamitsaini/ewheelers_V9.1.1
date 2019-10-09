@@ -1,22 +1,6 @@
+<!---- Release notes TV-9.0.1.20191009 -- >
 Bug:
     -> 030974 - categories are not displaying properly in admin
-
-Bug:
-    -> 030847 - Retain No Record Found if new volume discount or special price added for any product.
-    -> 030841 - Admin> special price, volume discount > seller name column needs to be there
-    -> 030840 - When currency is changed from front end> then it's displaying in INR while on editing it's in $
-    -> 030839 - Club the special price and vol. discount in single section
-    -> 030838 - When seller clicks on manage special price from product then it redirect to 404
-    -> 030815 - Catalog requested by seller is not listing in admin
-    -> 030638 - in arabic language> Throughout the website Vertical loader overlaps text
-    -> 030973 - Rewards on purschase.
-    -> 030631 - Datepicker calender set layout direction.
-    -> 030832 - shadow is there around the search result on searching item
-    -> 030502 - on referral> clear search text in button is cropped.
-    -> 030917 - Multiple special price are getting added for same date
-    -> 030636 - If any popup is open then background page should not be scrolable
-    -> 030632 - Drag&Drop functionality not working in mobile device for seller options(frontend)
-    -> 030629 - In mobile devices > when we click on any option in drawer menu then drawer should get close.
     -> 030980 - When reviews are disabled from admin then they shouldn't be listed on front end
     -> 030918 - Getting error on shop policy page
     -> 030864 - Special price is not getting added for product which one having future date
@@ -51,6 +35,24 @@ Bug:
     -> 030628 - Overlay should be displayed behind side in mobile devices when we click on drawer.
     -> 030518 - On quick view popup, product image alignment is not proper.
     -> 031294 - Two labels are displaying together without having space. While adding links from custom product form.
+
+<!---- Release notes TV-9.0.1.20191004 -- >
+Bug:
+    -> 030847 - Retain No Record Found if new volume discount or special price added for any product.
+    -> 030841 - Admin> special price, volume discount > seller name column needs to be there
+    -> 030840 - When currency is changed from front end> then it's displaying in INR while on editing it's in $
+    -> 030839 - Club the special price and vol. discount in single section
+    -> 030838 - When seller clicks on manage special price from product then it redirect to 404
+    -> 030815 - Catalog requested by seller is not listing in admin
+    -> 030638 - in arabic language> Throughout the website Vertical loader overlaps text
+    -> 030973 - Rewards on purschase.
+    -> 030631 - Datepicker calender set layout direction.
+    -> 030832 - shadow is there around the search result on searching item
+    -> 030502 - on referral> clear search text in button is cropped.
+    -> 030917 - Multiple special price are getting added for same date
+    -> 030636 - If any popup is open then background page should not be scrolable
+    -> 030632 - Drag&Drop functionality not working in mobile device for seller options(frontend)
+    -> 030629 - In mobile devices > when we click on any option in drawer menu then drawer should get close.
 New Features :
 	> Task - 64235 - Collection Image management for Mobile Application in admin.
     > Task - 66034 - Search based on most discounted products.
