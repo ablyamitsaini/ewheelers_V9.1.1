@@ -6472,6 +6472,11 @@ class MobileAppApiController extends MyAppController
             FatUtility::dieJsonError(sprintf(Labels::getLabel('MSG_Withdrawal_Request_Less', $this->siteLangId), CommonHelper::displayMoneyFormat($minimumWithdrawLimit)));
         }
 
+        $maximumWithdrawLimit = FatApp::getConfig("CONF_MAX_WITHDRAW_LIMIT");
+        if (($maximumWithdrawLimit < $post["withdrawal_amount"])) {
+            FatUtility::dieJsonError(sprintf(Labels::getLabel('MSG_Withdrawal_Request_Max', $this->siteLangId), CommonHelper::displayMoneyFormat($maximumWithdrawLimit)));
+        }
+
         if (($post["withdrawal_amount"] > $balance)) {
             FatUtility::dieJsonError(Labels::getLabel('MSG_Withdrawal_Request_Greater', $this->siteLangId));
         }

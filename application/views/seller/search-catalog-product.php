@@ -70,7 +70,7 @@ foreach ($arr_listing as $sn => $row) {
                 $li = $ul->appendElement("li");
                 $li->appendElement(
                     'a',
-                    array('href'=>CommonHelper::generateUrl('Seller', 'sellerProductForm', array($row['product_id'])), 'class'=>($canAddToStore) ? 'icn-highlighted' : 'icn-highlighted disabled','title'=>Labels::getLabel('LBL_Add_To_Store', $siteLangId), true),
+                    array('href'=>'javascript:void(0)', 'class'=>($canAddToStore) ? 'icn-highlighted' : 'icn-highlighted disabled', 'onClick' => 'checkIfAvailableForInventory('.$row['product_id'].')', 'title'=>Labels::getLabel('LBL_Add_To_Store', $siteLangId), true),
                     '<i class="fa fa-plus-square"></i>',
                     true
                 );

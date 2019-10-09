@@ -1046,6 +1046,37 @@ class Product extends MyAppModel
         return $row;
     }
 
+    public static function availableForAddToStore($productId, $userId)
+    {
+        $productId = FatUtility::int($productId);
+        $userId = FatUtility::int($userId);
+
+        $srch = SellerProduct::getSearchObject();
+        $srch->joinTable(SellerProduct::DB_TBL_SELLER_PROD_OPTIONS, 'LEFT JOIN', 'selprod_id = selprodoption_selprod_id', 'tspo');
+        $srch->addCondition('selprod_product_id', '=', $productId);
+        $srch->addCondition('selprod_user_id', '=', $userId);
+        $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
+        // $srch->addCondition('tspo.selprodoption_optionvalue_id', 'is', 'mysql_func_null', 'and', true);
+        $srch->addFld('selprodoption_optionvalue_id');
+        $rs = $srch->getResultSet();
+        $alreadyAdded = FatApp::getDb()->fetchAll($rs, 'selprodoption_optionvalue_id');
+        if ($alreadyAdded == false) {
+            return true;
+        }
+
+        $srch = new SearchBase(static::DB_PRODUCT_TO_OPTION);
+        $srch->addCondition(static::DB_PRODUCT_TO_OPTION_PREFIX . 'product_id', '=', $productId);
+        $srch->joinTable(OptionValue::DB_TBL, 'LEFT JOIN', 'prodoption_option_id = opval.optionvalue_option_id', 'opval');
+        $srch->addFld('optionvalue_id');
+        $rs = $srch->getResultSet();
+        $allOptions = FatApp::getDb()->fetchAll($rs, 'optionvalue_id');
+        $result = array_diff_key($allOptions, $alreadyAdded);
+        if (empty($result)) {
+            return false;
+        }
+        return true;
+    }
+
     public static function addUpdateProductSellerShipping($product_id, $data_to_be_save, $userId)
     {
         $productSellerShiping = array();

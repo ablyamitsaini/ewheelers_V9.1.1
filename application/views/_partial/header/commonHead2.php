@@ -64,6 +64,11 @@ if (CommonHelper::demoUrl()) {
         elseif (Message::getErrorCount()>0) $alertClass = 'alert--danger';
         elseif (Message::getMessageCount()>0) $alertClass = 'alert--success';
     ?>
+    <?php
+    if (FatApp::getConfig("CONF_GOOGLE_TAG_MANAGER_BODY_SCRIPT", FatUtility::VAR_STRING, '')) {
+        echo FatApp::getConfig("CONF_GOOGLE_TAG_MANAGER_BODY_SCRIPT", FatUtility::VAR_STRING, '');
+    }
+    ?>
 
     <div class="system_message alert alert--positioned-top-full <?php echo $alertClass; ?>" style="display:none">
         <div class="close"></div>
