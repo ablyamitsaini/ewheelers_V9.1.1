@@ -35,9 +35,9 @@
                             </div>
                         </div>
                     </li>
-					<li class="sitemap">
+					<!--<li class="sitemap">
                         <a title="<?php echo Labels::getLabel('LBL_Update_Sitemap',$adminLangId);?>" href="<?php echo CommonHelper::generateUrl('sitemap', 'generate'); ?>"><img src="<?php echo CONF_WEBROOT_URL; ?>images/sitemap.svg" width="20" alt=""></a>
-                    </li>
+                    </li>-->
 
                     <!--li class="droplink" >
                         <a href="javascript:void(0)" title="User"><img src="<?php echo CONF_WEBROOT_URL; ?>images/avatar.svg" width="20" alt=""></a>

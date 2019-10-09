@@ -23,8 +23,8 @@ class SitemapController extends AdminBaseController
         $catSrch->addGroupBy('prodcat_id');
         $categoriesArr = productCategory::getProdCatParentChildWiseArr($this->adminLangId, 0, true, false, true, $catSrch);
 
-        foreach($categoriesArr as $key=>$val){
-            $this->write_sitemap_url(CommonHelper::generateFullUrl('category', 'view', array($val['prodcat_id']), CONF_WEBROOT_FRONT_URL), $freq = 'daily');
+        foreach ($categoriesArr as $key => $val) {
+            $this->writeSitemapUrl(CommonHelper::generateFullUrl('category', 'view', array($val['prodcat_id']), CONF_WEBROOT_FRONT_URL), $freq = 'daily');
         }
         /* ]*/
 
@@ -38,8 +38,8 @@ class SitemapController extends AdminBaseController
         $prodSrch->doNotLimitRecords();
         $rs = $prodSrch->getResultSet();
         $productsList = FatApp::getDb()->fetchAll($rs);
-        foreach($productsList as $key=>$val){
-            $this->write_sitemap_url(CommonHelper::generateFullUrl('products', 'view', array($val['selprod_id']), CONF_WEBROOT_FRONT_URL), $freq = 'daily');
+        foreach ($productsList as $key => $val) {
+            $this->writeSitemapUrl(CommonHelper::generateFullUrl('products', 'view', array($val['selprod_id']), CONF_WEBROOT_FRONT_URL), $freq = 'daily');
         }
         /* ]*/
 
@@ -53,8 +53,8 @@ class SitemapController extends AdminBaseController
         $brandRs = $brandSrch->getResultSet();
         $brandsArr = FatApp::getDb()->fetchAll($brandRs);
 
-        foreach($brandsArr as $key=>$val){
-            $this->write_sitemap_url(CommonHelper::generateFullUrl('brands', 'view', array($val['brand_id']), CONF_WEBROOT_FRONT_URL), $freq = 'daily');
+        foreach ($brandsArr as $key => $val) {
+            $this->writeSitemapUrl(CommonHelper::generateFullUrl('brands', 'view', array($val['brand_id']), CONF_WEBROOT_FRONT_URL), $freq = 'daily');
         }
         /* ]*/
 
@@ -70,8 +70,8 @@ class SitemapController extends AdminBaseController
         $shopSrch->addMultipleFields(array('shop_id'));
         $rs = $shopSrch->getResultSet();
         $shopsList = FatApp::getDb()->fetchAll($rs);
-        foreach($shopsList as $key=>$val){
-            $this->write_sitemap_url(CommonHelper::generateFullUrl('shops', 'view', array($val['shop_id']), CONF_WEBROOT_FRONT_URL), $freq = 'daily');
+        foreach ($shopsList as $key => $val) {
+            $this->writeSitemapUrl(CommonHelper::generateFullUrl('shops', 'view', array($val['shop_id']), CONF_WEBROOT_FRONT_URL), $freq = 'daily');
         }
         /* ]*/
 
@@ -90,15 +90,15 @@ class SitemapController extends AdminBaseController
         $cmsSrch->addMultipleFields(array('nlink_cpage_id, nlink_type'));
         $rs = $cmsSrch->getResultSet();
         $linksList = FatApp::getDb()->fetchAll($rs);
-        foreach($linksList as $key=>$link){
-            if($link['nlink_type'] == NavigationLinks::NAVLINK_TYPE_CMS && $link['nlink_cpage_id'] ) {
-                $this->write_sitemap_url(CommonHelper::generateFullUrl('Cms', 'view', array($link['nlink_cpage_id']), CONF_WEBROOT_FRONT_URL), $freq = 'monthly');
+        foreach ($linksList as $key => $link) {
+            if ($link['nlink_type'] == NavigationLinks::NAVLINK_TYPE_CMS && $link['nlink_cpage_id']) {
+                $this->writeSitemapUrl(CommonHelper::generateFullUrl('Cms', 'view', array($link['nlink_cpage_id']), CONF_WEBROOT_FRONT_URL), $freq = 'monthly');
             }
         }
         /* ]*/
 
         $this->endSitemapXml();
-        $this->write_sitemap_index();
+        $this->writeSitemapIndex();
         Message::addMessage(Labels::getLabel('MSG_Sitemap_has_been_updated_successfully', $this->adminLangId));
         CommonHelper::redirectUserReferer();
     }
@@ -110,18 +110,21 @@ class SitemapController extends AdminBaseController
         echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
     }
 
-    private function write_sitemap_url($url, $freq)
+    private function writeSitemapUrl($url, $freq)
     {
         static $sitemap_i;
         $sitemap_i++;
-        if($sitemap_i>2000) {
-            $sitemap_i=1;
+        if ($sitemap_i > 2000) {
+            $sitemap_i = 1;
             $this->endSitemapXml();
             $this->startSitemapXml();
         }
         echo "
 			<url>
 				<loc>".$url."</loc>
+                <lastmod>".date('Y-m-d')."</lastmod>
+                <changefreq>weekly</changefreq>
+                <priority>0.8</priority>
 			</url>";
         echo "\n";
     }
@@ -136,15 +139,13 @@ class SitemapController extends AdminBaseController
         CommonHelper::writeFile('sitemap/list_'.$sitemapListInc.'.xml', $contents, $rs);
     }
 
-    private function write_sitemap_index()
+    private function writeSitemapIndex()
     {
         global $sitemapListInc;
         ob_start();
         echo "<?xml version='1.0' encoding='UTF-8'?>
-		<sitemapindex xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
-				 xsi:schemaLocation='http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/siteindex.xsd'
-				 xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>\n";
-        for($i=1;$i<=$sitemapListInc;$i++) {
+		<sitemapindex xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/siteindex.xsd' xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>\n";
+        for ($i=1; $i <= $sitemapListInc; $i++) {
             echo "<sitemap><loc>".CommonHelper::getUrlScheme()."/sitemap/list_".$i.".xml</loc></sitemap>\n";
         }
         echo "</sitemapindex>";

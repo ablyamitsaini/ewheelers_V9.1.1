@@ -7,6 +7,11 @@ class DummyController extends MyAppController
         //CommonHelper::recursiveDelete( $dirName );
     }
 
+    public function addToStore()
+    {
+        $product = Product::isAvailableForAddToStore(64, 11);
+    }
+
     public function createProcedures($printQuery = false)
     {
         $db = FatApp::getDb();

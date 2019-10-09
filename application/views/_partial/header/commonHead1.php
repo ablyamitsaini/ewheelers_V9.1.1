@@ -61,6 +61,10 @@ $additionalAttributes = (CommonHelper::getLayoutDirection() == 'rtl') ? 'directi
             CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES = 3;
         }
     </script>' . "\r\n";
+    
+    if (FatApp::getConfig("CONF_GOOGLE_TAG_MANAGER_HEAD_SCRIPT", FatUtility::VAR_STRING, '')) {
+        echo FatApp::getConfig("CONF_GOOGLE_TAG_MANAGER_HEAD_SCRIPT", FatUtility::VAR_STRING, '');
+    }
 
     if (FatApp::getConfig("CONF_ENABLE_ENGAGESPOT_PUSH_NOTIFICATION", FatUtility::VAR_STRING, '')) {
         echo FatApp::getConfig("CONF_ENGAGESPOT_PUSH_NOTIFICATION_CODE", FatUtility::VAR_STRING, '');

@@ -4420,4 +4420,18 @@ class SellerController extends SellerBaseController
         }
         return true;
     }
+
+    public function checkIfAvailableForInventory($productId)
+    {
+        $productId = FatUtility::int($productId);
+        $userId = UserAuthentication::getLoggedUserId();
+        if (0 == $productId) {
+            FatUtility::dieJsonError(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
+        }
+        $available = Product::availableForAddToStore($productId, $userId);
+        if (!$available) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Product_has_been_already_added_by_you', $this->siteLangId));
+        }
+        FatUtility::dieJsonSuccess(array());
+    }
 }

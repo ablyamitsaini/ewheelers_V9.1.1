@@ -9,28 +9,37 @@
 <div class="box box--white box--radius p-4">
     <section id="payment" class="section-checkout">
         <div class="row align-items-center mb-4">
-            <?php if ($rewardPoints > 0) { ?>
+            <?php if (empty($cartSummary['cartRewardPoints'])) { ?>
+                <?php if ($rewardPoints > 0) { ?>
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <?php
+                    $redeemRewardFrm->setFormTagAttribute('class', 'form form--secondary form--singlefield');
+                    $redeemRewardFrm->setFormTagAttribute('onsubmit', 'useRewardPoints(this); return false;');
+                    $redeemRewardFrm->setJsErrorDisplay('afterfield');
+                    echo $redeemRewardFrm->getFormTag();
+                    echo $redeemRewardFrm->getFieldHtml('redeem_rewards');
+                    echo $redeemRewardFrm->getFieldHtml('btn_submit');
+                    echo $redeemRewardFrm->getExternalJs(); ?>
+                    </form>
+                    <p class="note">
+                    <strong><?php
+                    $canBeUsed = min(min($rewardPoints, CommonHelper::convertCurrencyToRewardPoint($cartSummary['cartTotal']-$cartSummary["cartDiscounts"]["coupon_discount_total"])), FatApp::getConfig('CONF_MAX_REWARD_POINT', FatUtility::VAR_INT, 0));
+                    echo $canBeUsed; ?></strong>
+                    <?php echo Labels::getLabel('LBL_of', $siteLangId); ?>
+                    <strong>
+                        <?php echo $rewardPoints; ?>
+                    </strong>
+                    <?php echo Labels::getLabel('LBL_reward_points_available_for_this_order', $siteLangId); ?>
+                    (<?php echo CommonHelper::displayMoneyFormat(CommonHelper::convertRewardPointToCurrency($canBeUsed)); ?>)
+                    </p>
+                </div>
+                <?php } ?>
+            <?php } else { ?>
             <div class="col-md-6 mb-3 mb-md-0">
-                <?php
-                $redeemRewardFrm->setFormTagAttribute('class', 'form form--secondary form--singlefield');
-                $redeemRewardFrm->setFormTagAttribute('onsubmit', 'useRewardPoints(this); return false;');
-                $redeemRewardFrm->setJsErrorDisplay('afterfield');
-                echo $redeemRewardFrm->getFormTag();
-                echo $redeemRewardFrm->getFieldHtml('redeem_rewards');
-                echo $redeemRewardFrm->getFieldHtml('btn_submit');
-                echo $redeemRewardFrm->getExternalJs(); ?>
-                </form>
-                <p class="note">
-                <strong><?php
-                $canBeUsed = min(min($rewardPoints, CommonHelper::convertCurrencyToRewardPoint($cartSummary['cartTotal']-$cartSummary["cartDiscounts"]["coupon_discount_total"])), FatApp::getConfig('CONF_MAX_REWARD_POINT', FatUtility::VAR_INT, 0));
-                echo $canBeUsed; ?></strong>
-                <?php echo Labels::getLabel('LBL_of', $siteLangId); ?>
-                <strong>
-                    <?php echo $rewardPoints; ?>
-                </strong>
-                <?php echo Labels::getLabel('LBL_reward_points_available_for_this_order', $siteLangId); ?>
-                (<?php echo CommonHelper::displayMoneyFormat(CommonHelper::convertRewardPointToCurrency($canBeUsed)); ?>)
-                </p>
+                <div class="alert alert--success">
+                    <a href="javascript:void(0)" class="close" onClick="removeRewardPoints()" title="<?php echo Labels::getLabel('LBL_Remove_Reward_Points', $siteLangId); ?>"></a>
+                    <p><?php echo Labels::getLabel('LBL_Reward_Points', $siteLangId); ?> <strong><?php echo $cartSummary['cartRewardPoints']; ?> (<?php echo CommonHelper::displayMoneyFormat(CommonHelper::convertRewardPointToCurrency($cartSummary['cartRewardPoints'])); ?>)</strong> <?php echo Labels::getLabel('LBL_Successfully_Used', $siteLangId); ?></p>
+                </div>
             </div>
             <?php } ?>
             <div class="col-md-6 mb-3">
@@ -47,16 +56,6 @@
                 <?php }?>
             </div>
         </div>
-        <?php if (!empty($cartSummary['cartRewardPoints'])) { ?>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="alert alert--success relative">
-                        <a href="javascript:void(0)" class="close" onClick="removeRewardPoints()"></a>
-                        <p><?php echo Labels::getLabel('LBL_Reward_Points', $siteLangId); ?> <strong><?php echo $cartSummary['cartRewardPoints']; ?></strong> <?php echo Labels::getLabel('LBL_Successfully_Used', $siteLangId); ?></p>
-                    </div>
-                </div>
-            </div>
-        <?php } ?>
         <div class="align-items-center mb-4">
             <?php if ($userWalletBalance > 0 && $cartSummary['orderNetAmount'] > 0) { ?>
                 <div>

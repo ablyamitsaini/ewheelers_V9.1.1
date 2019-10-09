@@ -35,7 +35,7 @@
 				<br></h6>
 			<ul class="links--inline">
 			  <?php $inc = 0; foreach ($top_searched_keywords as $record) { $inc++; if($inc >1) {echo "|";}?>
-				<li><a href="<?php echo CommonHelper::generateUrl('products', 'search',array( 'keyword',$record['searchitem_keyword']));?>"><?php echo $record['searchitem_keyword']?> </a> </li>
+				<li><a href="<?php echo CommonHelper::generateUrl('products', 'search',array( 'keyword-'.$record['searchitem_keyword']));?>"><?php echo $record['searchitem_keyword']?> </a> </li>
 			  <?php } ?>
 			</ul>
 			<?php endif; ?>
