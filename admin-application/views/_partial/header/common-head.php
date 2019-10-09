@@ -1,6 +1,8 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.');
+$additionalAttributes = (CommonHelper::getLayoutDirection() == 'rtl') ? 'direction="rtl" style="direction: rtl;"' : '';
+?>
 <!doctype html>
-<html>
+<html <?php echo $additionalAttributes;?>>
 <head>
 	<meta charset="utf-8">
 	<meta name="description" content="">

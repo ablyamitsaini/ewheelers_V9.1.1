@@ -1,4 +1,4 @@
-<div class="tabs tabs--small tabs--scroll clearfix">
+<div class="tabs tabs--small tabs--scroll clearfix align-items-center">
     <?php require_once(CONF_THEME_PATH.'_partial/seller/customCatalogProductNavigationLinks.php'); ?>
 </div>
 <div class="cards" >

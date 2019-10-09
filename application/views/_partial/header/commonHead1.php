@@ -6,11 +6,12 @@ if ($controllerName != 'GuestUser' && $controllerName != 'Error') {
 $htmlClass = '';
 $actionName = FatApp::getAction();
 if ($controllerName == 'Products' && $actionName == 'view') {
-	$htmlClass = 'product-view';
+    $htmlClass = 'product-view';
 }
+$additionalAttributes = (CommonHelper::getLayoutDirection() == 'rtl') ? 'direction="rtl" style="direction: rtl;"' : '';
 ?>
 <!DOCTYPE html>
-<html prefix="og: http://ogp.me/ns#" class="<?php echo $htmlClass;?>">
+<html prefix="og: http://ogp.me/ns#" <?php echo $additionalAttributes;?> class="<?php echo $htmlClass;?>">
 <head>
 
     <meta charset="utf-8">

@@ -111,8 +111,8 @@ $(document).ready(function(){
 		});
 	};
 
-	updateFile = function(){
-		fcom.updateWithAjax(fcom.makeUrl('Labels', 'updateJsonFile'), '', function(t) {
+	updateFile = function(labelType = 1){
+		fcom.updateWithAjax(fcom.makeUrl('Labels', 'updateJsonFile', [labelType]), '', function(t) {
 			var ans = $.parseJSON(t);
 			if( ans.status == 1 ){
 				fcom.displaySuccessMessage(ans.msg);

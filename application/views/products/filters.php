@@ -196,7 +196,7 @@ if (isset($prodcat_code)) {
       $brandsCheckedArr = (isset($brandsCheckedArr) && !empty($brandsCheckedArr))? $brandsCheckedArr : array(); ?>
 <div class="divider--filters"></div>
 <div class="widgets__heading filter-head-js"><?php echo Labels::getLabel('LBL_Brand', $siteLangId); ?></div>
-<div class="scrollbar-filters" id="scrollbar-filters">
+<div class="scrollbar-filters" id="scrollbar-filters" <?php echo (CommonHelper::getLayoutDirection() == 'rtl') ? 'data-simplebar-direction="rtl"' : '' ?>>
     <ul class="list-vertical">
         <?php foreach ($brandsArr as $brand) {
           ?>

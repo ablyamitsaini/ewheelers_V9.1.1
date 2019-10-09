@@ -214,24 +214,26 @@ class HomeController extends MyAppController
         }
     }
 
-    public function languageLabels($download = 0)
+    public function languageLabels($download = 0, $langId = 0)
     {
+        $langId = FatUtility::int($langId) > 0 ? $langId : $this->siteLangId;
         $download = FatUtility::int($download);
-        $langCode = Language::getAttributesById($this->siteLangId, 'language_code', false);
+        $langCode = Language::getAttributesById($langId, 'language_code', false);
 
         if (0 < $download) {
-            if (!Labels::updateDataToFile($this->siteLangId, $langCode, Labels::TYPE_APP)) {
+            if (!Labels::updateDataToFile($langId, $langCode, Labels::TYPE_APP)) {
                 FatUtility::dieJsonError(Labels::getLabel('MSG_Unable_to_update_file', $langId));
             }
             $fileName = $langCode.'.json';
             $filePath = Labels::JSON_FILE_DIR_NAME.'/'.Labels::TYPE_APP.'/'.$fileName;
 
             AttachedFile::downloadAttachment($filePath, $fileName);
+            exit;
         }
 
         $data = array(
            'languageCode'=>$langCode,
-           'downloadUrl' => CommonHelper::generateFullUrl('Home', 'languageLabels', array(1)),
+           'downloadUrl' => CommonHelper::generateFullUrl('Home', 'languageLabels', array(1, $langId)),
            'langLabelUpdatedAt' => FatApp::getConfig('CONF_LANG_LABELS_UPDATED_AT', FatUtility::VAR_INT, time())
         );
 
@@ -606,7 +608,7 @@ class HomeController extends MyAppController
         $srchSlide->addSkipExpiredPromotionAndSlideCondition();
         $srchSlide->joinBudget();
         $srchSlide->joinAttachedFile();
-        $srchSlide->addMultipleFields(array('slide_id','slide_record_id','slide_type','IFNULL(promotion_name, promotion_identifier) as promotion_name,IFNULL(slide_title, slide_identifier) as slide_title','slide_target','slide_url','promotion_id','daily_cost','weekly_cost','monthly_cost','total_cost','slide_img_updated_on'));
+        $srchSlide->addMultipleFields(array('slide_id','slide_record_id', 'slide_type','IFNULL(promotion_name, promotion_identifier) as promotion_name,IFNULL(slide_title, slide_identifier) as slide_title','slide_target','slide_url','promotion_id','daily_cost','weekly_cost','monthly_cost','total_cost','slide_img_updated_on'));
 
         $totalSlidesPageSize = FatApp::getConfig('CONF_TOTAL_SLIDES_HOME_PAGE', FatUtility::VAR_INT, 4);
         $ppcSlidesPageSize = FatApp::getConfig('CONF_PPC_SLIDES_HOME_PAGE', FatUtility::VAR_INT, 4);
