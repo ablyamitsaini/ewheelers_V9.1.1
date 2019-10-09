@@ -383,6 +383,7 @@ class ProductsController extends MyAppController
         $this->set('filterDefaultMinValue', $filterDefaultMinValue);
         $this->set('filterDefaultMaxValue', $filterDefaultMaxValue);
         $this->set('availability', $availability);
+        $availabilityArr = (true ===  MOBILE_APP_API_CALL) ? array_values($availabilityArr) : $availabilityArr;
         $this->set('availabilityArr', $availabilityArr);
 
         if (true ===  MOBILE_APP_API_CALL) {
