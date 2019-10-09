@@ -23,6 +23,7 @@ Bug:
 
 New Features :
 	> Task - 64235 - Collection Image management for Mobile Application in admin.
+    > Task - 66034 - Search based on most discounted products. 
 
 <!-- Release notes TV-9.0.1.20190923 -- >
 New Features :
