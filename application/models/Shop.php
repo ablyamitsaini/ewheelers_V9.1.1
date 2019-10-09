@@ -320,7 +320,7 @@ class Shop extends MyAppModel
         $srch->addCondition('shop_id', '=', $shopId);
         $srch->setPageSize(1);
         $shopRs = $srch->getResultSet();
-        $row = $db->fetch($shopRs);
+        $row = FatApp::getDb()->fetch($shopRs);
         if ($row) {
             return $row['shop_name'];
         } else {

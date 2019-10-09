@@ -113,7 +113,7 @@ class OrderProduct extends MyAppModel
         $srch->joinTable('tbl_seller_product_reviews', 'left outer join', 'o.order_id = spr.spreview_order_id and ((op.op_selprod_id = spr.spreview_selprod_id and op.op_is_batch = 0) || (op.op_batch_selprod_id = spr.spreview_selprod_id and op.op_is_batch = 1))', 'spr');
         $srch->addCondition('o.order_user_id', '=', $userId);
         $srch->addCondition('spr.spreview_id', 'is', 'mysql_func_null', 'and', true);
-        $srch->addMultipleFields(array('op_id', 'op_selprod_id', 'op_order_id', 'selprod_title', 'selprod_product_id'));
+        $srch->addMultipleFields(array('op_id', 'op_selprod_id', 'op_order_id', 'selprod_title', 'selprod_product_id', 'order_id', 'order_user_id'));
         $rows = FatApp::getDb()->fetchAll($srch->getResultSet());
         return $rows;
     }

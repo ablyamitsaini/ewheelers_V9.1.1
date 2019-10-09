@@ -95,8 +95,6 @@ Breadcrumb
 	padding-inline-start: 280px;
 }
 
-
-
 /*dropdown*/
 .dropdown {}
 
@@ -855,7 +853,7 @@ ul.listing--bullet li:before {
 	width: 70px;
 	/*position: fixed;*/
 	position: absolute;
-	z-index: 10;
+	z-index: 12;
 	left: 0;
 	top: 0;
 	bottom: 0;
@@ -4554,6 +4552,17 @@ a.link:after {
 		margin-inline-start: 0;
 	}
 	*/
+    
+    .sidebar-overlay--js{
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        overflow: hidden;
+        z-index: 11;
+        background: rgba(0, 0, 0, 0.22);
+    }
 
 	html.toggled-user .logo-wrapper {
 		border-color: transparent;

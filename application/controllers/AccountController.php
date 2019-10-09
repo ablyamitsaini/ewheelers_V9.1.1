@@ -2606,7 +2606,7 @@ class AccountController extends LoggedUserController
         return $frm; */
         $frm = new Form('frmProfile', array('id'=>'frmProfile'));
         $frm->addFileUpload(Labels::getLabel('LBL_Profile_Picture', $this->siteLangId), 'user_profile_image', array('id'=>'user_profile_image','onchange'=>'popupImage(this)','accept'=>'image/*'));
-        $frm->addHiddenField('', 'update_profile_img', Labels::getLabel('LBL_Update_Profile_Picture', $this->siteLangId), array('id'=>'update_profile_img'));
+        $frm->addHiddenField('', 'update_profile_img', Labels::getLabel('LBL_Update', $this->siteLangId), array('id'=>'update_profile_img'));
         $frm->addHiddenField('', 'rotate_left', Labels::getLabel('LBL_Rotate_Left', $this->siteLangId), array('id'=>'rotate_left'));
         $frm->addHiddenField('', 'rotate_right', Labels::getLabel('LBL_Rotate_Right', $this->siteLangId), array('id'=>'rotate_right'));
         $frm->addHiddenField('', 'remove_profile_img', 0, array('id'=>'remove_profile_img'));
