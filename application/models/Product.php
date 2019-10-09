@@ -1413,7 +1413,6 @@ END,   special_price_found ) as special_price_found'
             $srch->addGroupBy('keywordmatched');
             $srch->addOrder('keywordmatched', 'desc');
         }
-        //echo $srch->getQuery();exit;
         return $srch;
     }
     public static function getActiveCount($sellerId, $prodId = 0)
@@ -1460,7 +1459,7 @@ END,   special_price_found ) as special_price_found'
         return false;
     }
 
-    /*public static function updateMinPrices($sellerId = 0)
+    public static function updateMinPrices($sellerId = 0)
     {
         $criteria = array();
         $shop = Shop::getAttributesByUserId($sellerId);
@@ -1469,12 +1468,12 @@ END,   special_price_found ) as special_price_found'
         }
 
         $srch = new ProductSearch();
-        $srch->setDefinedCriteria(1, 0, $criteria, true);
+        $srch->setDefinedCriteria(1, 0, $criteria, true, false);
         $srch->joinProductToCategory();
         $srch->joinSellerSubscription(0, false, true);
         $srch->addSubscriptionValidCondition();
         $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
-        $srch->addMultipleFields(array('product_id','selprod_id','theprice','splprice_id'));
+        $srch->addMultipleFields(array('product_id','selprod_id','theprice','IFNULL(splprice_id, 0) as splprice_id'));
         $srch->doNotLimitRecords();
         $srch->doNotCalculateRecords();
         $srch->addGroupBy('product_id');
@@ -1483,10 +1482,10 @@ END,   special_price_found ) as special_price_found'
         }
         $tmpQry = $srch->getQuery();
 
-        $qry = "INSERT INTO ".static::DB_PRODUCT_MIN_PRICE." (pmp_product_id, pmp_selprod_id, pmp_min_price, pmp_splprice_id, pmp_special_price_found) SELECT * FROM (".$tmpQry.") AS t ON DUPLICATE KEY UPDATE pmp_selprod_id = t.selprod_id, pmp_min_price = t.theprice";
+        $qry = "INSERT INTO ".static::DB_PRODUCT_MIN_PRICE." (pmp_product_id, pmp_selprod_id, pmp_min_price, pmp_splprice_id) SELECT * FROM (".$tmpQry.") AS t ON DUPLICATE KEY UPDATE pmp_selprod_id = t.selprod_id, pmp_min_price = t.theprice, pmp_splprice_id = t.splprice_id";
 
         FatApp::getDb()->query($qry);
         $query = "DELETE m FROM ".static::DB_PRODUCT_MIN_PRICE." m LEFT OUTER JOIN (".$tmpQry.") ON pmp_product_id = selprod_product_id WHERE m.pmp_product_id IS NULL";
         FatApp::getDb()->query($query);
-    }*/
+    }
 }
