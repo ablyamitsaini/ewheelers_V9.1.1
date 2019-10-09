@@ -41,6 +41,7 @@ Bug:
     -> 031267 - On shop detail page, Shop identifier is displayed instead of shop name entered by the seller.
     -> 031233 - Last message from the conversation is still displayed in message listing whether admin deletes all messages from conversation.
     -> 030858 - On selling price page, Date fields calender icon overlaps content place holder.
+    -> 030726 - While uploading profile image "rotate right" button is not displaying properly.
 
 New Features :
 	> Task - 64235 - Collection Image management for Mobile Application in admin.
