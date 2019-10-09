@@ -25,9 +25,27 @@ Bug:
     -> 030504 - Design changes of Save Changes and Cancel buttons
     -> 030501 - On "Rewards Points" page > columns should get display on whole screen and column name should not be scrollable.
     -> 030087 - Logo is displaying very large in Email template
+    -> 030861 - Seller> on special price/volume discount> there needs to be some space between 'keyword", "search", "clear" buttons and between "select product", "price start date","price end date","special price".
+    -> 030911 - On product details page, under recently viewed product,height needs to be same and name should be in 2 lines only
+    -> 030563 - In arabic language, custom scroll bar displaying on on the wrong side
+    -> 031119 - By deleting all Special Price or Volume Discount rows one by one, at last no message displayed for no record found
+    -> 031123 - On deleting special price consecutively, error triggered.
+    -> 031115 - Displaying invalid access> on submitting catalog request from seller for the first time.
+    -> 031117 - Cost price is displaying 0 on editing requested catalog after approval.
+    -> 030860 - On product details page, Under Recommended Products, unwanted white space above image is displaying.
+    -> 030856 - No record found is displaying while records are there.
+    -> 030774 - While Cloning seller inventory, datepicker is not displaying.
+    -> 030738 - In Arabic, While adding shipping in case of product request or custom product setup "shopping info charges" is not getting displayed properly
+    -> 030978 - Affiliate commission history is displaying wrong data in admin
+    -> 031150 -Shipping address should not be displayed in case of digital order product.
+    -> 031267 - On shop detail page, Shop identifier is displayed instead of shop name entered by the seller.
+    -> 031233 - Last message from the conversation is still displayed in message listing whether admin deletes all messages from conversation.
 
 New Features :
 	> Task - 64235 - Collection Image management for Mobile Application in admin.
+
+Enhancements :
+    -> Handling language labels file for APP
 
 <!-- Release notes TV-9.0.1.20190923 -- >
 New Features :

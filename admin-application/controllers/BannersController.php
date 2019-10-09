@@ -258,7 +258,7 @@ class BannersController extends AdminBaseController
         $newTabLangId = 0;
         if ($banner_id > 0) {
             $languages = Language::getAllNames();
-            foreach ($languages as $langId =>$langName) {
+            foreach ($languages as $langId => $langName) {
                 if (!$row = Banner::getAttributesByLangId($langId, $banner_id)) {
                     $newTabLangId = $langId;
                     break;
@@ -681,6 +681,7 @@ class BannersController extends AdminBaseController
         $frm->addHiddenField('', 'banner_blocation_id');
         $frm->addHiddenField('', 'banner_id');
         $frm->addHiddenField('', 'banner_type');
+
         $frm->addTextBox(Labels::getLabel('LBL_Url', $this->adminLangId), 'banner_url')->requirements()->setRequired(true);
 
         $linkTargetsArr = applicationConstants::getLinkTargetsArr($this->adminLangId);

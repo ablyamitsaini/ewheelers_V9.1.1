@@ -15,7 +15,7 @@
     $splPrice = $frm->getField('splprice_price');
     $splPrice->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Special_Price', $siteLangId));
 
-    $frm->setFormTagAttribute('class', 'web_form');
+    $frm->setFormTagAttribute('class', 'form');
     $frm->setFormTagAttribute('onsubmit', 'updateSpecialPriceRow(this, '.$selProdId.'); return(false);');
     $frm->addHiddenField('', 'addMultiple');
 

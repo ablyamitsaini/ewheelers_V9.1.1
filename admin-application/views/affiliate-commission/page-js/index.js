@@ -74,7 +74,7 @@ $(document).ready(function() {
     viewHistory = function(id) {
         csh_id = id;
         $.facebox(function() {
-            fcom.ajax(fcom.makeUrl('Commission', 'viewHistory', [csh_id]), '', function(t) {
+            fcom.ajax(fcom.makeUrl('AffiliateCommission', 'viewHistory', [csh_id]), '', function(t) {
                 $.facebox(t, 'faceboxWidth');
             });
         });
@@ -87,7 +87,7 @@ $(document).ready(function() {
         var frm = document.frmHistorySearchPaging;
         $(frm.page).val(page);
         data = fcom.frmData(frm);
-        fcom.ajax(fcom.makeUrl('Commission', 'viewHistory', [csh_id]), data, function(t) {
+        fcom.ajax(fcom.makeUrl('AffiliateCommission', 'viewHistory', [csh_id]), data, function(t) {
             $.facebox(t, 'faceboxWidth');
         });
     };

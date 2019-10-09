@@ -1,5 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
-$frm->setFormTagAttribute('class', 'form form--horizontal web_form');
+$frm->setFormTagAttribute('class', 'form form--horizontal');
 $frm->setFormTagAttribute('action', CommonHelper::generateUrl('Buyer', 'setupOrderFeedback'));
 $frm->developerTags['colClassPrefix'] = 'col-md-';
 $frm->developerTags['fld_default_col'] = 8;

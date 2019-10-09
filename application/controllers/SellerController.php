@@ -3434,11 +3434,11 @@ class SellerController extends SellerBaseController
         $fld = $frm->addTextBox(Labels::getLabel('LBL_Shipping_country', $this->siteLangId), 'shipping_country');
 
         $fld=$frm->addCheckBox(Labels::getLabel('LBL_Free_Shipping', $this->siteLangId), 'ps_free', 1);
-        $frm->addHtml('', '', '<table id="tab_shipping" class="table"></table>');
+        $frm->addHtml('', '', '<div id="tab_shipping"></div>');
 
         $frm->addHiddenField('', 'ps_from_country_id');
         $frm->addHiddenField('', 'ps_product_id');
-        $frm->addHtml('', '', '<table id="tab_shipping" class="table"></table>');
+        $frm->addHtml('', '', '<div id="tab_shipping"></div>');
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $this->siteLangId));
         $frm->addButton('', 'btn_cancel', Labels::getLabel('LBL_Cancel', $this->siteLangId));
         return $frm;
@@ -3729,7 +3729,7 @@ class SellerController extends SellerBaseController
         $frm->addHiddenField('', 'preq_prodcat_id', $prodcat_id);
 
         $fld1 = $frm->addHtml('', 'shipping_info_html', '<div class="heading4 not-digital-js">'.Labels::getLabel('LBL_Shipping_Info/Charges', $langId).'</div><div class="divider not-digital-js"></div>');
-        $fld2 =$frm->addHtml('', '', '<table id="tab_shipping" class="table"></table>');
+        $fld2 =$frm->addHtml('', '', '<div id="tab_shipping"></div>');
         $fld1->attachField($fld2);
 
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $langId));
@@ -4389,6 +4389,9 @@ class SellerController extends SellerBaseController
             FatUtility::dieWithError(Labels::getLabel('MSG_Invalid_Request', $this->siteLangId));
         }
         $specialPriceRow = SellerProduct::getSellerProductSpecialPriceById($splPriceId);
+        if (empty($specialPriceRow) || 1 > count($specialPriceRow)) {
+            FatUtility::dieWithError(Labels::getLabel('MSG_Already_Deleted', $this->siteLangId));
+        }
         $this->deleteSpecialPrice($splPriceId, $specialPriceRow['selprod_id']);
         $this->set('selprod_id', $specialPriceRow['selprod_id']);
         $this->set('msg', Labels::getLabel('LBL_Special_Price_Record_Deleted', $this->siteLangId));
