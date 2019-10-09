@@ -45,7 +45,7 @@ Bug:
     -> 030794 - Configure email page layout distorted when user get logged In through fb (number)
     -> 030628 - Overlay should be displayed behind side in mobile devices when we click on drawer.
     -> 030518 - On quick view popup, product image alignment is not proper.
-
+    -> 031294 - Two labels are displaying together without having space. While adding links from custom product form.
 New Features :
 	> Task - 64235 - Collection Image management for Mobile Application in admin.
 
