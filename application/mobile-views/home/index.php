@@ -6,6 +6,21 @@ foreach ($slides as $index => $slideDetail) {
     $urlTypeData = CommonHelper::getUrlTypeData($slideDetail['slide_url']);
     $slides[$index]['slide_url'] = ($urlTypeData['urlType'] == applicationConstants::URL_TYPE_EXTERNAL ? $slideDetail['slide_url'] : $urlTypeData['recordId']);
     $slides[$index]['slide_url_type'] = $urlTypeData['urlType'];
+
+    switch ($urlTypeData['urlType']) {
+        case applicationConstants::URL_TYPE_SHOP:
+            $slides[$index]['slide_url_title'] = Shop::getShopName($urlTypeData['recordId'], $siteLangId);
+            break;
+        case applicationConstants::URL_TYPE_PRODUCT:
+            $slides[$index]['slide_url_title'] = SellerProduct::getProductDisplayTitle($urlTypeData['recordId'], $siteLangId);
+            break;
+        case applicationConstants::URL_TYPE_CATEGORY:
+            $slides[$index]['slide_url_title'] = ProductCategory::getProductCategoryName($urlTypeData['recordId'], $siteLangId);
+            break;
+        case applicationConstants::URL_TYPE_BRAND:
+            $slides[$index]['slide_url_title'] = Brand::getBrandName($urlTypeData['recordId'], $siteLangId);
+            break;
+    }
 }
 foreach ($sponsoredProds as $index => $product) {
     $uploadedTime = AttachedFile::setTimeParam($product['product_image_updated_on']);
@@ -65,6 +80,21 @@ foreach ($banners as $location => $bannerLocationDetail) {
         $urlTypeData = CommonHelper::getUrlTypeData($bannerDetail['banner_url']);
         $banners[$location]['banners'][$index]['banner_url'] = ($urlTypeData['urlType'] == applicationConstants::URL_TYPE_EXTERNAL ? $bannerDetail['banner_url'] : $urlTypeData['recordId']);
         $banners[$location]['banners'][$index]['banner_url_type'] = $urlTypeData['urlType'];
+
+        switch ($urlTypeData['urlType']) {
+            case applicationConstants::URL_TYPE_SHOP:
+                $banners[$location]['banners'][$index]['banner_url_title'] = Shop::getShopName($urlTypeData['recordId'], $siteLangId);
+                break;
+            case applicationConstants::URL_TYPE_PRODUCT:
+                $banners[$location]['banners'][$index]['banner_url_title'] = SellerProduct::getProductDisplayTitle($urlTypeData['recordId'], $siteLangId);
+                break;
+            case applicationConstants::URL_TYPE_CATEGORY:
+                $banners[$location]['banners'][$index]['banner_url_title'] = ProductCategory::getProductCategoryName($urlTypeData['recordId'], $siteLangId);
+                break;
+            case applicationConstants::URL_TYPE_BRAND:
+                $banners[$location]['banners'][$index]['banner_url_title'] = Brand::getBrandName($urlTypeData['recordId'], $siteLangId);
+                break;
+        }
     }
 }
 

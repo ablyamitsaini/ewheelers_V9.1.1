@@ -1918,7 +1918,7 @@ trait CustomProducts
         $frm->addHiddenField('', 'product_brand_id');
 
         $fld1 = $frm->addTextBox(Labels::getLabel('LBL_Add_Tag', $this->siteLangId), 'tag_name');
-        $fld1->htmlAfterField= '<div class="col-md-12"><small><a href="javascript:void(0);" onClick="addTagForm(0);">'.Labels::getLabel('LBL_Tag_Not_Found?_Click_here_to_', $this->siteLangId).Labels::getLabel('LBL_Add_New_Tag', $this->siteLangId).'</a></small></div><div class="row"><div class="col-md-12"><ul class="list--vertical" id="product-tag"></ul></div>';
+        $fld1->htmlAfterField= '<div class="col-md-12"><small><a href="javascript:void(0);" onClick="addTagForm(0);">'.Labels::getLabel('LBL_Tag_Not_Found?_Click_here_to_', $this->siteLangId).' '.Labels::getLabel('LBL_Add_New_Tag', $this->siteLangId).'</a></small></div><div class="row"><div class="col-md-12"><ul class="list--vertical" id="product-tag"></ul></div>';
 
         //$frm->addHtml('','product-tag','');
 

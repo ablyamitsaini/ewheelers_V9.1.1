@@ -40,7 +40,12 @@ Bug:
     -> 031150 -Shipping address should not be displayed in case of digital order product.
     -> 031267 - On shop detail page, Shop identifier is displayed instead of shop name entered by the seller.
     -> 031233 - Last message from the conversation is still displayed in message listing whether admin deletes all messages from conversation.
-
+    -> 030858 - On selling price page, Date fields calender icon overlaps content place holder.
+    -> 030726 - While uploading profile image "rotate right" button is not displaying properly.
+    -> 030794 - Configure email page layout distorted when user get logged In through fb (number)
+    -> 030628 - Overlay should be displayed behind side in mobile devices when we click on drawer.
+    -> 030518 - On quick view popup, product image alignment is not proper.
+    -> 031294 - Two labels are displaying together without having space. While adding links from custom product form.
 New Features :
 	> Task - 64235 - Collection Image management for Mobile Application in admin.
     > Task - 66034 - Search based on most discounted products. 

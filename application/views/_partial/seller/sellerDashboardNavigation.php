@@ -119,6 +119,13 @@ $action = strtolower($action);
                                 </svg>
                             </i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Options', $siteLangId);?></span></a></div>
                 </li>
+                <li class="menu__item <?php echo ($controller == 'seller' && $action == 'socialplatforms') ? 'is-active' : ''; ?>">
+                    <div class="menu__item__inner"><a title="<?php echo Labels::getLabel('LBL_Manage_Social_Platforms', $siteLangId);?>" href="<?php echo CommonHelper::generateUrl('Seller', 'socialPlatforms'); ?>">
+                            <i class="icn shop"><svg class="svg">
+                                    <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-socialplatforms" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-socialplatforms"></use>
+                                </svg>
+                            </i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Manage_Social_Platforms', $siteLangId);?></span></a></div>
+                </li>
                 <li class="divider"></li>
                 <?php if (FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE')) { ?>
                     <li class="menu__item">

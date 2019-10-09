@@ -307,4 +307,24 @@ class Shop extends MyAppModel
 
     $srch->addCondition( static::tblFld('user_id') , '=', $userId);
     } */
+
+    public static function getShopName($shopId, $langId = 0, $isActive = true)
+    {
+        $shopId = FatUtility::int($shopId);
+        if (1 > $shopId) {
+            return false;
+        }
+
+        $srch = static::getSearchObject($isActive, $langId);
+        $srch->addMultipleFields(array('IFNULL(shop_name, shop_identifier) as shop_name'));
+        $srch->addCondition('shop_id', '=', $shopId);
+        $srch->setPageSize(1);
+        $shopRs = $srch->getResultSet();
+        $row = FatApp::getDb()->fetch($shopRs);
+        if ($row) {
+            return $row['shop_name'];
+        } else {
+            return false;
+        }
+    }
 }

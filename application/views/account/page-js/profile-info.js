@@ -184,7 +184,7 @@ $(document).ready(function(){
 					$("#avatar-action").val("avatar");
 					var fn = "sumbmitProfileImage();";
 
-					$.facebox('<div class="popup__body"><div class="img-container "><img alt="Picture" src="" class="img_responsive" id="new-img" /></div><span class="gap"></span><div class="align--center rotator-actions"><a href="javascript:void(0)" class="btn btn--primary btn--sm" title="'+$("#rotate_left").val()+'" data-option="-90" data-method="rotate">'+$("#rotate_left").val()+'</a>&nbsp;<a onclick='+fn+' href="javascript:void(0)" class="btn btn--primary btn--sm">'+$("#update_profile_img").val()+'</a>&nbsp;<a href="javascript:void(0)" class="btn btn--primary btn--sm rotate-right" title="'+$("#rotate_right").val()+'" data-option="90" data-method="rotate" type="button">'+$("#rotate_right").val()+'</a></div></div>','faceboxWidth');
+					$.facebox('<div class="popup__body"><div class="img-container "><img alt="Picture" src="" class="img_responsive" id="new-img" /></div><span class="gap"></span><div class="align--center rotator-actions"><a href="javascript:void(0)" class="btn btn--primary btn--sm" title="'+$("#rotate_left").val()+'" data-option="-90" data-method="rotate">'+$("#rotate_left").val()+'</a>&nbsp;<a onclick='+fn+' href="javascript:void(0)" class="btn btn--primary btn--sm">'+$("#update_profile_img").val()+'</a>&nbsp;<a href="javascript:void(0)" class="btn btn--primary btn--sm" title="'+$("#rotate_right").val()+'" data-option="90" data-method="rotate">'+$("#rotate_right").val()+'</a></div></div>','faceboxWidth');
 					$('#new-img').attr('src', json.file);
 					$('#new-img').width(wid);
 					cropImage($('#new-img'));

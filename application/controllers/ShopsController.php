@@ -349,7 +349,6 @@ class ShopsController extends MyAppController
             $rs = $srchSplat->getResultSet();
 
             $socialPlatforms = $db->fetchAll($rs);
-
             $this->set('socialPlatforms', $socialPlatforms);
         }
 
