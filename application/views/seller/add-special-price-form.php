@@ -64,7 +64,7 @@ if (!empty($data) && 0 < count($data)) {
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-2">
+                <div class="col-lg-3 col-md-3">
                     <div class="field-set">
                         <div class="field-wraper">
                             <?php echo $frm->getFieldHtml('splprice_price'); ?>

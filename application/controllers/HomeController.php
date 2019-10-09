@@ -25,6 +25,10 @@ class HomeController extends MyAppController
                 $orderProducts['pendingForReviews'] = OrderProduct::pendingForReviews($loggedUserId, $this->siteLangId);
                 if (count($orderProducts['pendingForReviews'])) {
                     foreach ($orderProducts['pendingForReviews'] as $key => $orderProduct) {
+                        $canSubmitFeedback = Orders::canSubmitFeedback($orderProduct['order_user_id'], $orderProduct['order_id'], $orderProduct['op_selprod_id']);
+                        if (false === $canSubmitFeedback) {
+                            continue;
+                        }
                         $options = SellerProduct::getSellerProductOptions($orderProduct['op_selprod_id'], true, $this->siteLangId);
                         $optionTitle = '';
                         if (is_array($options) && count($options)) {
