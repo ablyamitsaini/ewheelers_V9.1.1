@@ -43,6 +43,7 @@ Bug:
     -> 030858 - On selling price page, Date fields calender icon overlaps content place holder.
     -> 030726 - While uploading profile image "rotate right" button is not displaying properly.
     -> 030794 - Configure email page layout distorted when user get logged In through fb (number)
+    -> 030628 - Overlay should be displayed behind side in mobile devices when we click on drawer.
 
 New Features :
 	> Task - 64235 - Collection Image management for Mobile Application in admin.
