@@ -2,6 +2,8 @@ Bug:
 Enhancements :
     -> Updated reset all link in products listing page filters
     -> Added icons for dashboard and shop. Added new link for home redirection in user's dashboard.
+    -> Let admin order categories - navigation
+    -> Added alphabetical order for category listing page.
 
 <!---- Release notes TV-9.0.1.20191009 -- >
 Bug:
