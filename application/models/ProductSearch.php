@@ -610,16 +610,20 @@ class ProductSearch extends SearchBase
                 $cnd->attachCondition('brand_name', 'LIKE', '%' . $value . '%');
                 $cnd->attachCondition('prodcat_name', 'LIKE', '%' . $value . '%');
             }
+            $strKeyword = FatApp::getDb()->quoteVariable('%' . $keyword . '%');
+            $obj->addFld(
+                "IF(product_isbn LIKE $strKeyword OR product_upc LIKE $strKeyword, 15, 0)
+    		+ IF(selprod_title LIKE $strKeyword, 4, 0)
+    		+ IF(product_name LIKE $strKeyword, 4, 0)
+    		+ IF(product_tags_string LIKE $strKeyword, 4, 0)
+    		AS keyword_relevancy"
+            );
+        } else {
+            // $cnd->attachCondition('product_tags_string', 'LIKE', '%' . $value . '%');
+            $obj->addFld('0 AS keyword_relevancy');
         }
 
-        $strKeyword = FatApp::getDb()->quoteVariable('%' . $keyword . '%');
-        $obj->addFld(
-            "IF(product_isbn LIKE $strKeyword OR product_upc LIKE $strKeyword, 15, 0)
-		+ IF(selprod_title LIKE $strKeyword, 4, 0)
-		+ IF(product_name LIKE $strKeyword, 4, 0)
-		+ IF(product_tags_string LIKE $strKeyword, 4, 0)
-		AS keyword_relevancy"
-        );
+
     }
 
     public function addProductIdCondition($product_id)
