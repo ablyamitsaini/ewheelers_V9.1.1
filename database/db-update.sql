@@ -798,3 +798,4 @@ CREATE TABLE `tbl_products_min_price` (
 ALTER TABLE `tbl_products_min_price`
   ADD PRIMARY KEY (`pmp_product_id`);
 INSERT INTO `tbl_cron_schedules` ( `cron_name`, `cron_command`, `cron_duration`, `cron_active`) VALUES ('Product Min price set in temp table', 'Product/updateMinPrices', '60', '1');
+ALTER TABLE `tbl_product_categories` ADD INDEX(`prodcat_code`);
