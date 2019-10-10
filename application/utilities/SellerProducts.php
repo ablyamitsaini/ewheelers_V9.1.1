@@ -333,7 +333,7 @@ trait SellerProducts
 
         if (!empty($selProdAvailable)) {
             if (!$selProdAvailable['selprod_deleted']) {
-                Message::addErrorMessage(Labels::getLabel("LBL_Inventory_for_this_options_have_been_added", $this->siteLangId));
+                Message::addErrorMessage(Labels::getLabel("LBL_Inventory_for_this_option_have_been_added", $this->siteLangId));
                 FatUtility::dieWithError(Message::getHtml());
             }
             $sellerProdObj = new SellerProduct($selProdAvailable['selprod_id']);
@@ -512,7 +512,7 @@ trait SellerProducts
         $selProdAvailable = Product::IsSellProdAvailableForUser($selProdCode, $this->siteLangId, UserAuthentication::getLoggedUserId(), $selprod_id);
 
         if (!empty($selProdAvailable) && !$selProdAvailable['selprod_deleted']) {
-            Message::addErrorMessage(Labels::getLabel("LBL_Inventory_for_this_options_have_been_added", $this->siteLangId));
+            Message::addErrorMessage(Labels::getLabel("LBL_Inventory_for_this_option_have_been_added", $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         } else {
             FatUtility::dieJsonSuccess(Message::getHtml());
@@ -2036,7 +2036,7 @@ trait SellerProducts
 
         if (!empty($selProdAvailable)) {
             if (!$selProdAvailable['selprod_deleted']) {
-                Message::addErrorMessage(Labels::getLabel("LBL_Inventory_for_this_options_have_been_added", $this->siteLangId));
+                Message::addErrorMessage(Labels::getLabel("LBL_Inventory_for_this_option_have_been_added", $this->siteLangId));
                 FatUtility::dieWithError(Message::getHtml());
             }
             $sellerProdObj = new SellerProduct($selProdAvailable['selprod_id']);
