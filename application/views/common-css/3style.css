@@ -11237,10 +11237,10 @@ html.quick-view--open {
 	height: 100%;
 	padding-bottom: 15px;
 	margin-inline-start: 2rem;
-	opacity: 0.4;
+	/*opacity: 0.4;
 	-webkit-filter: grayscale(100%);
+	filter: grayscale(100%);*/
 	/* Safari 6.0 - 9.0 */
-	filter: grayscale(100%);
 }
 
 .address.is--selected {
