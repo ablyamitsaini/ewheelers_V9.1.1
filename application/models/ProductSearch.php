@@ -585,11 +585,11 @@ class ProductSearch extends SearchBase
 
         $cnd = $obj->addCondition('product_isbn', 'LIKE', '%' . $keyword . '%');
         $cnd->attachCondition('product_upc', 'LIKE', '%' . $keyword . '%');
-        $cnd->attachCondition('selprod_title', 'LIKE', '%' . $keyword . '%');
+        /*$cnd->attachCondition('selprod_title', 'LIKE', '%' . $keyword . '%');
         $cnd->attachCondition('product_name', 'LIKE', '%' . $keyword . '%');
         $cnd->attachCondition('brand_name', 'LIKE', '%' . $keyword . '%');
         $cnd->attachCondition('prodcat_name', 'LIKE', '%' . $keyword . '%');
-        $cnd->attachCondition('product_short_description', 'LIKE', '%' . $keyword . '%');
+        $cnd->attachCondition('product_short_description', 'LIKE', '%' . $keyword . '%');*/
         /*$cnd->attachCondition('product_description', 'LIKE', '%' . $keyword . '%');*/
 
         $arr = explode(' ', $keyword);
@@ -602,7 +602,7 @@ class ProductSearch extends SearchBase
             $arr_keywords[] = $value;
         }
 
-        if (count($arr_keywords) > 1) {
+        if (count($arr_keywords) > 0) {
             foreach ($arr_keywords as $value) {
                 $cnd->attachCondition('product_tags_string', 'LIKE', '%' . $value . '%');
                 $cnd->attachCondition('selprod_title', 'LIKE', '%' . $value . '%');
@@ -610,19 +610,20 @@ class ProductSearch extends SearchBase
                 $cnd->attachCondition('brand_name', 'LIKE', '%' . $value . '%');
                 $cnd->attachCondition('prodcat_name', 'LIKE', '%' . $value . '%');
             }
+            $strKeyword = FatApp::getDb()->quoteVariable('%' . $keyword . '%');
+            $obj->addFld(
+                "IF(product_isbn LIKE $strKeyword OR product_upc LIKE $strKeyword, 15, 0)
+    		+ IF(selprod_title LIKE $strKeyword, 4, 0)
+    		+ IF(product_name LIKE $strKeyword, 4, 0)
+    		+ IF(product_tags_string LIKE $strKeyword, 4, 0)
+    		AS keyword_relevancy"
+            );
         } else {
-            $cnd->attachCondition('product_tags_string', 'LIKE', '%' . $value . '%');
+            // $cnd->attachCondition('product_tags_string', 'LIKE', '%' . $value . '%');
+            $obj->addFld('0 AS keyword_relevancy');
         }
 
-        $strKeyword = FatApp::getDb()->quoteVariable('%' . $keyword . '%');
-        $obj->addFld(
-            "
-		IF(product_isbn LIKE $strKeyword OR product_upc LIKE $strKeyword, 15, 0)
-		+ IF(selprod_title LIKE $strKeyword, 4, 0)
-		+ IF(product_name LIKE $strKeyword, 4, 0)
-		+ IF(product_tags_string LIKE $strKeyword, 4, 0)
-		AS keyword_relevancy"
-        );
+
     }
 
     public function addProductIdCondition($product_id)
