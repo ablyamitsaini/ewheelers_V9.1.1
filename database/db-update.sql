@@ -779,3 +779,22 @@ ALTER TABLE `tbl_banners` DROP `banner_url_type`;
 DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE 'LBL_Update_Profile_Picture';
 INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('MSG_Withdrawal_Request_Max', 1,'Your withdrawal request amount is greater than maximum allowed %s.');
 /* TV-9.0.1.20191009 */
+UPDATE `tbl_language_labels` SET `label_key` = UPPER( `label_key` )
+
+CREATE TABLE `tbl_products_min_price` (
+  `pmp_product_id` int(11) NOT NULL,
+  `pmp_selprod_id` int(11) NOT NULL,
+  `pmp_min_price` decimal(10,2) NOT NULL,
+  `pmp_splprice_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `tbl_products_min_price`
+--
+ALTER TABLE `tbl_products_min_price`
+  ADD PRIMARY KEY (`pmp_product_id`);
+INSERT INTO `tbl_cron_schedules` ( `cron_name`, `cron_command`, `cron_duration`, `cron_active`) VALUES ('Product Min price set in temp table', 'Product/updateMinPrices', '60', '1');

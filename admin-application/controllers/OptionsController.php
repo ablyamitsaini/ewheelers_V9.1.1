@@ -132,6 +132,7 @@ class OptionsController extends AdminBaseController
         } else {
             $msg = Labels::getLabel('MSG_SET_UP_SUCCESSFULLY', $this->adminLangId);
         }
+        Product::updateMinPrices();
         $this->set('msg', $msg);
         $this->set('optionId', $option_id);
         $this->_template->render(false, false, 'json-success.php');
@@ -269,7 +270,7 @@ class OptionsController extends AdminBaseController
         }
 
         $this->markAsDeleted($option_id);
-
+        Product::updateMinPrices();
         $this->set('msg', Labels::getLabel('MSG_RECORD_DELETED_SUCCESSFULLY', $this->adminLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
@@ -291,6 +292,7 @@ class OptionsController extends AdminBaseController
             }
             $this->markAsDeleted($option_id);
         }
+        Product::updateMinPrices();
         $this->set('msg', $this->str_delete_record);
         $this->_template->render(false, false, 'json-success.php');
     }

@@ -186,17 +186,17 @@ class ProductCategory extends MyAppModel
 
         $prodCatSrch->doNotCalculateRecords();
         $prodCatSrch->doNotLimitRecords();
-        $prodCatSrch->addMultipleFields(array( 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name', 'substr(prodcat_code,1,6) AS prodrootcat_code',  'prodcat_content_block','prodcat_active','prodcat_parent','prodcat_code','prodcat_ordercode'));
+        $prodCatSrch->addMultipleFields(array( 'prodcat_id', 'COALESCE(prodcat_name,prodcat_identifier ) as prodcat_name', 'substr(prodcat_code,1,6) AS prodrootcat_code',  'prodcat_content_block','prodcat_active','prodcat_parent','prodcat_code','prodcat_ordercode'));
 
         if (0 < $parentId) {
-            $prodCatSrch->addCondition('prodcat_code', 'like', '%'.str_pad($parentId, 6, '0', STR_PAD_LEFT).'%');
+            $catCode = static::getAttributesById($parentId, 'prodcat_code');
+            $prodCatSrch->addCondition('prodcat_code', 'like', $catCode.'%');
         }
 
         if ($excludeCatHavingNoProducts) {
-            $prodSrchObj = new ProductSearch($langId);
-            $prodSrchObj->setDefinedCriteria();
+            $prodSrchObj = new ProductSearch();
+            $prodSrchObj->setDefinedCriteria(0, 0, array('doNotJoinSpecialPrice'=> true));
             $prodSrchObj->doNotCalculateRecords();
-
             $prodSrchObj->doNotLimitRecords();
             $prodSrchObj->joinProductToCategory();
             $prodSrchObj->joinSellerSubscription($langId, true);
@@ -206,9 +206,9 @@ class ProductCategory extends MyAppModel
             $prodSrchObj->addMultipleFields(array('count(selprod_id) as productCounts', 'c.prodcat_id as qryProducts_prodcat_id'));
             //$prodSrchObj->addMultipleFields( array('count(selprod_id) as productCounts', 'c.prodcat_code as qryProducts_prodcat_code') );
             $prodSrchObj->addCondition('selprod_deleted', '=', applicationConstants::NO);
-            $prodCatSrch->joinTable('('.$prodSrchObj->getQuery().')', 'LEFT OUTER JOIN', 'qryProducts.qryProducts_prodcat_id = c.prodcat_id', 'qryProducts');
+            $prodSrchObj->addHaving('productCounts', '>', 0);
+            $prodCatSrch->joinTable('('.$prodSrchObj->getQuery().')', 'INNER JOIN', 'qryProducts.qryProducts_prodcat_id = c.prodcat_id', 'qryProducts');
             //$prodCatSrch->joinTable( '('.$prodSrchObj->getQuery().')', 'LEFT OUTER JOIN', 'qryProducts.qryProducts_prodcat_code like CONCAT(c.prodcat_code, "%")', 'qryProducts' );
-            $prodCatSrch->addCondition('qryProducts.productCounts', '>', 0);
         }
 
         if ($orderFeatured) {
@@ -219,7 +219,7 @@ class ProductCategory extends MyAppModel
             $prodCatSrch->addOrder('prodcat_name');
             $prodCatSrch->addOrder('prodcat_identifier');
         }
-
+        
         $rs = $prodCatSrch->getResultSet();
         $categoriesArr = FatApp::getDb()->fetchAll($rs, 'prodcat_id');
         static::addMissingParentDetails($categoriesArr, $langId);
@@ -246,7 +246,7 @@ class ProductCategory extends MyAppModel
                 $srch = new ProductCategorySearch($langId, true, true, false);
                 $srch->addCondition('prodcat_id', '=', $catId);
                 $srch->setPageSize(1);
-                $srch->addMultipleFields(array( 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name', 'substr(prodcat_code,1,6) AS prodrootcat_code',  'prodcat_content_block','prodcat_active','prodcat_parent','prodcat_code','prodcat_ordercode'));
+                $srch->addMultipleFields(array( 'prodcat_id', 'COALESCE(prodcat_name,prodcat_identifier ) as prodcat_name', 'substr(prodcat_code,1,6) AS prodrootcat_code',  'prodcat_content_block','prodcat_active','prodcat_parent','prodcat_code','prodcat_ordercode'));
                 $rs = $srch->getResultSet();
                 $data = FatApp::getDb()->fetch($rs);
                 $categoriesArr[$catId] = $data;
@@ -291,7 +291,7 @@ class ProductCategory extends MyAppModel
 
         if ($langId > 0) {
             $srch->joinTable(static::DB_LANG_TBL, 'LEFT OUTER JOIN', static::DB_LANG_TBL_PREFIX.'prodcat_id = '.static::tblFld('id').' and '.static::DB_LANG_TBL_PREFIX.'lang_id = '.$langId);
-            $srch->addFld(array('IFNULL(prodcat_name,prodcat_identifier) as prodcat_name'));
+            $srch->addFld(array('COALESCE(prodcat_name,prodcat_identifier) as prodcat_name'));
         } else {
             $srch->addFld(array('prodcat_identifier as prodcat_name'));
         }
@@ -356,7 +356,7 @@ class ProductCategory extends MyAppModel
     {
         $langId = FatUtility::int($langId);
         $srch = static::getSearchObject(false, $langId);
-        $srch->addFld('m.prodcat_id,IFNULL(prodcat_name,m.prodcat_identifier) as prodcat_identifier,m.prodcat_parent');
+        $srch->addFld('m.prodcat_id,COALESCE(prodcat_name,m.prodcat_identifier) as prodcat_identifier,m.prodcat_parent');
         $srch->addCondition('m.prodcat_deleted', '=', applicationConstants::NO);
         $srch->addCondition('m.prodcat_active', '=', applicationConstants::ACTIVE);
         $srch->addCondition('m.prodCat_id', '=', FatUtility::int($prodCat_id));
@@ -478,7 +478,7 @@ class ProductCategory extends MyAppModel
 			AND prodcatlang_lang_id = ' . $langId);
         $srch->addCondition(static::DB_TBL_PREFIX.'deleted', '=', 0);
         $srch->addMultipleFields(array('prodcat_id',
-        'IFNULL(prodcat_name, prodcat_identifier) AS prodcat_name',
+        'COALESCE(prodcat_name, prodcat_identifier) AS prodcat_name',
         'prodcat_code'
         ));
 
@@ -505,7 +505,7 @@ class ProductCategory extends MyAppModel
         $langId = FatUtility::int($langId);
         $srch = static::getSearchObject(false, $langId, $isActive);
         if ($langId) {
-            $srch->addFld('m.prodcat_id, IFNULL(pc_l.prodcat_name, m.prodcat_identifier) as prodcat_name');
+            $srch->addFld('m.prodcat_id, COALESCE(pc_l.prodcat_name, m.prodcat_identifier) as prodcat_name');
         } else {
             $srch->addFld('m.prodcat_id, m.prodcat_identifier as prodcat_name');
         }
@@ -552,7 +552,7 @@ class ProductCategory extends MyAppModel
         $langId = FatUtility::int($langId);
         $srch = static::getSearchObject(false, $langId, $isActive);
         if ($langId) {
-            $srch->addFld('m.prodcat_id, IFNULL(pc_l.prodcat_name, m.prodcat_identifier) as prodcat_name');
+            $srch->addFld('m.prodcat_id, COALESCE(pc_l.prodcat_name, m.prodcat_identifier) as prodcat_name');
         } else {
             $srch->addFld('m.prodcat_id, m.prodcat_identifier as prodcat_name');
         }
@@ -618,7 +618,7 @@ class ProductCategory extends MyAppModel
 
         $srch = static::getSearchObject(false, $langId, $isActive);
         if ($langId) {
-            $srch->addFld('m.prodcat_id, IFNULL(pc_l.prodcat_name, m.prodcat_identifier) as prodcat_name');
+            $srch->addFld('m.prodcat_id, COALESCE(pc_l.prodcat_name, m.prodcat_identifier) as prodcat_name');
         } else {
             $srch->addFld('m.prodcat_id, m.prodcat_identifier as prodcat_name');
         }
@@ -694,7 +694,7 @@ class ProductCategory extends MyAppModel
         $prodCatSrch->doNotCalculateRecords();
         $prodCatSrch->doNotLimitRecords();
 
-        $prodCatSrch->addMultipleFields(array( 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name','substr(prodcat_code,1,6) AS prodrootcat_code', 'prodcat_content_block','prodcat_active','prodcat_parent','prodcat_code as prodcat_code'));
+        $prodCatSrch->addMultipleFields(array( 'prodcat_id', 'COALESCE(prodcat_name,prodcat_identifier ) as prodcat_name','substr(prodcat_code,1,6) AS prodrootcat_code', 'prodcat_content_block','prodcat_active','prodcat_parent','prodcat_code as prodcat_code'));
 
         if ($excludeCategoriesHavingNoProducts) {
             $prodSrchObj = new ProductSearch($langId);
@@ -711,7 +711,7 @@ class ProductCategory extends MyAppModel
             $prodSrchObj->addCondition('selprod_deleted', '=', applicationConstants::NO);
             $prodCatSrch->joinTable('('.$prodSrchObj->getQuery().')', 'LEFT OUTER JOIN', 'qryProducts.qryProducts_prodcat_id = c.prodcat_id', 'qryProducts');
             $prodCatSrch->addCondition('qryProducts.productCounts', '>', 0);
-            $prodCatSrch->addFld(array('IFNULL(productCounts, 0) as productCounts'));
+            $prodCatSrch->addFld(array('COALESCE(productCounts, 0) as productCounts'));
         }
 
         if ($orderFeatured) {
@@ -820,7 +820,7 @@ class ProductCategory extends MyAppModel
         $srch->addCondition('m.prodcat_active', '=', applicationConstants::ACTIVE);
         $srch->addCondition('m.prodcat_deleted', '=', 0);
         $srch->addCondition('m.prodcat_id', '=', $id);
-        $srch->addFld('ifNull(prodcat_name,prodcat_identifier) as prodcat_name');
+        $srch->addFld('COALESCE(prodcat_name,prodcat_identifier) as prodcat_name');
         $rs = $srch->getResultSet();
         $row = FatApp::getDb()->fetch($rs);
         if ($row) {
@@ -840,7 +840,7 @@ class ProductCategory extends MyAppModel
             $catId = FatUtility::int($catId);
             if (!empty($attr) && is_array($attr)) {
                 $prodCatSrch = new ProductCategorySearch($siteLangId);
-                $prodCatSrch->addMultipleFields(array( 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name','substr(prodcat_code,1,6) AS prodrootcat_code', 'prodcat_content_block','prodcat_active','prodcat_parent','prodcat_code as prodcat_code'));
+                $prodCatSrch->addMultipleFields(array( 'prodcat_id', 'COALESCE(prodcat_name,prodcat_identifier ) as prodcat_name','substr(prodcat_code,1,6) AS prodrootcat_code', 'prodcat_content_block','prodcat_active','prodcat_parent','prodcat_code as prodcat_code'));
                 $prodCatSrch->addCondition('prodcat_id', '=', $catId);
                 $rs = $prodCatSrch->getResultSet();
                 $rows = FatApp::getDb()->fetch($rs);
@@ -851,7 +851,7 @@ class ProductCategory extends MyAppModel
                 /* $globalCatTree[$catId]['prodcat_name'] = productCategory::getAttributesByLangId($siteLangId,$catId,'prodcat_name'); */
 
                 $prodCatSrch = new ProductCategorySearch($siteLangId);
-                $prodCatSrch->addFld('IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name');
+                $prodCatSrch->addFld('COALESCE(prodcat_name,prodcat_identifier ) as prodcat_name');
                 $prodCatSrch->addCondition('prodcat_id', '=', $catId);
                 $rs = $prodCatSrch->getResultSet();
                 $rows = FatApp::getDb()->fetch($rs);
@@ -891,7 +891,7 @@ class ProductCategory extends MyAppModel
             } else {
                 /* $this->categoryTreeArr [$parentId]['prodcat_name'] = productCategory::getAttributesByLangId($siteLangId,FatUtility::int($prodCats[0]),'prodcat_name'); */
                 $prodCatSrch = new ProductCategorySearch($siteLangId);
-                $prodCatSrch->addFld('IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name');
+                $prodCatSrch->addFld('COALESCE(prodcat_name,prodcat_identifier ) as prodcat_name');
                 $prodCatSrch->addCondition('prodcat_id', '=', FatUtility::int($prodCats[0]));
                 $rs = $prodCatSrch->getResultSet();
                 $row = FatApp::getDb()->fetch($rs);
@@ -911,7 +911,7 @@ class ProductCategory extends MyAppModel
     public function getProdRootCategoriesWithKeyword($langId = 0, $keywords = '', $returnWithChildArr = false, $prodcatCode = false, $inludeChildCount = false)
     {
         $srch = static::getSearchObject($inludeChildCount, $langId);
-        $srch->addFld('m.prodcat_id,ifnull(pc_l.prodcat_name,m.prodcat_identifier) as prodcat_name,m.prodcat_parent,substr(m.prodcat_code,1,6) AS prodrootcat_code');
+        $srch->addFld('m.prodcat_id,COALESCE(pc_l.prodcat_name,m.prodcat_identifier) as prodcat_name,m.prodcat_parent,substr(m.prodcat_code,1,6) AS prodrootcat_code');
         $srch->addCondition('m.prodcat_deleted', '=', applicationConstants::NO);
         $srch->addCondition('m.prodcat_active', '=', applicationConstants::ACTIVE);
         if (!empty($keywords)) {
@@ -955,7 +955,7 @@ class ProductCategory extends MyAppModel
         $prodSrchObj->doNotCalculateRecords();
         $prodSrchObj->doNotLimitRecords();
         $prodSrchObj->addGroupBy('prodcat_id');
-        $prodSrchObj->addMultipleFields(array('substr(prodcat_code,1,6) AS prodrootcat_code','count(selprod_id) as productCounts', 'prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name', 'prodcat_parent'));
+        $prodSrchObj->addMultipleFields(array('substr(prodcat_code,1,6) AS prodrootcat_code','count(selprod_id) as productCounts', 'prodcat_id', 'COALESCE(prodcat_name, prodcat_identifier) as prodcat_name', 'prodcat_parent'));
         $rs = $prodSrchObj->getResultSet();
         $productRows = FatApp::getDb()->fetchAll($rs);
         /* die(CommonHelper::printArray($productRows)); */
