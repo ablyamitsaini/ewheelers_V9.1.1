@@ -327,6 +327,9 @@ class SellerProductsController extends AdminBaseController
             $newTabLangId = $this->adminLangId;
         }
 
+        $productId = SellerProduct::getAttributesById($selprod_id, 'selprod_product_id');
+        Product::updateMinPrices($productId);
+
         $this->set('selprod_id', $selprod_id);
         $this->set('langId', $newTabLangId);
         $this->set('msg', Labels::getLabel('LBL_Product_Setup_Successful', $this->adminLangId));
@@ -943,6 +946,12 @@ class SellerProductsController extends AdminBaseController
         if (!$resp) {
             FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Request', $this->adminLangId));
         }
+
+        if (!emptyy($post['splprice_selprod_id'])) {
+            $productId = SellerProduct::getAttributesById($post['splprice_selprod_id'], 'selprod_product_id');
+            Product::updateMinPrices($productId);
+        }
+
         $this->set('msg', Labels::getLabel('LBL_Special_Price_Setup_Successful', $this->adminLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
@@ -2288,6 +2297,9 @@ class SellerProductsController extends AdminBaseController
         $status = ($sellerProductData['selprod_active'] == applicationConstants::ACTIVE) ? applicationConstants::INACTIVE : applicationConstants::ACTIVE;
 
         $this->updateSellerProductStatus($selprodId, $status);
+        $productId = SellerProduct::getAttributesById($selprodId, 'selprod_product_id');
+        Product::updateMinPrices($productId);
+
         $this->set('msg', $this->str_update_record);
         $this->_template->render(false, false, 'json-success.php');
     }

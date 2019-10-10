@@ -132,6 +132,7 @@ class CountriesController extends AdminBaseController
             $countryId = $record->getMainTableRecordId();
             $newTabLangId=FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG', FatUtility::VAR_INT, 1);
         }
+        Product::updateMinPrices();
         $this->set('msg', Labels::getLabel('LBL_Updated_Successfully', $this->adminLangId));
         $this->set('countryId', $countryId);
         $this->set('langId', $newTabLangId);
@@ -263,7 +264,7 @@ class CountriesController extends AdminBaseController
         $status = ($data['country_active'] == applicationConstants::ACTIVE) ? applicationConstants::INACTIVE : applicationConstants::ACTIVE;
 
         $this->updateCountryStatus($countryId, $status);
-
+        Product::updateMinPrices();
         FatUtility::dieJsonSuccess($this->str_update_record);
     }
 
@@ -286,6 +287,7 @@ class CountriesController extends AdminBaseController
 
             $this->updateCountryStatus($countryId, $status);
         }
+        Product::updateMinPrices();
         $this->set('msg', $this->str_update_record);
         $this->_template->render(false, false, 'json-success.php');
     }

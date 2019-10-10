@@ -337,7 +337,7 @@ trait CustomProducts
             }
         }
 
-
+        Product::updateMinPrices($product_id);
 
         $this->set('msg', Labels::getLabel('LBL_Product_Setup_Successful', $this->siteLangId));
         $this->set('product_id', $product_id);
@@ -546,6 +546,7 @@ trait CustomProducts
             Message::addErrorMessage(Labels::getLabel($prodObj->getError(), FatApp::getConfig('CONF_PAGE_SIZE', FatUtility::VAR_INT, 1)));
             FatUtility::dieWithError(Message::getHtml());
         }
+        Product::updateMinPrices($product_id);
     }
 
     public function checkOptionLinkedToInventory()
@@ -627,7 +628,7 @@ trait CustomProducts
             Message::addErrorMessage(Labels::getLabel($prodObj->getError(), FatApp::getConfig('CONF_PAGE_SIZE', FatUtility::VAR_INT, 1)));
             FatUtility::dieWithError(Message::getHtml());
         }
-
+        Product::updateMinPrices($productId);
         FatUtility::dieJsonSuccess(Labels::getLabel('LBL_Option_removed_successfully.', $this->siteLangId));
     }
 

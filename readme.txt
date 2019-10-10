@@ -1,5 +1,5 @@
 Bug:
-    -> 030974 - categories are not displaying properly in admin 
+    -> 030974 - categories are not displaying properly in admin
 <!---- Release notes TV-9.0.1.20191004 -- >
 Bug:
     -> 030847 - Retain No Record Found if new volume discount or special price added for any product.

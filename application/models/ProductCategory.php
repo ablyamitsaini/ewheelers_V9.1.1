@@ -189,7 +189,8 @@ class ProductCategory extends MyAppModel
         $prodCatSrch->addMultipleFields(array( 'prodcat_id', 'COALESCE(prodcat_name,prodcat_identifier ) as prodcat_name', 'substr(prodcat_code,1,6) AS prodrootcat_code',  'prodcat_content_block','prodcat_active','prodcat_parent','prodcat_code','prodcat_ordercode'));
 
         if (0 < $parentId) {
-            $prodCatSrch->addCondition('prodcat_code', 'like', '%'.str_pad($parentId, 6, '0', STR_PAD_LEFT).'%');
+            $catCode = static::getAttributesById($parentId, 'prodcat_code');
+            $prodCatSrch->addCondition('prodcat_code', 'like', $catCode.'%');
         }
 
         if ($excludeCatHavingNoProducts) {
@@ -218,6 +219,7 @@ class ProductCategory extends MyAppModel
             $prodCatSrch->addOrder('prodcat_name');
             $prodCatSrch->addOrder('prodcat_identifier');
         }
+        
         $rs = $prodCatSrch->getResultSet();
         $categoriesArr = FatApp::getDb()->fetchAll($rs, 'prodcat_id');
         static::addMissingParentDetails($categoriesArr, $langId);

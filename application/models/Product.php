@@ -1184,7 +1184,6 @@ class Product extends MyAppModel
     public static function getListingObj($criteria, $langId = 0, $userId = 0)
     {
         $srch = new ProductSearch($langId);
-
         $join_price = 0;
         if (array_key_exists('join_price', $criteria)) {
             $join_price = FatUtility::int($criteria['join_price']);
@@ -1199,8 +1198,15 @@ class Product extends MyAppModel
             $criteria['optionvalue'] = !empty($criteria['optionvalue']) ? json_decode($criteria['optionvalue'], true) : '';
         }
 
-        $srch->setDefinedCriteria($join_price, 0, $criteria, true);
-        $srch->joinProductToCategory();
+        //$srch->setDefinedCriteria($join_price, 0, $criteria, true);
+        $srch->joinForPrice('', $criteria, true);
+        $srch->unsetDefaultLangForJoins();
+        $srch->joinSellers();
+        $srch->joinShops($langId);
+        $srch->joinShopCountry();
+        $srch->joinShopState();
+        $srch->joinBrands($langId);
+        $srch->joinProductToCategory($langId);
         $srch->joinSellerSubscription(0, false, true);
         $srch->addSubscriptionValidCondition();
 
@@ -1459,12 +1465,24 @@ END,   special_price_found ) as special_price_found'
         return false;
     }
 
-    public static function updateMinPrices($sellerId = 0)
+    public static function updateMinPrices($productId = 0, $shopId = 0, $brandId = 0)
     {
         $criteria = array();
-        $shop = Shop::getAttributesByUserId($sellerId);
-        if (!empty($shop) && array_key_exists('shop_id', $shop)) {
-            $criteria = array('shop_id'=>$shop['shop_id'] );
+        $shopId = FatUtility::int($shopId);
+        $brandId = FatUtility::int($brandId);
+        $productId = FatUtility::int($productId);
+
+        if (0 < $shopId) {
+            $criteria = array('shop_id'=>$shopId );
+        }/* else {
+            $shop = Shop::getAttributesByUserId($sellerId);
+            if (!empty($shop) && array_key_exists('shop_id', $shop)) {
+                $criteria = array('shop_id'=>$shop['shop_id'] );
+            }
+        }*/
+
+        if (0 < $brandId) {
+            $criteria = array('brand_id'=>$brandId );
         }
 
         $srch = new ProductSearch();
@@ -1480,6 +1498,11 @@ END,   special_price_found ) as special_price_found'
         if (!empty($shop) && array_key_exists('shop_id', $shop)) {
             $srch->addCondition('shop_id', '=', $shop['shop_id']);
         }
+
+        if (0 < $productId) {
+            $srch->addCondition('product_id', '=', $productId);
+        }
+
         $tmpQry = $srch->getQuery();
 
         $qry = "INSERT INTO ".static::DB_PRODUCT_MIN_PRICE." (pmp_product_id, pmp_selprod_id, pmp_min_price, pmp_splprice_id) SELECT * FROM (".$tmpQry.") AS t ON DUPLICATE KEY UPDATE pmp_selprod_id = t.selprod_id, pmp_min_price = t.theprice, pmp_splprice_id = t.splprice_id";

@@ -595,6 +595,7 @@ class ProductCategoriesController extends AdminBaseController
             if ($newTabLangId == 0 && !$this->isMediaUploaded($prodcat_id)) {
                 $this->set('openMediaForm', true);
             }
+            Product::updateMinPrices();
             //$id = $record->getMainTableRecordId();
             $this->set('msg', Labels::getLabel('LBL_Category_Setup_Successful', $this->adminLangId));
             $this->set('catId', $catId);
@@ -694,7 +695,7 @@ class ProductCategoriesController extends AdminBaseController
         $status = ($catData['prodcat_active'] == applicationConstants::ACTIVE) ? applicationConstants::INACTIVE : applicationConstants::ACTIVE;
 
         $this->updateProductCategoryStatus($prodcatId, $status);
-
+        Product::updateMinPrices();
         $this->set('msg', $this->str_update_record);
         $this->_template->render(false, false, 'json-success.php');
     }
@@ -751,7 +752,7 @@ class ProductCategoriesController extends AdminBaseController
         }
 
         $this->markAsDeleted($prodcat_id);
-
+        Product::updateMinPrices();
         $this->set("msg", $this->str_delete_record);
         $this->_template->render(false, false, 'json-success.php');
     }

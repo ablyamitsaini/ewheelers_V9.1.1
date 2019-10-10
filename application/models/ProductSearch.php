@@ -71,7 +71,7 @@ class ProductSearch extends SearchBase
         $this->langId = 0 ;
     }
 
-    public function setDefinedCriteria($joinPrice = 0, $bySeller = 0, $criteria = array(), $checkAvailableFrom = true, $useTempTable = true)
+    public function setDefinedCriteria($joinPrice = 0, $bySeller = 0, $criteria = array(), $checkAvailableFrom = true, $useTempTable = false)
     {
         $joinPrice =  FatUtility::int($joinPrice);
         if (0 < $joinPrice) {
@@ -538,8 +538,9 @@ class ProductSearch extends SearchBase
             if (!$category_id) {
                 return;
             }
+            $catCode = ProductCategory::getAttributesById($category_id, 'prodcat_code');
             /* $this->addCondition('GETCATCODE(`prodcat_id`)', 'LIKE', '%' . str_pad($category_id, 6, '0', STR_PAD_LEFT ) . '%', 'AND', true); */
-            $this->addCondition('c.prodcat_code', 'LIKE', '%' . str_pad($category_id, 6, '0', STR_PAD_LEFT) . '%', 'AND', true);
+            $this->addCondition('c.prodcat_code', 'LIKE', $catCode . '%', 'AND', true);
         } else {
             if (!is_array($category)) {
                 $category = explode(",", $category);
@@ -555,7 +556,8 @@ class ProductSearch extends SearchBase
                     if (1 > $catId) {
                         continue;
                     }
-                    $condition .= " c.prodcat_code LIKE '%".str_pad($catId, 6, '0', STR_PAD_LEFT) ."%' OR";
+                    $catCode = ProductCategory::getAttributesById($category_id, 'prodcat_code');
+                    $condition .= " c.prodcat_code LIKE '".$catCode ."%' OR";
                 }
                 $condition = substr($condition, 0, -2);
                 $condition .= ')';
