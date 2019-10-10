@@ -8,4 +8,9 @@ class LibHelper extends FatUtility
         }
         FatUtility::dieJsonError($message);
     }
+
+    public static function dieWithError($message)
+    {
+        FatUtility::dieWithError($message);
+    }
 }

@@ -42,7 +42,7 @@ if (0 < $selProd_id) {
                 <!--<div class="col-sm-12">-->
                 <section class="section">
                     <div class="sectionhead">
-                        <h4><?php echo Labels::getLabel('LBL_Seller_Products_List', $adminLangId); ?> </h4>
+                        <h4><?php echo Labels::getLabel('LBL_Special_Price_List', $adminLangId); ?> </h4>
                         <?php
                         if ($canEdit) {
                             $ul = new HtmlElement("ul", array("class"=>"actions actions--centered"));
@@ -63,7 +63,7 @@ if (0 < $selProd_id) {
                             $data['addMultiple'] = (1 > $selProd_id) ? 1 : 0;
                             $this->includeTemplate('seller-products/add-special-price-form.php', array('adminLangId' => $adminLangId, 'data' => $data), false);
                         }
-                        
+
                         if (1 > $selProd_id) {
                             $this->includeTemplate('seller-products/add-special-price-form.php', array('adminLangId' => $adminLangId), false);
                         }

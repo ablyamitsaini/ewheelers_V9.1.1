@@ -1,4 +1,4 @@
-$(document).ready(function() {        
+$(document).ready(function() {
     setTimeout(function() {
         $('body').addClass('loaded');
     }, 1000);
@@ -16,7 +16,7 @@ $(document).ready(function() {
     	$('.js-widget-scroll').slick(getSlickSliderSettings(3, 1, langLbl.layoutDirection, false,{1199: 3,1023: 2,767: 1,480: 1}));
 	}
 
-    $(document).on('change', 'input.phone-js', function(e) {
+    /*$(document).on('change', 'input.phone-js', function(e) {
         $(this).keydown()
     });
     $(document).on('keydown', 'input.phone-js', function(e) {
@@ -60,13 +60,17 @@ $(document).ready(function() {
         if ($phone.val() === '(') {
             $phone.val('');
         }
-    });
+    });*/
 
     $(document).on('click', '.accordianheader', function () {
       $(this).next('.accordianbody').slideToggle();
       $(this).parent().parent().siblings().children().children().next().slideUp();
       return false;
     });
+
+    if ('rtl' == langLbl.layoutDirection && 0 < $("[data-simplebar]").length  && 1 > $("[data-simplebar-direction='rtl']").length) {
+        $("[data-simplebar]").attr('data-simplebar-direction', 'rtl');
+    }
 });
 
 function setCurrDateFordatePicker() {
@@ -127,7 +131,7 @@ function recentlyViewedProducts(selprodId) {
 
     fcom.ajax(fcom.makeUrl('Products', 'recentlyViewedProducts', [selprodId]), '', function(ans) {
         $("#recentlyViewedProductsDiv").html(ans);
-        $('.js-collection-corner:not(.slick-initialized)').slick(getSlickSliderSettings(6, 1, langLbl.layoutDirection, true));
+        $('.js-collection-corner:not(.slick-initialized)').slick(getSlickSliderSettings(5, 1, langLbl.layoutDirection, true));
     });
 }
 
@@ -1209,5 +1213,5 @@ $(document).ajaxComplete(function() {
         $("#facebox .close.close--white").on("click", function(){
             $("html").removeClass('pop-on');
         });
-    }    
+    }
 });

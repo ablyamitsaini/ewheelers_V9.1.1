@@ -236,6 +236,7 @@ class ShopsController extends AdminBaseController
             $newTabLangId = $this->adminLangId;
         }
 
+        Product::updateMinPrices();
         $this->set('msg', Labels::getLabel("MSG_Setup_Successful", $this->adminLangId));
         $this->set('shopId', $shop_id);
         $this->set('langId', $newTabLangId);
@@ -1200,6 +1201,7 @@ class ShopsController extends AdminBaseController
         $status = ($shopData['shop_active'] == applicationConstants::ACTIVE) ? applicationConstants::INACTIVE : applicationConstants::ACTIVE;
 
         $this->updateShopStatus($shopId, $status);
+        Product::updateMinPrices();
         //FatUtility::dieJsonSuccess($this->str_update_record);
         $this->set('msg', $this->str_update_record);
         $this->_template->render(false, false, 'json-success.php');

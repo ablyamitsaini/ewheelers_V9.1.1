@@ -637,7 +637,7 @@ class CustomProductsController extends AdminBaseController
 
             /* Product Lang data insert[*/
             $languages = Language::getAllNames();
-            foreach ($languages as $lang_id=>$langName) {
+            foreach ($languages as $lang_id => $langName) {
                 $reqLangData = ProductRequest::getAttributesByLangId($lang_id, $preqId);
                 if ($reqLangData == false) {
                     continue;
@@ -676,7 +676,7 @@ class CustomProductsController extends AdminBaseController
             $srch->doNotCalculateRecords();
             $srch->setPageSize(1);
             if (!empty($upcCodeData)) {
-                foreach ($upcCodeData as $key=>$code) {
+                foreach ($upcCodeData as $key => $code) {
                     if (trim($code) == '') {
                         continue;
                     }
@@ -730,6 +730,7 @@ class CustomProductsController extends AdminBaseController
                 $updateSelProdData = array(
                 'selprod_user_id'=>isset($selProdData['preq_user_id'])?$selProdData['preq_user_id']:$data['preq_user_id'],
                 'selprod_product_id'=>$product_id,
+                'selprod_cost'=>isset($selProdData['selprod_cost'])?$selProdData['selprod_cost']:0,
                 'selprod_price'=>isset($selProdData['selprod_price'])?$selProdData['selprod_price']:0,
                 'selprod_stock'=>isset($selProdData['selprod_stock'])?$selProdData['selprod_stock']:0,
                 'selprod_min_order_qty'=>isset($selProdData['selprod_min_order_qty'])?$selProdData['selprod_min_order_qty']:0,
@@ -863,7 +864,7 @@ class CustomProductsController extends AdminBaseController
             Message::addErrorMessage(Labels::getLabel('MSG_Email_could_not_be_Sent', $this->adminLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
-
+        Product::updateMinPrices($product_id);
         $db->commitTransaction();
         $this->set('msg', Labels::getLabel('MSG_Status_updated_successfully', $this->adminLangId));
         $this->set('preq_id', $preqId);

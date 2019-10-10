@@ -6,12 +6,11 @@ define('CONF_FORM_REQUIRED_STAR_POSITION', Form::FORM_REQUIRED_STAR_POSITION_AFT
 FatApplication::getInstance()->setControllersForStaticFileServer(array('images','img','fonts','templates','innovas','assetmanager'));
 
 $innova_settings  = array('width'=>'730', 'height'=>'400','arrStyle'=>'[["body",false,"","min-height:250px;"]]',  'groups'=>' [
-        ["group1", "", ["FontName", "FontSize", "Superscript", "ForeColor", "BackColor", "FontDialog", "BRK", "Bold", "Italic", "Underline", "Strikethrough", "TextDialog", "Styles", "RemoveFormat"]],
-        ["group2", "", ["JustifyLeft", "JustifyCenter", "JustifyRight", "Paragraph", "BRK", "Bullets", "Numbering", "Indent", "Outdent"]],
-        ["group3", "", ["TableDialog", "Emoticons", "FlashDialog", "BRK", "LinkDialog","YoutubeDialog"]],
-		["group4", "", ["CharsDialog", "Line", "BRK", "ImageDialog", "MyCustomButton"]],
-        ["group5", "", ["SearchDialog", "SourceDialog", "BRK", "Undo", "Redo"]]]',
-        'fileBrowser'=> '"'.CONF_WEBROOT_URL.'innova/assetmanager/asset.php"');
+    ["group1", "", ["Bold", "Italic", "Underline", "FontDialog", "ForeColor", "TextDialog", "RemoveFormat"]],
+    ["group2", "", ["Bullets", "Numbering", "JustifyLeft", "JustifyCenter", "JustifyRight"]],
+    ["group3", "", ["LinkDialog", "ImageDialog", "Table", "TableDialog"]],
+    ["group5", "", ["Undo", "Redo", "FullScreen", "SourceDialog"]]]',
+    'fileBrowser'=> '"'.CONF_WEBROOT_URL.'innova/assetmanager/asset.php"');
 
 FatApp::setViewDataProvider('_partial/buyerDashboardNavigation.php', array('Navigation', 'buyerDashboardNavigation'));
 FatApp::setViewDataProvider('_partial/buyerDashboardMobileNavigation.php', array('Navigation', 'buyerDashboardNavigation'));

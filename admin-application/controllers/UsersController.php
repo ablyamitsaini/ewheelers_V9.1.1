@@ -619,6 +619,11 @@ class UsersController extends AdminBaseController
             FatUtility::dieJsonError(Message::getHtml());
         }
         $this->markAsDeleted($user_id);
+        $shopId = Shop::getAttributesByUserId($user_id, 'shop_id');
+        if (0 < $shopId) {
+            Product::updateMinPrices(0, $shopId);
+        }
+
         $this->set('msg', $this->str_setup_successful);
         $this->_template->render(false, false, 'json-success.php');
     }
@@ -640,6 +645,7 @@ class UsersController extends AdminBaseController
             }
             $this->markAsDeleted($user_id);
         }
+        Product::updateMinPrices();
         $this->set('msg', $this->str_delete_record);
         $this->_template->render(false, false, 'json-success.php');
     }
@@ -1649,7 +1655,10 @@ class UsersController extends AdminBaseController
         $status = ($data['credential_active'] == applicationConstants::ACTIVE) ? applicationConstants::INACTIVE : applicationConstants::ACTIVE;
 
         $this->updateUserStatus($userId, $status);
-
+        $shopId = Shop::getAttributesByUserId($userId, 'shop_id');
+        if (0 < $shopId) {
+            Product::updateMinPrices(0, $shopId);
+        }
         $this->set('msg', $this->str_update_record);
         $this->_template->render(false, false, 'json-success.php');
     }

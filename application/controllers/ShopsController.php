@@ -349,7 +349,6 @@ class ShopsController extends MyAppController
             $rs = $srchSplat->getResultSet();
 
             $socialPlatforms = $db->fetchAll($rs);
-
             $this->set('socialPlatforms', $socialPlatforms);
         }
 
@@ -544,7 +543,7 @@ class ShopsController extends MyAppController
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
         $loggedUserId = UserAuthentication::getLoggedUserId();
         if (false == $post) {
-            FatUtility::dieJsonError(strip_tags(current($frm->getValidationErrors())));
+            LibHelper::dieJsonError(current($frm->getValidationErrors()));
         }
 
         $shop_id = FatUtility::int($post['shop_id']);
@@ -608,7 +607,7 @@ class ShopsController extends MyAppController
         if ($message_id) {
             $emailObj = new EmailHandler();
             if (!$emailObj->SendMessageNotification($message_id, $this->siteLangId)) {
-                FatUtility::dieJsonError(strip_tags($emailObj->getError()));
+                LibHelper::dieJsonError($emailObj->getError());
             }
         }
         $this->set('msg', Labels::getLabel('MSG_Message_Submitted_Successfully!', $this->siteLangId));
@@ -644,12 +643,12 @@ class ShopsController extends MyAppController
         $loggedUserId = UserAuthentication::getLoggedUserId();
 
         if (false == $post) {
-            FatUtility::dieJsonError(strip_tags(current($frm->getValidationErrors())));
+            LibHelper::dieJsonError(current($frm->getValidationErrors()));
         }
 
         $shop_id = FatUtility::int($post['shop_id']);
         if (1 > $shop_id) {
-            FatUtility::dieJsonError(strip_tags(Labels::getLabel('LBL_Invalid_Shop', $this->siteLangId)));
+            LibHelper::dieJsonError(Labels::getLabel('LBL_Invalid_Shop', $this->siteLangId));
         }
 
         $srch = new ShopSearch($this->siteLangId);
@@ -662,7 +661,7 @@ class ShopsController extends MyAppController
         $shopData = FatApp::getDb()->fetch($shopRs);
 
         if (!$shopData) {
-            FatUtility::dieJsonError(strip_tags(Labels::getLabel('LBL_Invalid_Shop', $this->siteLangId)));
+            LibHelper::dieJsonError(Labels::getLabel('LBL_Invalid_Shop', $this->siteLangId));
         }
 
         $sReportObj = new ShopReport();
@@ -1083,7 +1082,7 @@ class ShopsController extends MyAppController
             /* ] */
 
             $srch->addMultipleFields(
-                array( 'shop_id', 'tu.user_name', 'tu.user_regdate', 'shop_user_id', 'shop_ltemplate_id', 'shop_created_on', 'IFNULL(shop_identifier, shop_name) as shop_name', 'shop_description',
+                array( 'shop_id', 'tu.user_name', 'tu.user_regdate', 'shop_user_id', 'shop_ltemplate_id', 'shop_created_on', 'IFNULL(shop_name, shop_identifier) as shop_name', 'shop_description',
                 'shop_country_l.country_name as shop_country_name', 'shop_state_l.state_name as shop_state_name', 'shop_city',
                 'IFNULL(ufs.ufs_id, 0) as is_favorite' )
             );

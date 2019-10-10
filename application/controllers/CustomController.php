@@ -22,7 +22,7 @@
         if (false === $post) {
             $message = $frm->getValidationErrors();
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags(current($message)));
+                LibHelper::dieJsonError(current($message));
             }
             Message::addErrorMessage($message);
             FatApp::redirectUser(CommonHelper::generateUrl('Custom', 'ContactUs'));

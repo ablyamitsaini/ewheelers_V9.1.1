@@ -94,8 +94,19 @@ class ProductsController extends MyAppController
         $post = FatApp::getPostedData();
 
         $prodSrchObj = new ProductSearch($langId);
+        /*
         $prodSrchObj->setDefinedCriteria(0, 0, $headerFormParamsAssocArr, true);
         $prodSrchObj->joinProductToCategory();
+        $prodSrchObj->joinSellerSubscription(0, false, true);
+        $prodSrchObj->addSubscriptionValidCondition();*/
+        $prodSrchObj->joinSellerProducts(0, '', $headerFormParamsAssocArr, true);
+        $prodSrchObj->unsetDefaultLangForJoins();
+        $prodSrchObj->joinSellers();
+        $prodSrchObj->joinShops($langId);
+        $prodSrchObj->joinShopCountry();
+        $prodSrchObj->joinShopState();
+        $prodSrchObj->joinBrands($langId);
+        $prodSrchObj->joinProductToCategory($langId);
         $prodSrchObj->joinSellerSubscription(0, false, true);
         $prodSrchObj->addSubscriptionValidCondition();
 
@@ -222,7 +233,7 @@ class ProductsController extends MyAppController
         if (0 == $langId) {
             $brandSrch->joinBrandsLang($this->siteLangId);
         }
-        //$brandSrch->addGroupBy('brand_id');
+        $brandSrch->addGroupBy('brand_id');
         $brandSrch->addMultipleFields(array( 'brand_id', 'ifNull(brand_name,brand_identifier) as brand_name'));
         if ($brandId) {
             $brandSrch->addCondition('brand_id', '=', $brandId);
@@ -232,20 +243,19 @@ class ProductsController extends MyAppController
 
         if (!empty($brandsCheckedArr)) {
             $brandSrch->addFld('IF(FIND_IN_SET(brand_id, "'.implode(',', $brandsCheckedArr).'"), 1, 0) as priority');
-        //$brandSrch->addOrder('priority', 'desc');
-        } else {
-            $brandSrch->addFld('0 as priority');
+            $brandSrch->addOrder('priority', 'desc');
         }
-        //$brandSrch->addOrder('brand_name');
+        $brandSrch->addOrder('brand_name');
         /* if needs to show product counts under brands[ */
         //$brandSrch->addFld('count(selprod_id) as totalProducts');
         /* ] */
         $brandRs = $brandSrch->getResultSet();
-        $brandsArr = $db->fetchAll($brandRs, 'brand_id');
+        $brandsArr = $db->fetchAll($brandRs);
 
-        $priority  = array_column($brandsArr, 'priority');
+        /*$priority  = array_column($brandsArr, 'priority');
         $name = array_column($brandsArr, 'brand_name');
         array_multisort($priority, SORT_DESC, $name, SORT_ASC, $brandsArr);
+        $priority = $name = array();*/
         /* ] */
 
         /* {Can modify the logic fetch data directly from query . will implement later}
@@ -293,13 +303,14 @@ class ProductsController extends MyAppController
         if (!$conditions) {
             $conditionSrch = clone $prodSrchObj;
             /*Removed Group by as taking time for huge data. handled in fetch all second param*/
-            //$conditionSrch->addGroupBy('selprod_condition');
+            $conditionSrch->addGroupBy('selprod_condition');
+            $conditionSrch->addOrder('selprod_condition');
             $conditionSrch->addMultipleFields(array('selprod_condition'));
             /* if needs to show product counts under any condition[ */
             //$conditionSrch->addFld('count(selprod_condition) as totalProducts');
             /* ] */
             $conditionRs = $conditionSrch->getResultSet();
-            $conditionsArr = $db->fetchAll($conditionRs, 'selprod_condition');
+            $conditionsArr = $db->fetchAll($conditionRs);
             FatCache::set('conditions'.$cacheKey, serialize($conditionsArr), '.txt');
         } else {
             $conditionsArr = unserialize($conditions);
@@ -309,13 +320,14 @@ class ProductsController extends MyAppController
         /* Price Filters[ */
         unset($headerFormParamsAssocArr['doNotJoinSpecialPrice']);
         $priceSrch = $this->getFilterSearchObj($langId, $headerFormParamsAssocArr);
-        $priceSrch->addMultipleFields(array('theprice'));
-        $priceRs = $priceSrch->getResultSet();
-        $priceArrRes = $db->fetchAll($priceRs);
-
-        $priceArr = array();
-        $priceArr['minPrice']  = min(array_column($priceArrRes, 'theprice'));
-        $priceArr['maxPrice'] = max(array_column($priceArrRes, 'theprice'));
+        $priceSrch->doNotLimitRecords();
+        $priceSrch->doNotCalculateRecords();
+        $priceSrch->addMultipleFields(array('MIN(theprice) as minPrice', 'MAX(theprice) as maxPrice'));
+        $qry = $priceSrch->getQuery();
+        $qry .= ' having minPrice IS NOT NULL AND maxPrice IS NOT NULL';
+        //$priceRs = $priceSrch->getResultSet();
+        $priceRs = $db->query($qry);
+        $priceArr = $db->fetch($priceRs);
 
         $priceInFilter = false;
         $filterDefaultMinValue = $priceArr['minPrice'];
@@ -472,7 +484,7 @@ class ProductsController extends MyAppController
             'selprod_id', 'selprod_user_id', 'selprod_code', 'selprod_condition', 'selprod_price', 'special_price_found','splprice_start_date', 'splprice_end_date', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title', 'selprod_warranty', 'selprod_return_policy','selprodComments',
             'theprice', 'selprod_stock' , 'selprod_threshold_stock_level', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name', 'brand_short_description', 'user_name',
             'shop_id', 'IFNULL(shop_name, shop_identifier) as shop_name', 'ifnull(sq_sprating.prod_rating,0) prod_rating ','ifnull(sq_sprating.totReviews,0) totReviews',
-            'splprice_display_dis_type', 'splprice_display_dis_val', 'splprice_display_list_price', 'product_attrgrp_id', 'product_youtube_video', 'product_cod_enabled', 'selprod_cod_enabled','selprod_available_from', 'selprod_min_order_qty')
+            'splprice_display_dis_type', 'splprice_display_dis_val', 'splprice_display_list_price', 'product_attrgrp_id', 'product_youtube_video', 'product_cod_enabled', 'selprod_cod_enabled','selprod_available_from', 'selprod_min_order_qty', 'product_image_updated_on')
         );
 
         $productRs = $prodSrch->getResultSet();

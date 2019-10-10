@@ -1,5 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
-    $frmSearch->setFormTagAttribute('class', 'web_form last_td_nowrap');
+    $frmSearch->setFormTagAttribute('class', 'form');
     $frmSearch->setFormTagAttribute('onsubmit', 'searchSpecialPriceProducts(this); return(false);');
     $frmSearch->developerTags['colClassPrefix'] = 'col-md-';
     $frmSearch->developerTags['fld_default_col'] = 4;

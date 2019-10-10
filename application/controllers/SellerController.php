@@ -2960,6 +2960,8 @@ class SellerController extends SellerBaseController
             /* Message::addErrorMessage(Labels::getLabel('MSG_Uploaded_file_seems_to_be_empty,_please_upload_a_valid_file_or_records_skipped',$this->siteLangId)); */
             FatUtility::dieJsonError(Labels::getLabel('MSG_Uploaded_file_seems_to_be_empty,_please_upload_a_valid_file_or_records_skipped', $this->siteLangId));
         }
+
+        Product::updateMinPrices();
         /* Message::addMessage(  Labels::getLabel('MSG_Inventory_has_been_updated_successfully',$this->siteLangId) ); */
         FatUtility::dieJsonSuccess(Labels::getLabel('MSG_Inventory_has_been_updated_successfully', $this->siteLangId));
     }
@@ -3434,11 +3436,11 @@ class SellerController extends SellerBaseController
         $fld = $frm->addTextBox(Labels::getLabel('LBL_Shipping_country', $this->siteLangId), 'shipping_country');
 
         $fld=$frm->addCheckBox(Labels::getLabel('LBL_Free_Shipping', $this->siteLangId), 'ps_free', 1);
-        $frm->addHtml('', '', '<table id="tab_shipping" class="table"></table>');
+        $frm->addHtml('', '', '<div id="tab_shipping"></div>');
 
         $frm->addHiddenField('', 'ps_from_country_id');
         $frm->addHiddenField('', 'ps_product_id');
-        $frm->addHtml('', '', '<table id="tab_shipping" class="table"></table>');
+        $frm->addHtml('', '', '<div id="tab_shipping"></div>');
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $this->siteLangId));
         $frm->addButton('', 'btn_cancel', Labels::getLabel('LBL_Cancel', $this->siteLangId));
         return $frm;
@@ -3719,7 +3721,7 @@ class SellerController extends SellerBaseController
             $fld1->htmlAfterField='<div class=""><small> <a class="" href="javascript:void(0);" onClick="optionForm(0);">' .Labels::getLabel('LBL_Add_New_Option', $this->siteLangId).'</a></small></div><div class="col-md-12"><ul class="list--vertical" id="product_options_list"></ul></div>';
 
             $fld1 = $frm->addTextBox(Labels::getLabel('LBL_Add_Tag', $this->siteLangId), 'tag_name');
-            $fld1->htmlAfterField= '<div class=""><small><a href="javascript:void(0);" onClick="addTagForm(0);">'.Labels::getLabel('LBL_Tag_Not_Found?_Click_here_to_', $this->siteLangId).Labels::getLabel('LBL_Add_New_Tag', $this->siteLangId).'</a></small></div><div class="col-md-12"><ul class="list--vertical" id="product-tag-js"></ul></div>';
+            $fld1->htmlAfterField= '<div class=""><small><a href="javascript:void(0);" onClick="addTagForm(0);">'.Labels::getLabel('LBL_Tag_Not_Found?_Click_here_to_', $this->siteLangId).' '.Labels::getLabel('LBL_Add_New_Tag', $this->siteLangId).'</a></small></div><div class="col-md-12"><ul class="list--vertical" id="product-tag-js"></ul></div>';
         }
 
         $frm->addHiddenField('', 'ps_from_country_id');
@@ -3729,7 +3731,7 @@ class SellerController extends SellerBaseController
         $frm->addHiddenField('', 'preq_prodcat_id', $prodcat_id);
 
         $fld1 = $frm->addHtml('', 'shipping_info_html', '<div class="heading4 not-digital-js">'.Labels::getLabel('LBL_Shipping_Info/Charges', $langId).'</div><div class="divider not-digital-js"></div>');
-        $fld2 =$frm->addHtml('', '', '<table id="tab_shipping" class="table"></table>');
+        $fld2 =$frm->addHtml('', '', '<div id="tab_shipping"></div>');
         $fld1->attachField($fld2);
 
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $langId));
@@ -4238,11 +4240,13 @@ class SellerController extends SellerBaseController
             'msg'=>Labels::getLabel('LBL_Special_Price_Setup_Successful', $this->siteLangId),
             'data'=>$this->_template->render(false, false, 'seller/update-special-price-row.php', true)
         );
+        Product::updateMinPrices();
         FatUtility::dieJsonSuccess($json);
     }
 
     private function updateSelProdSplPrice($post, $return = false)
     {
+        $userId = UserAuthentication::getLoggedUserId();
         $selprod_id = !empty($post['splprice_selprod_id']) ? FatUtility::int($post['splprice_selprod_id']) : 0;
         $splprice_id = !empty($post['splprice_id']) ? FatUtility::int($post['splprice_id']) : 0;
 
@@ -4255,12 +4259,18 @@ class SellerController extends SellerBaseController
         }
 
         $prodSrch = new ProductSearch($this->siteLangId);
-        $prodSrch->joinSellerProducts();
+        $prodSrch->joinSellerProducts($userId, '', array(), false);
         $prodSrch->addCondition('selprod_id', '=', $selprod_id);
-        $prodSrch->addMultipleFields(array('product_min_selling_price', 'selprod_price'));
+        $prodSrch->addMultipleFields(array('product_min_selling_price', 'selprod_price', 'selprod_available_from'));
         $prodSrch->setPageSize(1);
         $rs = $prodSrch->getResultSet();
         $product = FatApp::getDb()->fetch($rs);
+
+        if (strtotime($post['splprice_start_date']) < strtotime($product['selprod_available_from'])) {
+            $str = Labels::getLabel('MSG_Special_Price_Date_Must_Be_Greater_Or_Than_Equal_To_{availablefrom}', $this->siteLangId);
+            $message = CommonHelper::replaceStringData($str, array('{availablefrom}' => date('Y-m-d', strtotime($product['selprod_available_from']))));
+            FatUtility::dieJsonError($message);
+        }
 
         if (!isset($post['splprice_price']) || $post['splprice_price'] < $product['product_min_selling_price'] || $post['splprice_price'] >= $product['selprod_price']) {
             $str = Labels::getLabel('MSG_Price_must_between_min_selling_price_{minsellingprice}_and_selling_price_{sellingprice}', $this->siteLangId);
@@ -4382,6 +4392,9 @@ class SellerController extends SellerBaseController
             FatUtility::dieWithError(Labels::getLabel('MSG_Invalid_Request', $this->siteLangId));
         }
         $specialPriceRow = SellerProduct::getSellerProductSpecialPriceById($splPriceId);
+        if (empty($specialPriceRow) || 1 > count($specialPriceRow)) {
+            FatUtility::dieWithError(Labels::getLabel('MSG_Already_Deleted', $this->siteLangId));
+        }
         $this->deleteSpecialPrice($splPriceId, $specialPriceRow['selprod_id']);
         $this->set('selprod_id', $specialPriceRow['selprod_id']);
         $this->set('msg', Labels::getLabel('LBL_Special_Price_Record_Deleted', $this->siteLangId));
@@ -4409,5 +4422,19 @@ class SellerController extends SellerBaseController
             FatUtility::dieWithError(Labels::getLabel($sellerProdObj->getError(), $this->siteLangId));
         }
         return true;
+    }
+
+    public function checkIfAvailableForInventory($productId)
+    {
+        $productId = FatUtility::int($productId);
+        $userId = UserAuthentication::getLoggedUserId();
+        if (0 == $productId) {
+            FatUtility::dieJsonError(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
+        }
+        $available = Product::availableForAddToStore($productId, $userId);
+        if (!$available) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Product_has_been_already_added_by_you', $this->siteLangId));
+        }
+        FatUtility::dieJsonSuccess(array());
     }
 }

@@ -371,6 +371,7 @@ class HomeController extends AdminBaseController
         if(Labels::isAPCUcacheAvailable()) {
             apcu_clear_cache();
         }
+        Product::updateMinPrices();
         //FatApp::redirectUser(CommonHelper::generateUrl("home"));
     }
     public function setLanguage($langId = 0)

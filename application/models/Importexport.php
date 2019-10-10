@@ -389,11 +389,13 @@ class Importexport extends ImportexportCommon
                 $sheetName = Labels::getLabel('LBL_Brands_Error', $langId);
                 $this->CSVfileObj = $this->openCSVfileToWrite($sheetName, $langId, true);
                 $this->importBrands($csvFilePointer, $post, $langId, $userId);
+                Product::updateMinPrices();
                 break;
             case Importexport::TYPE_CATEGORIES:
                 $sheetName = Labels::getLabel('LBL_Categories_Error', $langId);
                 $this->CSVfileObj = $this->openCSVfileToWrite($sheetName, $langId, true);
                 $this->importCategories($csvFilePointer, $post, $langId, $userId);
+                Product::updateMinPrices();
                 break;
             case Importexport::TYPE_PRODUCTS:
                 switch ($sheetType) {
@@ -401,6 +403,7 @@ class Importexport extends ImportexportCommon
                         $sheetName = Labels::getLabel('LBL_Products_catalog_Error', $langId);
                         $this->CSVfileObj = $this->openCSVfileToWrite($sheetName, $langId, true);
                         $this->importProductsCatalog($csvFilePointer, $post, $langId, $userId);
+                        Product::updateMinPrices();
                         break;
                     case Importexport::PRODUCT_OPTION:
                         $sheetName = Labels::getLabel('LBL_Product_Options_Error', $langId);
@@ -433,11 +436,13 @@ class Importexport extends ImportexportCommon
                         $sheetName = Labels::getLabel('LBL_Seller_Product_General_Data_Error', $langId);
                         $this->CSVfileObj = $this->openCSVfileToWrite($sheetName, $langId, true);
                         $this->importSellerProdGeneralData($csvFilePointer, $post, $langId, $userId);
+                        Product::updateMinPrices();
                         break;
                     case Importexport::SELLER_PROD_OPTION:
                         $sheetName = Labels::getLabel('LBL_Seller_Product_Option_Data_Error', $langId);
                         $this->CSVfileObj = $this->openCSVfileToWrite($sheetName, $langId, true);
                         $this->importSellerProdOptionData($csvFilePointer, $post, $langId, $userId);
+                        Product::updateMinPrices();
                         break;
                     case Importexport::SELLER_PROD_SEO:
                         $sheetName = Labels::getLabel('LBL_Seller_Product_Seo_Data_Error', $langId);
@@ -448,6 +453,7 @@ class Importexport extends ImportexportCommon
                         $sheetName = Labels::getLabel('LBL_Seller_Product_Special_Price_Error', $langId);
                         $this->CSVfileObj = $this->openCSVfileToWrite($sheetName, $langId, true);
                         $this->importSellerProdSpecialPrice($csvFilePointer, $post, $langId, $userId);
+                        Product::updateMinPrices();
                         break;
                     case Importexport::SELLER_PROD_VOLUME_DISCOUNT:
                         $sheetName = Labels::getLabel('LBL_Seller_Product_Volume_Discount_Error', $langId);
@@ -502,11 +508,13 @@ class Importexport extends ImportexportCommon
                 $sheetName = Labels::getLabel('LBL_Countries_Error', $langId);
                 $this->CSVfileObj = $this->openCSVfileToWrite($sheetName, $langId, true);
                 $this->importCountries($csvFilePointer, $post, $langId);
+                Product::updateMinPrices();
                 break;
             case Importexport::TYPE_STATE:
                 $sheetName = Labels::getLabel('LBL_States_Error', $langId);
                 $this->CSVfileObj = $this->openCSVfileToWrite($sheetName, $langId, true);
                 $this->importStates($csvFilePointer, $post, $langId);
+                Product::updateMinPrices();
                 break;
             case Importexport::TYPE_POLICY_POINTS:
                 $sheetName = Labels::getLabel('LBL_Policy_Points_Error', $langId);

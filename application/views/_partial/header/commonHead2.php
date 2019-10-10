@@ -52,13 +52,22 @@ if (isset($isUserDashboard) && $isUserDashboard) {
     $bodyClass = $bodyClass.' '.$expanded;
 }
 
+if (CommonHelper::demoUrl()) {
+    $bodyClass.= ' have-fixed-btn';
+}
+
 ?>
-<body class="<?php echo $bodyClass; ?>">
+<body class="<?php echo $bodyClass; ?> ">
     <?php
         $alertClass = '';
         if (Message::getInfoCount() > 0) $alertClass = 'alert--info';
         elseif (Message::getErrorCount()>0) $alertClass = 'alert--danger';
         elseif (Message::getMessageCount()>0) $alertClass = 'alert--success';
+    ?>
+    <?php
+    if (FatApp::getConfig("CONF_GOOGLE_TAG_MANAGER_BODY_SCRIPT", FatUtility::VAR_STRING, '')) {
+        echo FatApp::getConfig("CONF_GOOGLE_TAG_MANAGER_BODY_SCRIPT", FatUtility::VAR_STRING, '');
+    }
     ?>
 
     <div class="system_message alert alert--positioned-top-full <?php echo $alertClass; ?>" style="display:none">
