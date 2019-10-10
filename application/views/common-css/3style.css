@@ -1675,6 +1675,8 @@ body.fixed .top-bar {
 	opacity: 0.3;
 	-webkit-transition: all 300ms;
 	transition: all 300ms;
+	display: flex;
+	align-items: center;
 }
 
 .close-layer:hover {
@@ -1689,7 +1691,7 @@ body.fixed .top-bar {
 	position: absolute;
 	left: 15px;
 	content: ' ';
-	height: 33px;
+	height: 18px;
 	width: 2px;
 	background-color: #000;
 }
@@ -14263,7 +14265,6 @@ input.vd-input,
 input.sp-input {
 	width: 110px !important;
 }
-
 /**/
 
 .social-profiles {
@@ -14329,5 +14330,128 @@ input.sp-input {
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 	-webkit-transition: all 265ms ease-in;
-	transition: all 265ms ease-in;
+	transition: all 265ms ease-in;}
+
+
+/*demo header*/
+.demo-header {
+	background: #fff;
+	position: fixed;
+	left: 0;
+	right: 0;
+	z-index: 11;
+	display: flex;
+	justify-content: space-between;
+	padding: 0 2rem;
+	line-height: 2.5rem;
+}
+
+.demo-header ~ .wrapper #header {
+	top: 71px;
+}
+
+.restore-wrapper {
+	display: flex;
+}
+
+.restore-wrapper > a {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	padding: 10px 0;
+}
+
+.restore-wrapper .restore__counter {
+	padding: 0px 8px;
+	font-size: 1rem;
+	color: var(--first-color);
+	margin: 0.10rem 0;
+	font-weight: 800;
+	line-height: 1;
+	letter-spacing: 4px;
+}
+
+.restore__progress {
+	display: flex;
+	height: 4px;
+	width: 100%;
+	overflow: hidden;
+	font-size: 0.75rem;
+	background-color: #e9ecef;
+	border-radius: 2rem;
+	margin: 0.25rem 0;
+	max-width: 96px;
+
+}
+
+.restore__progress-bar {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	color: #fff;
+	text-align: center;
+	white-space: nowrap;
+	background-color: var(--first-color);
+	transition: width 0.6s ease;
+}
+
+.restore-wrapper .restore__content {
+	font-size: 0.675rem;
+	color: var(--body-color);
+	font-weight: 600;
+	margin-bottom: 0.25rem;
+
+	line-height: 1.5;
+}
+
+.switch-interface {
+	display: flex;
+
+}
+
+.switch-interface li {
+	margin: 0 1rem;
+	display: flex;
+}
+
+.switch-interface li a {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.switch-interface li.is-active a:before,
+.switch-interface li a:hover:before {
+	height: 2px;
+	background: var(--first-color);
+	position: absolute;
+	bottom: 0;
+	content: "";
+	width: 100%;
+}
+
+.switch-interface .icn svg {
+	width: 2rem;
+	height: 2rem;
+	fill: #8c8c8c;
+}
+
+.switch-interface li.is-active .icn svg,
+.switch-interface li a:hover .icn svg {
+	fill: var(--first-color);
+}
+
+.demo-cta {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.demo-cta .close-layer {
+	position: relative;
+	right: auto;
+	top: auto;
+	margin-inline-start: 1rem;
+
 }
