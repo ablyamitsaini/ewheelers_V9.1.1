@@ -521,8 +521,8 @@
 				<li class="haschild"><a href="javascript:void(0);"><?php echo Labels::getLabel('LBL_Sitemap',$adminLangId);?></a>
 					<ul>
 						<li><a href="<?php echo CommonHelper::generateUrl('sitemap', 'generate'); ?>"><?php echo Labels::getLabel('LBL_Update_Sitemap',$adminLangId);?></a></li>
-						<li><a href="<?php echo CommonHelper::generateFullUrl('custom', 'sitemap', array(), CONF_WEBROOT_FRONTEND); ?>" target="_blank"><?php echo Labels::getLabel('LBL_View_HTML',$adminLangId);?></a></li>
-						<li><a href="<?php echo CONF_WEBROOT_FRONTEND.'/sitemap.xml'; ?>" target="_blank"><?php echo Labels::getLabel('LBL_View_XML',$adminLangId);?></a></li>
+						<li><a href="<?php echo CommonHelper::generateFullUrl('custom', 'sitemap', array(), CONF_WEBROOT_FRONT_URL); ?>" target="_blank"><?php echo Labels::getLabel('LBL_View_HTML',$adminLangId);?></a></li>
+						<li><a href="<?php echo CommonHelper::generateFullUrl('', '', array(), CONF_WEBROOT_FRONT_URL).'/sitemap.xml'; ?>" target="_blank"><?php echo Labels::getLabel('LBL_View_XML',$adminLangId);?></a></li>
 					</ul>
 				</li>
 			<?php }?>

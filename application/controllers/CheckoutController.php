@@ -1446,7 +1446,7 @@ class CheckoutController extends MyAppController
         }
 
         if (empty($post['redeem_rewards'])) {
-            $this->errMessage = Labels::getLabel('LBL_Add_Reward_points_then_apply', $this->siteLangId);
+            $this->errMessage = Labels::getLabel('LBL_You_cannot_use_0_reward_points._Please_add_reward_points_greater_than_0', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
                 FatUtility::dieJsonError($this->errMessage);
             }

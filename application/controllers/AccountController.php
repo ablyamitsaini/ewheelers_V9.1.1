@@ -646,13 +646,13 @@ class AccountController extends LoggedUserController
         }
 
         if (($minimumWithdrawLimit > $post["withdrawal_amount"])) {
-            $message = sprintf(Labels::getLabel('MSG_Withdrawal_Request_Less', $this->siteLangId), CommonHelper::displayMoneyFormat($minimumWithdrawLimit));
+            $message = sprintf(Labels::getLabel('MSG_Your_withdrawal_request_amount_is_less_than_the_minimum_allowed_amount_of_%s', $this->siteLangId), CommonHelper::displayMoneyFormat($minimumWithdrawLimit));
             FatUtility::dieJsonError($message);
         }
         
         $maximumWithdrawLimit = FatApp::getConfig("CONF_MAX_WITHDRAW_LIMIT");
         if (($maximumWithdrawLimit < $post["withdrawal_amount"])) {
-            $message = sprintf(Labels::getLabel('MSG_Withdrawal_Request_Max', $this->siteLangId), CommonHelper::displayMoneyFormat($maximumWithdrawLimit));
+            $message = sprintf(Labels::getLabel('MSG_Your_withdrawal_request_amount_is_greater_than_the_maximum_allowed_amount_of_%s', $this->siteLangId), CommonHelper::displayMoneyFormat($maximumWithdrawLimit));
             FatUtility::dieJsonError($message);
         }
 
