@@ -1900,7 +1900,7 @@ class AccountController extends LoggedUserController
         $loggedUserId = UserAuthentication::getLoggedUserId();
 
         $srch = UserWishList::getSearchObject($loggedUserId);
-        $srch->addMultipleFields(array('uwlist_id', 'uwlist_title'));
+        $srch->addMultipleFields(array('uwlist_id', 'uwlist_title', 'uwlist_default'));
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
         $srch->addCondition('uwlist_id', '=', $uwlist_id);
