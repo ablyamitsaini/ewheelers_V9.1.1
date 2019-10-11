@@ -7,7 +7,7 @@
                <div class="section__heading">
                    <h2 class="mb-0"><?php echo Labels::getLabel('Lbl_Change_Email', $siteLangId);?></h2>
                    <p>
-                       <?php echo Labels::getLabel('Lbl_Seller_Approval_Form', $siteLangId);?>
+                       <?php echo Labels::getLabel('LBL_CONFIGURE_YOUR_EMAIL', $siteLangId);?>
                    </p>
                </div>
            </div>
