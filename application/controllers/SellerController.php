@@ -4433,7 +4433,7 @@ class SellerController extends SellerBaseController
         }
         $available = Product::availableForAddToStore($productId, $userId);
         if (!$available) {
-            FatUtility::dieJsonError(Labels::getLabel('MSG_Product_has_been_already_added_by_you', $this->siteLangId));
+            FatUtility::dieJsonError(Labels::getLabel('LBL_Inventory_for_all_possible_product_options_have_been_added._Please_access_the_shop_inventory_section_to_update', $this->siteLangId));
         }
         FatUtility::dieJsonSuccess(array());
     }

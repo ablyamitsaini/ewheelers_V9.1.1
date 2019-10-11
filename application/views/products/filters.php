@@ -39,11 +39,7 @@ if (isset($prodcat_code)) {
 <!--Filters[ -->
 <div class="widgets-head">
     <div class="widgets__heading filter-head-js"><?php echo Labels::getLabel('LBL_FILTERS', $siteLangId);?>
-        <a class="reset-all" id="resetAll" onClick="resetListingFilter()"><i class="icn reset-all">
-                <svg class="svg">
-                    <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#reset" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#reset"></use>
-                </svg>
-            </i></a>
+        <a href="javascript:void(0)" class="resetAll link" id="resetAll" onClick="resetListingFilter()"><?php echo Labels::getLabel('LBL_Reset_All', $siteLangId);?></a>
     </div>
 </div>
 <div class="selected-filters" id="filters"> </div>
@@ -196,7 +192,7 @@ if (isset($prodcat_code)) {
       $brandsCheckedArr = (isset($brandsCheckedArr) && !empty($brandsCheckedArr))? $brandsCheckedArr : array(); ?>
 <div class="divider--filters"></div>
 <div class="widgets__heading filter-head-js"><?php echo Labels::getLabel('LBL_Brand', $siteLangId); ?></div>
-<div class="scrollbar-filters" id="scrollbar-filters" <?php echo (CommonHelper::getLayoutDirection() == 'rtl') ? 'data-simplebar-direction="rtl"' : '' ?>>
+<div class="scrollbar-filters" id="scrollbar-filters">
     <ul class="list-vertical">
         <?php foreach ($brandsArr as $brand) {
           ?>

@@ -9,6 +9,7 @@
             <div class="col-md-auto">
                 <div class="action">
                     <div class="">
+                        <a href="javascript:void(0)" class="btn btn--primary btn--sm btn-back d-none" onclick="reloadList()"><?php echo Labels::getLabel('LBL_Back', $siteLangId);?></a>
                         <a href="javascript:void(0)" class="btn btn--primary btn--sm" onclick="addForm(0)"><?php echo Labels::getLabel('LBL_Add_Social_Platform', $siteLangId);?></a>
                     </div>
                 </div>
