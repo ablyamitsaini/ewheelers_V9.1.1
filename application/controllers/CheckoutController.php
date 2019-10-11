@@ -560,11 +560,20 @@ class CheckoutController extends MyAppController
         }
         $this->Cart = new Cart(UserAuthentication::getLoggedUserId());
         $carrierList = $this->Cart->getCarrierShipmentServicesList($product_key, $carrier_id, $this->siteLangId);
-        $this->set('options', $carrierList);
+        $json = array('status'=>1, 'isCarriersFound' => 0);
+        $isCarriersFound = 0;
+        $html = $this->_template->render(false, false, 'checkout/shipping-api-carriers-services-not-found.php', true);
+        if (isset($carrierList) && count($carrierList) > 1) {
+            $json['isCarriersFound'] = 1;
+            $this->set('options', $carrierList);
+            $html = $this->_template->render(false, false, '', true);
+        }
         if (true ===  MOBILE_APP_API_CALL) {
             $this->_template->render();
         }
-        $this->_template->render(false, false);
+
+        $json['html'] = $html;
+        die(json_encode($json));
     }
 
     public function setUpShippingMethod()
