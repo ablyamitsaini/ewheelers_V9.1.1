@@ -2560,14 +2560,7 @@ input::-moz-focus-inner {
   padding: 10px;
 }
 
-.fld-date {
-  background-repeat: no-repeat;
-  background-position: calc(100% - 12px) 11px;
-  background-size: 16px 16px;
-  padding-inline-end: 35px !important;
-  */
-}
-
+.fld-date {}
 input,
 select,
 textarea {
@@ -4215,6 +4208,25 @@ a.link:after {
   color: inherit;
 }
 
+.edit-hover {	 
+	padding: 0 10px;
+	font-size: 0.9em;
+	height: 2.5rem;
+	line-height: 2.5rem;
+	display: block;
+	width: 110px;
+	border-bottom: solid 1px  var(--border-color);
+}
+
+.edit-hover:hover {
+	border-color: var(--border-color);
+}
+
+input.vd-input,
+input.sp-input {
+	width: 110px !important;
+}
+
 /*Responsive*/
 @media only screen and (max-width: 1399px) {
 
@@ -4587,3 +4599,5 @@ a.link:after {
     max-width: 100%;
   }
 }
+
+

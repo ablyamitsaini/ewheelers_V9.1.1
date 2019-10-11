@@ -14246,25 +14246,7 @@ div.faqanswer p {
 	display: none;
 }
 
-.edit-hover {
-	border-radius: 4px;
-	padding: 0 10px;
-	font-size: 0.9em;
-	height: 2.5rem;
-	line-height: 2.5rem;
-	display: block;
-	width: 110px;
-	border: solid 1px transparent;
-}
 
-.edit-hover:hover {
-	border-color: var(--border-color);
-}
-
-input.vd-input,
-input.sp-input {
-	width: 110px !important;
-}
 /**/
 
 .social-profiles {
