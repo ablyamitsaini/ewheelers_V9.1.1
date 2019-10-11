@@ -2249,6 +2249,7 @@ class AccountController extends LoggedUserController
                 Message::addErrorMessage(strip_tags(current($threadObj->getError())));
             }
             Message::addErrorMessage($threadObj->getError());
+            CommonHelper::redirectUserReferer();
         }
 
         if (false ===  MOBILE_APP_API_CALL) {
