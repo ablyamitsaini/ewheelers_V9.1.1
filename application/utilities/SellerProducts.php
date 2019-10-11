@@ -333,7 +333,7 @@ trait SellerProducts
 
         if (!empty($selProdAvailable)) {
             if (!$selProdAvailable['selprod_deleted']) {
-                Message::addErrorMessage(Labels::getLabel("MSG_Product_has_been_already_added_by_you", $this->siteLangId));
+                Message::addErrorMessage(Labels::getLabel("LBL_Inventory_for_this_option_have_been_added", $this->siteLangId));
                 FatUtility::dieWithError(Message::getHtml());
             }
             $sellerProdObj = new SellerProduct($selProdAvailable['selprod_id']);
@@ -478,6 +478,8 @@ trait SellerProducts
             $newTabLangId = $this->siteLangId;
         }
 
+        $productId = SellerProduct::getAttributesById($selprod_id, 'selprod_product_id');
+        Product::updateMinPrices($productId);
         $this->set('selprod_id', $selprod_id);
         $this->set('langId', $newTabLangId);
         $this->set('msg', Labels::getLabel('LBL_Product_Setup_Successful', $this->siteLangId));
@@ -512,7 +514,7 @@ trait SellerProducts
         $selProdAvailable = Product::IsSellProdAvailableForUser($selProdCode, $this->siteLangId, UserAuthentication::getLoggedUserId(), $selprod_id);
 
         if (!empty($selProdAvailable) && !$selProdAvailable['selprod_deleted']) {
-            Message::addErrorMessage(Labels::getLabel("MSG_Product_has_been_already_added_by_you", $this->siteLangId));
+            Message::addErrorMessage(Labels::getLabel("LBL_Inventory_for_this_option_have_been_added", $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         } else {
             FatUtility::dieJsonSuccess(Message::getHtml());
@@ -945,7 +947,8 @@ trait SellerProducts
         if (!$sellerProdObj->addUpdateSellerProductSpecialPrice($data_to_save)) {
             FatUtility::dieJsonError(Labels::getLabel($sellerProdObj->getError(), $this->siteLangId));
         }
-
+        $productId = SellerProduct::getAttributesById($selprod_id, 'selprod_product_id');
+        Product::updateMinPrices($productId);
         $this->set('msg', Labels::getLabel('LBL_Special_Price_Setup_Successful', $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
@@ -959,7 +962,8 @@ trait SellerProducts
         }
         $specialPriceRow = SellerProduct::getSellerProductSpecialPriceById($splPriceId);
         $this->removeSpecialPrice($splPriceId, $specialPriceRow);
-
+        $productId = SellerProduct::getAttributesById($specialPriceRow['selprod_id'], 'selprod_product_id');
+        Product::updateMinPrices($productId);
         $this->set('selprod_id', $specialPriceRow['selprod_id']);
         $this->set('msg', Labels::getLabel('LBL_Special_Price_Record_Deleted', $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
@@ -973,6 +977,7 @@ trait SellerProducts
             $specialPriceRow = SellerProduct::getSellerProductSpecialPriceById($splPriceId);
             $this->removeSpecialPrice($splPriceId, $specialPriceRow);
         }
+        Product::updateMinPrices();
         $this->set('selprod_id', $specialPriceRow['selprod_id']);
         $this->set('msg', Labels::getLabel('LBL_Special_Price_Record_Deleted', $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
@@ -2036,7 +2041,7 @@ trait SellerProducts
 
         if (!empty($selProdAvailable)) {
             if (!$selProdAvailable['selprod_deleted']) {
-                Message::addErrorMessage(Labels::getLabel("MSG_Product_has_been_already_added_by_you", $this->siteLangId));
+                Message::addErrorMessage(Labels::getLabel("LBL_Inventory_for_this_option_have_been_added", $this->siteLangId));
                 FatUtility::dieWithError(Message::getHtml());
             }
             $sellerProdObj = new SellerProduct($selProdAvailable['selprod_id']);
@@ -2267,7 +2272,7 @@ trait SellerProducts
 
         $srch->setPageNumber($page);
         $srch->addOrder('voldiscount_id', 'DESC');
-        
+
         $db = FatApp::getDb();
         $rs = $srch->getResultSet();
         $arrListing = $db->fetchAll($rs);

@@ -6,6 +6,9 @@ $slideFrm->developerTags['fld_default_col'] = 12;
 
 $slide_identifier = $slideFrm->getField('slide_identifier');
 $slide_identifier->setUnique('tbl_slides', 'slide_identifier', 'slide_id', 'slide_id', 'slide_id');
+
+$extUrlField = $slideFrm->getField('slide_url');
+$extUrlField->addFieldTagAttribute('placeholder', 'http://');
 ?>
 <section class="section">
     <div class="sectionhead">

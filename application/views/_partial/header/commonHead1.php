@@ -6,11 +6,12 @@ if ($controllerName != 'GuestUser' && $controllerName != 'Error') {
 $htmlClass = '';
 $actionName = FatApp::getAction();
 if ($controllerName == 'Products' && $actionName == 'view') {
-	$htmlClass = 'product-view';
+    $htmlClass = 'product-view';
 }
+$additionalAttributes = (CommonHelper::getLayoutDirection() == 'rtl') ? 'direction="rtl" style="direction: rtl;"' : '';
 ?>
 <!DOCTYPE html>
-<html prefix="og: http://ogp.me/ns#" class="<?php echo $htmlClass;?>">
+<html prefix="og: http://ogp.me/ns#" <?php echo $additionalAttributes;?> class="<?php echo $htmlClass;?>">
 <head>
 
     <meta charset="utf-8">
@@ -49,7 +50,7 @@ if ($controllerName == 'Products' && $actionName == 'view') {
     </style>
     <?php
     echo $str = '<script type="text/javascript">
-        var langLbl = ' . json_encode($jsVariables) . ';
+        var langLbl = ' . FatUtility::convertToJson($jsVariables, JSON_UNESCAPED_UNICODE) . ';
         var CONF_AUTO_CLOSE_SYSTEM_MESSAGES = ' . FatApp::getConfig("CONF_AUTO_CLOSE_SYSTEM_MESSAGES", FatUtility::VAR_INT, 0) . ';
         var CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES = ' . FatApp::getConfig("CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES", FatUtility::VAR_INT, 3) . ';
         var extendEditorJs = ' . $extendEditorJs . ';
@@ -60,6 +61,10 @@ if ($controllerName == 'Products' && $actionName == 'view') {
             CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES = 3;
         }
     </script>' . "\r\n";
+    
+    if (FatApp::getConfig("CONF_GOOGLE_TAG_MANAGER_HEAD_SCRIPT", FatUtility::VAR_STRING, '')) {
+        echo FatApp::getConfig("CONF_GOOGLE_TAG_MANAGER_HEAD_SCRIPT", FatUtility::VAR_STRING, '');
+    }
 
     if (FatApp::getConfig("CONF_ENABLE_ENGAGESPOT_PUSH_NOTIFICATION", FatUtility::VAR_STRING, '')) {
         echo FatApp::getConfig("CONF_ENGAGESPOT_PUSH_NOTIFICATION_CODE", FatUtility::VAR_STRING, '');

@@ -24,14 +24,14 @@ class MobileAppApiController extends MyAppController
         if ($this->appToken) {
             if (!UserAuthentication::isUserLogged('', $this->appToken)) {
                 $arr = array('status'=>-1,'msg'=>Labels::getLabel('L_Invalid_Token', $this->siteLangId));
-                die(json_encode($arr));
+                die(FatUtility::convertToJson($arr, JSON_UNESCAPED_UNICODE));
             }
 
             $userId = UserAuthentication::getLoggedUserId();
             $userObj = new User($userId);
             if (!$row = $userObj->getProfileData()) {
                 $arr = array('status'=>-1,'msg'=>Labels::getLabel('L_Invalid_Token', $this->siteLangId));
-                die(json_encode($arr));
+                die(FatUtility::convertToJson($arr, JSON_UNESCAPED_UNICODE));
             }
             $this->app_user = $row;
             $this->app_user['temp_user_id'] = 0;
@@ -136,7 +136,7 @@ class MobileAppApiController extends MyAppController
 
     public function json_encode_unicode($data, $convertToType = false)
     {
-        die(FatUtility::convertToJson($data, 0));
+        die(FatUtility::convertToJson($data, JSON_UNESCAPED_UNICODE));
         /*
         if($convertToType){
         die(json_encode($data));
@@ -2162,12 +2162,12 @@ class MobileAppApiController extends MyAppController
     {
         $post = FatApp::getPostedData();
         if (empty($post['username']) || empty($post['password'])) {
-            FatUtility::dieJsonError(strip_tags(Labels::getLabel('ERR_USERNAME_AND_PASSWORD_BOTH_ARE_REQUIRED', $this->siteLangId)));
+            LibHelper::dieJsonError(Labels::getLabel('ERR_USERNAME_AND_PASSWORD_BOTH_ARE_REQUIRED', $this->siteLangId));
         }
 
         $authentication = new UserAuthentication();
         if (!$authentication->login($post['username'], $post['password'], $_SERVER['REMOTE_ADDR'], true, false, $this->app_user['temp_user_id'])) {
-            FatUtility::dieJsonError(strip_tags(Labels::getLabel($authentication->getError(), $this->siteLangId)));
+            LibHelper::dieJsonError(Labels::getLabel($authentication->getError(), $this->siteLangId));
         }
         $this->app_user['temp_user_id'] = 0;
         $userId = UserAuthentication::getLoggedUserId();
@@ -6469,7 +6469,12 @@ class MobileAppApiController extends MyAppController
         }
 
         if (($minimumWithdrawLimit > $post["withdrawal_amount"])) {
-            FatUtility::dieJsonError(sprintf(Labels::getLabel('MSG_Withdrawal_Request_Less', $this->siteLangId), CommonHelper::displayMoneyFormat($minimumWithdrawLimit)));
+            FatUtility::dieJsonError(sprintf(Labels::getLabel('MSG_Your_withdrawal_request_amount_is_less_than_the_minimum_allowed_amount_of_%s', $this->siteLangId), CommonHelper::displayMoneyFormat($minimumWithdrawLimit)));
+        }
+
+        $maximumWithdrawLimit = FatApp::getConfig("CONF_MAX_WITHDRAW_LIMIT");
+        if (($maximumWithdrawLimit < $post["withdrawal_amount"])) {
+            FatUtility::dieJsonError(sprintf(Labels::getLabel('MSG_Your_withdrawal_request_amount_is_greater_than_the_maximum_allowed_amount_of_%s', $this->siteLangId), CommonHelper::displayMoneyFormat($maximumWithdrawLimit)));
         }
 
         if (($post["withdrawal_amount"] > $balance)) {

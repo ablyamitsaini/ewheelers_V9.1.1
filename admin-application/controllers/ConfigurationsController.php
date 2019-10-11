@@ -190,6 +190,13 @@ class ConfigurationsController extends AdminBaseController
             }
         }
 
+        if (isset($post['CONF_SITE_ROBOTS_TXT'])) {
+            $filePath = CONF_INSTALLATION_PATH.'public/robots.txt';
+            $robotfile = fopen($filePath, "w");
+            fwrite($robotfile, $post['CONF_SITE_ROBOTS_TXT']);
+            fclose($robotfile);
+        }
+
         if (!$record->update($post)) {
             Message::addErrorMessage($record->getError());
             FatUtility::dieJsonError(Message::getHtml());
@@ -581,6 +588,16 @@ class ConfigurationsController extends AdminBaseController
 
                 $fld2 = $frm->addTextarea(Labels::getLabel('LBL_Site_Tracker_Code', $this->adminLangId), 'CONF_SITE_TRACKER_CODE');
                 $fld2->htmlAfterField = '<small>'.Labels::getLabel("LBL_This_is_the_site_tracker_script,_used_to_track_and_analyze_data_about_how_people_are_getting_to_your_website._e.g.,_Google_Analytics.", $this->adminLangId).' http://www.google.com/analytics/</small>';
+
+                $robotsFld = $frm->addTextarea(Labels::getLabel('LBL_Robots_Txt', $this->adminLangId), 'CONF_SITE_ROBOTS_TXT');
+                $robotsFld->htmlAfterField = '<small>'.Labels::getLabel("LBL_This_will_update_your_Robots.txt_file._This_is_to_help_search_engines_index_your_site_more_appropriately.", $this->adminLangId).'</small>';
+                
+                $frm->addHtml('', 'Analytics', '<h3>'.Labels::getLabel("LBL_Google_Tag_Manager", $this->adminLangId).'</h3>');
+                $fld = $frm->addTextarea(Labels::getLabel("LBL_Head_Script", $this->adminLangId), 'CONF_GOOGLE_TAG_MANAGER_HEAD_SCRIPT');
+                $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_is_the_code_provided_by_google_tag_manager_for_integration.", $this->adminLangId)."</small>";
+
+                $fld = $frm->addTextarea(Labels::getLabel("LBL_Body_Script", $this->adminLangId), 'CONF_GOOGLE_TAG_MANAGER_BODY_SCRIPT');
+                $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_is_the_code_provided_by_google_tag_manager_for_integration.", $this->adminLangId)."</small>";
                 break;
 
             case Configurations::FORM_PRODUCT:
@@ -744,8 +761,12 @@ class ConfigurationsController extends AdminBaseController
                 $fld->htmlAfterField = "<br><small>".Labels::getLabel("LBL_Maximum_seller_request_attempts_allowed", $this->adminLangId)."</small>";
 
                 $frm->addHtml('', 'Withdrawal', '<h3>'.Labels::getLabel("LBL_Withdrawal", $this->adminLangId).'</h3>');
+
                 $fld = $frm->addIntegerField(Labels::getLabel("LBL_Minimum_Withdrawal_Amount", $this->adminLangId).' ['.$this->siteDefaultCurrencyCode.']', 'CONF_MIN_WITHDRAW_LIMIT', '');
                 $fld->htmlAfterField = "<small> ".Labels::getLabel("LBL_This_is_the_minimum_withdrawable_amount.", $this->adminLangId)."</small>";
+
+                $fld = $frm->addIntegerField(Labels::getLabel("LBL_Maximum_Withdrawal_Amount", $this->adminLangId).' ['.$this->siteDefaultCurrencyCode.']', 'CONF_MAX_WITHDRAW_LIMIT', '');
+                $fld->htmlAfterField = "<small> ".Labels::getLabel("LBL_This_is_the_maximum_withdrawable_amount.", $this->adminLangId)."</small>";
 
                 $fld = $frm->addIntegerField(Labels::getLabel("LBL_Minimum_Interval_[Days]", $this->adminLangId), 'CONF_MIN_INTERVAL_WITHDRAW_REQUESTS', '');
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_is_the_minimum_interval_in_days_between_two_withdrawal_requests.", $this->adminLangId)."</small>";

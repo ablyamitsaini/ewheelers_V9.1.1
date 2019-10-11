@@ -54,6 +54,10 @@ class CustomRouter
         if (defined('SYSTEM_FRONT') && SYSTEM_FRONT === true && !FatUtility::isAjaxCall()) {
             $url = $_SERVER['REQUEST_URI'];
 
+            if (strpos($url, "?") !== false) {
+                $url = str_replace('?', '/?', $url);
+            }
+
             /* [ Check url rewritten by the system and "/" discarded in url rewrite*/
             $customUrl = substr($url, strlen(CONF_WEBROOT_URL));
             $customUrl = rtrim($customUrl, '/');

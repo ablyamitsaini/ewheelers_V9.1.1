@@ -35,3 +35,9 @@
         </a>
     </li>
 </ul>
+
+<?php if (0 < $preqId && !User::isCatalogRequestSubmittedForApproval($preqId)) {?>
+    <a href="<?php echo CommonHelper::generateUrl('seller', 'approveCustomCatalogProducts', array($preqId));?>" class="btn btn--primary-border btn--sm ml-auto">
+        <strong><?php echo Labels::getLabel('LBL_Submit_For_Approval', $siteLangId)?></strong>
+    </a>
+<?php } ?>

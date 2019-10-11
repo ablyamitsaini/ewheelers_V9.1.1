@@ -14,4 +14,4 @@ $response = array(
     'data' => $data
 );
 
-CommonHelper::jsonEncodeUnicode($response);
+CommonHelper::jsonEncodeUnicode($response, true);

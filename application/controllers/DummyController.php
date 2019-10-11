@@ -7,6 +7,11 @@ class DummyController extends MyAppController
         //CommonHelper::recursiveDelete( $dirName );
     }
 
+    public function addToStore()
+    {
+        $product = Product::isAvailableForAddToStore(64, 11);
+    }
+
     public function createProcedures($printQuery = false)
     {
         $db = FatApp::getDb();
@@ -328,7 +333,8 @@ class DummyController extends MyAppController
 
     public function test()
     {
-        echo FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'favicon', array(1)), CONF_IMG_CACHE_TIME, '.jpg');
+        $warning = Labels::getLabel("MSG_One_of_the_product_in_combo_is_not_available_in_requested_quantity,_you_can_buy_upto_max_{n}_quantity.", $this->siteLangId);
+        echo $warning  = str_replace(array('{n}','{N}'), 1, $warning);
         exit;
         $srch = new ProductSearch(1);
         $srch->setDefinedCriteria();

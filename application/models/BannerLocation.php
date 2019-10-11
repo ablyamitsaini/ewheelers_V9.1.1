@@ -12,6 +12,9 @@ class BannerLocation extends MyAppModel
     const HOME_PAGE_TOP_BANNER = 1;
     const HOME_PAGE_BOTTOM_BANNER = 2;
     const PRODUCT_DETAIL_PAGE_BANNER = 3;
+    const HOME_PAGE_MIDDLE_BANNER = 4;
+
+    const MOBILE_API_BANNER_PAGESIZE = 1;
 
     public function __construct($id = 0)
     {
@@ -46,7 +49,7 @@ class BannerLocation extends MyAppModel
         return $srch;
     }
 
-    public static function getPromotionalBanners($blocationId, $langId, $pageSize = 5)
+    public static function getPromotionalBanners($blocationId, $langId, $pageSize = 0)
     {
         $blocationId = FatUtility::int($blocationId);
         $db = FatApp::getDb();
@@ -67,7 +70,7 @@ class BannerLocation extends MyAppModel
             $bsrch->addMinimiumWalletbalanceCondition();
             $bsrch->addSkipExpiredPromotionAndBannerCondition();
             $bsrch->joinBudget();
-            $bsrch->addMultipleFields(array('banner_id','banner_blocation_id','banner_type','banner_record_id','banner_url','banner_target','banner_title','promotion_id','daily_cost','weekly_cost','monthly_cost','total_cost','banner_img_updated_on'));
+            $bsrch->addMultipleFields(array('banner_id','banner_blocation_id','banner_type','banner_record_id', 'banner_url','banner_target','banner_title','promotion_id','daily_cost','weekly_cost','monthly_cost','total_cost','banner_img_updated_on'));
             $bsrch->doNotCalculateRecords();
             //$bsrch->doNotLimitRecords();
             $bsrch->joinAttachedFile();
@@ -83,9 +86,8 @@ class BannerLocation extends MyAppModel
 					WHEN promotion_duration='.Promotion::DURATION_NOT_AVAILABALE.' THEN promotion_budget = -1
 				  END ) )'
             );
-
             $srch->addMultipleFields(array('banner_id','banner_blocation_id','banner_type','banner_record_id','banner_url','banner_target','banner_title','promotion_id','userBalance','daily_cost','weekly_cost','monthly_cost','total_cost','promotion_budget','promotion_duration','banner_img_updated_on'));
-            if ($val['blocation_banner_count'] > 0) {
+            if ($pageSize == 0) {
                 $pageSize = $val['blocation_banner_count'];
             }
             $srch->setPageSize($pageSize);

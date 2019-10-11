@@ -10,7 +10,7 @@ $(document).ready(function () {
         return false;
     });
 
-	$(document).on('keydown', 'input.phone-js', function(e) {
+	/*$(document).on('keydown', 'input.phone-js', function(e) {
         var key = e.which || e.charCode || e.keyCode || 0;
         $phone = $(this);
 
@@ -60,7 +60,7 @@ $(document).ready(function () {
         if ($phone.val() === '(') {
             $phone.val('');
         }
-    });
+    });*/
 });
 
 (function($) {

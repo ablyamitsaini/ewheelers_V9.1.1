@@ -95,7 +95,7 @@ class OptionValuesController extends AdminBaseController
                 FatUtility::dieWithError(Message::getHtml());
             }
         }
-
+        Product::updateMinPrices();
         $this->set('msg', Labels::getLabel('MSG_RECORD_UPDATED_SUCCESSFULLY', $this->adminLangId));
         $this->set('optionId', $option_id);
         $this->set('optionValueId', $optionvalue_id);
@@ -198,6 +198,7 @@ class OptionValuesController extends AdminBaseController
             Message::addErrorMessage($optionValueObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
+        Product::updateMinPrices();
         $this->set('msg', Labels::getLabel('MSG_RECORD_DELETED', $this->adminLangId));
 
         $this->_template->render(false, false, 'json-success.php');

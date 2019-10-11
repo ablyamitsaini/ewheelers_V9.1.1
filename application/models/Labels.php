@@ -101,12 +101,8 @@ class Labels extends MyAppModel
         }
 
         if (isset($langFileData[$langId])) {
-            if (array_key_exists($key_original, $langFileData[$langId])) {
-                $str = $langFileData[$langId][$key_original];
-            } else if (array_key_exists(strtoupper($key_original), $langFileData[$langId])) {
-                $str = $langFileData[$langId][strtoupper($key_original)];
-            } else if (array_key_exists(strtolower($key_original), $langFileData[$langId])) {
-                $str = $langFileData[$langId][strtolower($key_original)];
+            if (array_key_exists($key, $langFileData[$langId])) {
+                $str = $langFileData[$langId][$key];
             }
         }
 
@@ -132,7 +128,7 @@ class Labels extends MyAppModel
 
                 $str = implode(' ', $arr);
                 $assignValues = array(
-                    static::DB_TBL_PREFIX . 'key' => $lblKey,
+                    static::DB_TBL_PREFIX . 'key' => $key,
                     static::DB_TBL_PREFIX . 'caption' => $str,
                     static::DB_TBL_PREFIX . 'lang_id' => $langId,
                     static::DB_TBL_PREFIX . 'type' => $type
@@ -226,10 +222,10 @@ class Labels extends MyAppModel
         $langFile = $path . $langCode.'.json';
         if (!file_exists($langFile) || (filemtime($langFile) < $lastLabelsUpdatedAt) || 1 > filesize($langFile)) {
             $records = static::fetchAllAssoc($langId, array('label_key','label_caption'), $type);
-            if (!json_encode($records)) {
+            if (!FatUtility::convertToJson($records, JSON_UNESCAPED_UNICODE)) {
                 return json_last_error_msg();
             }
-            return file_put_contents($langFile, json_encode($records));
+            return file_put_contents($langFile, FatUtility::convertToJson($records, JSON_UNESCAPED_UNICODE));
         }
         return true;
     }

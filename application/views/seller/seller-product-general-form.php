@@ -4,6 +4,7 @@ $submitBtnFld->setFieldTagAttribute('class', 'btn btn--primary');
 
 $cancelBtnFld = $frmSellerProduct->getField('btn_cancel');
 $cancelBtnFld->setFieldTagAttribute('class', 'btn btn--primary-border');
+$submitBtnFld->developerTags['col'] = 12;
 ?>
 <div class="tabs tabs--small tabs--scroll clearfix">
     <?php require_once('sellerCatalogProductTop.php');?>

@@ -1,5 +1,13 @@
 $(document).ready(function() {
     searchCollection(document.frmSearch);
+    $(document).on("click", ".language-js", function(){
+        $(".CollectionImages-js li").addClass('d-none');
+        $('#Image-'+$(this).val()).removeClass('d-none');
+    });
+    $(document).on("click", ".bgLanguage-js", function(){
+        $(".bgCollectionImages-js li").addClass('d-none');
+        $('#bgImage-'+$(this).val()).removeClass('d-none');
+    });
 });
 
 (function() {
@@ -287,12 +295,12 @@ $(document).ready(function() {
     collectionMediaForm = function(collectionId) {
         fcom.ajax(fcom.makeUrl('Collections', 'mediaForm', [collectionId]), '', function(t) {
             $.facebox(t);
-        });
-    };
-
-    collectionAppMediaForm = function(collectionId) {
-        fcom.ajax(fcom.makeUrl('Collections', 'appMediaForm', [collectionId]), '', function(t) {
-            $.facebox(t);
+            var parentSiblings = $(".displayMediaOnly--js").closest("div.row").siblings('div.row:not(:first)');
+            if (0 < $(".displayMediaOnly--js:checked").val()) {
+                parentSiblings.show();
+            } else {
+                parentSiblings.hide();
+            }
         });
     };
 
@@ -300,16 +308,8 @@ $(document).ready(function() {
         if (!confirm(langLbl.confirmDeleteImage)) {
             return;
         }
-        var fileType = '';
-        if (typeof FILETYPE_COLLECTION_IMAGE !== 'undefined') {
-            fileType = FILETYPE_COLLECTION_IMAGE;
-        }
-        fcom.updateWithAjax(fcom.makeUrl('Collections', 'removeImage', [collectionId, langId, fileType]), '', function(t) {
-            if (typeof APP_COLLECTION_IMAGE !== 'undefined' && 1 == APP_COLLECTION_IMAGE) {
-                collectionAppMediaForm(collectionId);
-            } else {
-                collectionMediaForm(collectionId);
-            }
+        fcom.updateWithAjax(fcom.makeUrl('Collections', 'removeImage', [collectionId, langId]), '', function(t) {
+            collectionMediaForm(collectionId);
         });
     };
 
@@ -353,6 +353,20 @@ $(document).ready(function() {
         $("#frmCollectionListing").attr("action",fcom.makeUrl('Collections','deleteSelected')).submit();
     };
 
+    displayMediaOnly = function(collectionId, obj) {
+        var parentSiblings = $(obj).closest("div.row").siblings('div.row:not(:first)');
+        var value = (obj.checked) ? 1 : 0;
+        fcom.ajax(fcom.makeUrl('Collections', 'displayMediaOnly', [collectionId, value]), '', function(t) {
+			var ans = $.parseJSON(t);
+            if(0 == ans.status){
+                $.systemMessage(ans.msg,'alert--danger');
+                $(obj).prop('checked', false);
+                return false
+            } else{
+                (0 < value) ? parentSiblings.show() : parentSiblings.hide();
+            }
+		});
+    };
 })();
 
 $(document).on('click', '.File-Js', function() {
@@ -363,7 +377,7 @@ $(document).on('click', '.File-Js', function() {
 
     if (fileType == FILETYPE_COLLECTION_IMAGE) {
         var langId = document.frmCollectionMedia.image_lang_id.value;
-    } else if (typeof FILETYPE_COLLECTION_BG_IMAGE !== 'undefined' && fileType == FILETYPE_COLLECTION_BG_IMAGE) {
+    } else if (fileType == FILETYPE_COLLECTION_BG_IMAGE) {
         var langId = document.frmCollectionMedia.bg_image_lang_id.value;
     }
 
@@ -401,11 +415,7 @@ $(document).on('click', '.File-Js', function() {
             			$.mbsmessage.close();
             			$.systemMessage(ans.msg,'alert--danger');
             		} else {
-                        if (typeof APP_COLLECTION_IMAGE !== 'undefined' && 1 == APP_COLLECTION_IMAGE) {
-                            collectionAppMediaForm(ans.collection_id);
-                        } else {
-                            collectionMediaForm(ans.collection_id);
-                        }
+                        collectionMediaForm(ans.collection_id);
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {

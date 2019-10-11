@@ -37,7 +37,7 @@ class Banner extends MyAppModel
         static::TYPE_PPC    =>    Labels::getLabel('LBL_Promotion', $langId),
         );
     }
-
+    
     public static function getSearchObject($langId = 0, $isActive = true)
     {
         $srch = new SearchBase(static::DB_TBL, 'b');

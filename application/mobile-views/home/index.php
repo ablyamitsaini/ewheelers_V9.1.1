@@ -3,6 +3,24 @@
 foreach ($slides as $index => $slideDetail) {
     $uploadedTime = AttachedFile::setTimeParam($slideDetail['slide_img_updated_on']);
     $slides[$index]['slide_image_url'] = FatCache::getCachedUrl(CommonHelper::generateFullUrl('Image', 'slide', array($slideDetail['slide_id'], applicationConstants::SCREEN_MOBILE, $siteLangId, 'MOBILE')).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
+    $urlTypeData = CommonHelper::getUrlTypeData($slideDetail['slide_url']);
+    $slides[$index]['slide_url'] = ($urlTypeData['urlType'] == applicationConstants::URL_TYPE_EXTERNAL ? $slideDetail['slide_url'] : $urlTypeData['recordId']);
+    $slides[$index]['slide_url_type'] = $urlTypeData['urlType'];
+
+    switch ($urlTypeData['urlType']) {
+        case applicationConstants::URL_TYPE_SHOP:
+            $slides[$index]['slide_url_title'] = Shop::getShopName($urlTypeData['recordId'], $siteLangId);
+            break;
+        case applicationConstants::URL_TYPE_PRODUCT:
+            $slides[$index]['slide_url_title'] = SellerProduct::getProductDisplayTitle($urlTypeData['recordId'], $siteLangId);
+            break;
+        case applicationConstants::URL_TYPE_CATEGORY:
+            $slides[$index]['slide_url_title'] = ProductCategory::getProductCategoryName($urlTypeData['recordId'], $siteLangId);
+            break;
+        case applicationConstants::URL_TYPE_BRAND:
+            $slides[$index]['slide_url_title'] = Brand::getBrandName($urlTypeData['recordId'], $siteLangId);
+            break;
+    }
 }
 foreach ($sponsoredProds as $index => $product) {
     $uploadedTime = AttachedFile::setTimeParam($product['product_image_updated_on']);
@@ -22,7 +40,7 @@ foreach ($collections as $collectionIndex => $collectionData) {
     if (array_key_exists('products', $collectionData)) {
         foreach ($collectionData['products'] as $index => $product) {
             $uploadedTime = AttachedFile::setTimeParam($product['product_image_updated_on']);
-            $collections[$collectionIndex]['products'][$index]['product_image_url'] = FatCache::getCachedUrl(CommonHelper::generateFullUrl('image', 'product', array($product['product_id'], "CLAYOUT3", $product['selprod_id'], 0, $siteLangId)).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');;
+            $collections[$collectionIndex]['products'][$index]['product_image_url'] = FatCache::getCachedUrl(CommonHelper::generateFullUrl('image', 'product', array($product['product_id'], "CLAYOUT3", $product['selprod_id'], 0, $siteLangId)).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
             $collections[$collectionIndex]['products'][$index]['selprod_price'] = CommonHelper::displayMoneyFormat($product['selprod_price'], false, false, false);
             $collections[$collectionIndex]['products'][$index]['theprice'] = CommonHelper::displayMoneyFormat($product['theprice'], false, false, false);
         }
@@ -59,10 +77,28 @@ foreach ($banners as $location => $bannerLocationDetail) {
     foreach ($bannerLocationDetail['banners'] as $index => $bannerDetail) {
         $uploadedTime = AttachedFile::setTimeParam($bannerDetail['banner_img_updated_on']);
         $banners[$location]['banners'][$index]['banner_image_url'] = FatCache::getCachedUrl(CommonHelper::generateFullUrl('Banner', 'showOriginalBanner', array($bannerDetail['banner_id'], $siteLangId)).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
+        $urlTypeData = CommonHelper::getUrlTypeData($bannerDetail['banner_url']);
+        $banners[$location]['banners'][$index]['banner_url'] = ($urlTypeData['urlType'] == applicationConstants::URL_TYPE_EXTERNAL ? $bannerDetail['banner_url'] : $urlTypeData['recordId']);
+        $banners[$location]['banners'][$index]['banner_url_type'] = $urlTypeData['urlType'];
+
+        switch ($urlTypeData['urlType']) {
+            case applicationConstants::URL_TYPE_SHOP:
+                $banners[$location]['banners'][$index]['banner_url_title'] = Shop::getShopName($urlTypeData['recordId'], $siteLangId);
+                break;
+            case applicationConstants::URL_TYPE_PRODUCT:
+                $banners[$location]['banners'][$index]['banner_url_title'] = SellerProduct::getProductDisplayTitle($urlTypeData['recordId'], $siteLangId);
+                break;
+            case applicationConstants::URL_TYPE_CATEGORY:
+                $banners[$location]['banners'][$index]['banner_url_title'] = ProductCategory::getProductCategoryName($urlTypeData['recordId'], $siteLangId);
+                break;
+            case applicationConstants::URL_TYPE_BRAND:
+                $banners[$location]['banners'][$index]['banner_url_title'] = Brand::getBrandName($urlTypeData['recordId'], $siteLangId);
+                break;
+        }
     }
 }
 
-$data = array_merge($data, $banners);
+$data = array_merge($data, $banners, $orderProducts);
 
 if (empty($sponsoredProds) && empty($sponsoredShops) && empty($slides) && empty($collections) && empty($banners)) {
     $status = applicationConstants::OFF;

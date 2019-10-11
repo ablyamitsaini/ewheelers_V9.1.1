@@ -50,7 +50,7 @@
     </td>
     <td>
         <div class="js--editCol edit-hover"><?php echo CommonHelper::displayMoneyFormat($data['splprice_price']); ?></div>
-        <input type="text" data-id="<?php echo $splPriceId; ?>" value="<?php echo $data['splprice_price']; ?>" data-selprodid="<?php echo $data['splprice_selprod_id']; ?>" data-oldval="<?php echo $data['splprice_price']; ?>" name="splprice_price" class="js--splPriceCol hide sp-input"/>
+        <input type="text" data-displayoldval="<?php echo CommonHelper::displayMoneyFormat($data['splprice_price'], true, true); ?>" data-id="<?php echo $splPriceId; ?>" value="<?php echo $data['splprice_price']; ?>" data-selprodid="<?php echo $data['splprice_selprod_id']; ?>" data-oldval="<?php echo $data['splprice_price']; ?>" name="splprice_price" class="js--splPriceCol hide sp-input"/>
     </td>
     <td>
         <ul class="actions actions--centered">

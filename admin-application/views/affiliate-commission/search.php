@@ -26,7 +26,9 @@ foreach ($arr_listing as $sn => $row) {
         $td = $tr->appendElement('td');
         switch ($key) {
             case 'select_all':
-                $td->appendElement('plaintext', array(), '<label class="checkbox"><input class="selectItem--js" type="checkbox" name="afcommsetting_ids[]" value='.$row['afcommsetting_id'].'><i class="input-helper"></i></label>', true);
+                if (1 > $row['afcommsetting_is_mandatory']) {
+                    $td->appendElement('plaintext', array(), '<label class="checkbox"><input class="selectItem--js" type="checkbox" name="afcommsetting_ids[]" value='.$row['afcommsetting_id'].'><i class="input-helper"></i></label>', true);
+                }
                 break;
             case 'listserial':
                 $td->appendElement('plaintext', array(), $sr_no);

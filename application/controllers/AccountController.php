@@ -410,14 +410,14 @@ class AccountController extends LoggedUserController
         $frm = $this->getRechargeWalletForm($this->siteLangId);
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
         if (false === $post) {
-            FatUtility::dieJsonError(strip_tags(current($frm->getValidationErrors())));
+            LibHelper::dieJsonError(current($frm->getValidationErrors()));
         }
         $loggedUserId = UserAuthentication::getLoggedUserId();
         $order_net_amount = $post['amount'];
         if ($order_net_amount < $minimumRechargeAmount) {
             $str = Labels::getLabel("LBL_Recharge_amount_must_be_greater_than_{minimumrechargeamount}", $this->siteLangId);
             $str = str_replace("{minimumrechargeamount}", CommonHelper::displayMoneyFormat($minimumRechargeAmount, true, true), $str);
-            FatUtility::dieJsonError(strip_tags($str));
+            LibHelper::dieJsonError($str);
         }
         $orderData = array();
         $order_id = isset($_SESSION['wallet_recharge_cart']["order_id"]) ? $_SESSION['wallet_recharge_cart']["order_id"] : false;
@@ -481,7 +481,7 @@ class AccountController extends LoggedUserController
             $order_id = $orderObj->getOrderId();
         } else {
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags($orderObj->getError()));
+                LibHelper::dieJsonError($orderObj->getError());
             }
             Message::addErrorMessage($orderObj->getError());
             FatUtility::dieWithError(Message::getHtml());
@@ -625,14 +625,14 @@ class AccountController extends LoggedUserController
         $balance = User::getUserBalance($userId);
         $lastWithdrawal = User::getUserLastWithdrawalRequest($userId);
 
-        if ($lastWithdrawal && (strtotime($lastWithdrawal["withdrawal_request_date"] . "+".FatApp::getConfig("CONF_MIN_INTERVAL_WITHDRAW_REQUESTS")." days") - time()) > 0) {
+        if ($lastWithdrawal && (strtotime($lastWithdrawal["withdrawal_request_date"] . "+".FatApp::getConfig("CONF_MIN_INTERVAL_WITHDRAW_REQUESTS", FatUtility::VAR_INT, 0)." days") - time()) > 0) {
             $nextWithdrawalDate = date('d M,Y', strtotime($lastWithdrawal["withdrawal_request_date"] . "+".FatApp::getConfig("CONF_MIN_INTERVAL_WITHDRAW_REQUESTS")." days"));
 
             $message = sprintf(Labels::getLabel('MSG_Withdrawal_Request_Date', $this->siteLangId), FatDate::format($lastWithdrawal["withdrawal_request_date"]), FatDate::format($nextWithdrawalDate), FatApp::getConfig("CONF_MIN_INTERVAL_WITHDRAW_REQUESTS"));
             FatUtility::dieJsonError($message);
         }
 
-        $minimumWithdrawLimit = FatApp::getConfig("CONF_MIN_WITHDRAW_LIMIT");
+        $minimumWithdrawLimit = FatApp::getConfig("CONF_MIN_WITHDRAW_LIMIT", FatUtility::VAR_INT, 0);
         if ($balance < $minimumWithdrawLimit) {
             $message = sprintf(Labels::getLabel('MSG_Withdrawal_Request_Minimum_Balance_Less', $this->siteLangId), CommonHelper::displayMoneyFormat($minimumWithdrawLimit));
             FatUtility::dieJsonError($message);
@@ -642,11 +642,17 @@ class AccountController extends LoggedUserController
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
 
         if (false === $post) {
-            FatUtility::dieJsonError(strip_tags(current($frm->getValidationErrors())));
+            LibHelper::dieJsonError(current($frm->getValidationErrors()));
         }
 
         if (($minimumWithdrawLimit > $post["withdrawal_amount"])) {
-            $message = sprintf(Labels::getLabel('MSG_Withdrawal_Request_Less', $this->siteLangId), CommonHelper::displayMoneyFormat($minimumWithdrawLimit));
+            $message = sprintf(Labels::getLabel('MSG_Your_withdrawal_request_amount_is_less_than_the_minimum_allowed_amount_of_%s', $this->siteLangId), CommonHelper::displayMoneyFormat($minimumWithdrawLimit));
+            FatUtility::dieJsonError($message);
+        }
+
+        $maximumWithdrawLimit = FatApp::getConfig("CONF_MAX_WITHDRAW_LIMIT", FatUtility::VAR_INT, 0);
+        if (($maximumWithdrawLimit < $post["withdrawal_amount"])) {
+            $message = sprintf(Labels::getLabel('MSG_Your_withdrawal_request_amount_is_greater_than_the_maximum_allowed_amount_of_%s', $this->siteLangId), CommonHelper::displayMoneyFormat($maximumWithdrawLimit));
             FatUtility::dieJsonError($message);
         }
 
@@ -655,7 +661,7 @@ class AccountController extends LoggedUserController
             FatUtility::dieJsonError($message);
         }
 
-        $accountNumber = FatApp::getPostedData('ub_account_number', FatUtility::VAR_INT, 0);
+        $accountNumber = FatApp::getPostedData('ub_account_number', FatUtility::VAR_STRING, 0);
 
         if ((string)$accountNumber != $post['ub_account_number']) {
             $message = Labels::getLabel('MSG_Invalid_Account_Number', $this->siteLangId);
@@ -1001,7 +1007,7 @@ class AccountController extends LoggedUserController
         $post = FatApp::getPostedData();
         $post['user_phone'] = !empty($post['user_phone']) ? ValidateElement::convertPhone($post['user_phone']) : '';
         if (1 > count($post) && true ===  MOBILE_APP_API_CALL) {
-            FatUtility::dieJsonError(strip_tags(Labels::getLabel("MSG_INVALID_REQUEST", $this->siteLangId)));
+            LibHelper::dieJsonError(Labels::getLabel("MSG_INVALID_REQUEST", $this->siteLangId));
         }
 
         /* CommonHelper::printArray($post);  */
@@ -1115,7 +1121,7 @@ class AccountController extends LoggedUserController
         $userId = UserAuthentication::getLoggedUserId();
         $post = FatApp::getPostedData();
         if (1 > count($post) && true ===  MOBILE_APP_API_CALL) {
-            FatUtility::dieJsonError(strip_tags(Labels::getLabel("MSG_INVALID_REQUEST", $this->siteLangId)));
+            LibHelper::dieJsonError(Labels::getLabel("MSG_INVALID_REQUEST", $this->siteLangId));
         }
 
         $frm = $this->getBankInfoForm();
@@ -1125,7 +1131,7 @@ class AccountController extends LoggedUserController
             $message = Labels::getLabel(current($frm->getValidationErrors()), $this->siteLangId);
             FatUtility::dieJsonError($message);
         }
-        $accountNumber = FatApp::getPostedData('ub_account_number', FatUtility::VAR_INT, 0);
+        $accountNumber = FatApp::getPostedData('ub_account_number', FatUtility::VAR_STRING, 0);
 
         if ((string)$accountNumber != $post['ub_account_number']) {
             $message = Labels::getLabel('MSG_Invalid_Account_Number', $this->siteLangId);
@@ -1186,7 +1192,7 @@ class AccountController extends LoggedUserController
         if (false === $post) {
             $message = $emailFrm->getValidationErrors();
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags(current($message)));
+                LibHelper::dieJsonError(current($message));
             }
             Message::addErrorMessage($message);
             FatUtility::dieJsonError(Message::getHtml());
@@ -1328,7 +1334,7 @@ class AccountController extends LoggedUserController
                 $msg = Labels::getLabel('LBL_Error_while_assigning_product_under_selected_list.');
 
                 if (true ===  MOBILE_APP_API_CALL) {
-                    FatUtility::dieJsonError(strip_tags($msg));
+                   LibHelper::dieJsonError($msg);
                 }
                 Message::addErrorMessage($msg);
                 FatUtility::dieWithError(Message::getHtml());
@@ -1894,7 +1900,7 @@ class AccountController extends LoggedUserController
         $loggedUserId = UserAuthentication::getLoggedUserId();
 
         $srch = UserWishList::getSearchObject($loggedUserId);
-        $srch->addMultipleFields(array('uwlist_id', 'uwlist_title'));
+        $srch->addMultipleFields(array('uwlist_id', 'uwlist_title', 'uwlist_default'));
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
         $srch->addCondition('uwlist_id', '=', $uwlist_id);
@@ -2329,7 +2335,7 @@ class AccountController extends LoggedUserController
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
         if (false === $post) {
             if (true ===  MOBILE_APP_API_CALL) {
-                FatUtility::dieJsonError(strip_tags(current($frm->getValidationErrors())));
+                LibHelper::dieJsonError(current($frm->getValidationErrors()));
             }
             Message::addErrorMessage(current($frm->getValidationErrors()));
             FatUtility::dieWithError(Message::getHtml());
@@ -2606,7 +2612,7 @@ class AccountController extends LoggedUserController
         return $frm; */
         $frm = new Form('frmProfile', array('id'=>'frmProfile'));
         $frm->addFileUpload(Labels::getLabel('LBL_Profile_Picture', $this->siteLangId), 'user_profile_image', array('id'=>'user_profile_image','onchange'=>'popupImage(this)','accept'=>'image/*'));
-        $frm->addHiddenField('', 'update_profile_img', Labels::getLabel('LBL_Update_Profile_Picture', $this->siteLangId), array('id'=>'update_profile_img'));
+        $frm->addHiddenField('', 'update_profile_img', Labels::getLabel('LBL_Update', $this->siteLangId), array('id'=>'update_profile_img'));
         $frm->addHiddenField('', 'rotate_left', Labels::getLabel('LBL_Rotate_Left', $this->siteLangId), array('id'=>'rotate_left'));
         $frm->addHiddenField('', 'rotate_right', Labels::getLabel('LBL_Rotate_Right', $this->siteLangId), array('id'=>'rotate_right'));
         $frm->addHiddenField('', 'remove_profile_img', 0, array('id'=>'remove_profile_img'));
