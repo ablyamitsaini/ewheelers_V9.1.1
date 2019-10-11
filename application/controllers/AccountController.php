@@ -775,9 +775,11 @@ class AccountController extends LoggedUserController
 
         $this->set('msg', Labels::getLabel('MSG_Profile_Image_Removed_Successfully', $this->siteLangId));
         if (true ===  MOBILE_APP_API_CALL) {
-            $data = array(
-                'userImage' => CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId, 'croped', true))
-            );
+            $userImgUpdatedOn = User::getAttributesById($userId, 'user_img_updated_on');
+            $uploadedTime = AttachedFile::setTimeParam($userImgUpdatedOn);
+            $userImage = FatCache::getCachedUrl(CommonHelper::generateFullUrl('Image', 'user', array($userId,'thumb',true)).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
+
+            $data = array('userImage' => $userImage);
 
             $this->set('data', $data);
             $this->_template->render();
@@ -953,6 +955,9 @@ class AccountController extends LoggedUserController
             FatUtility::dieJsonError($message);
         }
         $fileHandlerObj = new AttachedFile();
+        $updatedAt = date('Y-m-d H:i:s');
+        $uploadedTime = AttachedFile::setTimeParam($updatedAt);
+
         if ($post['action'] == "demo_avatar") {
             if (!$fileHandlerObj->isUploadedFile($_FILES['user_profile_image']['tmp_name'])) {
                 FatUtility::dieJsonError($fileHandlerObj->getError());
@@ -965,13 +970,14 @@ class AccountController extends LoggedUserController
             }
 
             if (true ===  MOBILE_APP_API_CALL) {
-                $this->set('file', CommonHelper::generateFullUrl('image', 'user', array($userId,'mini',1)).'?t='.time());
+                $profileImg = FatCache::getCachedUrl(CommonHelper::generateFullUrl('Image', 'user', array($userId,'mini',true)).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
+                $this->set('file', $profileImg);
             } else {
-                $this->set('file', CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId)).'?t='.time());
+                $profileImg = FatCache::getCachedUrl(CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId)).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
+                $this->set('file', $profileImg);
             }
         }
 
-        User::setImageModifiedAt($userId);
         if ($post['action'] == "avatar") {
             if (!$fileHandlerObj->isUploadedFile($_FILES['user_profile_image']['tmp_name'])) {
                 FatUtility::dieJsonError($fileHandlerObj->getError());
@@ -989,17 +995,16 @@ class AccountController extends LoggedUserController
                 CommonHelper::crop($data, CONF_UPLOADS_PATH .$res, $this->siteLangId);
             }
 
-            $userImgUpdatedOn = User::getAttributesById($userId, 'user_img_updated_on');
-            $uploadedTime = AttachedFile::setTimeParam($userImgUpdatedOn);
-
-            $profileImg = FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'user', array($userId,'thumb',true)).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
-            /*if (false ===  MOBILE_APP_API_CALL) {
-                $this->set('file', CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId,'croped',true)).'?t='.time());
+            if (false ===  MOBILE_APP_API_CALL) {
+                $profileImg = FatCache::getCachedUrl(CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId,'croped',true)).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
+                $this->set('file', $profileImg);
             } else {
-                $this->set('file', CommonHelper::generateFullUrl('image', 'user', array($userId,'thumb',1)).'?t='.time());
-            }*/
+                $profileImg = FatCache::getCachedUrl(CommonHelper::generateFullUrl('Image', 'user', array($userId,'mini',true)).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
+                $this->set('file', $profileImg);
+            }
             $this->set('file', $profileImg);
         }
+        User::setImageModifiedAt($userId, $updatedAt);
         $this->set('msg', Labels::getLabel('MSG_File_uploaded_successfully', $this->siteLangId));
         if (true ===  MOBILE_APP_API_CALL) {
             $this->_template->render();
