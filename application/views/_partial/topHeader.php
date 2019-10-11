@@ -51,11 +51,12 @@
 					</svg>
 				</i></a></li>
 	</ul>
-
-	<div class="demo-cta">
-		<a href="#" class="btn btn--primary-border ripplelink">Start Your Marketplace</a>
-		<a href="javascript:void(0)" class="close-layer"></a>
-	</div>
+    <?php if (CommonHelper::demoUrl()) {
+        /* <div class="demo-cta">
+            <a href="#" class="btn btn--primary-border ripplelink">Start Your Marketplace</a>
+            <a href="javascript:void(0)" class="close-layer"></a>
+        </div> */
+    ?>
 
 
 </div>
