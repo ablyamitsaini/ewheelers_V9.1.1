@@ -2159,4 +2159,10 @@ class User extends MyAppModel
 
         return $srch;
     }
+
+    public static function setImageModifiedAt($userId)
+    {
+        $where = array('smt'=>'user_id = ?', 'vals'=>array($userId));
+        FatApp::getDb()->updateFromArray(static::DB_TBL, array('user_img_updated_on'=>date('Y-m-d  H:i:s')), $where);
+    }
 }

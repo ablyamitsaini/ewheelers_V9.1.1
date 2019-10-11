@@ -817,9 +817,13 @@ class AccountController extends LoggedUserController
     public function profileInfo()
     {
         if (true ===  MOBILE_APP_API_CALL) {
+            $userId = UserAuthentication::getLoggedUserId(true);
+            $userImgUpdatedOn = User::getAttributesById($userId, 'user_img_updated_on');
+            $uploadedTime = AttachedFile::setTimeParam($userImgUpdatedOn);
+
             $bankInfo = $this->bankInfo();
             $personalInfo = $this->personalInfo();
-            $personalInfo['userImage'] = CommonHelper::generateFullUrl('image', 'user', array(UserAuthentication::getLoggedUserId(true),'mini',1)).'?t='.time();
+            $personalInfo['userImage'] = FatCache::getCachedUrl(CommonHelper::generateFullUrl('image', 'user', array($userId,'mini',true)).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
             $this->set('personalInfo', empty($personalInfo) ? (object)array() : $personalInfo);
             $this->set('bankInfo', empty($bankInfo) ? (object)array() : $bankInfo);
             $this->set('privacyPolicyLink', FatApp::getConfig('CONF_PRIVACY_POLICY_PAGE', FatUtility::VAR_STRING, ''));
@@ -967,6 +971,7 @@ class AccountController extends LoggedUserController
             }
         }
 
+        User::setImageModifiedAt($userId);
         if ($post['action'] == "avatar") {
             if (!$fileHandlerObj->isUploadedFile($_FILES['user_profile_image']['tmp_name'])) {
                 FatUtility::dieJsonError($fileHandlerObj->getError());
@@ -984,13 +989,17 @@ class AccountController extends LoggedUserController
                 CommonHelper::crop($data, CONF_UPLOADS_PATH .$res, $this->siteLangId);
             }
 
-            if (false ===  MOBILE_APP_API_CALL) {
+            $userImgUpdatedOn = User::getAttributesById($userId, 'user_img_updated_on');
+            $uploadedTime = AttachedFile::setTimeParam($userImgUpdatedOn);
+
+            $profileImg = FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'user', array($userId,'thumb',true)).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
+            /*if (false ===  MOBILE_APP_API_CALL) {
                 $this->set('file', CommonHelper::generateFullUrl('Account', 'userProfileImage', array($userId,'croped',true)).'?t='.time());
             } else {
                 $this->set('file', CommonHelper::generateFullUrl('image', 'user', array($userId,'thumb',1)).'?t='.time());
-            }
+            }*/
+            $this->set('file', $profileImg);
         }
-
         $this->set('msg', Labels::getLabel('MSG_File_uploaded_successfully', $this->siteLangId));
         if (true ===  MOBILE_APP_API_CALL) {
             $this->_template->render();
@@ -2116,6 +2125,8 @@ class AccountController extends LoggedUserController
     public function messageSearch()
     {
         $userId = UserAuthentication::getLoggedUserId();
+        $userImgUpdatedOn = User::getAttributesById($userId, 'user_img_updated_on');
+        $uploadedTime = AttachedFile::setTimeParam($userImgUpdatedOn);
 
         $frm = $this->getMessageSearchForm($this->siteLangId);
 
@@ -2152,8 +2163,8 @@ class AccountController extends LoggedUserController
             $message_records = array();
             foreach ($records as $mkey => $mval) {
                 $profile_images_arr=  array(
-                 "message_from_profile_url"=>CommonHelper::generateFullUrl('image', 'user', array($mval['message_from_user_id'],'thumb',1)),
-                 "message_to_profile_url"=>CommonHelper::generateFullUrl('image', 'user', array($mval['message_to_user_id'],'thumb',1)),
+                 "message_from_profile_url"=> FatCache::getCachedUrl(CommonHelper::generateFullUrl('image', 'user', array($mval['message_from_user_id'],'thumb',1)).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg'),
+                 "message_to_profile_url"=> FatCache::getCachedUrl(CommonHelper::generateFullUrl('image', 'user', array($mval['message_to_user_id'],'thumb',1)).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg'),
                  "message_timestamp"=>strtotime($mval['message_date'])
                                             );
                 $message_records[] = array_merge($mval, $profile_images_arr);
