@@ -25,7 +25,8 @@
 	</div>
 </div>
 <div class="demo-header">
-	<div class="restore-wrapper">
+   <?php if (CommonHelper::demoUrl()) {
+	/* <div class="restore-wrapper">
 		<a href="javascript:void(0)" onclick="showRestorePopup()">
 			<span class="restore__counter" id="restoreCounter">03:01:19</span>
 			<div class="restore__progress">
@@ -51,12 +52,12 @@
 					</svg>
 				</i></a></li>
 	</ul>
-    <?php if (CommonHelper::demoUrl()) {
-        /* <div class="demo-cta">
+    
+        <div class="demo-cta">
             <a href="#" class="btn btn--primary-border ripplelink">Start Your Marketplace</a>
             <a href="javascript:void(0)" class="close-layer"></a>
-        </div> */
-    ?>
+        </div>*/
+    } ?>
 
 
 </div>
