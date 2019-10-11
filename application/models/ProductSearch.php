@@ -71,11 +71,11 @@ class ProductSearch extends SearchBase
         $this->langId = 0 ;
     }
 
-    public function setDefinedCriteria($joinPrice = 0, $bySeller = 0, $criteria = array(), $checkAvailableFrom = true)
+    public function setDefinedCriteria($joinPrice = 0, $bySeller = 0, $criteria = array(), $checkAvailableFrom = true, $useTempTable = false)
     {
         $joinPrice =  FatUtility::int($joinPrice);
         if (0 < $joinPrice) {
-            $this->joinForPrice('', $criteria, $checkAvailableFrom);
+            $this->joinForPrice('', $criteria, $checkAvailableFrom, $useTempTable);
         } else {
             $this->joinSellerProducts($bySeller, '', $criteria, $checkAvailableFrom);
         }
@@ -145,15 +145,20 @@ class ProductSearch extends SearchBase
             $this->addOptionCondition($criteria['optionvalue']);
         }
 
-        /*if ($useTempTable === true){
-            $this->joinBasedOnPriceCondition($splPriceForDate, $criteria, $checkAvailableFrom);
+        if ($useTempTable === true) {
+            $srch = new SearchBase(Product::DB_PRODUCT_MIN_PRICE);
+            $srch->doNotLimitRecords();
+            $srch->doNotCalculateRecords();
+            $srch->addMultipleFields(array('pmp_product_id','pmp_selprod_id','pmp_min_price as theprice','pmp_splprice_id','if(pmp_splprice_id,1,0) as special_price_found'));
+            $tmpQry = $srch->getQuery();
+            $this->joinTable('(' . $tmpQry . ')', 'INNER JOIN', 'pricetbl.pmp_product_id = msellprod.selprod_product_id and msellprod.selprod_id = pricetbl.pmp_selprod_id', 'pricetbl');
+            $this->joinTable(SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE, 'LEFT OUTER JOIN', 'msplpric.splprice_selprod_id = pricetbl.pmp_selprod_id and pricetbl.pmp_splprice_id = msplpric.splprice_id', 'msplpric');
         } else {
-            $this->joinTable(Product::DB_PRODUCT_MIN_PRICE, 'INNER JOIN', 'pminp.pmp_product_id = p.product_id', 'pminp');
-            $this->joinTable(SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE, 'LEFT OUTER JOIN', 'msplpric.splprice_selprod_id = msellprod.selprod_id and pminp.pmp_splprice_id = msplpric.splprice_id', 'msplpric');
-            $this->addFld('pminp.pmp_min_price AS theprice');
-        }*/
-        $this->joinBasedOnPriceCondition($splPriceForDate, $criteria, $checkAvailableFrom);
+            $this->joinBasedOnPriceCondition($splPriceForDate, $criteria, $checkAvailableFrom);
+        }
+        // $this->joinBasedOnPriceCondition($splPriceForDate, $criteria, $checkAvailableFrom);
     }
+
 
     public function joinBasedOnPriceCondition($splPriceForDate = '', $criteria = array(), $checkAvailableFrom = true)
     {
@@ -308,7 +313,6 @@ class ProductSearch extends SearchBase
 
             $srch->doNotLimitRecords();
             $srch->doNotCalculateRecords();
-
             $this->joinTable('(' . $srch->getQuery() . ')', 'LEFT OUTER JOIN', 'p.product_id = pricetbl.selprod_product_id', 'pricetbl');
         } else {
             $this->joinTable(SellerProduct::DB_TBL, 'INNER JOIN', 'p.product_id = sprods.selprod_product_id and selprod_active = '.applicationConstants::ACTIVE .' and selprod_deleted = '.applicationConstants::NO, 'sprods');
@@ -467,7 +471,8 @@ class ProductSearch extends SearchBase
         }
     }
 
-    public function joinBrandsLang($langId){
+    public function joinBrandsLang($langId)
+    {
         $this->joinTable(Brand::DB_LANG_TBL, 'LEFT OUTER JOIN', 'brand.brand_id = tb_l.brandlang_brand_id AND brandlang_lang_id = '.$langId, 'tb_l');
     }
 
@@ -499,7 +504,8 @@ class ProductSearch extends SearchBase
         }
     }
 
-    public function joinProductToCategoryLang($langId){
+    public function joinProductToCategoryLang($langId)
+    {
         $this->joinTable(ProductCategory::DB_LANG_TBL, 'LEFT OUTER JOIN', 'c_l.prodcatlang_prodcat_id = c.prodcat_id AND prodcatlang_lang_id = '.$langId, 'c_l');
     }
 
@@ -532,8 +538,9 @@ class ProductSearch extends SearchBase
             if (!$category_id) {
                 return;
             }
+            $catCode = ProductCategory::getAttributesById($category_id, 'prodcat_code');
             /* $this->addCondition('GETCATCODE(`prodcat_id`)', 'LIKE', '%' . str_pad($category_id, 6, '0', STR_PAD_LEFT ) . '%', 'AND', true); */
-            $this->addCondition('c.prodcat_code', 'LIKE', '%' . str_pad($category_id, 6, '0', STR_PAD_LEFT) . '%', 'AND', true);
+            $this->addCondition('c.prodcat_code', 'LIKE', $catCode . '%', 'AND', true);
         } else {
             if (!is_array($category)) {
                 $category = explode(",", $category);
@@ -549,7 +556,8 @@ class ProductSearch extends SearchBase
                     if (1 > $catId) {
                         continue;
                     }
-                    $condition .= " c.prodcat_code LIKE '%".str_pad($catId, 6, '0', STR_PAD_LEFT) ."%' OR";
+                    $catCode = ProductCategory::getAttributesById($category_id, 'prodcat_code');
+                    $condition .= " c.prodcat_code LIKE '".$catCode ."%' OR";
                 }
                 $condition = substr($condition, 0, -2);
                 $condition .= ')';
@@ -577,11 +585,11 @@ class ProductSearch extends SearchBase
 
         $cnd = $obj->addCondition('product_isbn', 'LIKE', '%' . $keyword . '%');
         $cnd->attachCondition('product_upc', 'LIKE', '%' . $keyword . '%');
-        $cnd->attachCondition('selprod_title', 'LIKE', '%' . $keyword . '%');
+        /*$cnd->attachCondition('selprod_title', 'LIKE', '%' . $keyword . '%');
         $cnd->attachCondition('product_name', 'LIKE', '%' . $keyword . '%');
         $cnd->attachCondition('brand_name', 'LIKE', '%' . $keyword . '%');
         $cnd->attachCondition('prodcat_name', 'LIKE', '%' . $keyword . '%');
-        $cnd->attachCondition('product_short_description', 'LIKE', '%' . $keyword . '%');
+        $cnd->attachCondition('product_short_description', 'LIKE', '%' . $keyword . '%');*/
         /*$cnd->attachCondition('product_description', 'LIKE', '%' . $keyword . '%');*/
 
         $arr = explode(' ', $keyword);
@@ -594,7 +602,7 @@ class ProductSearch extends SearchBase
             $arr_keywords[] = $value;
         }
 
-        if (count($arr_keywords) > 1) {
+        if (count($arr_keywords) > 0) {
             foreach ($arr_keywords as $value) {
                 $cnd->attachCondition('product_tags_string', 'LIKE', '%' . $value . '%');
                 $cnd->attachCondition('selprod_title', 'LIKE', '%' . $value . '%');
@@ -602,19 +610,20 @@ class ProductSearch extends SearchBase
                 $cnd->attachCondition('brand_name', 'LIKE', '%' . $value . '%');
                 $cnd->attachCondition('prodcat_name', 'LIKE', '%' . $value . '%');
             }
+            $strKeyword = FatApp::getDb()->quoteVariable('%' . $keyword . '%');
+            $obj->addFld(
+                "IF(product_isbn LIKE $strKeyword OR product_upc LIKE $strKeyword, 15, 0)
+    		+ IF(selprod_title LIKE $strKeyword, 4, 0)
+    		+ IF(product_name LIKE $strKeyword, 4, 0)
+    		+ IF(product_tags_string LIKE $strKeyword, 4, 0)
+    		AS keyword_relevancy"
+            );
         } else {
-            $cnd->attachCondition('product_tags_string', 'LIKE', '%' . $value . '%');
+            // $cnd->attachCondition('product_tags_string', 'LIKE', '%' . $value . '%');
+            $obj->addFld('0 AS keyword_relevancy');
         }
 
-        $strKeyword = FatApp::getDb()->quoteVariable('%' . $keyword . '%');
-        $obj->addFld(
-            "
-		IF(product_isbn LIKE $strKeyword OR product_upc LIKE $strKeyword, 15, 0)
-		+ IF(selprod_title LIKE $strKeyword, 4, 0)
-		+ IF(product_name LIKE $strKeyword, 4, 0)
-		+ IF(product_tags_string LIKE $strKeyword, 4, 0)
-		AS keyword_relevancy"
-        );
+
     }
 
     public function addProductIdCondition($product_id)

@@ -101,12 +101,8 @@ class Labels extends MyAppModel
         }
 
         if (isset($langFileData[$langId])) {
-            if (array_key_exists($key_original, $langFileData[$langId])) {
-                $str = $langFileData[$langId][$key_original];
-            } elseif (array_key_exists(strtoupper($key_original), $langFileData[$langId])) {
-                $str = $langFileData[$langId][strtoupper($key_original)];
-            } elseif (array_key_exists(strtolower($key_original), $langFileData[$langId])) {
-                $str = $langFileData[$langId][strtolower($key_original)];
+            if (array_key_exists($key, $langFileData[$langId])) {
+                $str = $langFileData[$langId][$key];
             }
         }
 
@@ -132,7 +128,7 @@ class Labels extends MyAppModel
 
                 $str = implode(' ', $arr);
                 $assignValues = array(
-                    static::DB_TBL_PREFIX . 'key' => $lblKey,
+                    static::DB_TBL_PREFIX . 'key' => $key,
                     static::DB_TBL_PREFIX . 'caption' => $str,
                     static::DB_TBL_PREFIX . 'lang_id' => $langId,
                     static::DB_TBL_PREFIX . 'type' => $type

@@ -864,7 +864,7 @@ class CustomProductsController extends AdminBaseController
             Message::addErrorMessage(Labels::getLabel('MSG_Email_could_not_be_Sent', $this->adminLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
-
+        Product::updateMinPrices($product_id);
         $db->commitTransaction();
         $this->set('msg', Labels::getLabel('MSG_Status_updated_successfully', $this->adminLangId));
         $this->set('preq_id', $preqId);

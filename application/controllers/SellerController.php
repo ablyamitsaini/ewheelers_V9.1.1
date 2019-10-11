@@ -2960,6 +2960,8 @@ class SellerController extends SellerBaseController
             /* Message::addErrorMessage(Labels::getLabel('MSG_Uploaded_file_seems_to_be_empty,_please_upload_a_valid_file_or_records_skipped',$this->siteLangId)); */
             FatUtility::dieJsonError(Labels::getLabel('MSG_Uploaded_file_seems_to_be_empty,_please_upload_a_valid_file_or_records_skipped', $this->siteLangId));
         }
+
+        Product::updateMinPrices();
         /* Message::addMessage(  Labels::getLabel('MSG_Inventory_has_been_updated_successfully',$this->siteLangId) ); */
         FatUtility::dieJsonSuccess(Labels::getLabel('MSG_Inventory_has_been_updated_successfully', $this->siteLangId));
     }
@@ -4238,6 +4240,7 @@ class SellerController extends SellerBaseController
             'msg'=>Labels::getLabel('LBL_Special_Price_Setup_Successful', $this->siteLangId),
             'data'=>$this->_template->render(false, false, 'seller/update-special-price-row.php', true)
         );
+        Product::updateMinPrices();
         FatUtility::dieJsonSuccess($json);
     }
 

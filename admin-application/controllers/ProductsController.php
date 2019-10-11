@@ -337,7 +337,7 @@ class ProductsController extends AdminBaseController
             }
         }
         /*]*/
-
+        Product::updateMinPrices($product_id);
         $this->set('msg', Labels::getLabel('LBL_Product_Setup_Successful', $this->adminLangId));
         $this->set('product_id', $product_id);
         $this->set('lang_id', $this->adminLangId);
@@ -602,7 +602,7 @@ class ProductsController extends AdminBaseController
         FatUtility::dieWithError(Message::getHtml());
         }
         /* ] */
-
+        Product::updateMinPrices($product_id);
         $this->set('msg', Labels::getLabel('LBL_Record_Updated_Successfully', $this->adminLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
@@ -666,6 +666,7 @@ class ProductsController extends AdminBaseController
             Message::addErrorMessage(Labels::getLabel($prodObj->getError(), $this->adminLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
+        Product::updateMinPrices($product_id);
         $this->set('msg', Labels::getLabel('LBL_Record_Updated_Successfully', $this->adminLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
@@ -1338,7 +1339,7 @@ class ProductsController extends AdminBaseController
         $status = ($productData['product_active'] == applicationConstants::ACTIVE) ? applicationConstants::INACTIVE : applicationConstants::ACTIVE;
 
         $this->updateProductStatus($productId, $status);
-
+        Product::updateMinPrices($productId);
         $this->set("msg", $this->str_update_record);
         $this->_template->render(false, false, 'json-success.php');
     }
@@ -1394,7 +1395,7 @@ class ProductsController extends AdminBaseController
         }
 
         $this->markAsDeleted($productId);
-
+        Product::updateMinPrices($productId);
         $this->set("msg", $this->str_delete_record);
         FatUtility::dieJsonSuccess($this->str_delete_record);
         $this->_template->render(false, false, 'json-success.php');
