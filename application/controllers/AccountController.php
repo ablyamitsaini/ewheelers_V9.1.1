@@ -625,14 +625,14 @@ class AccountController extends LoggedUserController
         $balance = User::getUserBalance($userId);
         $lastWithdrawal = User::getUserLastWithdrawalRequest($userId);
 
-        if ($lastWithdrawal && (strtotime($lastWithdrawal["withdrawal_request_date"] . "+".FatApp::getConfig("CONF_MIN_INTERVAL_WITHDRAW_REQUESTS")." days") - time()) > 0) {
+        if ($lastWithdrawal && (strtotime($lastWithdrawal["withdrawal_request_date"] . "+".FatApp::getConfig("CONF_MIN_INTERVAL_WITHDRAW_REQUESTS", FatUtility::VAR_INT, 0)." days") - time()) > 0) {
             $nextWithdrawalDate = date('d M,Y', strtotime($lastWithdrawal["withdrawal_request_date"] . "+".FatApp::getConfig("CONF_MIN_INTERVAL_WITHDRAW_REQUESTS")." days"));
 
             $message = sprintf(Labels::getLabel('MSG_Withdrawal_Request_Date', $this->siteLangId), FatDate::format($lastWithdrawal["withdrawal_request_date"]), FatDate::format($nextWithdrawalDate), FatApp::getConfig("CONF_MIN_INTERVAL_WITHDRAW_REQUESTS"));
             FatUtility::dieJsonError($message);
         }
 
-        $minimumWithdrawLimit = FatApp::getConfig("CONF_MIN_WITHDRAW_LIMIT");
+        $minimumWithdrawLimit = FatApp::getConfig("CONF_MIN_WITHDRAW_LIMIT", FatUtility::VAR_INT, 0);
         if ($balance < $minimumWithdrawLimit) {
             $message = sprintf(Labels::getLabel('MSG_Withdrawal_Request_Minimum_Balance_Less', $this->siteLangId), CommonHelper::displayMoneyFormat($minimumWithdrawLimit));
             FatUtility::dieJsonError($message);
@@ -646,13 +646,13 @@ class AccountController extends LoggedUserController
         }
 
         if (($minimumWithdrawLimit > $post["withdrawal_amount"])) {
-            $message = sprintf(Labels::getLabel('MSG_Withdrawal_Request_Less', $this->siteLangId), CommonHelper::displayMoneyFormat($minimumWithdrawLimit));
+            $message = sprintf(Labels::getLabel('MSG_Your_withdrawal_request_amount_is_less_than_the_minimum_allowed_amount_of_%s', $this->siteLangId), CommonHelper::displayMoneyFormat($minimumWithdrawLimit));
             FatUtility::dieJsonError($message);
         }
 
-        $maximumWithdrawLimit = FatApp::getConfig("CONF_MAX_WITHDRAW_LIMIT");
+        $maximumWithdrawLimit = FatApp::getConfig("CONF_MAX_WITHDRAW_LIMIT", FatUtility::VAR_INT, 0);
         if (($maximumWithdrawLimit < $post["withdrawal_amount"])) {
-            $message = sprintf(Labels::getLabel('MSG_Withdrawal_Request_Max', $this->siteLangId), CommonHelper::displayMoneyFormat($maximumWithdrawLimit));
+            $message = sprintf(Labels::getLabel('MSG_Your_withdrawal_request_amount_is_greater_than_the_maximum_allowed_amount_of_%s', $this->siteLangId), CommonHelper::displayMoneyFormat($maximumWithdrawLimit));
             FatUtility::dieJsonError($message);
         }
 
@@ -1900,7 +1900,7 @@ class AccountController extends LoggedUserController
         $loggedUserId = UserAuthentication::getLoggedUserId();
 
         $srch = UserWishList::getSearchObject($loggedUserId);
-        $srch->addMultipleFields(array('uwlist_id', 'uwlist_title'));
+        $srch->addMultipleFields(array('uwlist_id', 'uwlist_title', 'uwlist_default'));
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
         $srch->addCondition('uwlist_id', '=', $uwlist_id);

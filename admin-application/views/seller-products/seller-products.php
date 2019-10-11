@@ -93,13 +93,13 @@ foreach ($arrListing as $sn => $row) {
                     $innerLiEdit->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'',
                     'title'=>Labels::getLabel('LBL_Edit', $adminLangId),"onclick"=>"addSellerProductForm(" . $row['selprod_product_id'] . ",".$row['selprod_id'].")"), Labels::getLabel('LBL_Edit', $adminLangId), true);
 
-                    $innerLiSpecialPrice = $innerUl->appendElement("li");
+                    /*$innerLiSpecialPrice = $innerUl->appendElement("li");
                     $innerLiSpecialPrice->appendElement(
                         'a',
                         array('href'=>'javascript:void(0)', 'class'=>'', 'title'=>Labels::getLabel('LBL_Special_Price', $adminLangId),"onclick"=>"addSellerProductSpecialPrices(".$row['selprod_id'].")"),
                         Labels::getLabel('LBL_Special_Price', $adminLangId),
                         true
-                    );
+                    );*/
 
                     $innerLiDelete = $innerUl->appendElement("li");
                     $innerLiDelete->appendElement(

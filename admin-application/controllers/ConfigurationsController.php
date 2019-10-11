@@ -591,6 +591,13 @@ class ConfigurationsController extends AdminBaseController
 
                 $robotsFld = $frm->addTextarea(Labels::getLabel('LBL_Robots_Txt', $this->adminLangId), 'CONF_SITE_ROBOTS_TXT');
                 $robotsFld->htmlAfterField = '<small>'.Labels::getLabel("LBL_This_will_update_your_Robots.txt_file._This_is_to_help_search_engines_index_your_site_more_appropriately.", $this->adminLangId).'</small>';
+                
+                $frm->addHtml('', 'Analytics', '<h3>'.Labels::getLabel("LBL_Google_Tag_Manager", $this->adminLangId).'</h3>');
+                $fld = $frm->addTextarea(Labels::getLabel("LBL_Head_Script", $this->adminLangId), 'CONF_GOOGLE_TAG_MANAGER_HEAD_SCRIPT');
+                $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_is_the_code_provided_by_google_tag_manager_for_integration.", $this->adminLangId)."</small>";
+
+                $fld = $frm->addTextarea(Labels::getLabel("LBL_Body_Script", $this->adminLangId), 'CONF_GOOGLE_TAG_MANAGER_BODY_SCRIPT');
+                $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_is_the_code_provided_by_google_tag_manager_for_integration.", $this->adminLangId)."</small>";
                 break;
 
             case Configurations::FORM_PRODUCT:
@@ -1259,13 +1266,6 @@ class ConfigurationsController extends AdminBaseController
 
                 $fld = $frm->addTextBox(Labels::getLabel("LBL_Shipstation_Api_Secret_key",$this->adminLangId),'CONF_SHIPSTATION_API_SECRET_KEY');
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Please_enter_your_shipstation_api_Secret_Key_here.",$this->adminLangId)."</small>"; */
-
-                $frm->addHtml('', 'Analytics', '<h3>'.Labels::getLabel("LBL_Google_Tag_Manager", $this->adminLangId).'</h3>');
-                $fld = $frm->addTextarea(Labels::getLabel("LBL_Head_Script", $this->adminLangId), 'CONF_GOOGLE_TAG_MANAGER_HEAD_SCRIPT');
-                $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_is_the_code_provided_by_google_tag_manager_for_integration.", $this->adminLangId)."</small>";
-
-                $fld = $frm->addTextarea(Labels::getLabel("LBL_Body_Script", $this->adminLangId), 'CONF_GOOGLE_TAG_MANAGER_BODY_SCRIPT');
-                $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_is_the_code_provided_by_google_tag_manager_for_integration.", $this->adminLangId)."</small>";
 
                 break;
             case Configurations::FORM_REFERAL:

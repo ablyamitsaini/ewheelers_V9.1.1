@@ -367,6 +367,23 @@ class ProductsController extends MyAppController
         }
         /*] */
 
+        /* Categories Data[ */
+        $categoriesArr = array();
+        $catFilter =  FatCache::get('catFilter'.$cacheKey, CONF_FILTER_CACHE_TIME, '.txt');
+        if (!$catFilter) {
+
+            if (0 == $langId) {
+                $catSrch->joinProductToCategoryLang($this->siteLangId);
+            }
+            $catSrch->addGroupBy('c.prodcat_id');
+            $categoriesArr = ProductCategory::getTreeArr($this->siteLangId, $categoryId, true, $catSrch, true);
+            $categoriesArr = (true ===  MOBILE_APP_API_CALL) ? array_values($categoriesArr) : $categoriesArr;
+            FatCache::set('catFilter'.$cacheKey, serialize($categoriesArr), '.txt');
+        } else {
+            $categoriesArr = unserialize($catFilter);
+        }
+        /* ] */
+
         $optionValueCheckedArr = array();
         if (array_key_exists('optionvalue', $headerFormParamsAssocArr)) {
             $optionValueCheckedArr = $headerFormParamsAssocArr['optionvalue'];
