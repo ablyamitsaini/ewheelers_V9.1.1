@@ -6,6 +6,7 @@ Enhancements :
     -> Let admin order categories - navigation
     -> Added alphabetical order for category listing page.
     -> 030974 - categories are not displaying properly in admin
+    -> 031400 - Services were not displaying under shipping carrier
 
 <!---- Release notes TV-9.0.1.20191009 -- >
 Bug:
