@@ -649,7 +649,7 @@ class AccountController extends LoggedUserController
             $message = sprintf(Labels::getLabel('MSG_Withdrawal_Request_Less', $this->siteLangId), CommonHelper::displayMoneyFormat($minimumWithdrawLimit));
             FatUtility::dieJsonError($message);
         }
-        
+
         $maximumWithdrawLimit = FatApp::getConfig("CONF_MAX_WITHDRAW_LIMIT");
         if (($maximumWithdrawLimit < $post["withdrawal_amount"])) {
             $message = sprintf(Labels::getLabel('MSG_Withdrawal_Request_Max', $this->siteLangId), CommonHelper::displayMoneyFormat($maximumWithdrawLimit));
@@ -2275,6 +2275,14 @@ class AccountController extends LoggedUserController
         if (1 > $threadId) {
             $message = Labels::getLabel('MSG_INVALID_ACCESS', $this->siteLangId);
             FatUtility::dieJsonError($message);
+        }
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $threadObj = new Thread($threadId);
+            if (!$threadObj->markUserMessageRead($threadId, $userId)) {
+                $msg = is_string($threadObj->getError()) ? $threadObj->getError() : current($threadObj->getError());
+                LibHelper::dieJsonError(strip_tags($msg));
+            }
         }
 
         $page = (empty($post['page']) || $post['page'] <= 0) ? 1 : FatUtility::int($post['page']);
