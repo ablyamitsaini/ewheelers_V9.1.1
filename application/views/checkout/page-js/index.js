@@ -205,6 +205,9 @@ $("document").ready(function()
 		var shipping_address_id = $(elm).parent().parent().parent().find('input[name="shipping_address_id"]:checked').val();
 		var billing_address_id = $(elm).parent().parent().parent().parent().find('input[name="billing_address_id"]:checked').val();
 		var isShippingSameAsBilling = $('input[name="isShippingSameAsBilling"]:checked').val();
+		if(isShippingSameAsBilling == 1){
+			shipping_address_id = billing_address_id;
+		}
 		var data = 'shipping_address_id='+shipping_address_id+'&billing_address_id='+billing_address_id+'&isShippingSameAsBilling='+isShippingSameAsBilling;
 		fcom.updateWithAjax(fcom.makeUrl('Checkout', 'setUpAddressSelection'), data , function(t) {
 			if( t.status == 1 ){
