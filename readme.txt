@@ -1,3 +1,6 @@
+Bug:
+    -> 030974 - categories are not displaying properly in admin
+
 <!---- Release notes TV-9.0.1.20191009 -- >
 Bug:
     -> 030974 - categories are not displaying properly in admin

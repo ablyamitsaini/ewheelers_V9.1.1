@@ -1483,10 +1483,9 @@ class CheckoutController extends MyAppController
         $rewardPoints = CommonHelper::convertCurrencyToRewardPoint($rewardPointValues);
 
         if ($rewardPoints < FatApp::getConfig('CONF_MIN_REWARD_POINT') || $rewardPoints > FatApp::getConfig('CONF_MAX_REWARD_POINT')) {
-            $msg = Labels::getLabel('ERR_PLEASE_USE_REWARD_POINT_BETWEEN_{MIN}_to_{MAX}', $this->siteLangId);
-            $msg = str_replace('{MIN}', FatApp::getConfig('CONF_MIN_REWARD_POINT'), $msg);
-            $msg = str_replace('{MAX}', FatApp::getConfig('CONF_MAX_REWARD_POINT'), $msg);
-           LibHelper::dieJsonError($msg);
+            $msg = Labels::getLabel('ERR_PLEASE_USE_REWARD_POINT_BETWEEN_{MIN}_TO_{MAX}', $this->siteLangId);
+            $msg = CommonHelper::replaceStringData($msg, array('{MIN}' => FatApp::getConfig('CONF_MIN_REWARD_POINT'), '{MAX}' => FatApp::getConfig('CONF_MAX_REWARD_POINT')));
+            LibHelper::dieJsonError($msg);
         }
         if (!$cartObj->updateCartUseRewardPoints($rewardPoints)) {
             $this->errMessage = Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId);
