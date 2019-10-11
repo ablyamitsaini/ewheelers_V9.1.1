@@ -39,7 +39,7 @@ class ValidateElement extends FatUtility
 
     public static function convertPhone($string)
     {
-        // Allow only Digits, remove all other characters.
+        /*// Allow only Digits, remove all other characters.
         $number = preg_replace("/[^\d]/", "", $string);
 
         // get number length.
@@ -50,7 +50,8 @@ class ValidateElement extends FatUtility
             $number = preg_replace("/^1?(\d{3})(\d{3})(\d{4})$/", "($1) $2-$3", $number);
         }
 
-        return $number;
+        return $number;*/
+        return $string;
     }
 
     public static function password($string = '')

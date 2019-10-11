@@ -770,6 +770,7 @@ class SellerProductsController extends AdminBaseController
         $srch = SellerProduct::getSearchObject($this->adminLangId);
         $srch->joinTable(Product::DB_TBL, 'INNER JOIN', 'p.product_id = sp.selprod_product_id', 'p');
         $srch->joinTable(Product::DB_LANG_TBL, 'LEFT OUTER JOIN', 'p.product_id = p_l.productlang_product_id AND p_l.productlang_lang_id = '.$this->adminLangId, 'p_l');
+        $srch->joinTable(User::DB_TBL_CRED, 'LEFT OUTER JOIN', 'tuc.credential_user_id = sp.selprod_user_id', 'tuc');
         $srch->addOrder('product_name');
         if (!empty($post['keyword'])) {
             $cnd = $srch->addCondition('product_name', 'LIKE', '%' . $post['keyword'] . '%');
@@ -787,7 +788,7 @@ class SellerProductsController extends AdminBaseController
         $srch->addCondition(Product::DB_TBL_PREFIX . 'deleted', '=', applicationConstants::NO);
         $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
         $srch->addCondition('selprod_active', '=', applicationConstants::ACTIVE);
-        $srch->addMultipleFields(array('selprod_id as id', 'IFNULL(selprod_title ,product_name) as product_name','product_identifier'));
+        $srch->addMultipleFields(array('selprod_id as id', 'IFNULL(selprod_title ,product_name) as product_name','product_identifier', 'credential_username'));
 
         $srch->addOrder('selprod_active', 'DESC');
         $db = FatApp::getDb();
@@ -799,9 +800,10 @@ class SellerProductsController extends AdminBaseController
         }
         $json = array();
         foreach ($products as $key => $option) {
+            $userName = isset($option["credential_username"]) ? " | <b>".$option["credential_username"]."</b>" : '';
             $json[] = array(
             'id' => $key,
-            'name'      => strip_tags(html_entity_decode($option['product_name'], ENT_QUOTES, 'UTF-8')),
+            'name'      => strip_tags(html_entity_decode($option['product_name'], ENT_QUOTES, 'UTF-8')).$userName,
             'product_identifier'    => strip_tags(html_entity_decode($option['product_identifier'], ENT_QUOTES, 'UTF-8'))
             );
         }
