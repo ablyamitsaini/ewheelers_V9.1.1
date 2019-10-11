@@ -24,43 +24,40 @@
 		</div>
 	</div>
 </div>
+<?php /*if (CommonHelper::demoUrl()) { ?>
 <div class="demo-header">
-   <?php if (CommonHelper::demoUrl()) {
-	/* <div class="restore-wrapper">
-		<a href="javascript:void(0)" onclick="showRestorePopup()">
-			<span class="restore__counter" id="restoreCounter">03:01:19</span>
-			<div class="restore__progress">
-				<div class="restore__progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-			</div>
-			<p class="restore__content">Database Will Restore in</p>
-		</a>
-	</div>
-	<ul class="switch-interface">
-		<li><a href="#"><i class="icn icn--admin">
-					<svg class="svg">
-						<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#admin" href="<?php echo CONF_WEBROOT_URL; ?>/images/retina/sprite.svg#admin"></use>
-					</svg>
-				</i></a></li>
-		<li class="is-active"><a href="#"><i class="icn icn--desktop">
-					<svg class="svg">
-						<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#desktop" href="<?php echo CONF_WEBROOT_URL; ?>/images/retina/sprite.svg#desktop"></use>
-					</svg>
-				</i></a></li>
-		<li><a href="#"><i class="icn icn--mobile">
-					<svg class="svg">
-						<use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#mobile" href="<?php echo CONF_WEBROOT_URL; ?>/images/retina/sprite.svg#mobile"></use>
-					</svg>
-				</i></a></li>
-	</ul>
-    
-        <div class="demo-cta">
-            <a href="#" class="btn btn--primary-border ripplelink">Start Your Marketplace</a>
-            <a href="javascript:void(0)" class="close-layer"></a>
-        </div>*/
-    } ?>
+    <div class="restore-wrapper">
+        <a href="javascript:void(0)" onclick="showRestorePopup()">
+            <span class="restore__counter" id="restoreCounter">03:01:19</span>
+            <div class="restore__progress">
+                <div class="restore__progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <p class="restore__content">Database Will Restore in</p>
+        </a>
+    </div>
+    <ul class="switch-interface">
+        <li><a href="#"><i class="icn icn--admin">
+                    <svg class="svg">
+                        <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#admin" href="<?php echo CONF_WEBROOT_URL; ?>/images/retina/sprite.svg#admin"></use>
+                    </svg>
+                </i></a></li>
+        <li class="is-active"><a href="#"><i class="icn icn--desktop">
+                    <svg class="svg">
+                        <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#desktop" href="<?php echo CONF_WEBROOT_URL; ?>/images/retina/sprite.svg#desktop"></use>
+                    </svg>
+                </i></a></li>
+        <li><a href="#"><i class="icn icn--mobile">
+                    <svg class="svg">
+                        <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#mobile" href="<?php echo CONF_WEBROOT_URL; ?>/images/retina/sprite.svg#mobile"></use>
+                    </svg>
+                </i></a></li>
+    </ul>
 
-
-</div>
+    <div class="demo-cta">
+        <a href="#" class="btn btn--primary-border ripplelink">Start Your Marketplace</a>
+        <a href="javascript:void(0)" class="close-layer"></a>
+    </div>
+</div> <?php }*/?>
 <div class="wrapper">
 	<div id="loader-wrapper">
 		<div class="yokart-loader"><img src="<?php echo CONF_WEBROOT_URL;?>images/retina/yokart-loader.svg"></div>

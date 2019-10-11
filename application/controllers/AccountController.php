@@ -2249,6 +2249,7 @@ class AccountController extends LoggedUserController
                 Message::addErrorMessage(strip_tags(current($threadObj->getError())));
             }
             Message::addErrorMessage($threadObj->getError());
+            CommonHelper::redirectUserReferer();
         }
 
         if (false ===  MOBILE_APP_API_CALL) {
@@ -2275,6 +2276,14 @@ class AccountController extends LoggedUserController
         if (1 > $threadId) {
             $message = Labels::getLabel('MSG_INVALID_ACCESS', $this->siteLangId);
             FatUtility::dieJsonError($message);
+        }
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $threadObj = new Thread($threadId);
+            if (!$threadObj->markUserMessageRead($threadId, $userId)) {
+                $msg = is_string($threadObj->getError()) ? $threadObj->getError() : current($threadObj->getError());
+                LibHelper::dieJsonError(strip_tags($msg));
+            }
         }
 
         $page = (empty($post['page']) || $post['page'] <= 0) ? 1 : FatUtility::int($post['page']);
