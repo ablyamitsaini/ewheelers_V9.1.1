@@ -204,7 +204,7 @@ class Labels extends MyAppModel
         return $cacheKey = $_SERVER['SERVER_NAME'] . '_' . $key . '_' . $langId;
     }
 
-    public static function updateDataToFile($langId, $langCode = '', $type = Labels::TYPE_WEB)
+    public static function updateDataToFile($langId, $langCode = '', $type = Labels::TYPE_WEB, $updateForceFully = false)
     {
         if (empty($langCode)) {
             $langCode = Language::getAttributesById($langId, 'language_code', false);
@@ -220,12 +220,14 @@ class Labels extends MyAppModel
         }
 
         $langFile = $path . $langCode.'.json';
-        if (!file_exists($langFile) || (filemtime($langFile) < $lastLabelsUpdatedAt) || 1 > filesize($langFile)) {
+        if (!file_exists($langFile) || (filemtime($langFile) < $lastLabelsUpdatedAt) || 1 > filesize($langFile) || $updateForceFully == true) {
             $records = static::fetchAllAssoc($langId, array('label_key','label_caption'), $type);
             if (!FatUtility::convertToJson($records, JSON_UNESCAPED_UNICODE)) {
-                return json_last_error_msg();
+                return false;
             }
-            return file_put_contents($langFile, FatUtility::convertToJson($records, JSON_UNESCAPED_UNICODE));
+            if (!file_put_contents($langFile, FatUtility::convertToJson($records, JSON_UNESCAPED_UNICODE))) {
+                return false;
+            }
         }
         return true;
     }

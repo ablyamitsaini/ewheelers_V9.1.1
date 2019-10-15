@@ -195,22 +195,28 @@ class ProductsController extends MyAppController
         $headerFormParamsAssocArr['doNotJoinSpecialPrice'] = true;
         $prodSrchObj = $this->getFilterSearchObj($langId, $headerFormParamsAssocArr);
         $prodSrchObj->doNotCalculateRecords();
-        $prodSrchObj->doNotLimitRecords();
 
         /* Categories Data[ */
         $categoriesArr = array();
-        $catSrch = clone $prodSrchObj;
-        $catFilter =  FatCache::get('catFilter'.$cacheKey, CONF_FILTER_CACHE_TIME, '.txt');
-        if (!$catFilter) {
-            if (0 == $langId) {
-                $catSrch->joinProductToCategoryLang($this->siteLangId);
+        if (empty($keyword)) {
+            $catFilter =  FatCache::get('catFilter'.$cacheKey, CONF_FILTER_CACHE_TIME, '.txt');
+            if (!$catFilter) {
+                $catSrch = clone $prodSrchObj;
+                $prodSrchObj->doNotLimitRecords();
+                if (0 == $langId) {
+                    $catSrch->joinProductToCategoryLang($this->siteLangId);
+                }
+                $catSrch->addGroupBy('c.prodcat_id');
+                $excludeCatHavingNoProducts = true;
+                if (!empty($keyword)) {
+                    $excludeCatHavingNoProducts = false;
+                }
+                $categoriesArr = ProductCategory::getTreeArr($this->siteLangId, $categoryId, false, $catSrch, $excludeCatHavingNoProducts);
+                $categoriesArr = (true ===  MOBILE_APP_API_CALL) ? array_values($categoriesArr) : $categoriesArr;
+                FatCache::set('catFilter'.$cacheKey, serialize($categoriesArr), '.txt');
+            } else {
+                $categoriesArr = unserialize($catFilter);
             }
-            $catSrch->addGroupBy('c.prodcat_id');
-            $categoriesArr = ProductCategory::getTreeArr($this->siteLangId, $categoryId, false, $catSrch, true);
-            $categoriesArr = (true ===  MOBILE_APP_API_CALL) ? array_values($categoriesArr) : $categoriesArr;
-            FatCache::set('catFilter'.$cacheKey, serialize($categoriesArr), '.txt');
-        } else {
-            $categoriesArr = unserialize($catFilter);
         }
         /* ] */
 
@@ -230,6 +236,7 @@ class ProductsController extends MyAppController
         }
 
         $brandSrch = clone $prodSrchObj;
+        $brandSrch->doNotLimitRecords();
         if (0 == $langId) {
             $brandSrch->joinBrandsLang($this->siteLangId);
         }
@@ -244,15 +251,24 @@ class ProductsController extends MyAppController
         if (!empty($brandsCheckedArr)) {
             $brandSrch->addFld('IF(FIND_IN_SET(brand_id, "'.implode(',', $brandsCheckedArr).'"), 1, 0) as priority');
             $brandSrch->addOrder('priority', 'desc');
+        } else {
+            $brandSrch->addFld('0 as priority');
         }
-        $brandSrch->addOrder('brand_name');
+        //$brandSrch->addOrder('brand_name');
         /* if needs to show product counts under brands[ */
         //$brandSrch->addFld('count(selprod_id) as totalProducts');
         /* ] */
         $brandRs = $brandSrch->getResultSet();
         $brandsArr = $db->fetchAll($brandRs);
 
-        /*$priority  = array_column($brandsArr, 'priority');
+        /*$brndSrch =  new SearchBase('('.$brandSrch->getQuery().')','temp');
+        $brndSrch->doNotCalculateRecords();
+        $brndSrch->doNotLimitRecords();
+        $brndSrch->addMultipleFields(array('DISTINCT brand_id', 'priority', 'brand_name'));
+        $brandRs = $brndSrch->getResultSet();
+        $brandsArr = $db->fetchAll($brandRs);
+
+        $priority  = array_column($brandsArr, 'priority');
         $name = array_column($brandsArr, 'brand_name');
         array_multisort($priority, SORT_DESC, $name, SORT_ASC, $brandsArr);
         $priority = $name = array();*/
@@ -265,6 +281,7 @@ class ProductsController extends MyAppController
             $options = array();
             if ($categoryId && ProductCategory::isLastChildCategory($categoryId)) {
                 $selProdCodeSrch = clone $prodSrchObj;
+                $selProdCodeSrch->doNotLimitRecords();
                 /*Removed Group by as taking time for huge data. handled in fetch all second param*/
                 //$selProdCodeSrch->addGroupBy('selprod_code');
                 $selProdCodeSrch->addMultipleFields(array('product_id','selprod_code'));
@@ -301,16 +318,19 @@ class ProductsController extends MyAppController
         $conditionsArr  = array();
         $conditions =  FatCache::get('conditions'.$cacheKey, CONF_FILTER_CACHE_TIME, '.txt');
         if (!$conditions) {
-            $conditionSrch = clone $prodSrchObj;
-            /*Removed Group by as taking time for huge data. handled in fetch all second param*/
-            $conditionSrch->addGroupBy('selprod_condition');
-            $conditionSrch->addOrder('selprod_condition');
-            $conditionSrch->addMultipleFields(array('selprod_condition'));
-            /* if needs to show product counts under any condition[ */
-            //$conditionSrch->addFld('count(selprod_condition) as totalProducts');
-            /* ] */
-            $conditionRs = $conditionSrch->getResultSet();
-            $conditionsArr = $db->fetchAll($conditionRs);
+            $conditionArr = Product::getConditionArr($this->siteLangId);
+            $conditions = array();
+            foreach ($conditionArr as $key=>$val) {
+                $conditionSrch = clone $prodSrchObj;
+                $conditionSrch->setPageSize(1);
+                $conditionSrch->addMultipleFields(array('selprod_condition'));
+                $conditionSrch->addCondition('selprod_condition', '=', $key);
+                /* if needs to show product counts under any condition[ */
+                //$conditionSrch->addFld('count(selprod_condition) as totalProducts');
+                /* ] */
+                $conditionRs = $conditionSrch->getResultSet();
+                $conditionsArr[] = $db->fetch($conditionRs);
+            }
             FatCache::set('conditions'.$cacheKey, serialize($conditionsArr), '.txt');
         } else {
             $conditionsArr = unserialize($conditions);
@@ -326,6 +346,7 @@ class ProductsController extends MyAppController
         $qry = $priceSrch->getQuery();
         $qry .= ' having minPrice IS NOT NULL AND maxPrice IS NOT NULL';
         //$priceRs = $priceSrch->getResultSet();
+
         $priceRs = $db->query($qry);
         $priceArr = $db->fetch($priceRs);
 
@@ -357,7 +378,9 @@ class ProductsController extends MyAppController
         $availabilities =  FatCache::get('availabilities'.$cacheKey, CONF_FILTER_CACHE_TIME, '.txt');
         if (!$availabilities) {
             $availabilitySrch = clone $prodSrchObj;
+            $availabilitySrch->setPageSize(1);
             //$availabilitySrch->addGroupBy('in_stock');
+            $availabilitySrch->addHaving('in_stock', '>', 0);
             $availabilitySrch->addMultipleFields(array('if(selprod_stock > 0,1,0) as in_stock'));
             $availabilityRs = $availabilitySrch->getResultSet();
             $availabilityArr = $db->fetchAll($availabilityRs, 'in_stock');
@@ -366,23 +389,6 @@ class ProductsController extends MyAppController
             $availabilityArr = unserialize($availabilities);
         }
         /*] */
-
-        /* Categories Data[ */
-        $categoriesArr = array();
-        $catFilter =  FatCache::get('catFilter'.$cacheKey, CONF_FILTER_CACHE_TIME, '.txt');
-        if (!$catFilter) {
-
-            if (0 == $langId) {
-                $catSrch->joinProductToCategoryLang($this->siteLangId);
-            }
-            $catSrch->addGroupBy('c.prodcat_id');
-            $categoriesArr = ProductCategory::getTreeArr($this->siteLangId, $categoryId, true, $catSrch, true);
-            $categoriesArr = (true ===  MOBILE_APP_API_CALL) ? array_values($categoriesArr) : $categoriesArr;
-            FatCache::set('catFilter'.$cacheKey, serialize($categoriesArr), '.txt');
-        } else {
-            $categoriesArr = unserialize($catFilter);
-        }
-        /* ] */
 
         $optionValueCheckedArr = array();
         if (array_key_exists('optionvalue', $headerFormParamsAssocArr)) {

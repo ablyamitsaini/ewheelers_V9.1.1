@@ -218,7 +218,7 @@ class ProductCategory extends MyAppModel
             $prodCatSrch->addOrder('prodrootcat_code');
             $prodCatSrch->addOrder('prodcat_ordercode');
         }
-
+        // echo $prodCatSrch->getQuery();exit;
         $rs = $prodCatSrch->getResultSet();
         $categoriesArr = FatApp::getDb()->fetchAll($rs, 'prodcat_id');
         static::addMissingParentDetails($categoriesArr, $langId);
