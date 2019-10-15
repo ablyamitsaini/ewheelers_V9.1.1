@@ -728,10 +728,8 @@ class ProductCategory extends MyAppModel
         } else {
             $categoriesArr = FatApp::getDb()->fetchAll($rs);
         }
-        if (false === $includeChildCat) {
-            return $categoriesArr;
-        }
-        if ($categoriesArr) {
+
+        if (true === $includeChildCat && $categoriesArr) {
             foreach ($categoriesArr as $key => $cat) {
                 $categoriesArr[$key]['icon'] = CommonHelper::generateFullUrl('Category', 'icon', array($cat['prodcat_id'], $langId, 'COLLECTION_PAGE'));
                 $categoriesArr[$key]['children'] = self::getProdCatParentChildWiseArr($langId, $cat['prodcat_id']);
