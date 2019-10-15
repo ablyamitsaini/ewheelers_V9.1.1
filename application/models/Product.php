@@ -227,7 +227,7 @@ class Product extends MyAppModel
     {
         $langId = FatUtility::convertToType($langId, FatUtility::VAR_INT);
         if (!$langId) {
-            trigger_error(Labels::getLabel("ERR_Arguments_not_specified.", $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel("ERR_Arguments_not_specified.", $langId), E_USER_ERROR);
             return false;
         }
         return array(
@@ -608,7 +608,7 @@ class Product extends MyAppModel
         $product_id = FatUtility::convertToType($product_id, FatUtility::VAR_INT);
         $lang_id = FatUtility::convertToType($lang_id, FatUtility::VAR_INT);
         if (!$product_id) {
-            trigger_error(Labels::getLabel("ERR_Arguments_not_specified.", $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel("ERR_Arguments_not_specified.", $lang_id), E_USER_ERROR);
             return false;
         }
 
@@ -651,7 +651,7 @@ class Product extends MyAppModel
         $option_id = FatUtility::int($option_id);
         $lang_id = FatUtility::int($lang_id);
         if (!$option_id || !$lang_id) {
-            trigger_error(Labels::getLabel('ERR_Invalid_Arguments!', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('ERR_Invalid_Arguments!', $lang_id), E_USER_ERROR);
         }
         $srch = new SearchBase(OptionValue::DB_TBL);
         $srch->joinTable(OptionValue::DB_TBL.'_lang', 'LEFT JOIN', 'lang.optionvaluelang_optionvalue_id = ' . OptionValue::DB_TBL_PREFIX.'id AND optionvaluelang_lang_id = '.$lang_id, 'lang');
@@ -717,7 +717,7 @@ class Product extends MyAppModel
         $product_id = FatUtility::int($product_id);
         $langId = FatUtility::int($langId);
         if (!$product_id || !$langId) {
-            trigger_error(Labels::getLabel('ERR_Invalid_Arguments!', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('ERR_Invalid_Arguments!', $langId), E_USER_ERROR);
         }
         $record = new TableRecord(static::DB_TEXT_ATTRIBUTES_TBL);
         $record->loadFromDb(array('smt' => static::DB_TEXT_ATTRIBUTES_PREFIX . 'product_id = ? AND ' . static::DB_TEXT_ATTRIBUTES_PREFIX . 'lang_id = ?', 'vals' => array($product_id, $langId)));
@@ -1085,7 +1085,6 @@ class Product extends MyAppModel
         $productSellerShiping['ps_from_country_id']= $data_to_be_save['ps_from_country_id'];
         $productSellerShiping['ps_free']=  $data_to_be_save['ps_free'];
         if (!FatApp::getDb()->insertFromArray(PRODUCT::DB_TBL_PRODUCT_SHIPPING, $productSellerShiping, false, array(), $productSellerShiping)) {
-            $this->error = FatApp::getDb()->getError();
             return false;
         }
         return true;
@@ -1096,7 +1095,7 @@ class Product extends MyAppModel
         static::removeProductShippingRates($product_id, $userId);
 
         if (empty($data) || count($data) == 0) {
-            $this->error = Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId);
+            // $this->error = Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId);
             return false;
         }
 
@@ -1113,8 +1112,7 @@ class Product extends MyAppModel
                 );
 
                 if (!FatApp::getDb()->insertFromArray(ShippingApi::DB_TBL_PRODUCT_SHIPPING_RATES, $prodShipData, false, array(), $prodShipData)) {
-                    $this->error = FatApp::getDb()->getError();
-
+                    // $this->error = FatApp::getDb()->getError();
                     return false;
                 }
             }
@@ -1130,7 +1128,7 @@ class Product extends MyAppModel
         $userId = FatUtility::int($userId);
 
         if (!$db->deleteRecords(ShippingApi::DB_TBL_PRODUCT_SHIPPING_RATES, array('smt'=> ShippingApi::DB_TBL_PRODUCT_SHIPPING_RATES_PREFIX.'prod_id = ? and '.ShippingApi::DB_TBL_PRODUCT_SHIPPING_RATES_PREFIX.'user_id = ?','vals' => array($product_id,$userId)))) {
-            $this->error = $db->getError();
+            // $this->error = $db->getError();
             return false;
         }
         return true;
@@ -1458,7 +1456,7 @@ END,   special_price_found ) as special_price_found'
     public static function getActiveCount($sellerId, $prodId = 0)
     {
         if (0 > FatUtility::int($sellerId)) {
-            $this->error = Labels::getLabel('ERR_Invalid_Request', $this->commonLangId);
+            // $this->error = Labels::getLabel('ERR_Invalid_Request', $this->commonLangId);
             return false;
         }
         $prodId = FatUtility::int($prodId);

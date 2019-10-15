@@ -289,7 +289,7 @@ class User extends MyAppModel
     {
         $langId = FatUtility::int($langId);
         if ($langId == 0) {
-            trigger_error(Labels::getLabel('ERR_Language_Id_not_specified.', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('ERR_Language_Id_not_specified.', $langId), E_USER_ERROR);
         }
         $arr=array(
         static::USER_FIELD_TYPE_TEXT => Labels::getLabel('LBL_Textbox', $langId),
@@ -307,7 +307,7 @@ class User extends MyAppModel
     {
         $langId = FatUtility::int($langId);
         if ($langId == 0) {
-            trigger_error(Labels::getLabel('ERR_Language_Id_not_specified.', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('ERR_Language_Id_not_specified.', $langId), E_USER_ERROR);
         }
         $arr=array(
         static::USER_BUYER_DASHBOARD => Labels::getLabel('LBL_Buyer', $langId),
@@ -341,7 +341,7 @@ class User extends MyAppModel
     {
         $langId = FatUtility::int($langId);
         if ($langId == 0) {
-            trigger_error(Labels::getLabel('ERR_Language_Id_not_specified.', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('ERR_Language_Id_not_specified.', $langId), E_USER_ERROR);
         }
         $arr=array(
         static::SUPPLIER_REQUEST_PENDING => Labels::getLabel('LBL_Pending', $langId),
@@ -364,7 +364,7 @@ class User extends MyAppModel
     {
         $langId = FatUtility::int($langId);
         if ($langId == 0) {
-            trigger_error(Labels::getLabel('ERR_Language_Id_not_specified.', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('ERR_Language_Id_not_specified.', $langId), E_USER_ERROR);
         }
         $arr=array(
         static::CATALOG_REQUEST_PENDING => Labels::getLabel('LBL_Pending', $langId),

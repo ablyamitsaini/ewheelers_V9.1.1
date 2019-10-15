@@ -64,7 +64,7 @@ class Stats extends MyAppModel
         $userId = FatUtility::int($userId);
         $months = FatUtility::int($months);
         if (1 > $userId) {
-            trigger_error(Labels::getLabel('MSG_INVALID_REQUEST', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('MSG_INVALID_REQUEST', CommonHelper::getLangId()), E_USER_ERROR);
             return false;
         }
         $last12Months = self::getLast12MonthsDetails($months);

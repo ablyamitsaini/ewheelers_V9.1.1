@@ -58,7 +58,7 @@ class UserWishList extends MyAppModel
     {
         $userId = FatUtility::int($userId);
         if (!$userId) {
-            trigger_error(Labels::getLabel('MSG_Invalid_Argument_Passed!', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('MSG_Invalid_Argument_Passed!', CommonHelper::getLangId()), E_USER_ERROR);
         }
 
         $srchWishlist = new UserWishListProductSearch();
@@ -100,7 +100,7 @@ class UserWishList extends MyAppModel
     {
         $uwlp_uwlist_id = FatUtility::int($uwlp_uwlist_id);
         if (!$uwlp_uwlist_id) {
-            trigger_error(Labels::getLabel('MSG_Invalid_Argument_Passed!', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('MSG_Invalid_Argument_Passed!', CommonHelper::getLangId()), E_USER_ERROR);
         }
         $srch = new SearchBase(UserWishListProducts::DB_TBL);
         $srch->addCondition('uwlp_uwlist_id', '=', $uwlp_uwlist_id);
