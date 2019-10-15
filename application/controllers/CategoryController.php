@@ -255,8 +255,9 @@ class CategoryController extends MyAppController
         return $nodes;
     }
 
-    private function resetKeyValues($arr)
+    private function resetKeyValues($arr, $langId)
     {
+        $langId= FatUtility::int($langId);
         $result = array();
         foreach ($arr as $key => $val) {
             if (!array_key_exists('prodcat_id', $val)) {
@@ -265,10 +266,12 @@ class CategoryController extends MyAppController
             $result[$key] = $val;
             $isLastChildCategory = ProductCategory::isLastChildCategory($val['prodcat_id']);
             $result[$key]['isLastChildCategory'] = $isLastChildCategory ? 1 : 0;
+            $result[$key]['icon'] = CommonHelper::generateFullUrl('Category', 'icon', array($val['prodcat_id'], $langId, 'COLLECTION_PAGE'));
+            $result[$key]['image'] = CommonHelper::generateFullUrl('Category', 'banner', array($val['prodcat_id'] , $langId, 'MOBILE', applicationConstants::SCREEN_MOBILE));
             $childernArr = array();
             if (!empty($val['children'])) {
                 $array = array_values($val['children']);
-                $childernArr = $this->resetKeyValues($array);
+                $childernArr = $this->resetKeyValues($array, $langId);
             }
             $result[$key]['children'] = $childernArr;
         }
@@ -287,10 +290,8 @@ class CategoryController extends MyAppController
         }
 
         $categoriesArr = ProductCategory::getProdCatParentChildWiseArr($this->siteLangId, $parentId, $includeChild, false, false, $prodSrchObj, true);
-
-        $categoriesDataArr =  $categoriesArr;
-
-        if (true ===  MOBILE_APP_API_CALL && 0 == $parentId) {
+        
+       /*  if (true ===  MOBILE_APP_API_CALL && 0 == $parentId) {
             foreach ($categoriesDataArr as $key => $value) {
                 $categoriesDataArr[$key]['icon'] = CommonHelper::generateFullUrl('Category', 'icon', array($value['prodcat_id'], $this->siteLangId, 'COLLECTION_PAGE'));
                 $categoriesDataArr[$key]['image'] = CommonHelper::generateFullUrl('Category', 'banner', array($value['prodcat_id'] , $this->siteLangId, 'MOBILE', applicationConstants::SCREEN_MOBILE));
@@ -299,15 +300,18 @@ class CategoryController extends MyAppController
             if (false ===  MOBILE_APP_API_CALL) {
                 $categoriesDataArr = $productCategory->getCategoryTreeArr($this->siteLangId, $categoriesArr, array( 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name','substr(GETCATCODE(prodcat_id),1,6) AS prodrootcat_code', 'prodcat_content_block','prodcat_active','prodcat_parent','GETCATCODE(prodcat_id) as prodcat_code'));
             }
+        } */
+        if (false ===  MOBILE_APP_API_CALL) {
+            $categoriesArr = $productCategory->getCategoryTreeArr($this->siteLangId, $categoriesArr, array( 'prodcat_id', 'IFNULL(prodcat_name,prodcat_identifier ) as prodcat_name','substr(GETCATCODE(prodcat_id),1,6) AS prodrootcat_code', 'prodcat_content_block','prodcat_active','prodcat_parent','GETCATCODE(prodcat_id) as prodcat_code'));
         }
 
-        $categoriesDataArr = $this->resetKeyValues(array_values($categoriesDataArr));
+        $categoriesArr = $this->resetKeyValues(array_values($categoriesArr), $this->siteLangId);
 
-        if (empty($categoriesDataArr)) {
-            $categoriesDataArr =  array();
+        if (empty($categoriesArr)) {
+            $categoriesArr =  array();
         }
 
-        $this->set('categoriesData', $categoriesDataArr);
+        $this->set('categoriesData', $categoriesArr);
         $this->_template->render();
     }
 }
