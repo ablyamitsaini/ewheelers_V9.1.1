@@ -742,7 +742,7 @@ class ProductCategory extends MyAppModel
     {
         $langId = FatUtility::int($langId);
         if (!$langId) {
-            trigger_error(Labels::getLabel('ERR_Language_Not_Specified', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('ERR_Language_Not_Specified', $langId), E_USER_ERROR);
         }
         return static::getProdCatParentChildWiseArr($langId, 0, false, true);
     }

@@ -55,7 +55,7 @@ class UserRewards extends MyAppModel
     {
         $urpId = FatUtility::int($urpId);
         if (1 > $urpId) {
-            trigger_error(Labels::getLabel(Labels::getLabel('ERR_Invalid_Request', $this->commonLangId)), E_USER_ERROR);
+            trigger_error(Labels::getLabel(Labels::getLabel('ERR_Invalid_Request', CommonHelper::getLangId())), E_USER_ERROR);
         }
 
         $srch = static::getSearchObject();
