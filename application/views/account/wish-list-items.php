@@ -2,7 +2,7 @@
 <div class="row justify-content-between align-items-center mb-4">
 <div class="col-auto">
     <h5 class="cards-title mb-3">
-        <?php echo $wishListRow['uwlist_title']; ?>
+        <?php echo ($wishListRow['uwlist_default']==1) ? Labels::getLabel('LBL_Default_list', $siteLangId) : $wishListRow['uwlist_title']; ?>
         <input type="hidden" name="uwlist_id" value="<?php echo $wishListRow['uwlist_id']; ?>" />
     </h5>
 	</div>

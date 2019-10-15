@@ -50,12 +50,7 @@ $priceDetail['priceDetail'] = array(
     )
 );
 
-if (0 < $cartTaxTotal) {
-    $priceDetail['priceDetail'][] = array(
-        'key' => Labels::getLabel('LBL_Tax', $siteLangId),
-        'value' => CommonHelper::displayMoneyFormat($cartTaxTotal)
-    );
-}
+
 if (0 < $appliedRewardPointsDiscount) {
     $usedRPAmt = CommonHelper::convertRewardPointToCurrency($appliedRewardPointsDiscount);
     $priceDetail['priceDetail'][] = array(
@@ -75,6 +70,14 @@ if (0 < $coupon_discount_total) {
         'value' => CommonHelper::displayMoneyFormat($coupon_discount_total)
     );
 }
+
+if (0 < $cartTaxTotal) {
+    $priceDetail['priceDetail'][] = array(
+        'key' => Labels::getLabel('LBL_Tax', $siteLangId),
+        'value' => CommonHelper::displayMoneyFormat($cartTaxTotal)
+    );
+}
+
 if (0 < $shippingTotal) {
     $priceDetail['priceDetail'][] = array(
         'key' => Labels::getLabel('LBL_Shipping_Charges', $siteLangId),

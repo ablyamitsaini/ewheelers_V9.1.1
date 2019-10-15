@@ -560,11 +560,20 @@ class CheckoutController extends MyAppController
         }
         $this->Cart = new Cart(UserAuthentication::getLoggedUserId());
         $carrierList = $this->Cart->getCarrierShipmentServicesList($product_key, $carrier_id, $this->siteLangId);
-        $this->set('options', $carrierList);
+        $json = array('status'=>1, 'isCarriersFound' => 0);
+        $isCarriersFound = 0;
+        $html = $this->_template->render(false, false, 'checkout/shipping-api-carriers-services-not-found.php', true);
+        if (isset($carrierList) && count($carrierList) > 1) {
+            $json['isCarriersFound'] = 1;
+            $this->set('options', $carrierList);
+            $html = $this->_template->render(false, false, '', true);
+        }
         if (true ===  MOBILE_APP_API_CALL) {
             $this->_template->render();
         }
-        $this->_template->render(false, false);
+
+        $json['html'] = $html;
+        die(json_encode($json));
     }
 
     public function setUpShippingMethod()
@@ -1446,7 +1455,7 @@ class CheckoutController extends MyAppController
         }
 
         if (empty($post['redeem_rewards'])) {
-            $this->errMessage = Labels::getLabel('LBL_Add_Reward_points_then_apply', $this->siteLangId);
+            $this->errMessage = Labels::getLabel('LBL_You_cannot_use_0_reward_points._Please_add_reward_points_greater_than_0', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
                 FatUtility::dieJsonError($this->errMessage);
             }
@@ -1483,10 +1492,9 @@ class CheckoutController extends MyAppController
         $rewardPoints = CommonHelper::convertCurrencyToRewardPoint($rewardPointValues);
 
         if ($rewardPoints < FatApp::getConfig('CONF_MIN_REWARD_POINT') || $rewardPoints > FatApp::getConfig('CONF_MAX_REWARD_POINT')) {
-            $msg = Labels::getLabel('ERR_PLEASE_USE_REWARD_POINT_BETWEEN_{MIN}_to_{MAX}', $this->siteLangId);
-            $msg = str_replace('{MIN}', FatApp::getConfig('CONF_MIN_REWARD_POINT'), $msg);
-            $msg = str_replace('{MAX}', FatApp::getConfig('CONF_MAX_REWARD_POINT'), $msg);
-           LibHelper::dieJsonError($msg);
+            $msg = Labels::getLabel('ERR_PLEASE_USE_REWARD_POINT_BETWEEN_{MIN}_TO_{MAX}', $this->siteLangId);
+            $msg = CommonHelper::replaceStringData($msg, array('{MIN}' => FatApp::getConfig('CONF_MIN_REWARD_POINT'), '{MAX}' => FatApp::getConfig('CONF_MAX_REWARD_POINT')));
+            LibHelper::dieJsonError($msg);
         }
         if (!$cartObj->updateCartUseRewardPoints($rewardPoints)) {
             $this->errMessage = Labels::getLabel('LBL_Action_Trying_Perform_Not_Valid', $this->siteLangId);

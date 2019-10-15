@@ -165,7 +165,7 @@ class ProductCategory extends MyAppModel
         return 1;
     }
 
-    public static function getTreeArr($langId, $parentId = 0, $orderFeatured = false, $prodCatSrchObj = false, $excludeCatHavingNoProducts = false, $keywords = false)
+    public static function getTreeArr($langId, $parentId = 0, $sortByName = false, $prodCatSrchObj = false, $excludeCatHavingNoProducts = false, $keywords = false)
     {
         $parentId = FatUtility::int($parentId);
         $langId = FatUtility::int($langId);
@@ -211,13 +211,12 @@ class ProductCategory extends MyAppModel
             //$prodCatSrch->joinTable( '('.$prodSrchObj->getQuery().')', 'LEFT OUTER JOIN', 'qryProducts.qryProducts_prodcat_code like CONCAT(c.prodcat_code, "%")', 'qryProducts' );
         }
 
-        if ($orderFeatured) {
-            $prodCatSrch->addOrder('prodcat_featured');
+        if ($sortByName) {
+            $prodCatSrch->addOrder('prodcat_name');
+            $prodCatSrch->addOrder('prodcat_identifier');
         } else {
             $prodCatSrch->addOrder('prodrootcat_code');
             $prodCatSrch->addOrder('prodcat_ordercode');
-            $prodCatSrch->addOrder('prodcat_name');
-            $prodCatSrch->addOrder('prodcat_identifier');
         }
         // echo $prodCatSrch->getQuery();exit;
         $rs = $prodCatSrch->getResultSet();
@@ -678,7 +677,7 @@ class ProductCategory extends MyAppModel
     }
 
 
-    public static function getProdCatParentChildWiseArr($langId = 0, $parentId = 0, $includeChildCat = true, $forSelectBox = false, $orderFeatured = false, $prodCatSrchObj = false, $excludeCategoriesHavingNoProducts = false)
+    public static function getProdCatParentChildWiseArr($langId = 0, $parentId = 0, $includeChildCat = true, $forSelectBox = false, $sortByName = false, $prodCatSrchObj = false, $excludeCategoriesHavingNoProducts = false)
     {
         $parentId = FatUtility::int($parentId);
         $langId = FatUtility::int($langId);
@@ -714,8 +713,12 @@ class ProductCategory extends MyAppModel
             $prodCatSrch->addFld(array('COALESCE(productCounts, 0) as productCounts'));
         }
 
-        if ($orderFeatured) {
-            $prodCatSrch->addOrder('prodcat_featured');
+        if ($sortByName) {
+            $prodCatSrch->addOrder('prodcat_name');
+            $prodCatSrch->addOrder('prodcat_identifier');
+        } else {
+            $prodCatSrch->addOrder('prodrootcat_code');
+            $prodCatSrch->addOrder('prodcat_ordercode');
         }
 
         $rs = $prodCatSrch->getResultSet();

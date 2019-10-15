@@ -134,12 +134,6 @@ defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
                         <td class="text-left"><?php echo Labels::getLabel('LBL_Total', $siteLangId); ?></td>
                         <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTotal']); ?></td>
                     </tr>
-                    <?php if ($cartSummary['cartTaxTotal']) { ?>
-                    <tr>
-                        <td class="text-left"><?php echo Labels::getLabel('LBL_Tax', $siteLangId); ?></td>
-                        <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTaxTotal']); ?></td>
-                    </tr>
-                    <?php } ?>
                     <?php if ($cartSummary['cartVolumeDiscount']) { ?>
                     <tr>
                         <td class="text-left"><?php echo Labels::getLabel('LBL_Volume_Discount', $siteLangId); ?></td>
@@ -154,7 +148,12 @@ defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
                     <?php }?>
                     <?php $netChargeAmt = $cartSummary['cartTotal'] + $cartSummary['cartTaxTotal'] - ((0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0);?>
                     <?php $netChargeAmt = $netChargeAmt - ((0 < $cartSummary['cartDiscounts']['coupon_discount_total'])?$cartSummary['cartDiscounts']['coupon_discount_total']:0);?>
-
+                    <?php if ($cartSummary['cartTaxTotal']) { ?>
+                    <tr>
+                        <td class="text-left"><?php echo Labels::getLabel('LBL_Tax', $siteLangId); ?></td>
+                        <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTaxTotal']); ?></td>
+                    </tr>
+                    <?php } ?>
                     <tr>
                         <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
                         <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat($netChargeAmt); ?></td>
