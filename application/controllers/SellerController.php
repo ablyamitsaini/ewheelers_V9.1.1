@@ -3263,7 +3263,7 @@ class SellerController extends SellerBaseController
 
     private function getSellerProdCategoriesObj($userId, $shopId = 0, $prodcat_id = 0, $lang_id = 0)
     {
-        return Shop::getUserShopProdCategoriesObj($userId, $shopId, $prodcat_id, $lang_id);
+        return Shop::getUserShopProdCategoriesObj($userId, $lang_id, $shopId, $prodcat_id);
     }
 
     private function getCategoryMediaForm($prodCatId)

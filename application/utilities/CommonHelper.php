@@ -12,7 +12,7 @@ class CommonHelper extends FatUtility
     private static $_currency_value;
     private static $_default_currency_symbol_left;
     private static $_default_currency_symbol_right;
-    private static $appToken;
+    private static $_appToken;
 
     public static function initCommonVariables($isAdmin = false)
     {
@@ -47,7 +47,7 @@ class CommonHelper extends FatUtility
             }
 
             if (true ===  MOBILE_APP_API_CALL && array_key_exists('HTTP_X_TOKEN', $_SERVER) && !empty($_SERVER['HTTP_X_TOKEN'])) {
-                self::$appToken = ($_SERVER['HTTP_X_TOKEN'] != '')?$_SERVER['HTTP_X_TOKEN']:'';
+                self::$_appToken = ($_SERVER['HTTP_X_TOKEN'] != '')?$_SERVER['HTTP_X_TOKEN']:'';
             }
         } else {
             if (isset($_COOKIE['defaultAdminSiteLang'])) {
@@ -74,7 +74,7 @@ class CommonHelper extends FatUtility
 
     public static function getAppToken()
     {
-        return self::$appToken;
+        return self::$_appToken;
     }
 
     public static function getLangId()
