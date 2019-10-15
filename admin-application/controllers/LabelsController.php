@@ -131,7 +131,7 @@ class LabelsController extends AdminBaseController
         $this->objPrivilege->canEditLanguageLabels();
         $data = FatApp::getPostedData();
 
-        $frm = $this->getForm($data['label_key'],$data['label_type']);
+        $frm = $this->getForm($data['label_key'], $data['label_type']);
         $post = $frm->getFormDataFromArray($data);
         if (false === $post) {
             Message::addErrorMessage(current($frm->getValidationErrors()));
@@ -139,7 +139,7 @@ class LabelsController extends AdminBaseController
         }
 
         $labelKey = $post['label_key'];
-        $labelType = FatApp::getPostedData('label_type',FatUtility::VAR_INT, Labels::TYPE_WEB);
+        $labelType = FatApp::getPostedData('label_type', FatUtility::VAR_INT, Labels::TYPE_WEB);
         $labelTypeArr = Labels::getTypeArr($this->adminLangId);
 
         if (!array_key_exists($labelType, $labelTypeArr)) {
@@ -385,13 +385,14 @@ class LabelsController extends AdminBaseController
 
     public function updateJsonFile($labelType = Labels::TYPE_WEB)
     {
-        $langCode = Language::getAttributesById($this->adminLangId, 'language_code', false);
-        $resp = Labels::updateDataToFile($this->adminLangId, $langCode, $labelType);
-        if ($resp === true || 0 < $resp) {
-            $message = Labels::getLabel('MSG_File_successfully_updated', $this->adminLangId);
-            FatUtility::dieJsonSuccess($message);
+        $languages = Language::getAllCodesAssoc();
+        foreach ($languages as $langId => $langCode) {
+            $resp = Labels::updateDataToFile($langId, $langCode, $labelType, true);
+            if ($resp === false) {
+                FatUtility::dieJsonError(Labels::getLabel('MSG_Unable_to_update_file', $this->adminLangId));
+            }
         }
-
-        FatUtility::dieJsonError(!empty($resp) ? $resp : Labels::getLabel('MSG_Unable_to_update_file', $this->adminLangId));
+        $message = Labels::getLabel('MSG_File_successfully_updated', $this->adminLangId);
+        FatUtility::dieJsonSuccess($message);
     }
 }
