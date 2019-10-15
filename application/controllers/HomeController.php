@@ -165,7 +165,9 @@ class HomeController extends MyAppController
         $languages = Language::getAllNames(false);
         $languageArr = array();
         if (0 < count($languages)) {
+            $siteDefaultLangId = FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1);
             foreach ($languages as &$language) {
+                $language['isSiteDefaultLang'] = ($language['language_id'] === $siteDefaultLangId) ? 1 : 0;
                 $languageArr[] = $language;
             }
         }
