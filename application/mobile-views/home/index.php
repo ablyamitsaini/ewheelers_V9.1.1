@@ -79,7 +79,24 @@ $data = array(
 foreach ($banners as $location => $bannerLocationDetail) {
     foreach ($bannerLocationDetail['banners'] as $index => $bannerDetail) {
         $uploadedTime = AttachedFile::setTimeParam($bannerDetail['banner_img_updated_on']);
-        $banners[$location]['banners'][$index]['banner_image_url'] = FatCache::getCachedUrl(CommonHelper::generateFullUrl('Banner', 'showOriginalBanner', array($bannerDetail['banner_id'], $siteLangId)).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
+
+        switch ($bannerDetail['banner_blocation_id']) {
+            case BannerLocation::HOME_PAGE_TOP_BANNER:
+                $bannerUrl = FatCache::getCachedUrl(CommonHelper::generateFullUrl('Banner', 'HomePageBannerTopLayout', array($bannerDetail['banner_id'], $siteLangId, 'MOBILE')).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
+                break;
+            case BannerLocation::HOME_PAGE_MIDDLE_BANNER:
+                $bannerUrl = FatCache::getCachedUrl(CommonHelper::generateFullUrl('Banner', 'HomePageBannerMiddleLayout', array($bannerDetail['banner_id'], $siteLangId, 'MOBILE')).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
+                break;
+            case BannerLocation::HOME_PAGE_BOTTOM_BANNER:
+                $bannerUrl = FatCache::getCachedUrl(CommonHelper::generateFullUrl('Banner', 'HomePageBannerBottomLayout', array($bannerDetail['banner_id'], $siteLangId, 'MOBILE')).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
+                break;
+            default:
+                $bannerUrl = FatCache::getCachedUrl(CommonHelper::generateFullUrl('Banner', 'showOriginalBanner', array($bannerDetail['banner_id'], $siteLangId)).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
+                break;
+        }
+        
+        $banners[$location]['banners'][$index]['banner_image_url'] = $bannerUrl;
+
         $urlTypeData = CommonHelper::getUrlTypeData($bannerDetail['banner_url']);
         $banners[$location]['banners'][$index]['banner_url'] = ($urlTypeData['urlType'] == applicationConstants::URL_TYPE_EXTERNAL ? $bannerDetail['banner_url'] : $urlTypeData['recordId']);
         $banners[$location]['banners'][$index]['banner_url_type'] = $urlTypeData['urlType'];
