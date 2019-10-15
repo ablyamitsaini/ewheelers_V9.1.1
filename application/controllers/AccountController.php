@@ -1004,7 +1004,7 @@ class AccountController extends LoggedUserController
             }
             $this->set('file', $profileImg);
         }
-        User::setImageModifiedAt($userId, $updatedAt);
+        User::setImageUpdatedOn($userId, $updatedAt);
         $this->set('msg', Labels::getLabel('MSG_File_uploaded_successfully', $this->siteLangId));
         if (true ===  MOBILE_APP_API_CALL) {
             $this->_template->render();

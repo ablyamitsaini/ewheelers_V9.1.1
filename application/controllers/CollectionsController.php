@@ -185,7 +185,9 @@ class CollectionsController extends MyAppController
                 if ($collections) {
                     foreach ($collections as &$cat) {
                         if (true ===  MOBILE_APP_API_CALL) {
-                            $cat['image'] = CommonHelper::generateFullUrl('Category', 'banner', array($cat['prodcat_id'] , $this->siteLangId, 'MOBILE', applicationConstants::SCREEN_MOBILE));
+                            $imgUpdatedOn = ProductCategory::getAttributesById($cat['prodcat_id'], 'prodcat_img_updated_on');
+                            $uploadedTime = AttachedFile::setTimeParam($imgUpdatedOn);
+                            $cat['image'] = FatCache::getCachedUrl(CommonHelper::generateFullUrl('Category', 'banner', array($cat['prodcat_id'] , $this->siteLangId, 'MOBILE', applicationConstants::SCREEN_MOBILE)).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
                         } else {
                             $cat['children'] = ProductCategory::getProdCatParentChildWiseArr($this->siteLangId, $cat['prodcat_id']);
                         }

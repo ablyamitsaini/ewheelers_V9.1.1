@@ -2160,7 +2160,7 @@ class User extends MyAppModel
         return $srch;
     }
 
-    public static function setImageModifiedAt($userId, $date = '')
+    public static function setImageUpdatedOn($userId, $date = '')
     {
         $date = empty($date) ? date('Y-m-d  H:i:s') : $date;
         $where = array('smt'=>'user_id = ?', 'vals'=>array($userId));

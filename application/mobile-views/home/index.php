@@ -46,9 +46,12 @@ foreach ($collections as $collectionIndex => $collectionData) {
         }
     } elseif (array_key_exists('categories', $collectionData)) {
         foreach ($collectionData['categories'] as $index => $category) {
+            $imgUpdatedOn = ProductCategory::getAttributesById($category['prodcat_id'], 'prodcat_img_updated_on');
+            $uploadedTime = AttachedFile::setTimeParam($imgUpdatedOn);
             $collections[$collectionIndex]['categories'][$index]['prodcat_name'] = html_entity_decode($category['prodcat_name'], ENT_QUOTES, 'utf-8');
             $collections[$collectionIndex]['categories'][$index]['prodcat_description'] = strip_tags(html_entity_decode($category['prodcat_description'], ENT_QUOTES, 'utf-8'));
-            $collections[$collectionIndex]['categories'][$index]['category_image_url'] = FatCache::getCachedUrl(CommonHelper::generateFullUrl('Category', 'banner', array($category['prodcat_id'] , $siteLangId, 'MOBILE', applicationConstants::SCREEN_MOBILE)), CONF_IMG_CACHE_TIME, '.jpg');
+
+            $collections[$collectionIndex]['categories'][$index]['category_image_url'] = FatCache::getCachedUrl(CommonHelper::generateFullUrl('Category', 'banner', array($category['prodcat_id'] , $siteLangId, 'MOBILE', applicationConstants::SCREEN_MOBILE)).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
         }
     } elseif (array_key_exists('shops', $collectionData)) {
         foreach ($collectionData['shops'] as $index => $shop) {

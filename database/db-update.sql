@@ -802,3 +802,4 @@ INSERT INTO `tbl_cron_schedules` ( `cron_name`, `cron_command`, `cron_duration`,
 DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE 'ERR_PLEASE_USE_REWARD_POINT_BETWEEN_{MIN}_to_{MAX}';
 DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE 'Lbl_Seller_Approval_Form';
 ALTER TABLE `tbl_users`  ADD `user_img_updated_on` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP  AFTER `user_order_tracking_url`;
+ALTER TABLE `tbl_product_categories` ADD `prodcat_img_updated_on` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `prodcat_ordercode`;

@@ -218,7 +218,7 @@ class ProductCategory extends MyAppModel
             $prodCatSrch->addOrder('prodrootcat_code');
             $prodCatSrch->addOrder('prodcat_ordercode');
         }
-        
+
         $rs = $prodCatSrch->getResultSet();
         $categoriesArr = FatApp::getDb()->fetchAll($rs, 'prodcat_id');
         static::addMissingParentDetails($categoriesArr, $langId);
@@ -998,5 +998,12 @@ class ProductCategory extends MyAppModel
 
         $customUrl = UrlRewrite::getValidSeoUrl($seoUrl, $originalUrl, $this->mainTableRecordId);
         return UrlRewrite::update($originalUrl, $customUrl);
+    }
+
+    public static function setImageUpdatedOn($userId, $date = '')
+    {
+        $date = empty($date) ? date('Y-m-d  H:i:s') : $date;
+        $where = array('smt'=>'prodcat_id = ?', 'vals'=>array($userId));
+        FatApp::getDb()->updateFromArray(static::DB_TBL, array('prodcat_img_updated_on'=>date('Y-m-d  H:i:s')), $where);
     }
 }
