@@ -4215,7 +4215,8 @@ a.link:after {
 	line-height: 2.5rem;
 	display: block;
 	width: 110px;
-	border-bottom: solid 1px  var(--border-color);
+	/*border-bottom: solid 1px  var(--border-color);*/
+	text-decoration: underline;
 }
 
 .edit-hover:hover {
