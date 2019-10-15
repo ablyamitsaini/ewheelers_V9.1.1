@@ -227,7 +227,7 @@ class ShopsController extends MyAppController
                 $data['shop']['rating'] = SelProdRating::getSellerRating($data['shop']['shop_user_id']);
             }
             $data['shop']['shop_logo'] = CommonHelper::generateFullUrl('image', 'shopLogo', array($data['shop']['shop_id'], $this->siteLangId));
-            $data['shop']['shop_banner'] = CommonHelper::generateFullUrl('image', 'shopBanner', array($data['shop']['shop_id'], $this->siteLangId));
+            $data['shop']['shop_banner'] = FatCache::getCachedUrl(CommonHelper::generateFullUrl('image', 'shopBanner', array($data['shop']['shop_id'], $this->siteLangId, 'MOBILE', 0, applicationConstants::SCREEN_MOBILE)), CONF_IMG_CACHE_TIME, '.jpg');
         }
 
         $this->set('data', $data);
