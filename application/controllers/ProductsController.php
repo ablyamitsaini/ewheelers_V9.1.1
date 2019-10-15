@@ -161,6 +161,7 @@ class ProductsController extends MyAppController
             $langId = $this->siteLangId;
         }
 
+        $categoryId = 0;
         if (array_key_exists('category', $post)) {
             $categoryId = FatUtility::int($post['category']);
             $cacheKey.= '-'.$categoryId;

@@ -51,5 +51,5 @@ $data = array(
     'filterDefaultMinValue' => $filterDefaultMinValue,
     'filterDefaultMaxValue' => $filterDefaultMaxValue,
     'availability' => $availability,
-    'availabilityArr' => $availabilityArr,
+    'availabilityArr' => array_values($availabilityArr),
 );
