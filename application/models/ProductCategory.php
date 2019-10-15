@@ -696,12 +696,12 @@ class ProductCategory extends MyAppModel
         $prodCatSrch->addMultipleFields(array( 'prodcat_id', 'COALESCE(prodcat_name,prodcat_identifier ) as prodcat_name','substr(prodcat_code,1,6) AS prodrootcat_code', 'prodcat_content_block','prodcat_active','prodcat_parent','prodcat_code as prodcat_code'));
 
         if ($excludeCategoriesHavingNoProducts) {
-            $prodSrchObj = new ProductSearch($langId);
+            $prodSrchObj = new ProductSearch();
             $prodSrchObj->setDefinedCriteria();
             $prodSrchObj->joinProductToCategory();
             $prodSrchObj->doNotCalculateRecords();
             $prodSrchObj->doNotLimitRecords();
-            $prodSrchObj->joinSellerSubscription($langId, true);
+            $prodSrchObj->joinSellerSubscription(0, true);
             $prodSrchObj->addSubscriptionValidCondition();
 
             //$prodSrchObj->addGroupBy('selprod_id');
@@ -720,7 +720,7 @@ class ProductCategory extends MyAppModel
             $prodCatSrch->addOrder('prodrootcat_code');
             $prodCatSrch->addOrder('prodcat_ordercode');
         }
-
+        
         $rs = $prodCatSrch->getResultSet();
 
         if ($forSelectBox) {
