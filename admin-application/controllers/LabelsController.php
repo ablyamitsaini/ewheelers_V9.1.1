@@ -178,6 +178,7 @@ class LabelsController extends AdminBaseController
                 apcu_store($cacheKey, $keyValue);
             }
         }
+        $this->updateJsonFile(Labels::TYPE_WEB);
         $this->set('msg', $this->str_setup_successful);
         $this->_template->render(false, false, 'json-success.php');
     }

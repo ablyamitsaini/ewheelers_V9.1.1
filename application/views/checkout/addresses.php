@@ -15,7 +15,7 @@
         <?php foreach ($addresses as $address) {
                 $selected_billing_address_id = (!$selected_billing_address_id && $address['ua_is_default']) ? $address['ua_id'] : $selected_billing_address_id; ?>
         <div class="col-lg-6 col-md-6 col-xs-12 address-<?php echo $address['ua_id'];?>">
-            <label class="address address-billing <?php echo ($selected_billing_address_id == $address['ua_id']) ? 'is--selected' : ''; ?> ">
+            <label id="address_<?php echo $address['ua_id']; ?>" class="address address-billing <?php echo ($selected_billing_address_id == $address['ua_id']) ? 'is--selected' : ''; ?> ">
                 <div class="address-inner">
                     <span class="radio">
                         <input <?php echo ($selected_billing_address_id == $address['ua_id']) ? 'checked="checked"' : ''; ?> name="billing_address_id" value="<?php echo $address['ua_id']; ?>" type="radio"><i class="input-helper"></i>
@@ -101,7 +101,7 @@
 <div class="row align-items-center mt-4">
     <div class="col"></div>
     <div class="col-auto">
-        <a href="javascript:void(0)" onClick="setUpAddressSelection(this);" class="btn btn--primary"><?php echo Labels::getLabel('LBL_Continue', $siteLangId); ?></a>
+        <a href="javascript:void(0)" id="btn-continue-js" onClick="setUpAddressSelection(this);" class="btn btn--primary"><?php echo Labels::getLabel('LBL_Continue', $siteLangId); ?></a>
     </div>
 </div>
 <div id="addressFormDiv" style="display:none">
