@@ -240,7 +240,7 @@ class ProductsController extends MyAppController
         if (0 == $langId) {
             $brandSrch->joinBrandsLang($this->siteLangId);
         }
-        //$brandSrch->addGroupBy('brand_id');
+        $brandSrch->addGroupBy('brand_id');
         $brandSrch->addMultipleFields(array( 'brand_id', 'ifNull(brand_name,brand_identifier) as brand_name'));
         if ($brandId) {
             $brandSrch->addCondition('brand_id', '=', $brandId);
@@ -250,7 +250,7 @@ class ProductsController extends MyAppController
 
         if (!empty($brandsCheckedArr)) {
             $brandSrch->addFld('IF(FIND_IN_SET(brand_id, "'.implode(',', $brandsCheckedArr).'"), 1, 0) as priority');
-            //$brandSrch->addOrder('priority', 'desc');
+            $brandSrch->addOrder('priority', 'desc');
         } else {
             $brandSrch->addFld('0 as priority');
         }
@@ -258,7 +258,10 @@ class ProductsController extends MyAppController
         /* if needs to show product counts under brands[ */
         //$brandSrch->addFld('count(selprod_id) as totalProducts');
         /* ] */
-        $brndSrch =  new SearchBase('('.$brandSrch->getQuery().')','temp');
+        $brandRs = $brandSrch->getResultSet();
+        $brandsArr = $db->fetchAll($brandRs);
+
+        /*$brndSrch =  new SearchBase('('.$brandSrch->getQuery().')','temp');
         $brndSrch->doNotCalculateRecords();
         $brndSrch->doNotLimitRecords();
         $brndSrch->addMultipleFields(array('DISTINCT brand_id', 'priority', 'brand_name'));
@@ -268,7 +271,7 @@ class ProductsController extends MyAppController
         $priority  = array_column($brandsArr, 'priority');
         $name = array_column($brandsArr, 'brand_name');
         array_multisort($priority, SORT_DESC, $name, SORT_ASC, $brandsArr);
-        $priority = $name = array();
+        $priority = $name = array();*/
         /* ] */
 
         /* {Can modify the logic fetch data directly from query . will implement later}
