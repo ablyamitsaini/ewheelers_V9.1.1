@@ -1,3 +1,6 @@
+Bug:
+    -> 031401 - While moving item to the same wish list, displaying error invalid request.
+
 <!-- Release notes TV-9.0.1.20191015 -->
 Bug:
     -> 031400 - Services were not displaying under shipping carrier
