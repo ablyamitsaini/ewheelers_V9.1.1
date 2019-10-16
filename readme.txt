@@ -1,3 +1,5 @@
+Bug : 031455 - Excluded discounts from tax calculation.
+
 <!-- Release notes TV-9.0.1.20191015 -->
 Bug:
     -> 031400 - Services were not displaying under shipping carrier
