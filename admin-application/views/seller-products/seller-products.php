@@ -93,13 +93,13 @@ foreach ($arrListing as $sn => $row) {
                     $innerLiEdit->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'',
                     'title'=>Labels::getLabel('LBL_Edit', $adminLangId),"onclick"=>"addSellerProductForm(" . $row['selprod_product_id'] . ",".$row['selprod_id'].")"), Labels::getLabel('LBL_Edit', $adminLangId), true);
 
-                    /*$innerLiSpecialPrice = $innerUl->appendElement("li");
+                    $innerLiSpecialPrice = $innerUl->appendElement("li");
                     $innerLiSpecialPrice->appendElement(
                         'a',
                         array('href'=>'javascript:void(0)', 'class'=>'', 'title'=>Labels::getLabel('LBL_Special_Price', $adminLangId),"onclick"=>"addSellerProductSpecialPrices(".$row['selprod_id'].")"),
                         Labels::getLabel('LBL_Special_Price', $adminLangId),
                         true
-                    );*/
+                    );
 
                     $innerLiDelete = $innerUl->appendElement("li");
                     $innerLiDelete->appendElement(
@@ -133,7 +133,7 @@ $frm->addHiddenField('', 'status');
 echo $frm->getFormTag();
 echo $frm->getFieldHtml('status');
 ?>
-    <?php echo $tbl->getHtml(); ?>
+<?php echo $tbl->getHtml(); ?>
 </form>
 <?php if (!$product_id) {
     $postedData['page'] = $page;
