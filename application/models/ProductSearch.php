@@ -556,7 +556,7 @@ class ProductSearch extends SearchBase
                     if (1 > $catId) {
                         continue;
                     }
-                    $catCode = ProductCategory::getAttributesById($category_id, 'prodcat_code');
+                    $catCode = ProductCategory::getAttributesById($catId, 'prodcat_code');
                     $condition .= " c.prodcat_code LIKE '".$catCode ."%' OR";
                 }
                 $condition = substr($condition, 0, -2);
