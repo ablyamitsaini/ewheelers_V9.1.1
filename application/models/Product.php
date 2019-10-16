@@ -1433,7 +1433,8 @@ END,   special_price_found ) as special_price_found'
                     $srch->addOrder('selprod_sold_count', $sortOrder);
                     break;
                 case 'discounted':
-                    $srch->addOrder('special_price_found', 'DESC');
+                    $srch->addFld('ROUND(((selprod_price - theprice)*100)/selprod_price) as discountedValue');
+                    $srch->addOrder('discountedValue', 'DESC');
                     break;
                 case 'rating':
                     $srch->addOrder('prod_rating', $sortOrder);
