@@ -2,10 +2,15 @@ $(document).ready(function(){
 	$('.gallery').modaal({
 		type: 'image'
 	});
-	$('.social-toggle').on('click', function() {
+	$('.social-toggle').on('click', function(event) {
 	  $(this).next().toggleClass('open-menu');
 	});
-
+    $("body").mouseup(function(e){ 
+        if (1 > $(event.target).parents('.social-toggle').length && $('.social-toggle').next().hasClass('open-menu')) {
+            $('.social-toggle').next().toggleClass('open-menu');
+        }
+    });
+    
     function DropDown(el) {
         this.dd = el;
         this.placeholder = this.dd.children('span');
@@ -78,12 +83,6 @@ $(document).ready(function(){
 
 
 })(jQuery);
-
-
-$('.social-toggle').on('click', function() {
-  $(this).next().toggleClass('open-menu');
-});
-
 
 /* for sticky things*/
       /* if($(window).width()>1050){

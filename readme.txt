@@ -1,4 +1,10 @@
-Bug : 031455 - Excluded discounts from tax calculation.
+Bug : 
+    -> 031455 - Excluded discounts from tax calculation.
+    -> 031401 - While moving item to the same wish list, displaying error invalid request.
+    -> 031454 - After applying most discounted sorting> products are not listed accordingly
+    -> 031408 - Share options should get closed when clicked outside anywhere on product, shop and blog page.
+    -> 031491 - While uploading banner file of shop, If file name is large then it's exceeding the success message length.
+
 Enhancements : Added <!-- Yo!Kart --> for builtwith.com.
 
 <!-- Release notes TV-9.0.1.20191015 -->

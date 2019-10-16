@@ -1295,11 +1295,12 @@ class AccountController extends LoggedUserController
     }
 
     /* called from products listing page */
-    public function viewWishList($selprod_id)
+    public function viewWishList($selprod_id, $excludeWishList = 0)
     {
+        $excludeWishList = FatUtility::int($excludeWishList);
         $loggedUserId = UserAuthentication::getLoggedUserId();
         $this->getDefaultWishListId();
-        $wishLists = UserWishList::getUserWishLists($loggedUserId, true);
+        $wishLists = UserWishList::getUserWishLists($loggedUserId, true, $excludeWishList);
         $frm = $this->getCreateWishListForm();
         $frm->fill(array('selprod_id' => $selprod_id));
         $this->set('frm', $frm);

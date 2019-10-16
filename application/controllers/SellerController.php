@@ -4143,7 +4143,7 @@ class SellerController extends SellerBaseController
         $selProd_id = FatUtility::int($selProd_id);
 
         if (0 < $selProd_id || 0 > $selProd_id) {
-            $selProd_id = SellerProduct::getAttributesByID($selProd_id, 'selprod_id', true);
+            $selProd_id = SellerProduct::getAttributesByID($selProd_id, 'selprod_id', false);
             if (empty($selProd_id)) {
                 Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
                 FatApp::redirectUser(CommonHelper::generateUrl('SellerProducts', 'specialPrice'));

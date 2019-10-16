@@ -54,8 +54,9 @@ class UserWishList extends MyAppModel
         $db->deleteRecords(static::DB_TBL, array( 'smt' => 'uwlist_id = ?', 'vals' => array( $uwlist_id ) ));
     }
 
-    public static function getUserWishLists($userId = 0, $fetchProducts = false)
+    public static function getUserWishLists($userId = 0, $fetchProducts = false, $excludeWishList = 0)
     {
+        $excludeWishList = FatUtility::int($excludeWishList);
         $userId = FatUtility::int($userId);
         if (!$userId) {
             trigger_error(Labels::getLabel('MSG_Invalid_Argument_Passed!', CommonHelper::getLangId()), E_USER_ERROR);
@@ -79,7 +80,9 @@ class UserWishList extends MyAppModel
 
         $srch = static::getSearchObject($userId);
         $srch->joinTable('(' . $selWishlistProductSubQuery . ')', 'LEFT OUTER JOIN', 'uwlist_id = uw_items.uwlp_uwlist_id', 'uw_items');
-
+        if (0 < $excludeWishList) {
+            $srch->addCondition('uwlp_uwlist_id', '!=', $excludeWishList);
+        }
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
         $srch->addOrder('uwlist_title');
