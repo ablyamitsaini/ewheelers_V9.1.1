@@ -336,7 +336,7 @@ class BlogPostCategory extends MyAppModel
         $parentId = FatUtility::int($parentId);
         $langId = FatUtility::int($langId);
         if (!$langId) {
-            trigger_error(Labels::getLabel('MSG_Language_not_specified', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('MSG_Language_not_specified', $langId), E_USER_ERROR);
         }
         $bpCatSrch = new BlogPostCategorySearch($langId);
         $bpCatSrch->doNotCalculateRecords();
@@ -369,7 +369,7 @@ class BlogPostCategory extends MyAppModel
     {
         $langId = FatUtility::int($langId);
         if (!$langId) {
-            trigger_error(Labels::getLabel('MSG_Language_not_specified', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('MSG_Language_not_specified', $langId), E_USER_ERROR);
         }
         return static::getBlogPostCatParentChildWiseArr($langId, 0, false, true);
     }

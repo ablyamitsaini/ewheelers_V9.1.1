@@ -289,7 +289,7 @@ class User extends MyAppModel
     {
         $langId = FatUtility::int($langId);
         if ($langId == 0) {
-            trigger_error(Labels::getLabel('ERR_Language_Id_not_specified.', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('ERR_Language_Id_not_specified.', $langId), E_USER_ERROR);
         }
         $arr=array(
         static::USER_FIELD_TYPE_TEXT => Labels::getLabel('LBL_Textbox', $langId),
@@ -307,7 +307,7 @@ class User extends MyAppModel
     {
         $langId = FatUtility::int($langId);
         if ($langId == 0) {
-            trigger_error(Labels::getLabel('ERR_Language_Id_not_specified.', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('ERR_Language_Id_not_specified.', $langId), E_USER_ERROR);
         }
         $arr=array(
         static::USER_BUYER_DASHBOARD => Labels::getLabel('LBL_Buyer', $langId),
@@ -341,7 +341,7 @@ class User extends MyAppModel
     {
         $langId = FatUtility::int($langId);
         if ($langId == 0) {
-            trigger_error(Labels::getLabel('ERR_Language_Id_not_specified.', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('ERR_Language_Id_not_specified.', $langId), E_USER_ERROR);
         }
         $arr=array(
         static::SUPPLIER_REQUEST_PENDING => Labels::getLabel('LBL_Pending', $langId),
@@ -364,7 +364,7 @@ class User extends MyAppModel
     {
         $langId = FatUtility::int($langId);
         if ($langId == 0) {
-            trigger_error(Labels::getLabel('ERR_Language_Id_not_specified.', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('ERR_Language_Id_not_specified.', $langId), E_USER_ERROR);
         }
         $arr=array(
         static::CATALOG_REQUEST_PENDING => Labels::getLabel('LBL_Pending', $langId),
@@ -2158,5 +2158,12 @@ class User extends MyAppModel
         $srch->addCondition('user_affiliate_referrer_user_id', '=', $affilateUserId);
 
         return $srch;
+    }
+
+    public static function setImageUpdatedOn($userId, $date = '')
+    {
+        $date = empty($date) ? date('Y-m-d  H:i:s') : $date;
+        $where = array('smt'=>'user_id = ?', 'vals'=>array($userId));
+        FatApp::getDb()->updateFromArray(static::DB_TBL, array('user_img_updated_on'=>date('Y-m-d  H:i:s')), $where);
     }
 }

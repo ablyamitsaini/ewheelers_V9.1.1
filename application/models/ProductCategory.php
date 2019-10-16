@@ -218,7 +218,7 @@ class ProductCategory extends MyAppModel
             $prodCatSrch->addOrder('prodrootcat_code');
             $prodCatSrch->addOrder('prodcat_ordercode');
         }
-        
+        // echo $prodCatSrch->getQuery();exit;
         $rs = $prodCatSrch->getResultSet();
         $categoriesArr = FatApp::getDb()->fetchAll($rs, 'prodcat_id');
         static::addMissingParentDetails($categoriesArr, $langId);
@@ -696,12 +696,12 @@ class ProductCategory extends MyAppModel
         $prodCatSrch->addMultipleFields(array( 'prodcat_id', 'COALESCE(prodcat_name,prodcat_identifier ) as prodcat_name','substr(prodcat_code,1,6) AS prodrootcat_code', 'prodcat_content_block','prodcat_active','prodcat_parent','prodcat_code as prodcat_code'));
 
         if ($excludeCategoriesHavingNoProducts) {
-            $prodSrchObj = new ProductSearch($langId);
+            $prodSrchObj = new ProductSearch();
             $prodSrchObj->setDefinedCriteria();
             $prodSrchObj->joinProductToCategory();
             $prodSrchObj->doNotCalculateRecords();
             $prodSrchObj->doNotLimitRecords();
-            $prodSrchObj->joinSellerSubscription($langId, true);
+            $prodSrchObj->joinSellerSubscription(0, true);
             $prodSrchObj->addSubscriptionValidCondition();
 
             //$prodSrchObj->addGroupBy('selprod_id');
@@ -720,7 +720,7 @@ class ProductCategory extends MyAppModel
             $prodCatSrch->addOrder('prodrootcat_code');
             $prodCatSrch->addOrder('prodcat_ordercode');
         }
-
+        
         $rs = $prodCatSrch->getResultSet();
 
         if ($forSelectBox) {
@@ -728,10 +728,8 @@ class ProductCategory extends MyAppModel
         } else {
             $categoriesArr = FatApp::getDb()->fetchAll($rs);
         }
-        if (false === $includeChildCat) {
-            return $categoriesArr;
-        }
-        if ($categoriesArr) {
+
+        if (true === $includeChildCat && $categoriesArr) {
             foreach ($categoriesArr as $key => $cat) {
                 $categoriesArr[$key]['icon'] = CommonHelper::generateFullUrl('Category', 'icon', array($cat['prodcat_id'], $langId, 'COLLECTION_PAGE'));
                 $categoriesArr[$key]['children'] = self::getProdCatParentChildWiseArr($langId, $cat['prodcat_id']);
@@ -744,7 +742,7 @@ class ProductCategory extends MyAppModel
     {
         $langId = FatUtility::int($langId);
         if (!$langId) {
-            trigger_error(Labels::getLabel('ERR_Language_Not_Specified', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('ERR_Language_Not_Specified', $langId), E_USER_ERROR);
         }
         return static::getProdCatParentChildWiseArr($langId, 0, false, true);
     }
@@ -998,5 +996,12 @@ class ProductCategory extends MyAppModel
 
         $customUrl = UrlRewrite::getValidSeoUrl($seoUrl, $originalUrl, $this->mainTableRecordId);
         return UrlRewrite::update($originalUrl, $customUrl);
+    }
+
+    public static function setImageUpdatedOn($userId, $date = '')
+    {
+        $date = empty($date) ? date('Y-m-d  H:i:s') : $date;
+        $where = array('smt'=>'prodcat_id = ?', 'vals'=>array($userId));
+        FatApp::getDb()->updateFromArray(static::DB_TBL, array('prodcat_img_updated_on'=>date('Y-m-d  H:i:s')), $where);
     }
 }

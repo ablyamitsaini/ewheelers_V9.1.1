@@ -5,7 +5,7 @@ class MyAppController extends FatController
     public $appToken = '';
 
     public function __construct($action)
-    {
+    {            
         parent::__construct($action);
         $this->action = $action;
 

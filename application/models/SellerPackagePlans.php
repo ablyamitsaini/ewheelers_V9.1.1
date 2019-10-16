@@ -105,7 +105,7 @@ class SellerPackagePlans extends MyAppModel
     {
         $spackageId = FatUtility::convertToType($spackageId, FatUtility::VAR_INT);
         if (!$spackageId) {
-            trigger_error(Labels::getLabel('ERR_Package_Id_Not_Specified', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('ERR_Package_Id_Not_Specified', CommonHelper::getLangId()), E_USER_ERROR);
             return false;
         }
         $srch = new SellerPackagePlansSearch();
@@ -124,7 +124,7 @@ class SellerPackagePlans extends MyAppModel
     {
         $spackageId = FatUtility::convertToType($spackageId, FatUtility::VAR_INT);
         if (!$spackageId) {
-            trigger_error(Labels::getLabel('ERR_Package_Id_Not_Specified', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('ERR_Package_Id_Not_Specified', CommonHelper::getLangId()), E_USER_ERROR);
             return false;
         }
         $srch = new SellerPackagePlansSearch();
@@ -148,7 +148,7 @@ class SellerPackagePlans extends MyAppModel
     {
         $spplan_id = FatUtility::convertToType($spplan_id, FatUtility::VAR_INT);
         if (!$spplan_id) {
-            trigger_error(Labels::getLabel('ERR_Package_Id_Not_Specified', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('ERR_Package_Id_Not_Specified', $siteLangId), E_USER_ERROR);
             return false;
         }
         $srch = new SellerPackageSearch($siteLangId);

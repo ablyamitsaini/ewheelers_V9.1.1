@@ -88,6 +88,12 @@ class BannerController extends MyAppController
         $this->showBanner($bannerId, $langId, 1350, 405, $screen);
     }
 
+    // For Mobile API
+    public function HomePageBannerMiddleLayout($bannerId, $langId = 0, $screen = 0)
+    {
+        $this->showBanner($bannerId, $langId, 600, 338, $screen);
+    }
+
     public function HomePageBannerBottomLayout($bannerId, $langId = 0, $screen = 0)
     {
         $this->showBanner($bannerId, $langId, 660, 198, $screen);

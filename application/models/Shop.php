@@ -110,7 +110,7 @@ class Shop extends MyAppModel
         return true;
     }
 
-    public static function getUserShopProdCategoriesObj($userId, $shopId = 0, $prodcat_id = 0, $siteLangId)
+    public static function getUserShopProdCategoriesObj($userId, $siteLangId, $shopId = 0, $prodcat_id = 0)
     {
         $userId = FatUtility::int($userId);
         $prodcat_id = FatUtility::int($prodcat_id);
@@ -221,7 +221,7 @@ class Shop extends MyAppModel
         return $frm;
     }
 
-    private function rewriteUrl($keyword, $type = 'shop')
+    private function _rewriteUrl($keyword, $type = 'shop')
     {
         if ($this->mainTableRecordId < 1) {
             return false;
@@ -268,32 +268,32 @@ class Shop extends MyAppModel
 
     public function setupCollectionUrl($keyword)
     {
-        return $this->rewriteUrl($keyword, 'collection');
+        return $this->_rewriteUrl($keyword, 'collection');
     }
 
     public function rewriteUrlShop($keyword)
     {
-        return $this->rewriteUrl($keyword);
+        return $this->_rewriteUrl($keyword);
     }
 
     public function rewriteUrlReviews($keyword)
     {
-        return $this->rewriteUrl($keyword, 'reviews');
+        return $this->_rewriteUrl($keyword, 'reviews');
     }
 
     public function rewriteUrlTopProducts($keyword)
     {
-        return $this->rewriteUrl($keyword, 'top-products');
+        return $this->_rewriteUrl($keyword, 'top-products');
     }
 
     public function rewriteUrlContact($keyword)
     {
-        return $this->rewriteUrl($keyword, 'contact');
+        return $this->_rewriteUrl($keyword, 'contact');
     }
 
     public function rewriteUrlpolicy($keyword)
     {
-        return $this->rewriteUrl($keyword, 'policy');
+        return $this->_rewriteUrl($keyword, 'policy');
     }
 
     /* public function getShopAttachments(){

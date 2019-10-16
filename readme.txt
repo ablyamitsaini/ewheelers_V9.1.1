@@ -1,5 +1,6 @@
+<!-- Release notes TV-9.0.1.20191015 -->
 Bug:
-
+    -> 031400 - Services were not displaying under shipping carrier
 Enhancements :
     -> Updated reset all link in products listing page filters
     -> Added icons for dashboard and shop. Added new link for home redirection in user's dashboard.
@@ -7,6 +8,7 @@ Enhancements :
     -> Added alphabetical order for category listing page.
     -> 030974 - categories are not displaying properly in admin
     -> 031400 - Services were not displaying under shipping carrier
+    -> Updated Phone Number Regex
     -> Disabled stripe gateway form button after click to prevent multiple form submit.
 
 <!---- Release notes TV-9.0.1.20191009 -- >

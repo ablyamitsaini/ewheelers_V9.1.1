@@ -81,7 +81,7 @@ class Collections extends MyAppModel
     {
         $langId = FatUtility::convertToType($langId, FatUtility::VAR_INT);
         if (!$langId) {
-            trigger_error(Labels::getLabel('MSG_Language_Id_not_specified.', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('MSG_Language_Id_not_specified.', $langId), E_USER_ERROR);
             return false;
         }
         return array(
@@ -96,7 +96,7 @@ class Collections extends MyAppModel
     {
         $langId = FatUtility::convertToType($langId, FatUtility::VAR_INT);
         if (!$langId) {
-            trigger_error(Labels::getLabel('MSG_Language_Id_not_specified.', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('MSG_Language_Id_not_specified.', $langId), E_USER_ERROR);
             return false;
         }
 
@@ -224,7 +224,7 @@ class Collections extends MyAppModel
         $collection_id = FatUtility::convertToType($collection_id, FatUtility::VAR_INT);
         $lang_id = FatUtility::convertToType($lang_id, FatUtility::VAR_INT);
         if (!$collection_id || !$lang_id) {
-            trigger_error(Labels::getLabel('MSG_Arguments_not_specified.', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('MSG_Arguments_not_specified.', $lang_id), E_USER_ERROR);
             return false;
         }
 
@@ -333,7 +333,7 @@ class Collections extends MyAppModel
 
         $lang_id = FatUtility::convertToType($lang_id, FatUtility::VAR_INT);
         if (!$collection_id || !$lang_id) {
-            trigger_error(Labels::getLabel("ERR_Arguments_not_specified.", $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel("ERR_Arguments_not_specified.", $lang_id), E_USER_ERROR);
             return false;
         }
 
@@ -358,7 +358,7 @@ class Collections extends MyAppModel
 
         $lang_id = FatUtility::convertToType($lang_id, FatUtility::VAR_INT);
         if (!$collection_id || !$lang_id) {
-            trigger_error(Labels::getLabel("ERR_Arguments_not_specified.", $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel("ERR_Arguments_not_specified.", $lang_id), E_USER_ERROR);
             return false;
         }
 
@@ -384,7 +384,7 @@ class Collections extends MyAppModel
 
         $langId = FatUtility::convertToType($langId, FatUtility::VAR_INT);
         if (!$collectionId || !$langId) {
-            trigger_error(Labels::getLabel("ERR_Arguments_not_specified.", $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel("ERR_Arguments_not_specified.", $langId), E_USER_ERROR);
             return false;
         }
 

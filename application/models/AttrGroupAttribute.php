@@ -23,7 +23,7 @@ class AttrGroupAttribute extends MyAppModel
     {
         $langId = FatUtility::int($langId);
         if ($langId == 0) {
-            trigger_error(Labels::getLabel('MSG_Language_Id_not_specified.', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('MSG_Language_Id_not_specified.', $langId), E_USER_ERROR);
         }
         return array(
         static::ATTRTYPE_NUMBER => Labels::getLabel('LBL_Number', $langId),
@@ -36,7 +36,7 @@ class AttrGroupAttribute extends MyAppModel
     {
         $langId = FatUtility::int($langId);
         if ($langId == 0) {
-            trigger_error(Labels::getLabel('MSG_Language_Id_not_specified.', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('MSG_Language_Id_not_specified.', $langId), E_USER_ERROR);
         }
         return array(
         static::ATTRTYPE_TEXT => Labels::getLabel('LBL_Text', $langId),

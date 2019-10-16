@@ -2,14 +2,27 @@
 if (!empty($arr_listing) && is_array($arr_listing)) { ?>
     <div class="messages-list">
         <ul>
-            <?php foreach ($arr_listing as $sn => $row) {
+            <?php
+            foreach ($arr_listing as $sn => $row) {
                 $liClass = 'is-read';
-                if ($row['message_is_unread'] == Thread::MESSAGE_IS_UNREAD && $row['message_to'] == $loggedUserId) {
-                    $liClass = '';
-                } ?> <li class="<?php echo $liClass; ?>">
-                    <div class="msg_db"><img src="<?php echo CommonHelper::generateUrl('Image', 'user', array($row['message_from_user_id'],'thumb',true)); ?>" alt="<?php echo $row['message_from_name']; ?>"></div>
+                $toName = $row['message_to_name'];
+
+                $toUserId = $row['message_to_user_id'];
+                if ($row['message_to'] == $loggedUserId) {
+                    if ($row['message_is_unread'] == Thread::MESSAGE_IS_UNREAD) {
+                        $liClass = '';
+                    }
+                    $toName = $row['message_from_name'];
+                    $toUserId = $row['message_from_user_id'];
+                }
+                $userImgUpdatedOn = User::getAttributesById($toUserId, 'user_img_updated_on');
+                $uploadedTime = AttachedFile::setTimeParam($userImgUpdatedOn);
+                $toImage = FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'user', array($toUserId,'thumb',true)).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
+                ?>
+                <li class="<?php echo $liClass; ?>">
+                    <div class="msg_db"><img src="<?php echo $toImage; ?>" alt="<?php echo $toName; ?>"></div>
                     <div class="msg__desc">
-                        <span class="msg__title"><?php echo htmlentities($row['message_from_name']); ?></span>
+                        <span class="msg__title"><?php echo htmlentities($toName); ?></span>
                         <p class="msg__detail"><?php  echo CommonHelper::truncateCharacters($row['message_text'], 85, '', '', true); ?></p>
                         <span class="msg__date"><?php echo FatDate::format($row['message_date'], true); ?></span>
                     </div>
@@ -19,7 +32,7 @@ if (!empty($arr_listing) && is_array($arr_listing)) { ?>
                 </li>
             <?php } ?>
         </ul>
-    </div> 
+    </div>
 <?php } else {
     $this->includeTemplate('_partial/no-record-found.php', array('siteLangId'=>$siteLangId), false);
 }

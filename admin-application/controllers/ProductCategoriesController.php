@@ -258,7 +258,7 @@ class ProductCategoriesController extends AdminBaseController
             FatUtility::dieJsonError(Message::getHtml());
             // FatUtility::dieJsonError($fileHandlerObj->getError());
         }
-
+        ProductCategory::setImageUpdatedOn($prodcat_id);
         $this->set('file', $_FILES['file']['name']);
         $this->set('prodcat_id', $prodcat_id);
         $this->set('msg', $_FILES['file']['name'].' '.Labels::getLabel('LBL_Uploaded_Successfully', $this->adminLangId));
@@ -285,6 +285,7 @@ class ProductCategoriesController extends AdminBaseController
             Message::addErrorMessage($fileHandlerObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
+        ProductCategory::setImageUpdatedOn($prodCatId);
         $this->set('imageType', $imageType);
         $this->set('msg', Labels::getLabel('MSG_Image_deleted_successfully', $this->adminLangId));
         $this->_template->render(false, false, 'json-success.php');

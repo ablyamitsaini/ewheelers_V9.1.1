@@ -165,7 +165,9 @@ class HomeController extends MyAppController
         $languages = Language::getAllNames(false);
         $languageArr = array();
         if (0 < count($languages)) {
+            $siteDefaultLangId = FatApp::getConfig('CONF_DEFAULT_SITE_LANG', FatUtility::VAR_INT, 1);
             foreach ($languages as &$language) {
+                $language['isSiteDefaultLang'] = ($language['language_id'] === $siteDefaultLangId) ? 1 : 0;
                 $languageArr[] = $language;
             }
         }
@@ -335,7 +337,7 @@ class HomeController extends MyAppController
         $srch->doNotLimitRecords();
         $srch->addOrder('collection_display_order', 'ASC');
         $srch->addMultipleFields(array('collection_id', 'IFNULL(collection_name,collection_identifier) as collection_name','IFNULL( collection_description, "" ) as collection_description','IFNULL(collection_link_caption, "") as collection_link_caption','collection_link_url', 'collection_layout_type','collection_type','collection_criteria','collection_child_records','collection_primary_records', 'collection_display_media_only'));
-        $rs = $srch->getResultSet();        
+        $rs = $srch->getResultSet();
         $collectionsArr = $db->fetchAll($rs, 'collection_id');
         if (empty($collectionsArr)) {
             return array();
@@ -354,7 +356,10 @@ class HomeController extends MyAppController
             }
 
             if (true ===  MOBILE_APP_API_CALL && 0 < $collection['collection_display_media_only'] && !in_array($collection['collection_type'], Collections::COLLECTION_WITHOUT_MEDIA)) {
-                $collection['collection_image'] = CommonHelper::generateFullUrl('image', 'collectionReal', array( $collection_id, $langId,  'ORIGINAL', AttachedFile::FILETYPE_COLLECTION_IMAGE));
+                $imgUpdatedOn = Collections::getAttributesById($collection_id, 'collection_img_updated_on');
+                $uploadedTime = AttachedFile::setTimeParam($imgUpdatedOn);
+
+                $collection['collection_image'] = FatCache::getCachedUrl(CommonHelper::generateFullUrl('image', 'collectionReal', array( $collection_id, $langId,  'ORIGINAL', AttachedFile::FILETYPE_COLLECTION_IMAGE)).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
                 $collections[] = $collection;
                 $i++;
                 continue;
