@@ -82,19 +82,19 @@ foreach ($banners as $location => $bannerLocationDetail) {
 
         switch ($bannerDetail['banner_blocation_id']) {
             case BannerLocation::HOME_PAGE_TOP_BANNER:
-                $bannerUrl = FatCache::getCachedUrl(CommonHelper::generateFullUrl('Banner', 'HomePageBannerTopLayout', array($bannerDetail['banner_id'], $siteLangId, 'MOBILE')).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
+                $bannerUrl = FatCache::getCachedUrl(CommonHelper::generateFullUrl('Banner', 'HomePageBannerTopLayout', array($bannerDetail['banner_id'], $siteLangId, applicationConstants::SCREEN_MOBILE)).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
                 break;
             case BannerLocation::HOME_PAGE_MIDDLE_BANNER:
-                $bannerUrl = FatCache::getCachedUrl(CommonHelper::generateFullUrl('Banner', 'HomePageBannerMiddleLayout', array($bannerDetail['banner_id'], $siteLangId, 'MOBILE')).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
+                $bannerUrl = FatCache::getCachedUrl(CommonHelper::generateFullUrl('Banner', 'HomePageBannerMiddleLayout', array($bannerDetail['banner_id'], $siteLangId, applicationConstants::SCREEN_MOBILE)).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
                 break;
             case BannerLocation::HOME_PAGE_BOTTOM_BANNER:
-                $bannerUrl = FatCache::getCachedUrl(CommonHelper::generateFullUrl('Banner', 'HomePageBannerBottomLayout', array($bannerDetail['banner_id'], $siteLangId, 'MOBILE')).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
+                $bannerUrl = FatCache::getCachedUrl(CommonHelper::generateFullUrl('Banner', 'HomePageBannerBottomLayout', array($bannerDetail['banner_id'], $siteLangId, applicationConstants::SCREEN_MOBILE)).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
                 break;
             default:
                 $bannerUrl = FatCache::getCachedUrl(CommonHelper::generateFullUrl('Banner', 'showOriginalBanner', array($bannerDetail['banner_id'], $siteLangId)).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
                 break;
         }
-        
+
         $banners[$location]['banners'][$index]['banner_image_url'] = $bannerUrl;
 
         $urlTypeData = CommonHelper::getUrlTypeData($bannerDetail['banner_url']);
