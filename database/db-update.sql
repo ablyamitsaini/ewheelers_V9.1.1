@@ -803,3 +803,6 @@ DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE 'ERR_PLEASE_USE_REWARD_
 DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE 'Lbl_Seller_Approval_Form';
 ALTER TABLE `tbl_users`  ADD `user_img_updated_on` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP  AFTER `user_order_tracking_url`;
 ALTER TABLE `tbl_product_categories` ADD `prodcat_img_updated_on` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `prodcat_ordercode`;
+
+UPDATE `tbl_banner_location_dimensions` SET `blocation_banner_width`=1024,`blocation_banner_height`=360 WHERE `bldimension_device_type`=2
+UPDATE `tbl_banner_location_dimensions` SET `blocation_banner_width`=640,`blocation_banner_height`=360 WHERE `bldimension_device_type`=3
