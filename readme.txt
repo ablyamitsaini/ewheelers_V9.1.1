@@ -1,5 +1,4 @@
-Bug : 
-    -> 031455 - Excluded discounts from tax calculation.
+Bug :     
     -> 031401 - While moving item to the same wish list, displaying error invalid request.
     -> 031454 - After applying most discounted sorting> products are not listed accordingly
     -> 031408 - Share options should get closed when clicked outside anywhere on product, shop and blog page.

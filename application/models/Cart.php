@@ -865,10 +865,11 @@ class Cart extends FatModel
 
                 $cartVolumeDiscount += $product['volume_discount_total'];
                 
-                $taxableProdPrice = $product['theprice'] - $product['volume_discount'] - ($cartDiscounts['discountedSelProdIds'][$product['selprod_id']])/$product['quantity'];
+                /* $taxableProdPrice = $product['theprice'] - $product['volume_discount'] - ($cartDiscounts['discountedSelProdIds'][$product['selprod_id']])/$product['quantity'];
                 $taxObj = new Tax();
                 $tax = $taxObj->calculateTaxRates($product['product_id'], $taxableProdPrice, $product['selprod_user_id'], $langId, $product['quantity']);
-                $cartTaxTotal += $tax;
+                $cartTaxTotal += $tax; */
+                $cartTaxTotal +=  $product['tax'];
                 
                 $originalShipping += $product['shipping_cost'];
                 $totalSiteCommission += $product['commission'];
