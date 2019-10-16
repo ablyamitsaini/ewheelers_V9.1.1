@@ -14255,7 +14255,7 @@ div.faqanswer p {
 /**/
 
 .social-profiles {
-	text-align: center;
+	 
 }
 
 .social-icons {
@@ -14312,7 +14312,7 @@ div.faqanswer p {
 	transform: scale(2.2);
 	-ms-transform: scale(2.2);
 	-webkit-transform: scale(2.2);
-	color: #ff003c;
+	color:var(--first-color);
 	background: var(--first-color);
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;

@@ -579,7 +579,7 @@
 	.is--form-visible .form--search-popup {
 		opacity: 1;
 		visibility: visible;
-		pointer-events: all;
+		/*pointer-events: all;*/
 	}
 
 	.form--search-popup .dropdown {
