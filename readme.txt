@@ -9,6 +9,7 @@ Enhancements :
     -> 030974 - categories are not displaying properly in admin
     -> 031400 - Services were not displaying under shipping carrier
     -> Updated Phone Number Regex
+    -> Disabled stripe gateway form button after click to prevent multiple form submit.
 
 <!---- Release notes TV-9.0.1.20191009 -- >
 Bug:
