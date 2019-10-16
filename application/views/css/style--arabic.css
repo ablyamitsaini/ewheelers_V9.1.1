@@ -457,16 +457,6 @@ input[type="text"].p-cards.meastro {
 	right: 20px;
 }
 
-.quantity .decrease {
-	border-right: none;
-	border-left: solid 1px var(--border-color);
-}
-
-.quantity .increase {
-	border-left: none;
-	border-right: solid 1px var(--border-color);
-}
-
 .certified-bar .icn {
 	margin: 0 0 0 10px;
 }
