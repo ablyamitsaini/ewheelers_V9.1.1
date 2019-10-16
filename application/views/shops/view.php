@@ -32,6 +32,11 @@ $bgUrl = CommonHelper::generateFullUrl('Image', 'shopBackgroundImage', array($sh
         $('.social-toggle').on('click', function() {
             $(this).next().toggleClass('open-menu');
         });
-
+        
+        $("body").mouseup(function(e){ 
+            if (1 > $(event.target).parents('.social-toggle').length && $('.social-toggle').next().hasClass('open-menu')) {
+                $('.social-toggle').next().toggleClass('open-menu');
+            }
+        });
     });
 </script>
