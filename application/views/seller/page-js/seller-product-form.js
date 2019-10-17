@@ -185,10 +185,11 @@ $(document).on('change','.selprodoption_optionvalue_id',function(){
 
 	productSeo = function (selprod_id){
 		$(dv).html(fcom.getLoader());
-		fcom.ajax(fcom.makeUrl('Seller', 'productSeo', [ selprod_id ]), '', function(t) {
+		getProductSeoGeneralForm(selprod_id);
+		/*fcom.ajax(fcom.makeUrl('Seller', 'productSeo', [ selprod_id ]), '', function(t) {
 			$(dv).html(t);
 			getProductSeoGeneralForm(selprod_id);
-		});
+		});*/
 	};
 
 	getProductSeoGeneralForm = function (selprod_id){

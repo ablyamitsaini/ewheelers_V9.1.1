@@ -8,4 +8,19 @@ class SellerProductVolumeDiscount extends MyAppModel
     {
         parent::__construct(static::DB_TBL, static::DB_TBL_PREFIX . 'id', $id);
     }
+
+    public static function updateData($data, $return = false)
+    {
+        $db = FatApp::getDb();
+        if (!$db->insertFromArray(static::DB_TBL, $data, false, array(), $data)) {
+            return false;
+        }
+        if (true === $return) {
+            if (!empty($data['voldiscount_id'])) {
+                return $data['voldiscount_id'];
+            }
+            return $db->getInsertId();
+        }
+        return true;
+    }
 }
