@@ -3,6 +3,7 @@ Bug :
     -> 031454 - After applying most discounted sorting> products are not listed accordingly
     -> 031408 - Share options should get closed when clicked outside anywhere on product, shop and blog page.
     -> 031491 - While uploading banner file of shop, If file name is large then it's exceeding the success message length.
+    -> 031501 - Getting json error message on downloading digital file.
 
 Enhancements : 
     -> Added <!-- Yo!Kart --> for builtwith.com.

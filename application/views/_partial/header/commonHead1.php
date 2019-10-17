@@ -40,33 +40,15 @@ $additionalAttributes = (CommonHelper::getLayoutDirection() == 'rtl') ? 'directi
     <link rel="canonical" href="<?php echo $canonicalUrl;?>" />
     <style>
         :root {
-            --first-color: #
-                <?php echo $themeDetail['tcolor_first_color']; ?>
-            ;
-            --second-color: #
-                <?php echo $themeDetail['tcolor_second_color']; ?>
-            ;
-            --third-color: #
-                <?php echo $themeDetail['tcolor_third_color']; ?>
-            ;
-            --txt-color: #
-                <?php echo $themeDetail['tcolor_text_color']; ?>
-            ;
-            --txt-color-light: #
-                <?php echo $themeDetail['tcolor_text_light_color']; ?>
-            ;
-            --border-color: #
-                <?php echo $themeDetail['tcolor_border_first_color']; ?>
-            ;
-            --border-color-second: #
-                <?php echo $themeDetail['tcolor_border_second_color'];?>
-            ;
-            --second-btn-color: #
-                <?php echo $themeDetail['tcolor_second_btn_color'];  ?>
-            ;
-            --header-txt-color: #
-                <?php echo $themeDetail['tcolor_header_text_color']; ?>
-            ;
+            --first-color: #<?php echo $themeDetail['tcolor_first_color']; ?>;
+            --second-color: #<?php echo $themeDetail['tcolor_second_color']; ?>;
+            --third-color: #<?php echo $themeDetail['tcolor_third_color']; ?>;
+            --txt-color: #<?php echo $themeDetail['tcolor_text_color']; ?>;
+            --txt-color-light: #<?php echo $themeDetail['tcolor_text_light_color']; ?>;
+            --border-color: #<?php echo $themeDetail['tcolor_border_first_color']; ?>;
+            --border-color-second: #<?php echo $themeDetail['tcolor_border_second_color'];?>;
+            --second-btn-color: #<?php echo $themeDetail['tcolor_second_btn_color'];  ?>;
+            --header-txt-color: #<?php echo $themeDetail['tcolor_header_text_color']; ?>;
             --body-color: #525252;
             --gray-light: #f8f8f8;
         }
