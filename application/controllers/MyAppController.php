@@ -18,7 +18,9 @@ class MyAppController extends FatController
 
         CommonHelper::initCommonVariables();
         $this->initCommonVariables();
-        $this->tempTokenLogin();
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->tempTokenLogin();
+        }
     }
 
     public function initCommonVariables()
