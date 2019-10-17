@@ -49,6 +49,19 @@ class BannerLocation extends MyAppModel
         return $srch;
     }
 
+    public static function getDimensions($bannerLocationId, $deviceType){
+        $srch = new BannerSearch(0, false);
+        $srch->joinLocations();
+        $srch->joinLocationDimension($deviceType);
+        $srch->addMultipleFields(array('blocation_banner_width','blocation_banner_height'));
+        $srch->addCondition('bldimension_blocation_id', '=', $bannerLocationId);
+        $srch->addCondition('bldimension_device_type', '=', $deviceType);
+        $srch->setPageSize(1);
+        $srch->doNotCalculateRecords();
+        $rs = $srch->getResultSet();       
+        return $bannerDimensions = FatApp::getDb()->fetch($rs);
+    }
+
     public static function getPromotionalBanners($blocationId, $langId, $pageSize = 0)
     {
         $blocationId = FatUtility::int($blocationId);

@@ -805,3 +805,13 @@ ALTER TABLE `tbl_users`  ADD `user_img_updated_on` DATETIME NOT NULL DEFAULT CUR
 ALTER TABLE `tbl_product_categories` ADD `prodcat_img_updated_on` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `prodcat_ordercode`;
 DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL_Seo';
 INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ( 'LBL_SEO_CONTENT', '1', 'Seo content', '1');
+ALTER TABLE `tbl_banner_location_dimensions` ADD PRIMARY KEY( `bldimension_blocation_id`, `bldimension_device_type`);
+UPDATE `tbl_banner_location_dimensions` SET `blocation_banner_width` = '640', blocation_banner_height = '360' WHERE `bldimension_device_type` = 3;
+UPDATE `tbl_banner_location_dimensions` SET `blocation_banner_width` = '1350', blocation_banner_height = '405' WHERE `bldimension_blocation_id` = 1 and `bldimension_device_type` = 1;
+UPDATE `tbl_banner_location_dimensions` SET `blocation_banner_width` = '600', blocation_banner_height = '338' WHERE `bldimension_blocation_id` = 4 and `bldimension_device_type` = 1;
+UPDATE `tbl_banner_location_dimensions` SET `blocation_banner_width` = '660', blocation_banner_height = '198' WHERE `bldimension_blocation_id` = 2 and `bldimension_device_type` = 1;
+UPDATE `tbl_banner_location_dimensions` SET `blocation_banner_width` = '660', blocation_banner_height = '198' WHERE `bldimension_blocation_id` = 3 and `bldimension_device_type` = 1;
+UPDATE `tbl_banner_location_dimensions` SET `blocation_banner_width` = '1024', blocation_banner_height = '307' WHERE `bldimension_blocation_id` = 1 and `bldimension_device_type` = 2;
+UPDATE `tbl_banner_location_dimensions` SET `blocation_banner_width` = '660', blocation_banner_height = '198' WHERE `bldimension_blocation_id` = 4 and `bldimension_device_type` = 2;
+UPDATE `tbl_banner_location_dimensions` SET `blocation_banner_width` = '660', blocation_banner_height = '198' WHERE `bldimension_blocation_id` = 2 and `bldimension_device_type` = 2;
+UPDATE `tbl_banner_location_dimensions` SET `blocation_banner_width` = '660', blocation_banner_height = '198' WHERE `bldimension_blocation_id` = 3 and `bldimension_device_type` = 2;
