@@ -909,7 +909,12 @@ trait SellerProducts
         $product = FatApp::getDb()->fetch($rs);
 
         if ($post['splprice_price'] < $product['product_min_selling_price'] || $post['splprice_price'] >= $product['selprod_price']) {
-            FatUtility::dieJsonError(Labels::getLabel('MSG_Special_price_must_between_min_selling_price_and_selling_price', $this->siteLangId));
+            $str = Labels::getLabel('MSG_Price_must_between_min_selling_price_{minsellingprice}_and_selling_price_{sellingprice}', $this->siteLangId);
+            $minSellingPrice = CommonHelper::displayMoneyFormat($product['product_min_selling_price'], false, true, true);
+            $sellingPrice = CommonHelper::displayMoneyFormat($product['selprod_price'], false, true, true);
+
+            $message = CommonHelper::replaceStringData($str, array('{minsellingprice}' => $minSellingPrice, '{sellingprice}' => $sellingPrice));
+            FatUtility::dieJsonError($message);
         }
 
         if ($product['selprod_user_id'] != UserAuthentication::getLoggedUserId()) {
@@ -1110,24 +1115,22 @@ trait SellerProducts
         }
         /* ] */
 
-        if ($voldiscount_id > 0) {
-            $data_to_save['voldiscount_id'] = $voldiscount_id;
-        }
-
         $data_to_save = array(
         'voldiscount_selprod_id'    =>    $selprod_id,
         'voldiscount_min_qty'    =>    $minQty,
         'voldiscount_percentage'    =>    $perc
         );
 
-        $record = new TableRecord(SellerProductVolumeDiscount::DB_TBL);
-        $record->assignValues($data_to_save);
-        if (!$record->addNew(array(), $data_to_save)) {
-            Message::addErrorMessage($record->getError());
-            FatApp::redirectUser($_SESSION['referer_page_url']);
+        if (0 < $voldiscount_id) {
+            $data_to_save['voldiscount_id'] = $voldiscount_id;
         }
 
-        return ($voldiscount_id > 0) ? $voldiscount_id : $record->getId();
+        // Return Volume Discount ID if $return(Second Param) is true else it will return bool value.
+        $voldiscount_id = SellerProductVolumeDiscount::updateData($data_to_save, true);
+        if (1 > $voldiscount_id) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_UNABLE_TO_SAVE_THIS_RECORD', $this->siteLangId));
+        }
+        return $voldiscount_id;
     }
 
     public function deleteSellerProductVolumeDiscount()

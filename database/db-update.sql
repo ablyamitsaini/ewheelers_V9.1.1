@@ -803,3 +803,5 @@ DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE 'ERR_PLEASE_USE_REWARD_
 DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE 'Lbl_Seller_Approval_Form';
 ALTER TABLE `tbl_users`  ADD `user_img_updated_on` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP  AFTER `user_order_tracking_url`;
 ALTER TABLE `tbl_product_categories` ADD `prodcat_img_updated_on` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `prodcat_ordercode`;
+DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE '%LBL_MANAGE_SPECIAL_PRICE%';
+DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE 'MSG_SPECIAL_PRICE_MUST_BETWEEN_MIN_SELLING_PRICE_AND_SELLING_PRICE';
