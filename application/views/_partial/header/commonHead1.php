@@ -12,6 +12,7 @@ $additionalAttributes = (CommonHelper::getLayoutDirection() == 'rtl') ? 'directi
 ?>
 <!DOCTYPE html>
 <html prefix="og: http://ogp.me/ns#" <?php echo $additionalAttributes;?> class="<?php echo $htmlClass;?>">
+
 <head>
     <!-- Yo!Kart -->
     <meta charset="utf-8">
@@ -22,10 +23,14 @@ $additionalAttributes = (CommonHelper::getLayoutDirection() == 'rtl') ? 'directi
     <!-- favicon ================================================== -->
 
     <!--<link rel="shortcut icon" href="">-->
-    <link rel="shortcut icon" href="<?php echo CommonHelper::generateUrl('Image', 'favicon', array($siteLangId)); ?>">
-    <link rel="apple-touch-icon" href="<?php echo CommonHelper::generateUrl('Image', 'appleTouchIcon', array($siteLangId)); ?>">
-    <link rel="apple-touch-icon" sizes="72x72" href="<?php echo CommonHelper::generateUrl('Image', 'appleTouchIcon', array($siteLangId,'MINI')); ?>">
-    <link rel="apple-touch-icon" sizes="114x114" href="<?php echo CommonHelper::generateUrl('Image', 'appleTouchIcon', array($siteLangId,'SMALL')); ?>">
+    <link rel="shortcut icon"
+        href="<?php echo CommonHelper::generateUrl('Image', 'favicon', array($siteLangId)); ?>">
+    <link rel="apple-touch-icon"
+        href="<?php echo CommonHelper::generateUrl('Image', 'appleTouchIcon', array($siteLangId)); ?>">
+    <link rel="apple-touch-icon" sizes="72x72"
+        href="<?php echo CommonHelper::generateUrl('Image', 'appleTouchIcon', array($siteLangId,'MINI')); ?>">
+    <link rel="apple-touch-icon" sizes="114x114"
+        href="<?php echo CommonHelper::generateUrl('Image', 'appleTouchIcon', array($siteLangId,'SMALL')); ?>">
 
     <?php
     if ($canonicalUrl == '') {
@@ -35,15 +40,33 @@ $additionalAttributes = (CommonHelper::getLayoutDirection() == 'rtl') ? 'directi
     <link rel="canonical" href="<?php echo $canonicalUrl;?>" />
     <style>
         :root {
-            --first-color: #<?php echo $themeDetail['tcolor_first_color']; ?>;
-            --second-color: #<?php echo $themeDetail['tcolor_second_color']; ?>;
-            --third-color: #<?php echo $themeDetail['tcolor_third_color']; ?>;
-            --txt-color: #<?php echo $themeDetail['tcolor_text_color']; ?>;
-            --txt-color-light: #<?php echo $themeDetail['tcolor_text_light_color']; ?>;
-            --border-color: #<?php echo $themeDetail['tcolor_border_first_color']; ?>;
-            --border-color-second: #<?php echo $themeDetail['tcolor_border_second_color'];?>;
-            --second-btn-color: #<?php echo $themeDetail['tcolor_second_btn_color'];  ?>;
-            --header-txt-color: #<?php echo $themeDetail['tcolor_header_text_color']; ?>;
+            --first-color: #
+                <?php echo $themeDetail['tcolor_first_color']; ?>
+            ;
+            --second-color: #
+                <?php echo $themeDetail['tcolor_second_color']; ?>
+            ;
+            --third-color: #
+                <?php echo $themeDetail['tcolor_third_color']; ?>
+            ;
+            --txt-color: #
+                <?php echo $themeDetail['tcolor_text_color']; ?>
+            ;
+            --txt-color-light: #
+                <?php echo $themeDetail['tcolor_text_light_color']; ?>
+            ;
+            --border-color: #
+                <?php echo $themeDetail['tcolor_border_first_color']; ?>
+            ;
+            --border-color-second: #
+                <?php echo $themeDetail['tcolor_border_second_color'];?>
+            ;
+            --second-btn-color: #
+                <?php echo $themeDetail['tcolor_second_btn_color'];  ?>
+            ;
+            --header-txt-color: #
+                <?php echo $themeDetail['tcolor_header_text_color']; ?>
+            ;
             --body-color: #525252;
             --gray-light: #f8f8f8;
         }
@@ -69,11 +92,11 @@ $additionalAttributes = (CommonHelper::getLayoutDirection() == 'rtl') ? 'directi
     if (FatApp::getConfig("CONF_ENABLE_ENGAGESPOT_PUSH_NOTIFICATION", FatUtility::VAR_STRING, '')) {
         echo FatApp::getConfig("CONF_ENGAGESPOT_PUSH_NOTIFICATION_CODE", FatUtility::VAR_STRING, '');
         if (UserAuthentication::getLoggedUserId(true) > 0) { ?>
-            <script type="text/javascript">
-                Engagespot.init()
-                Engagespot.identifyUser('YT_<?php echo UserAuthentication::getLoggedUserId(); ?>');
-            </script>
-            <?php
+    <script type="text/javascript">
+        Engagespot.init()
+        Engagespot.identifyUser(
+            'YT_<?php echo UserAuthentication::getLoggedUserId(); ?>');
+    </script>
+    <?php
         }
     }
-    ?>
