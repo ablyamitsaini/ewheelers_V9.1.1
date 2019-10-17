@@ -137,7 +137,7 @@ class SellerProductsController extends AdminBaseController
         $srch->addMultipleFields(
             array(
             'selprod_id', 'selprod_user_id', 'selprod_price', 'selprod_stock', 'selprod_product_id',
-            'selprod_active', 'selprod_available_from', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title', 'u.user_name', 'uc.credential_email')
+            'selprod_active', 'selprod_available_from', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title', 'u.user_name', 'uc.credential_email','product_type')
         );
 
         $srch->addOrder('selprod_active', 'DESC');
@@ -949,7 +949,7 @@ class SellerProductsController extends AdminBaseController
             FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Request', $this->adminLangId));
         }
 
-        if (!emptyy($post['splprice_selprod_id'])) {
+        if (!empty($post['splprice_selprod_id'])) {
             $productId = SellerProduct::getAttributesById($post['splprice_selprod_id'], 'selprod_product_id', false);
             Product::updateMinPrices($productId);
         }
