@@ -1912,19 +1912,23 @@ class CommonHelper extends FatUtility
             $url = str_replace('?', '/?', $url);
         }
 
+        $originalUrl = $url;
+        $url = preg_replace('/https:/', 'http:', $url, 1);
         /* [ Check url rewritten by the system and "/" discarded in url rewrite*/
-        $customUrl = substr($url, strlen(CommonHelper::generateFullUrl()));
+        $systemUrl = CommonHelper::generateFullUrl();       
+        $systemUrl = preg_replace('/https:/', 'http:', $systemUrl, 1);
+        $customUrl = substr($url, strlen($systemUrl));
         $customUrl = rtrim($customUrl, '/');
         $customUrl = explode('/', $customUrl);
         $srch = UrlRewrite::getSearchObject();
         $srch->doNotCalculateRecords();
-        $srch->setPageSize(1);
+        $srch->setPageSize(1); 
         $srch->addCondition(UrlRewrite::DB_TBL_PREFIX . 'custom', '=', $customUrl[0]);
         $rs = $srch->getResultSet();
 
-        if (!$row = FatApp::getDb()->fetch($rs)) {
+        if (!$row = FatApp::getDb()->fetch($rs)) { 
             return array(
-                'url' => $url,
+                'url' => $originalUrl,
                 'urlType'=> applicationConstants::URL_TYPE_EXTERNAL
             );
         }
