@@ -130,8 +130,8 @@ $(document).ready(function(){
 
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('SellerProducts', 'setUpSellerProductSpecialPrice'), data, function(t) {
-			// sellerProductSpecialPrices( $(frm.splprice_selprod_id).val() );
-			$(document).trigger('close.facebox');
+			sellerProductSpecialPrices( $(frm.splprice_selprod_id).val() );
+			// $(document).trigger('close.facebox');
 		});
 		return false;
 	};
@@ -170,7 +170,7 @@ $(document).ready(function(){
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('SellerProducts', 'setUpSellerProductVolumeDiscount'), data, function(t) {
 			sellerProductVolumeDiscounts( $(frm.voldiscount_selprod_id).val() );
-			$(document).trigger('close.facebox');
+			// $(document).trigger('close.facebox');
 		});
 		return false;
 	};

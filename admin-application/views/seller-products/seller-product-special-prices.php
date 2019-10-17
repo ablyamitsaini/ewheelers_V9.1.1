@@ -1,12 +1,12 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');?> <section class="section">
     <div class="sectionhead">
-        <h4><?php echo Labels::getLabel('LBL_Product_Setup', $adminLangId); ?></h4>
-        <?php /* <a class="btn-default btn-sm" target='_blank' href="<?php echo CommonHelper::generateUrl('SellerProducts', 'specialPrice', array($selprod_id)); ?>" style='float:right;'><?php echo Labels::getLabel('LBL_Manage_Special_Price', $adminLangId)?></a> */ ?>
+        <h4><?php echo Labels::getLabel('LBL_Special_Price', $adminLangId); ?></h4>
+        <a class="btn-default btn-sm" href="javascript::void(0)" onClick="sellerProductSpecialPriceForm(<?php echo $selprod_id;?>);"><?php echo Labels::getLabel('LBL_ADD_SPECIAL_PRICE', $adminLangId)?></a> 
     </div>
     <div class="sectionbody space">
         <div class="row">
             <div class="col-sm-12">
-                <div class="tabs_nav_container responsive flat"> <?php require_once('sellerCatalogProductTop.php');?> </div>
+            <?php /*<div class="tabs_nav_container responsive flat"> <?php require_once('sellerCatalogProductTop.php');?> </div>*/?>
                 <div class="border-box border-box--space">
                     <div class="tabs_nav_container responsive">
                         <div class="tabs_panel_wrap">
@@ -16,7 +16,7 @@
                                     'splprice_price' => Labels::getLabel('LBL_Special_Price', $adminLangId),
                                     'splprice_start_date' => Labels::getLabel('LBL_Start_Date', $adminLangId),
                                     'splprice_end_date' => Labels::getLabel('LBL_End_Date', $adminLangId),
-                                    // 'action'    =>    Labels::getLabel('LBL_Action', $adminLangId),
+                                    'action'    =>    Labels::getLabel('LBL_Action', $adminLangId),
                                 );
                                 $tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table'));
                                 $th = $tbl->appendElement('thead')->appendElement('tr', array('class' => 'hide--mobile'));
@@ -44,7 +44,7 @@
                                             case 'splprice_end_date':
                                                 $td->appendElement('plaintext', array(), ''.FatDate::format($row[$key]), true);
                                                 break;
-                                            /*case 'action':
+                                            case 'action':
                                                 $ul = $td->appendElement("ul", array("class"=>"actions actions--centered"), '', true);
                                                 $li = $ul->appendElement("li", array('class'=>'droplink'));
                                                 $li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green','title'=>Labels::getLabel('LBL_Edit', $adminLangId)), '<i class="ion-android-more-horizontal icon"></i>', true);
@@ -72,7 +72,7 @@
                                                     Labels::getLabel('LBL_Delete', $adminLangId),
                                                     true
                                                 );
-                                                break;*/
+                                                break;
                                             default:
                                                 $td->appendElement('plaintext', array(), ''.$row[$key], true);
                                                 break;
