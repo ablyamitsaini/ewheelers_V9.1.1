@@ -3,9 +3,9 @@
    <h4><?php echo Labels::getLabel('LBL_Product_Listing',$siteLangId); ?></h4>
 </div>
 <div class="box__body">
-<?php /*<div class="tabs tabs--small   tabs--scroll clearfix">
+<div class="tabs tabs--small   tabs--scroll clearfix">
 		<?php require_once('sellerCatalogProductTop.php');?>
-	</div>*/?>
+	</div>
 	<div class="tabs__content form">
 
 		<div class="row">

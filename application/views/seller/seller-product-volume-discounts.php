@@ -1,7 +1,7 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');?>
-<?php /*<div class="tabs tabs--small tabs--scroll clearfix">
+<div class="tabs tabs--small tabs--scroll clearfix">
     <?php require_once('sellerCatalogProductTop.php');?>
-</div>*/?>
+</div>
 <div class="cards">
 <?php if (count($arrListing) > 0) { ?>
     <div class="cards-header p-4">
