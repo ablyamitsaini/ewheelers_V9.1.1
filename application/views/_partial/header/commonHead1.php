@@ -76,8 +76,7 @@ $additionalAttributes = (CommonHelper::getLayoutDirection() == 'rtl') ? 'directi
         if (UserAuthentication::getLoggedUserId(true) > 0) { ?>
     <script type="text/javascript">
         Engagespot.init()
-        Engagespot.identifyUser(
-            'YT_<?php echo UserAuthentication::getLoggedUserId(); ?>');
+        Engagespot.identifyUser('YT_<?php echo UserAuthentication::getLoggedUserId(); ?>');
     </script>
     <?php
         }

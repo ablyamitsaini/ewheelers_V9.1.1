@@ -1,7 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 
 <?php if (CommonHelper::demoUrl()) { ?>
-<div class="no-print fixed-demo-btn" id="demo-btn"><a href="javascript:void(0);" class="request-demo" id="btn-demo">Request a Demo</a></div>
 <div class="feedback-btn">
     <a href="https://www.yo-kart.com/yokart-marketing-website-feedback.html<?php /* echo CommonHelper::generateUrl('Custom','feedback'); */?>" class="crcle-btn">
         <svg xmlns="http://www.w3.org/2000/svg" width="80px" height="80px" viewBox="0 0 225.125 207">
@@ -166,7 +165,7 @@ echo FatUtility::generateUrl('JsCss', 'js', array(), '', false). '&f=' . rawurle
     </script>
     <!--End of Tawk.to Script-->
     <?php
-    if (FatApp::getConfig('CONF_AUTO_RESTORE_ON', FatUtility::VAR_INT, 1)) {
+    if (FatApp::getConfig('CONF_AUTO_RESTORE_ON', FatUtility::VAR_INT, 1) && CommonHelper::demoUrl()) {
         $this->includeTemplate('restore-system/page-content.php');
     }
 }?>
