@@ -1,3 +1,4 @@
+<!-- Release notes TV-9.0.1.20191018 -->
 Bug :     
     -> 031401 - While moving item to the same wish list, displaying error invalid request.
     -> 031454 - After applying most discounted sorting> products are not listed accordingly
