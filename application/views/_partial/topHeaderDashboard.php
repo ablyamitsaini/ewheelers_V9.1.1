@@ -1,3 +1,6 @@
+<?php if (FatApp::getConfig('CONF_AUTO_RESTORE_ON', FatUtility::VAR_INT, 1) && CommonHelper::demoUrl()) { 
+	$this->includeTemplate('restore-system/top-header.php');
+} ?>
 <div class="wrapper">
     <header id="header-dashboard" class="header-dashboard no-print" role="header-dashboard">
         <?php if ((User::canViewSupplierTab() && User::canViewBuyerTab()) || (User::canViewSupplierTab() && User::canViewAdvertiserTab()) || (User::canViewBuyerTab() && User::canViewAdvertiserTab())) { ?>
