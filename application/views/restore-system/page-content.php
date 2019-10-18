@@ -293,10 +293,10 @@ $restoreTime = FatApp::getConfig('CONF_RESTORE_SCHEDULE_TIME', FatUtility::VAR_S
 
     function restoreSystem() {
         $.mbsmessage('Restore is in process..', false, 'alert--process alert');
-        /* fcom.updateWithAjax(fcom.makeUrl('RestoreSystem','index','','<?php echo CONF_WEBROOT_FRONT_URL;?>'), '', function(resp){
+        fcom.updateWithAjax(fcom.makeUrl('RestoreSystem','index','','<?php echo CONF_WEBROOT_FRONT_URL;?>'), '', function(resp){
         setTimeout(function() {
             window.location.reload();
         }, 3000);
-    }, false, false); */
+    }, false, false);
     }
 </script>
