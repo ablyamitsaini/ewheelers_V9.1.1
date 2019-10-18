@@ -64,7 +64,14 @@
 		if(FatApp::getConfig('CONF_SITE_TRACKER_CODE',FatUtility::VAR_STRING,'')){
 			echo FatApp::getConfig('CONF_SITE_TRACKER_CODE',FatUtility::VAR_STRING,'');
 		}
-		if (FatApp::getConfig('CONF_AUTO_RESTORE_ON', FatUtility::VAR_INT, 1)) {
+		if (FatApp::getConfig('CONF_AUTO_RESTORE_ON', FatUtility::VAR_INT, 1) && CommonHelper::demoUrl()) { ?>
+		<div class="-fixed-wrap">
+			<a href="javascript:void(0)" onClick="showRestorePopup()">
+				<small>Database Will Restore in</small>
+				<span id="restoreCounter">00:00:00</span>
+			</a>
+			</div>
+		<?php 
 			$this->includeTemplate( 'restore-system/page-content.php');
 		}
 	}

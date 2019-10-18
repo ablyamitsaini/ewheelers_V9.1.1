@@ -13,7 +13,7 @@
         display: flex;
         justify-content: space-between;
         padding: 0 2rem;
-        line-height: 2.5rem;
+        line-height: 4rem;
         box-shadow:0px 0px 5px 0px rgba(0, 0, 0, 0.1);
     }
 
@@ -199,7 +199,7 @@
             padding:0 1rem;
         }
     }
-    /*
+   
 .-fixed-wrap{
   position: fixed;
   bottom: 1rem;
@@ -239,7 +239,7 @@
   white-space: nowrap;
   background-color: rgba(0,0,0,0.2);
 }
-    */
+    
 </style>
 <?php /*?>
 <div class="-fixed-wrap">
@@ -293,10 +293,10 @@ $restoreTime = FatApp::getConfig('CONF_RESTORE_SCHEDULE_TIME', FatUtility::VAR_S
 
     function restoreSystem() {
         $.mbsmessage('Restore is in process..', false, 'alert--process alert');
-        fcom.updateWithAjax(fcom.makeUrl('RestoreSystem','index','','<?php echo CONF_WEBROOT_FRONT_URL;?>'), '', function(resp){
+        /* fcom.updateWithAjax(fcom.makeUrl('RestoreSystem','index','','<?php echo CONF_WEBROOT_FRONT_URL;?>'), '', function(resp){
         setTimeout(function() {
             window.location.reload();
         }, 3000);
-    }, false, false);
+    }, false, false); */
     }
 </script>
