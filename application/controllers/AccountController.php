@@ -5,6 +5,7 @@ class AccountController extends LoggedUserController
     {
         parent::__construct($action);
         if (!isset($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'])) {
+            $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = '';
             if (User::isBuyer()  || User::isSigningUpBuyer()) {
                 $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'B';
             } elseif (User::isSeller() || User::isSigningUpForSeller()) {
@@ -20,22 +21,28 @@ class AccountController extends LoggedUserController
 
     public function index()
     {
-        /* echo $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']; die; */
         if (UserAuthentication::isGuestUserLogged()) {
             FatApp::redirectUser(CommonHelper::generateUrl('home'));
         }
-
-        if ((User::isBuyer() ||  User::isSigningUpBuyer()) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='B') {
-            FatApp::redirectUser(CommonHelper::generateUrl('buyer'));
-        } elseif ((User::isSeller() || User::isSigningUpForSeller())&& $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='S') {
-            FatApp::redirectUser(CommonHelper::generateUrl('seller'));
-        } elseif ((User::isAdvertiser() || User::isSigningUpAdvertiser()) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='Ad') {
-            FatApp::redirectUser(CommonHelper::generateUrl('advertiser'));
-        } elseif ((User::isAffiliate()  || User::isSigningUpAffiliate()) && $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] =='AFFILIATE') {
-            FatApp::redirectUser(CommonHelper::generateUrl('affiliate'));
-        } else {
-            FatApp::redirectUser(CommonHelper::generateUrl(''));
+        
+        switch ($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) {
+            case 'B':
+                FatApp::redirectUser(CommonHelper::generateUrl('buyer'));
+                break;            
+            case 'S':
+                FatApp::redirectUser(CommonHelper::generateUrl('seller'));
+                break;            
+            case 'Ad':
+                FatApp::redirectUser(CommonHelper::generateUrl('advertiser'));
+                break;            
+            case 'AFFILIATE':
+                FatApp::redirectUser(CommonHelper::generateUrl('affiliate'));
+                break;                        
+            default:
+                FatApp::redirectUser(CommonHelper::generateUrl(''));
+                break;
         }
+
         /* $user = new User(UserAuthentication::getLoggedUserId());
         $this->set('data', $user->getProfileData());
         $this->_template->render(true,false); */
