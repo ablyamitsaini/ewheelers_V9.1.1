@@ -4,7 +4,7 @@
         padding-top:85px;
     }
     .sticky-demo-header {
-        
+
     }
     .sticky-demo-header .demo-header {
         background: #fff;
@@ -25,7 +25,9 @@
     .sticky-demo-header #header {
         top: 64px;
     }
-
+    .sticky-demo-header #header.header-supplier, #header.header-supplier ~ .after-header {
+        height: 96px;
+    }
     .restore-wrapper {
         display: flex;
     }
@@ -198,6 +200,15 @@
     .demo-data-inner ul ul {
         margin-inline-start: 15px;
         margin-bottom: 20px;
+    }
+
+    @media(max-width:1200px) {
+        .sticky-demo-header .sidebar {
+            top: 60px;
+        }
+        .sticky-demo-header header#header-dashboard {
+            top: 60px;
+        }
     }
     @media(max-width:767px) {
         .demo-header{
