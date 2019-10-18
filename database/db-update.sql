@@ -817,3 +817,4 @@ UPDATE `tbl_banner_location_dimensions` SET `blocation_banner_width` = '1024', b
 UPDATE `tbl_banner_location_dimensions` SET `blocation_banner_width` = '660', blocation_banner_height = '198' WHERE `bldimension_blocation_id` = 4 and `bldimension_device_type` = 2;
 UPDATE `tbl_banner_location_dimensions` SET `blocation_banner_width` = '660', blocation_banner_height = '198' WHERE `bldimension_blocation_id` = 2 and `bldimension_device_type` = 2;
 UPDATE `tbl_banner_location_dimensions` SET `blocation_banner_width` = '660', blocation_banner_height = '198' WHERE `bldimension_blocation_id` = 3 and `bldimension_device_type` = 2;
+/*TV-9.0.1.20191018*/
