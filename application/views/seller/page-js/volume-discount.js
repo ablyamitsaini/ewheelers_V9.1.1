@@ -55,6 +55,7 @@ $(document).on('blur', ".js--volDiscountCol", function(){
                 updatedValue = ans.data.value;
                 currObj.attr('data-oldval', value);
             }
+            currObj.val(value);
             showElement(currObj, updatedValue);
         });
     } else {

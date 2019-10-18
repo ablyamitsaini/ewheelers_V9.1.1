@@ -805,3 +805,5 @@ ALTER TABLE `tbl_users`  ADD `user_img_updated_on` DATETIME NOT NULL DEFAULT CUR
 ALTER TABLE `tbl_product_categories` ADD `prodcat_img_updated_on` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `prodcat_ordercode`;
 DELETE FROM `tbl_language_labels` WHERE `tbl_language_labels`.`label_key` = 'LBL_Seo';
 INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ( 'LBL_SEO_CONTENT', '1', 'Seo content', '1');
+DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE '%LBL_MANAGE_SPECIAL_PRICE%';
+DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE 'MSG_SPECIAL_PRICE_MUST_BETWEEN_MIN_SELLING_PRICE_AND_SELLING_PRICE';
