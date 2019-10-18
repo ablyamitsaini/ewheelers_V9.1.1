@@ -573,7 +573,7 @@ class ProductSearch extends SearchBase
         $this->addDirectCondition(" ( isnull(psbs.psbs_user_id) or  psbs.psbs_user_id ='".$sellerId."')");
     }
 
-    public function addKeywordSearch($keyword, $obj = false)
+    public function addKeywordSearch($keyword, $obj = false, $useRelevancy = true)
     {
         if (empty($keyword) || $keyword == '') {
             return;
@@ -611,19 +611,21 @@ class ProductSearch extends SearchBase
                 $cnd->attachCondition('prodcat_name', 'LIKE', '%' . $value . '%');
             }
             $strKeyword = FatApp::getDb()->quoteVariable('%' . $keyword . '%');
-            $obj->addFld(
-                "IF(product_isbn LIKE $strKeyword OR product_upc LIKE $strKeyword, 15, 0)
-    		+ IF(selprod_title LIKE $strKeyword, 4, 0)
-    		+ IF(product_name LIKE $strKeyword, 4, 0)
-    		+ IF(product_tags_string LIKE $strKeyword, 4, 0)
-    		AS keyword_relevancy"
-            );
+            if ($useRelevancy === true) {
+                $obj->addFld(
+                    "IF(product_isbn LIKE $strKeyword OR product_upc LIKE $strKeyword, 15, 0)
+                + IF(selprod_title LIKE $strKeyword, 4, 0)
+                + IF(product_name LIKE $strKeyword, 4, 0)
+                + IF(product_tags_string LIKE $strKeyword, 4, 0)
+                AS keyword_relevancy"
+                );
+            } else {
+                $obj->addFld('0 AS keyword_relevancy');
+            }            
         } else {
             // $cnd->attachCondition('product_tags_string', 'LIKE', '%' . $value . '%');
             $obj->addFld('0 AS keyword_relevancy');
         }
-
-
     }
 
     public function addProductIdCondition($product_id)
