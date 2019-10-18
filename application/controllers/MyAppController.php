@@ -18,9 +18,7 @@ class MyAppController extends FatController
 
         CommonHelper::initCommonVariables();
         $this->initCommonVariables();
-        if (!UserAuthentication::isUserLogged()) {
-            $this->tempTokenLogin();
-        }
+        $this->tempTokenLogin();
     }
 
     public function initCommonVariables()
@@ -600,36 +598,39 @@ class MyAppController extends FatController
     public function tempTokenLogin()
     {
         $forTempTokenBasedGetActions = array('downloadDigitalFile');
-        if (in_array($this->action, $forTempTokenBasedGetActions)) {
-            $get = FatApp::getQueryStringData();
-            $ttk = '';
-            if (!empty($get) && array_key_exists('ttk', $get)) {
-                $ttk = ($get['ttk']!='')?$get['ttk']:'';
-            }
+        if (!in_array($this->action, $forTempTokenBasedGetActions)) {
+            return;
+        }
 
-             if (strlen($ttk) != UserAuthentication::TOKEN_LENGTH) {
-                  FatUtility::dieJSONError(Labels::getLabel('LBL_Invalid_Temp_Token', CommonHelper::getLangId()));
-              }
+        $get = FatApp::getQueryStringData();
+        if (empty($get) || !array_key_exists('ttk', $get)) {
+            return;
+        }
+      
+        $ttk = ($get['ttk']!='') ? $get['ttk'] : '';
 
-            $userId = 0;
-            if (!empty($get) && array_key_exists('user_id', $get)) {
-                $userId = FatUtility::int($get['user_id']);
-            }
+        if (strlen($ttk) != UserAuthentication::TOKEN_LENGTH) {
+            FatUtility::dieJSONError(Labels::getLabel('LBL_Invalid_Temp_Token', CommonHelper::getLangId()));
+        }
 
-            $uObj = new User($userId);
+        $userId = 0;
+        if (!empty($get) && array_key_exists('user_id', $get)) {
+            $userId = FatUtility::int($get['user_id']);
+        }
 
-            if (!$user_temp_token_data = $uObj->validateAPITempToken($ttk)) {
-                FatUtility::dieJSONError(Labels::getLabel('LBL_Invalid_Temp_Token', CommonHelper::getLangId()));
-            }
+        $uObj = new User($userId);
 
-            if (!$user = $uObj->getUserInfo(array('credential_username','credential_password','user_id'), true, true)) {
-                FatUtility::dieJSONError(Labels::getLabel('LBL_Invalid_Request', CommonHelper::getLangId()));
-            }
+        if (!$user_temp_token_data = $uObj->validateAPITempToken($ttk)) {
+            FatUtility::dieJSONError(Labels::getLabel('LBL_Invalid_Temp_Token', CommonHelper::getLangId()));
+        }
 
-            $authentication = new UserAuthentication();
-            if ($authentication->login($user['credential_username'], $user['credential_password'], $_SERVER['REMOTE_ADDR'], false)) {
-                $uObj->deleteUserAPITempToken() ;
-            }
+        if (!$user = $uObj->getUserInfo(array('credential_username','credential_password','user_id'), true, true)) {
+            FatUtility::dieJSONError(Labels::getLabel('LBL_Invalid_Request', CommonHelper::getLangId()));
+        }
+
+        $authentication = new UserAuthentication();
+        if ($authentication->login($user['credential_username'], $user['credential_password'], $_SERVER['REMOTE_ADDR'], false)) {
+            $uObj->deleteUserAPITempToken() ;
         }
     }
 }
