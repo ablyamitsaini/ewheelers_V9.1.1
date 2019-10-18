@@ -118,7 +118,7 @@ class RestoreSystemController extends MyAppController
         $mysqli = new mysqli(CONF_DB_SERVER, CONF_DB_USER, CONF_DB_PASS, $databasename);
         $date = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' +'.static::RESTORE_TIME_INTERVAL_HOURS.' hours'));
         $sql = "UPDATE `tbl_configurations` set `conf_val` = '".$date."' where `conf_name` = 'CONF_RESTORE_SCHEDULE_TIME'";
-        $mysqli->query($sql);
+        $mysqli->query($sql);        
     }
 
     private function restoreDatabase($databasename)

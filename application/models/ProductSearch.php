@@ -75,7 +75,7 @@ class ProductSearch extends SearchBase
     {
         $joinPrice =  FatUtility::int($joinPrice);
         if (0 < $joinPrice) {
-            $this->joinForPrice('', $criteria, $checkAvailableFrom, $useTempTable);
+            $this->joinForPrice('', $criteria, $checkAvailableFrom, false);
         } else {
             $this->joinSellerProducts($bySeller, '', $criteria, $checkAvailableFrom);
         }
