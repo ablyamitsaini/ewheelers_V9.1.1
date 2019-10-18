@@ -619,7 +619,7 @@ class MyAppController extends FatController
             $uObj = new User($userId);
 
             if (!$user_temp_token_data = $uObj->validateAPITempToken($ttk)) {
-                FatUtility::dieJSONError(Labels::getLabel('LBL_Invalid_Temp_Token', CommonHelper::getLangId()));
+                FatUtility::dieJSONError(Labels::getLabel('LBL_Invalid_Token_Data', CommonHelper::getLangId()));
             }
 
             if (!$user = $uObj->getUserInfo(array('credential_username','credential_password','user_id'), true, true)) {

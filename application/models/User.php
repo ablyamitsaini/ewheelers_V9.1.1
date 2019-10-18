@@ -2064,7 +2064,7 @@ class User extends MyAppModel
         $srch = new SearchBase(static::DB_TBL_USR_MOBILE_TEMP_TOKEN);
         $srch->addCondition('uttr_user_id', '=', $this->mainTableRecordId);
         $srch->addCondition('uttr_token', '=', $token);
-        $srch->addCondition('uttr_expiry', '>', date('Y-m-d H:i:s'));
+        $srch->addCondition('uttr_expiry', '>=', date('Y-m-d H:i:s'));
         $srch->addMultipleFields(array('uttr_user_id', 'uttr_token'));
         $srch->doNotCalculateRecords();
         $srch->setPagesize(1);
