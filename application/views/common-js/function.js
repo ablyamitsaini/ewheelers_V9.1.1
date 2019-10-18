@@ -97,7 +97,7 @@ $(document).ready(function () {
  $(document).on('click','.toggle--search-js',function() {
 	$(this).toggleClass("is--active");
 	$('html').toggleClass("is--form-visible");
-	$('.search--keyword--js').focus();
+	/* $('.search--keyword--js').focus(); */
 });
 $("document").ready(function(){
 
