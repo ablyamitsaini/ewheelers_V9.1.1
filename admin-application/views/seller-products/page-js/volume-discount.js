@@ -21,7 +21,7 @@ $(document).on('keyup', "input[name='product_name']", function(){
         	},
         	'select': function(item) {
         		$("#"+parentForm+" input[name='voldiscount_selprod_id']").val(item['value']);
-                currObj.val( item['label'] );
+                currObj.val((item['label']).replace(/<[^>]+>/g, ''));
         	}
         });
     }else{
