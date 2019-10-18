@@ -3,7 +3,10 @@
     body.is-dashboard{
         padding-top:85px;
     }
-    .demo-header {
+    .sticky-demo-header {
+        
+    }
+    .sticky-demo-header .demo-header {
         background: #fff;
         position: fixed;
         left: 0;
@@ -17,8 +20,10 @@
         box-shadow:0px 0px 5px 0px rgba(0, 0, 0, 0.1);
     }
 
-    .demo-header~.wrapper #header {
-        top: 71px;
+    .sticky-demo-header .after-header { height:222px;}
+
+    .sticky-demo-header #header {
+        top: 64px;
     }
 
     .restore-wrapper {
@@ -125,7 +130,7 @@
         top: auto;
         margin-inline-start: 1rem;
     }
-    
+
     .restore-demo-bg {
         background-image: url('<?php echo CommonHelper::generateFullUrl('', '', array(), CONF_WEBROOT_FRONT_URL).'/images/catalog-bg.png';?>') !important;
         background-color: #fff !important;
@@ -199,7 +204,7 @@
             padding:0 1rem;
         }
     }
-   
+
 .-fixed-wrap{
   position: fixed;
   bottom: 1rem;
@@ -239,7 +244,7 @@
   white-space: nowrap;
   background-color: rgba(0,0,0,0.2);
 }
-    
+
 </style>
 <?php /*?>
 <div class="-fixed-wrap">
@@ -293,10 +298,10 @@ $restoreTime = FatApp::getConfig('CONF_RESTORE_SCHEDULE_TIME', FatUtility::VAR_S
 
     function restoreSystem() {
         $.mbsmessage('Restore is in process..', false, 'alert--process alert');
-        fcom.updateWithAjax(fcom.makeUrl('RestoreSystem','index','','<?php echo CONF_WEBROOT_FRONT_URL;?>'), '', function(resp){
+        /*fcom.updateWithAjax(fcom.makeUrl('RestoreSystem','index','','<?php echo CONF_WEBROOT_FRONT_URL;?>'), '', function(resp){
         setTimeout(function() {
             window.location.reload();
         }, 3000);
-    }, false, false);
+    }, false, false);*/
     }
 </script>
