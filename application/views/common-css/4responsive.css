@@ -2215,9 +2215,6 @@
 	.certified-box {
 		margin-bottom: 1.5rem;
 	}
-
-
-
 }
 
 @media only screen and (max-width: 600px) {
@@ -2230,7 +2227,6 @@
 	}
 
 }
-
 @media only screen and (max-width: 500px) {
 	.page-sort ul li .btn--filters-control {
 		width: 48%;

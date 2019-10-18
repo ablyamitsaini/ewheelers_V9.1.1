@@ -212,6 +212,7 @@ $(document).on('click','.slideFile-Js',function(){
 					reloadList();
 					$('#form-upload').remove();
 					images(ans.slideId,slide_screen,langId);
+					fcom.displaySuccessMessage(ans.msg);
 				},
 				error: function(xhr, ajaxOptions, thrownError) {
 					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);

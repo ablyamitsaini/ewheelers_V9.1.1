@@ -318,9 +318,7 @@ a.link:after {
 }
 
 .link--arrow:before {
-	-webkit-border-end: 2px solid var(--first-color);
-	   -moz-border-end: 2px solid var(--first-color);
-	        border-inline-end: 2px solid var(--first-color);
+	border-right: 2px solid var(--first-color);
 	border-top: 2px solid var(--first-color);
 	content: "";
 	display: inline-block;

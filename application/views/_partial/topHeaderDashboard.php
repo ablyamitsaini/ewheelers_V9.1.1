@@ -38,12 +38,12 @@
             <?php $getOrgUrl = (CONF_DEVELOPMENT_MODE) ? true : false; ?>
             <ul class="c-header-links">
                 <li class="<?php /* echo (($controllerName == 'Seller' || $controllerName == 'Buyer' || $controllerName == 'Advertiser' || $controllerName == 'Affiliate') && $action == 'index') ? 'is-active' : ''; */ ?>"><a title="<?php echo Labels::getLabel('LBL_Dashboard', $siteLangId);?>" data-org-url="<?php echo CommonHelper::generateUrl('home', 'index', array(), '', null, false, $getOrgUrl); ?>" href="<?php echo CommonHelper::generateUrl($controllerName); ?>"><i class="icn icn--dashboard">
-                <svg class="svg"><use xlink:href="/yokartv8/images/retina/sprite.svg#dashboard" href="/yokartv8/images/retina/sprite.svg#dashboard"></use></svg></i></a></li>
+                <svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#dashboard" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#dashboard"></use></svg></i></a></li>
                 <li><a title="<?php echo Labels::getLabel('LBL_Home', $siteLangId);?>" target="_blank" href="<?php echo CommonHelper::generateUrl('Home'); ?>"><i class="icn icn--home">
-                <svg class="svg"><use xlink:href="/yokartv8/images/retina/sprite.svg#back-home" href="/yokartv8/images/retina/sprite.svg#back-home"></use></svg></i></a></li>
+                <svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#back-home" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#back-home"></use></svg></i></a></li>
                 <?php if ($isShopActive && $shop_id > 0 && $activeTab == 'S') { ?>
                 <li><a title="<?php echo Labels::getLabel('LBL_Shop', $siteLangId);?>" data-org-url="<?php echo CommonHelper::generateUrl('Shops', 'view', array($shop_id), '', null, false, $getOrgUrl); ?>" target="_blank" href="<?php echo CommonHelper::generateUrl('Shops', 'view', array($shop_id)); ?>"><i class="icn icn--home">
-                <svg class="svg"><use xlink:href="/yokartv8/images/retina/sprite.svg#manage-shop" href="/yokartv8/images/retina/sprite.svg#manage-shop"></use></svg></i></a></li>
+                <svg class="svg"><use xlink:href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#manage-shop" href="<?php echo CONF_WEBROOT_URL;?>images/retina/sprite.svg#manage-shop"></use></svg></i></a></li>
                 <?php } ?>
             </ul>
             <div class="c-header-icon bell">

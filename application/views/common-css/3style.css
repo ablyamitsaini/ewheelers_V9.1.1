@@ -9333,7 +9333,8 @@ form.custom-form input[type="submit"] {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin-bottom: 30px;
+	height: 100%;
+	/*margin-bottom: 30px;*/
 }
 
 .ft-products .products--layout .products__body {
@@ -14095,8 +14096,6 @@ input[type="password"][disabled] {
 
 }
 
-
-
 .faqlist {
 	position: relative;
 }
@@ -14124,7 +14123,7 @@ input[type="password"][disabled] {
 	font-weight: 400;
 	margin: -1px 0;
 	padding: 1.5rem 0;
-	padding-inline-end:25px; 
+	padding-inline-end: 25px;
 	position: relative;
 	display: flex;
 	align-items: center;
@@ -14150,7 +14149,7 @@ input[type="password"][disabled] {
 	color: inherit;
 	margin-inline-start: 1rem;
 	transition: all 0.1s ease;
-	transform-origin:center;
+	transform-origin: center;
 	position: absolute;
 	right: 0;
 	top: 27px;
@@ -14256,7 +14255,7 @@ div.faqanswer p {
 /**/
 
 .social-profiles {
-	text-align: center;
+	 
 }
 
 .social-icons {
@@ -14313,7 +14312,7 @@ div.faqanswer p {
 	transform: scale(2.2);
 	-ms-transform: scale(2.2);
 	-webkit-transform: scale(2.2);
-	color: #ff003c;
+	color:var(--first-color);
 	background: var(--first-color);
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;

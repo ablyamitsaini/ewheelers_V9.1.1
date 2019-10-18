@@ -563,8 +563,11 @@ class BannersController extends AdminBaseController
 
         $this->set('bannerId', $banner_id);
         $this->set('blocationId', $blocation_id);
-        $this->set('file', $_FILES['file']['name']);
-        $this->set('msg', $_FILES['file']['name']. Labels::getLabel('MSG_File_uploaded_successfully', $this->adminLangId));
+        $fileName = $_FILES['file']['name'];
+        $this->set('file', $fileName);
+        $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+        $fileName = strlen($fileName) > 10 ? substr($fileName, 0, 10).'.'.$ext : $fileName;
+        $this->set('msg', $fileName.' '.Labels::getLabel('MSG_File_uploaded_successfully', $this->adminLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
 
