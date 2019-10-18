@@ -58,7 +58,7 @@ class DatabaseBackupRestoreController extends AdminBaseController
         $this->objPrivilege->canEditDatabaseBackupView();
         if (isset($file) and trim($file) != "") {
             $settingsObj = new Settings();
-            if(!$settingsObj->download_file($file)) {
+            if (!$settingsObj->download_file($file)) {
                 Message::addErrorMessage($settingsObj->getError());
                 FatApp::redirectUser(CommonHelper::generateUrl('DatabaseBackupRestore'));
             }
@@ -113,17 +113,17 @@ class DatabaseBackupRestoreController extends AdminBaseController
     public static function saveFile($fl, $name)
     {
         $dir = CONF_DB_BACKUP_DIRECTORY_FULL_PATH;
-        if(!is_writable($dir)) {
+        if (!is_writable($dir)) {
             Message::addErrorMessage(sprintf(Labels::getLabel('LBL_Directory_%s_is_not_writable', $langId), $dir));
             return false;
         }
         $fname = preg_replace('/[^a-zA-Z0-9\/\-\_\.]/', '', $name);
-        while (file_exists($dir.$fname)){
+        while (file_exists($dir.$fname)) {
             /* $fname = rand(10, 999999).'_'.$fname; */
             $fname = microtime().'_'.$fname;
         }
         if (!copy($fl, $dir.$fname)) {
-            Message::addErrorMessage(Labels::getLabel('LBL_Could_not_save_file', $this->adminLangId));
+            Message::addErrorMessage(Labels::getLabel('LBL_Could_not_save_file', CommonHelper::getLangId()));
             return false;
         }
         return true;

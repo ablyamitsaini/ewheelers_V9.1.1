@@ -115,13 +115,25 @@
                         <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartVolumeDiscount']); ?></td>
                     </tr>
                     <?php } ?>
+                    <?php if ($cartSummary['cartTaxTotal']) { ?>
+                    <tr>
+                        <td class="text-left"><?php echo Labels::getLabel('LBL_Tax', $siteLangId); ?></td>
+                        <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTaxTotal']); ?></td>
+                    </tr>
+                    <?php } ?>
                     <?php if (!empty($cartSummary['cartDiscounts'])) { ?>
                     <tr>
                         <td class="text-left"><?php echo Labels::getLabel('LBL_Discount', $siteLangId); ?></td>
                         <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartDiscounts']['coupon_discount_total']); ?></td>
                     </tr>
-                    <?php } ?>
-
+                    <?php } ?>                    
+                   
+                    <?php if ($cartSummary['originalShipping']) { ?>
+                    <tr>
+                        <td class="text-left"><?php echo Labels::getLabel('LBL_Delivery_Charges', $siteLangId); ?></td>
+                        <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['shippingTotal']); ?></td>
+                    </tr>
+                    <?php  } ?>
                     <?php if (!empty($cartSummary['cartRewardPoints'])) {
                         $appliedRewardPointsDiscount = CommonHelper::convertRewardPointToCurrency($cartSummary['cartRewardPoints']); ?>
                     <tr>
@@ -129,18 +141,6 @@
                         <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($appliedRewardPointsDiscount); ?></td>
                     </tr>
                     <?php } ?>
-                    <?php if ($cartSummary['cartTaxTotal']) { ?>
-                    <tr>
-                        <td class="text-left"><?php echo Labels::getLabel('LBL_Tax', $siteLangId); ?></td>
-                        <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTaxTotal']); ?></td>
-                    </tr>
-                    <?php } ?>
-                    <?php if ($cartSummary['originalShipping']) { ?>
-                    <tr>
-                        <td class="text-left"><?php echo Labels::getLabel('LBL_Delivery_Charges', $siteLangId); ?></td>
-                        <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['shippingTotal']); ?></td>
-                    </tr>
-                    <?php  } ?>
                     <tr>
                         <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
                         <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat($cartSummary['orderNetAmount']); ?></td>

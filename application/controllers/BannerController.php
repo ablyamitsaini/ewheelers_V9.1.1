@@ -85,23 +85,63 @@ class BannerController extends MyAppController
 
     public function HomePageBannerTopLayout($bannerId, $langId = 0, $screen = 0)
     {
-        $this->showBanner($bannerId, $langId, 1350, 405, $screen);
+        $bannerDimensions = BannerLocation::getDimensions(BannerLocation::HOME_PAGE_TOP_BANNER, $screen);
+        $w = 1350;
+        $h = 405;
+        /*Desktop default value need to update in DB*/
+        if (array_key_exists('blocation_banner_width', $bannerDimensions)) {
+            $w = $bannerDimensions['blocation_banner_width'];
+        }
+        if (array_key_exists('blocation_banner_height', $bannerDimensions)) {
+            $h = $bannerDimensions['blocation_banner_height'];
+        }
+        $this->showBanner($bannerId, $langId, $w, $h, $screen);
     }
 
     // For Mobile API
     public function HomePageBannerMiddleLayout($bannerId, $langId = 0, $screen = 0)
     {
-        $this->showBanner($bannerId, $langId, 600, 338, $screen);
+        $bannerDimensions = BannerLocation::getDimensions(BannerLocation::HOME_PAGE_MIDDLE_BANNER, $screen);
+        $w = 600;
+        $h = 338;
+         /*Desktop default value need to update in DB*/
+        if (array_key_exists('blocation_banner_width', $bannerDimensions)) {
+            $w = $bannerDimensions['blocation_banner_width'];
+        }
+        if (array_key_exists('blocation_banner_height', $bannerDimensions)) {
+            $h = $bannerDimensions['blocation_banner_height'];
+        }
+        $this->showBanner($bannerId, $langId, $w, $h, $screen);
     }
 
     public function HomePageBannerBottomLayout($bannerId, $langId = 0, $screen = 0)
     {
-        $this->showBanner($bannerId, $langId, 660, 198, $screen);
+        $bannerDimensions = BannerLocation::getDimensions(BannerLocation::HOME_PAGE_BOTTOM_BANNER, $screen);
+        $w = 600;
+        $h = 198;
+         /*Desktop default value need to update in DB*/
+        if (array_key_exists('blocation_banner_width', $bannerDimensions)) {
+            $w = $bannerDimensions['blocation_banner_width'];
+        }
+        if (array_key_exists('blocation_banner_height', $bannerDimensions)) {
+            $h = $bannerDimensions['blocation_banner_height'];
+        }
+        $this->showBanner($bannerId, $langId, $w, $h, $screen);
     }
 
     public function productDetailPageBanner($bannerId, $langId = 0, $screen = 0)
     {
-        $this->showBanner($bannerId, $langId, 660, 198, $screen);
+        $bannerDimensions = BannerLocation::getDimensions(BannerLocation::PRODUCT_DETAIL_PAGE_BANNER, $screen);
+        $w = 600;
+        $h = 198;
+         /*Desktop default value need to update in DB*/
+        if (array_key_exists('blocation_banner_width', $bannerDimensions)) {
+            $w = $bannerDimensions['blocation_banner_width'];
+        }
+        if (array_key_exists('blocation_banner_height', $bannerDimensions)) {
+            $h = $bannerDimensions['blocation_banner_height'];
+        }
+        $this->showBanner($bannerId, $langId, $w, $h, $screen);
     }
 
     public function Thumb($bannerId, $langId = 0, $screen = 0)

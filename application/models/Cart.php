@@ -316,7 +316,7 @@ class Cart extends FatModel
                         $this->products[$key]['shipping_cost'] = $shippingCost;
                     }
                     /*]*/
-
+                    //CommonHelper::printArray($sellerProductRow);exit;
                     /*[ Product Tax */
                     $taxableProdPrice = $sellerProductRow['theprice'] - $sellerProductRow['volume_discount'];
                     $taxObj = new Tax();
@@ -839,7 +839,7 @@ class Cart extends FatModel
         $orderPaymentGatewayCharges = 0;
         $cartTaxTotal = 0;
         $cartDiscounts = self::getCouponDiscounts();
-
+        
         $totalSiteCommission = 0;
         $orderNetAmount = 0;
         $cartRewardPoints = self::getCartRewardPoint();
@@ -862,8 +862,15 @@ class Cart extends FatModel
                     //$cartTotalNonBatch += $product['total'];
                     $cartTotal += !empty($product['total']) ? $product['total'] : 0;
                 }
+
                 $cartVolumeDiscount += $product['volume_discount_total'];
-                $cartTaxTotal += $product['tax'];
+                
+                /* $taxableProdPrice = $product['theprice'] - $product['volume_discount'] - ($cartDiscounts['discountedSelProdIds'][$product['selprod_id']])/$product['quantity'];
+                $taxObj = new Tax();
+                $tax = $taxObj->calculateTaxRates($product['product_id'], $taxableProdPrice, $product['selprod_user_id'], $langId, $product['quantity']);
+                $cartTaxTotal += $tax; */
+                $cartTaxTotal +=  $product['tax'];
+                
                 $originalShipping += $product['shipping_cost'];
                 $totalSiteCommission += $product['commission'];
 
@@ -927,7 +934,7 @@ class Cart extends FatModel
         }
 
         $orderId = isset($_SESSION['order_id'])?$_SESSION['order_id']:'';
-        $couponInfo = $couponObj->getValidCoupons($this->cart_user_id, $this->cart_lang_id, self::getCartDiscountCoupon(),$orderId);
+        $couponInfo = $couponObj->getValidCoupons($this->cart_user_id, $this->cart_lang_id, self::getCartDiscountCoupon(), $orderId);
         //$couponInfo = $couponObj->getCoupon( self::getCartDiscountCoupon(), $this->cart_lang_id );
         //CommonHelper::printArray($couponInfo); die();
         $cartSubTotal = self::getSubTotal();

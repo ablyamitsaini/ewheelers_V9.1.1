@@ -1,20 +1,15 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');?>
 <section class="section">
     <div class="sectionhead">
-        <!-- <a class=" btn-default btn-sm" href="javascript:void(0); " onClick="sellerProductVolumeDiscountForm(<?php echo $selprod_id; ?>, 0);" style='float: right;'><?php echo Labels::getLabel( 'LBL_Add_New_Volume_Discount', $adminLangId)?></a> -->
-        <?php /* <a class="btn-default btn-sm" target='_blank' href="<?php echo CommonHelper::generateUrl('SellerProducts', 'volumeDiscount', array($selprod_id)); ?>" style='float:right;'><?php echo Labels::getLabel('LBL_Manage_Volume_Discount', $adminLangId)?></a> */ ?>
-        <h4><?php echo Labels::getLabel('LBL_Product_Setup', $adminLangId); ?></h4>
+    <h4><?php echo Labels::getLabel('LBL_Volume_Discount', $adminLangId); ?></h4>
+        <a class=" btn-default btn-sm" href="javascript:void(0); " onClick="sellerProductVolumeDiscountForm(<?php echo $selprod_id; ?>, 0);"><?php echo Labels::getLabel( 'LBL_Add_New_Volume_Discount', $adminLangId)?></a>
+        <?php /* <a class="btn-default btn-sm" target='_blank' href="<?php echo CommonHelper::generateUrl('SellerProducts', 'volumeDiscount', array($selprod_id)); ?>" style='float:right;'><?php echo Labels::getLabel('LBL_Manage_Volume_Discount', $adminLangId)?></a> */ ?>        
     </div>
     <div class="sectionbody space">
-
             <div class="row">
-                <div class="col-sm-12">
-                    <div class="tabs_nav_container responsive flat ">
-                        <?php require_once('sellerCatalogProductTop.php');?>
-                    </div>
+                <div class="col-sm-12">                
                     <div class="border-box border-box--space">
-
-                    <div class="tabs_nav_container responsive">
+                    <div class="tabs_nav responsive">
                         <div class="tabs_panel_wrap">
                             <div class="tabs_panel">
                                 <?php
@@ -22,7 +17,7 @@
                                     'listserial'=> Labels::getLabel('LBL_Sr.', $adminLangId),
                                     'voldiscount_min_qty' => Labels::getLabel('LBL_Minimum_Quantity', $adminLangId),
                                     'voldiscount_percentage' => Labels::getLabel('LBL_Discount', $adminLangId).' (%)',
-                                    // 'action'    =>    Labels::getLabel('LBL_Action', $adminLangId),
+                                     'action'    =>    Labels::getLabel('LBL_Action', $adminLangId),
                                 );
                                 $tbl = new HtmlElement('table', array('width'=>'100%', 'class'=>'table'));
                                 $th = $tbl->appendElement('thead')->appendElement('tr', array('class' => 'hide--mobile'));
@@ -42,7 +37,7 @@
                                             $td->appendElement('plaintext', array(), ''.$sr_no, true);
                                             break;
                                             case 'action':
-                                                /*$ul = $td->appendElement("ul", array("class"=>"actions actions--centered"), '', true);
+                                                $ul = $td->appendElement("ul", array("class"=>"actions actions--centered"), '', true);
                                                 $li = $ul->appendElement("li", array('class'=>'droplink'));
                                                 $li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green','title'=>Labels::getLabel('LBL_Edit', $adminLangId)), '<i class="ion-android-more-horizontal icon"></i>', true);
                                                 $innerDiv=$li->appendElement('div', array('class'=>'dropwrap'));
@@ -64,7 +59,7 @@
                                                     'title'=>Labels::getLabel('LBL_Delete', $adminLangId),"onclick"=>"deleteSellerProductVolumeDiscount(".$row['voldiscount_id'].")"),
                                                     Labels::getLabel('LBL_Delete', $adminLangId),
                                                     true
-                                                );*/
+                                                );
                                             break;
                                             default:
                                             $td->appendElement('plaintext', array(), ''.$row[$key], true);

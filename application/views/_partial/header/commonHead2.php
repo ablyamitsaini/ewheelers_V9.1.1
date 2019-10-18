@@ -1,29 +1,42 @@
 <?php if (isset($layoutTemplate) && $layoutTemplate != '') { ?>
-<link rel="stylesheet" href="<?php echo CommonHelper::generateUrl('ThemeColor', $layoutTemplate, array($layoutRecordId));?>">
+<link rel="stylesheet"
+    href="<?php echo CommonHelper::generateUrl('ThemeColor', $layoutTemplate, array($layoutRecordId));?>">
 <?php }
 if (isset($socialShareContent) && !empty($socialShareContent)) { ?>
 <!-- OG Product Facebook Meta [ -->
 <meta property="og:type" content="product" />
-<meta property="og:title" content="<?php echo $socialShareContent['title']; ?>" />
-<meta property="og:site_name" content="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId, FatUtility::VAR_STRING, ''); ?>" />
-<meta property="og:image" content="<?php echo $socialShareContent['image']; ?>" />
-<meta property="og:url" content="<?php echo CommonHelper::getCurrUrl(); ?>" />
-<meta property="og:description" content="<?php echo $socialShareContent['description']; ?>" />
+<meta property="og:title"
+    content="<?php echo $socialShareContent['title']; ?>" />
+<meta property="og:site_name"
+    content="<?php echo FatApp::getConfig('CONF_WEBSITE_NAME_'.$siteLangId, FatUtility::VAR_STRING, ''); ?>" />
+<meta property="og:image"
+    content="<?php echo $socialShareContent['image']; ?>" />
+<meta property="og:url"
+    content="<?php echo CommonHelper::getCurrUrl(); ?>" />
+<meta property="og:description"
+    content="<?php echo $socialShareContent['description']; ?>" />
 <!-- ]   -->
 
 <!--Here is the Twitter Card code for this product  -->
 <?php if (!empty(FatApp::getConfig("CONF_TWITTER_USERNAME", FatUtility::VAR_STRING, ''))) { ?>
 <meta name="twitter:card" content="product">
-<meta name="twitter:site" content="@<?php echo FatApp::getConfig("CONF_TWITTER_USERNAME", FatUtility::VAR_STRING, ''); ?>">
-<meta name="twitter:title" content="<?php echo $socialShareContent['title']; ?>">
-<meta name="twitter:description" content="<?php echo $socialShareContent['description']; ?>">
-<meta name="twitter:image:src" content="<?php echo $socialShareContent['image']; ?>">
+<meta name="twitter:site"
+    content="@<?php echo FatApp::getConfig("CONF_TWITTER_USERNAME", FatUtility::VAR_STRING, ''); ?>">
+<meta name="twitter:title"
+    content="<?php echo $socialShareContent['title']; ?>">
+<meta name="twitter:description"
+    content="<?php echo $socialShareContent['description']; ?>">
+<meta name="twitter:image:src"
+    content="<?php echo $socialShareContent['image']; ?>">
 <?php } ?>
 <!-- End Here is the Twitter Card code for this product  -->
 <?php }
 if (isset($includeEditor) && $includeEditor) { ?>
-<script language="javascript" type="text/javascript" src="<?php echo CONF_WEBROOT_URL; ?>innovas/scripts/innovaeditor.js"></script>
-<script src="<?php echo CONF_WEBROOT_URL; ?>innovas/scripts/common/webfont.js" type="text/javascript"></script>
+<script language="javascript" type="text/javascript"
+    src="<?php echo CONF_WEBROOT_URL; ?>innovas/scripts/innovaeditor.js">
+</script>
+<script src="<?php echo CONF_WEBROOT_URL; ?>innovas/scripts/common/webfont.js"
+    type="text/javascript"></script>
 <?php  }  ?>
 </head>
 <?php
@@ -35,17 +48,17 @@ if ($controllerName == 'Checkout') {
     $bodyClass = 'is-checkout';
 }
 
-if(!array_key_exists('screenWidth', $_COOKIE)){
+if (!array_key_exists('screenWidth', $_COOKIE)) {
     setcookie('screenWidth', 769, 0, CONF_WEBROOT_URL);
 }
 
 if (isset($isUserDashboard) && $isUserDashboard) {
     $bodyClass = 'is-dashboard';
     $expanded = 'sidebar-is-reduced';
-    if(!array_key_exists('openSidebar', $_COOKIE)){
+    if (!array_key_exists('openSidebar', $_COOKIE)) {
         setcookie('openSidebar', 1, 0, CONF_WEBROOT_URL);
     }
-    if(array_key_exists('openSidebar', $_COOKIE) && 0 < $_COOKIE['openSidebar'] && array_key_exists('screenWidth', $_COOKIE) && applicationConstants::MOBILE_SCREEN_WIDTH < $_COOKIE['screenWidth']){
+    if (array_key_exists('openSidebar', $_COOKIE) && 0 < $_COOKIE['openSidebar'] && array_key_exists('screenWidth', $_COOKIE) && applicationConstants::MOBILE_SCREEN_WIDTH < $_COOKIE['screenWidth']) {
         $expanded = 'sidebar-is-expanded';
     }
 
@@ -57,12 +70,17 @@ if (CommonHelper::demoUrl()) {
 }
 
 ?>
+
 <body class="<?php echo $bodyClass; ?> ">
     <?php
         $alertClass = '';
-        if (Message::getInfoCount() > 0) $alertClass = 'alert--info';
-        elseif (Message::getErrorCount()>0) $alertClass = 'alert--danger';
-        elseif (Message::getMessageCount()>0) $alertClass = 'alert--success';
+        if (Message::getInfoCount() > 0) {
+            $alertClass = 'alert--info';
+        } elseif (Message::getErrorCount()>0) {
+            $alertClass = 'alert--danger';
+        } elseif (Message::getMessageCount()>0) {
+            $alertClass = 'alert--success';
+        }
     ?>
     <?php
     if (FatApp::getConfig("CONF_GOOGLE_TAG_MANAGER_BODY_SCRIPT", FatUtility::VAR_STRING, '')) {
@@ -70,7 +88,8 @@ if (CommonHelper::demoUrl()) {
     }
     ?>
 
-    <div class="system_message alert alert--positioned-top-full <?php echo $alertClass; ?>" style="display:none">
+    <div class="system_message alert alert--positioned-top-full <?php echo $alertClass; ?>"
+        style="display:none">
         <div class="close"></div>
         <div class="content">
             <?php
@@ -93,4 +112,4 @@ if (CommonHelper::demoUrl()) {
             }
         });
     </script>
-    <?php } ?>
+    <?php }

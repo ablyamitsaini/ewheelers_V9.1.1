@@ -84,22 +84,55 @@ foreach ($arrListing as $sn => $row) {
                     $li = $ul->appendElement("li", array('class'=>'droplink'));
 
                     $li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green','title'=>Labels::getLabel('LBL_Edit', $adminLangId)), '<i class="ion-android-more-horizontal icon"></i>', true);
-                    $innerDiv=$li->appendElement('div', array('class'=>'dropwrap'));
-                    $innerUl=$innerDiv->appendElement('ul', array('class'=>'linksvertical'));
-                    $innerLiEdit=$innerUl->appendElement('li');
 
-
+                    $innerDiv = $li->appendElement('div', array('class'=>'dropwrap'));
+                    $innerUl = $innerDiv->appendElement('ul', array('class'=>'linksvertical'));
+                    $innerLiEdit = $innerUl->appendElement('li');
 
                     $innerLiEdit->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'',
                     'title'=>Labels::getLabel('LBL_Edit', $adminLangId),"onclick"=>"addSellerProductForm(" . $row['selprod_product_id'] . ",".$row['selprod_id'].")"), Labels::getLabel('LBL_Edit', $adminLangId), true);
 
-                    /*$innerLiSpecialPrice = $innerUl->appendElement("li");
+                    $innerLiSeo = $innerUl->appendElement("li");
+                    $innerLiSeo->appendElement(
+                        'a',
+                        array('href'=>'javascript:void(0)', 'class'=>'', 'title'=>Labels::getLabel('LBL_SEO_CONTENT', $adminLangId),"onclick"=>"getProductSeoGeneralForm(".$row['selprod_id'].")"),
+                        Labels::getLabel('LBL_SEO_CONTENT', $adminLangId),
+                        true
+                    );
+
+                    $innerLiSpecialPrice = $innerUl->appendElement("li");
                     $innerLiSpecialPrice->appendElement(
                         'a',
                         array('href'=>'javascript:void(0)', 'class'=>'', 'title'=>Labels::getLabel('LBL_Special_Price', $adminLangId),"onclick"=>"addSellerProductSpecialPrices(".$row['selprod_id'].")"),
                         Labels::getLabel('LBL_Special_Price', $adminLangId),
                         true
-                    );*/
+                    );
+
+                    $innerLiVolumeDis = $innerUl->appendElement("li");
+                    $innerLiVolumeDis->appendElement(
+                        'a',
+                        array('href'=>'javascript:void(0)', 'class'=>'', 'title'=>Labels::getLabel('LBL_Volume_Discount', $adminLangId),"onclick"=>"sellerProductVolumeDiscounts(".$row['selprod_id'].")"),
+                        Labels::getLabel('LBL_Volume_Discount', $adminLangId),
+                        true
+                    );
+
+                    $innerLiLinks = $innerUl->appendElement("li");
+                    $innerLiLinks->appendElement(
+                        'a',
+                        array('href'=>'javascript:void(0)', 'class'=>'', 'title'=>Labels::getLabel('LBL_Links', $adminLangId),"onclick"=>"sellerProductLinkFrm(".$row['selprod_id'].")"),
+                        Labels::getLabel('LBL_Links', $adminLangId),
+                        true
+                    );
+                    
+                    if ($row['product_type'] == Product::PRODUCT_TYPE_DIGITAL) {
+                        $innerLiDownload = $innerUl->appendElement("li");
+                        $innerLiDownload->appendElement(
+                            'a',
+                            array('href'=>'javascript:void(0)', 'class'=>'', 'title'=>Labels::getLabel('LBL_Downloads', $adminLangId),"onclick"=>"sellerProductDownloadFrm(".$row['selprod_id'].")"),
+                            Labels::getLabel('LBL_Downloads', $adminLangId),
+                            true
+                        );
+                    }
 
                     $innerLiDelete = $innerUl->appendElement("li");
                     $innerLiDelete->appendElement(
@@ -133,7 +166,7 @@ $frm->addHiddenField('', 'status');
 echo $frm->getFormTag();
 echo $frm->getFieldHtml('status');
 ?>
-    <?php echo $tbl->getHtml(); ?>
+<?php echo $tbl->getHtml(); ?>
 </form>
 <?php if (!$product_id) {
     $postedData['page'] = $page;

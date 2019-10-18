@@ -12,8 +12,9 @@ $additionalAttributes = (CommonHelper::getLayoutDirection() == 'rtl') ? 'directi
 ?>
 <!DOCTYPE html>
 <html prefix="og: http://ogp.me/ns#" <?php echo $additionalAttributes;?> class="<?php echo $htmlClass;?>">
-<head>
 
+<head>
+    <!-- Yo!Kart -->
     <meta charset="utf-8">
     <meta name="author" content="">
     <!-- Mobile Specific Metas ===================== -->
@@ -22,10 +23,14 @@ $additionalAttributes = (CommonHelper::getLayoutDirection() == 'rtl') ? 'directi
     <!-- favicon ================================================== -->
 
     <!--<link rel="shortcut icon" href="">-->
-    <link rel="shortcut icon" href="<?php echo CommonHelper::generateUrl('Image', 'favicon', array($siteLangId)); ?>">
-    <link rel="apple-touch-icon" href="<?php echo CommonHelper::generateUrl('Image', 'appleTouchIcon', array($siteLangId)); ?>">
-    <link rel="apple-touch-icon" sizes="72x72" href="<?php echo CommonHelper::generateUrl('Image', 'appleTouchIcon', array($siteLangId,'MINI')); ?>">
-    <link rel="apple-touch-icon" sizes="114x114" href="<?php echo CommonHelper::generateUrl('Image', 'appleTouchIcon', array($siteLangId,'SMALL')); ?>">
+    <link rel="shortcut icon"
+        href="<?php echo CommonHelper::generateUrl('Image', 'favicon', array($siteLangId)); ?>">
+    <link rel="apple-touch-icon"
+        href="<?php echo CommonHelper::generateUrl('Image', 'appleTouchIcon', array($siteLangId)); ?>">
+    <link rel="apple-touch-icon" sizes="72x72"
+        href="<?php echo CommonHelper::generateUrl('Image', 'appleTouchIcon', array($siteLangId,'MINI')); ?>">
+    <link rel="apple-touch-icon" sizes="114x114"
+        href="<?php echo CommonHelper::generateUrl('Image', 'appleTouchIcon', array($siteLangId,'SMALL')); ?>">
 
     <?php
     if ($canonicalUrl == '') {
@@ -69,11 +74,11 @@ $additionalAttributes = (CommonHelper::getLayoutDirection() == 'rtl') ? 'directi
     if (FatApp::getConfig("CONF_ENABLE_ENGAGESPOT_PUSH_NOTIFICATION", FatUtility::VAR_STRING, '')) {
         echo FatApp::getConfig("CONF_ENGAGESPOT_PUSH_NOTIFICATION_CODE", FatUtility::VAR_STRING, '');
         if (UserAuthentication::getLoggedUserId(true) > 0) { ?>
-            <script type="text/javascript">
-                Engagespot.init()
-                Engagespot.identifyUser('YT_<?php echo UserAuthentication::getLoggedUserId(); ?>');
-            </script>
-            <?php
+    <script type="text/javascript">
+        Engagespot.init()
+        Engagespot.identifyUser(
+            'YT_<?php echo UserAuthentication::getLoggedUserId(); ?>');
+    </script>
+    <?php
         }
     }
-    ?>

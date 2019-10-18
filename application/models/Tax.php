@@ -241,8 +241,8 @@ class Tax extends MyAppModel
         if (empty($res)) {
             return $tax;
         }
-
-        if ($res['taxval_is_percent'] == static::TYPE_PERCENTAGE) {
+        
+        if ($res['taxval_is_percent'] == static::TYPE_PERCENTAGE) { 
             $tax = round((($prodPrice * $qty) * $res['taxval_value'])/100, 2);
         } else {
             $tax = $res['taxval_value']*$qty;

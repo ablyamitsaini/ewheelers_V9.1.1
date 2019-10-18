@@ -6,9 +6,9 @@
 	<div class="sectionbody space">
 		<div class="row">
 			<div class="col-sm-12">
-				<div class="tabs_nav_container responsive flat">
+			<?php /*<div class="tabs_nav_container responsive flat">
 					<?php require_once('sellerCatalogProductTop.php');?>
-				</div>
+				</div>*/?>
 				<div class="tabs_nav_container responsive">
 					<ul class="tabs_nav tabs_nav--internal">
 						<li><a href="javascript:void(0)" onClick="sellerProductForm(<?php echo $product_id;?>,<?php echo $selprod_id;?>)"><?php echo Labels::getLabel('LBL_Basic',$adminLangId); ?></a></li>

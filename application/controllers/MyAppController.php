@@ -18,7 +18,9 @@ class MyAppController extends FatController
 
         CommonHelper::initCommonVariables();
         $this->initCommonVariables();
-        $this->tempTokenLogin();
+        if (!UserAuthentication::isUserLogged()) {
+            $this->tempTokenLogin();
+        }
     }
 
     public function initCommonVariables()

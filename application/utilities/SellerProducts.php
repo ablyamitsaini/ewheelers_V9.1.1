@@ -478,7 +478,7 @@ trait SellerProducts
             $newTabLangId = $this->siteLangId;
         }
 
-        $productId = SellerProduct::getAttributesById($selprod_id, 'selprod_product_id');
+        $productId = SellerProduct::getAttributesById($selprod_id, 'selprod_product_id', false);
         Product::updateMinPrices($productId);
         $this->set('selprod_id', $selprod_id);
         $this->set('langId', $newTabLangId);
@@ -947,7 +947,7 @@ trait SellerProducts
         if (!$sellerProdObj->addUpdateSellerProductSpecialPrice($data_to_save)) {
             FatUtility::dieJsonError(Labels::getLabel($sellerProdObj->getError(), $this->siteLangId));
         }
-        $productId = SellerProduct::getAttributesById($selprod_id, 'selprod_product_id');
+        $productId = SellerProduct::getAttributesById($selprod_id, 'selprod_product_id', false);
         Product::updateMinPrices($productId);
         $this->set('msg', Labels::getLabel('LBL_Special_Price_Setup_Successful', $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
@@ -962,7 +962,7 @@ trait SellerProducts
         }
         $specialPriceRow = SellerProduct::getSellerProductSpecialPriceById($splPriceId);
         $this->removeSpecialPrice($splPriceId, $specialPriceRow);
-        $productId = SellerProduct::getAttributesById($specialPriceRow['selprod_id'], 'selprod_product_id');
+        $productId = SellerProduct::getAttributesById($specialPriceRow['selprod_id'], 'selprod_product_id', false);
         Product::updateMinPrices($productId);
         $this->set('selprod_id', $specialPriceRow['selprod_id']);
         $this->set('msg', Labels::getLabel('LBL_Special_Price_Record_Deleted', $this->siteLangId));
@@ -2221,7 +2221,7 @@ trait SellerProducts
     {
         $selProd_id = FatUtility::int($selProd_id);
         if (0 < $selProd_id || 0 > $selProd_id) {
-            $selProd_id = SellerProduct::getAttributesByID($selProd_id, 'selprod_id', true);
+            $selProd_id = SellerProduct::getAttributesByID($selProd_id, 'selprod_id', false);
             if (empty($selProd_id)) {
                 Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
                 FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'volumeDiscount'));

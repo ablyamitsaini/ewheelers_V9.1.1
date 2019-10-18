@@ -190,7 +190,7 @@ function getCardType(number) {
     return "";
 }
 
-viewWishList = function(selprod_id, dv, event) {
+viewWishList = function(selprod_id, dv, event, excludeWishList = 0) {
     event.stopPropagation();
     /*var dv = "#listDisplayDiv_" + selprod_id; */
 
@@ -206,7 +206,7 @@ viewWishList = function(selprod_id, dv, event) {
     }
 
     $.facebox(function() {
-        fcom.ajax(fcom.makeUrl('Account', 'viewWishList', [selprod_id]), '', function(ans) {
+        fcom.ajax(fcom.makeUrl('Account', 'viewWishList', [selprod_id, excludeWishList]), '', function(ans) {
             fcom.updateFaceboxContent(ans, 'faceboxWidth collection-ui-popup small-fb-width');
             //$(dv).next().html(ans);
             $("input[name=uwlist_title]").bind('focus', function(e) {

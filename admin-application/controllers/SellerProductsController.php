@@ -137,7 +137,7 @@ class SellerProductsController extends AdminBaseController
         $srch->addMultipleFields(
             array(
             'selprod_id', 'selprod_user_id', 'selprod_price', 'selprod_stock', 'selprod_product_id',
-            'selprod_active', 'selprod_available_from', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title', 'u.user_name', 'uc.credential_email')
+            'selprod_active', 'selprod_available_from', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title', 'u.user_name', 'uc.credential_email','product_type')
         );
 
         $srch->addOrder('selprod_active', 'DESC');
@@ -327,7 +327,7 @@ class SellerProductsController extends AdminBaseController
             $newTabLangId = $this->adminLangId;
         }
 
-        $productId = SellerProduct::getAttributesById($selprod_id, 'selprod_product_id');
+        $productId = SellerProduct::getAttributesById($selprod_id, 'selprod_product_id', false);
         Product::updateMinPrices($productId);
 
         $this->set('selprod_id', $selprod_id);
@@ -949,8 +949,8 @@ class SellerProductsController extends AdminBaseController
             FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Request', $this->adminLangId));
         }
 
-        if (!emptyy($post['splprice_selprod_id'])) {
-            $productId = SellerProduct::getAttributesById($post['splprice_selprod_id'], 'selprod_product_id');
+        if (!empty($post['splprice_selprod_id'])) {
+            $productId = SellerProduct::getAttributesById($post['splprice_selprod_id'], 'selprod_product_id', false);
             Product::updateMinPrices($productId);
         }
 
@@ -2302,7 +2302,7 @@ class SellerProductsController extends AdminBaseController
         $status = ($sellerProductData['selprod_active'] == applicationConstants::ACTIVE) ? applicationConstants::INACTIVE : applicationConstants::ACTIVE;
 
         $this->updateSellerProductStatus($selprodId, $status);
-        $productId = SellerProduct::getAttributesById($selprodId, 'selprod_product_id');
+        $productId = SellerProduct::getAttributesById($selprodId, 'selprod_product_id', false);
         Product::updateMinPrices($productId);
 
         $this->set('msg', $this->str_update_record);
@@ -2352,7 +2352,7 @@ class SellerProductsController extends AdminBaseController
         $selProd_id = FatUtility::int($selProd_id);
 
         if (0 < $selProd_id || 0 > $selProd_id) {
-            $selProd_id = SellerProduct::getAttributesByID($selProd_id, 'selprod_id', true);
+            $selProd_id = SellerProduct::getAttributesByID($selProd_id, 'selprod_id', false);
             if (empty($selProd_id)) {
                 Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId));
                 FatApp::redirectUser(CommonHelper::generateUrl('SellerProducts', 'specialPrice'));
@@ -2397,7 +2397,7 @@ class SellerProductsController extends AdminBaseController
         $selProd_id = FatUtility::int($selProd_id);
 
         if (0 < $selProd_id || 0 > $selProd_id) {
-            $selProd_id = SellerProduct::getAttributesByID($selProd_id, 'selprod_id', true);
+            $selProd_id = SellerProduct::getAttributesByID($selProd_id, 'selprod_id', false);
             if (empty($selProd_id)) {
                 Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId));
                 FatApp::redirectUser(CommonHelper::generateUrl('SellerProducts', 'volumeDiscount'));

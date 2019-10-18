@@ -8,7 +8,7 @@
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="tabs_nav_container responsive flat">
-					<?php require_once('sellerCatalogProductTop.php');?>
+					<?php /* require_once('sellerCatalogProductTop.php'); */?>
 					<div class="tabs_panel_wrap ">						
 						<?php
 						$selprodDownloadFrm->setFormTagAttribute('id', 'frmDownload');
