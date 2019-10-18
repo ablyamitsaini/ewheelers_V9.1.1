@@ -6,7 +6,7 @@ define('CONF_FORM_REQUIRED_STAR_POSITION', Form::FORM_REQUIRED_STAR_POSITION_AFT
 FatApplication::getInstance()->setControllersForStaticFileServer(array('images', 'fonts', 'js', 'img', 'innovas','assetmanager'));
 
 $innova_settings  =  array('width'=>'650', 'height'=>'400','arrStyle'=>'[["body",false,"","min-height:250px;"]]',  'groups'=>' [
-    ["group1", "", ["Bold", "Italic", "Underline", "FontDialog", "ForeColor", "TextDialog", "RemoveFormat"]],
+    ["group1", "", ["Bold", "Italic", "Underline", "FontName", "ForeColor", "TextDialog", "RemoveFormat"]],
     ["group2", "", ["Bullets", "Numbering", "JustifyLeft", "JustifyCenter", "JustifyRight"]],
     ["group3", "", ["LinkDialog", "ImageDialog", "Table", "TableDialog"]],
     ["group5", "", ["Undo", "Redo", "FullScreen", "SourceDialog"]]]',

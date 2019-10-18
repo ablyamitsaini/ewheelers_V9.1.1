@@ -23,6 +23,8 @@ class ShopsController extends MyAppController
         $params['featured'] = 1;
         $searchForm->fill($params);
         $this->set('searchForm', $searchForm);
+        $this->_template->addCss('css/slick.css');
+        $this->_template->addJs('js/slick.js');
         $this->_template->render();
     }
 

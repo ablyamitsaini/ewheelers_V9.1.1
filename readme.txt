@@ -5,7 +5,9 @@ Bug :
     -> 031491 - While uploading banner file of shop, If file name is large then it's exceeding the success message length.
     -> 031501 - Getting json error message on downloading digital file.
 
-Enhancements : Added <!-- Yo!Kart --> for builtwith.com.
+Enhancements : 
+    -> Added <!-- Yo!Kart --> for builtwith.com.
+    -> Set Banners according to screen size.
 
 <!-- Release notes TV-9.0.1.20191015 -->
 Bug:
@@ -19,6 +21,7 @@ Enhancements :
     -> 031400 - Services were not displaying under shipping carrier
     -> Updated Phone Number Regex
     -> Disabled stripe gateway form button after click to prevent multiple form submit.
+    -> Removed Google fonts option from innova text editor.
 
 <!---- Release notes TV-9.0.1.20191009 -- >
 Bug:
@@ -57,6 +60,7 @@ Bug:
     -> 030628 - Overlay should be displayed behind side in mobile devices when we click on drawer.
     -> 030518 - On quick view popup, product image alignment is not proper.
     -> 031294 - Two labels are displaying together without having space. While adding links from custom product form.
+    -> 031460 - products images are not displaying properly on featured shop page in quick view popup.
 
 <!---- Release notes TV-9.0.1.20191004 -- >
 Bug:

@@ -327,7 +327,10 @@ class DummyController extends MyAppController
 
     public function index()
     {
-        Product::updateMinPrices();
+       $res = CommonHelper::getUrlTypeData('http://support.apple.com/downloads/safari'); 
+      
+       exit;
+
     }
 
 
