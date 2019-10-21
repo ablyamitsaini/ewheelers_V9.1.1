@@ -74,8 +74,8 @@ class ProductSearch extends SearchBase
     public function setDefinedCriteria($joinPrice = 0, $bySeller = 0, $criteria = array(), $checkAvailableFrom = true, $useTempTable = false)
     {
         $joinPrice =  FatUtility::int($joinPrice);
-        if (0 < $joinPrice) {
-            $this->joinForPrice('', $criteria, $checkAvailableFrom, false);
+        if (0 < $joinPrice) { 
+            $this->joinForPrice('', $criteria, $checkAvailableFrom, $useTempTable);
         } else {
             $this->joinSellerProducts($bySeller, '', $criteria, $checkAvailableFrom);
         }
@@ -116,8 +116,7 @@ class ProductSearch extends SearchBase
         if ($this->sellerProductsJoined) {
             trigger_error(Labels::getLabel('ERR_SellerProducts_can_be_joined_only_once.', $this->commonLangId), E_USER_ERROR);
         }
-        $this->sellerProductsJoined = true;
-
+        $this->sellerProductsJoined = true;        
         $now = FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d');
         if ('' == $splPriceForDate) {
             $splPriceForDate = $now;
@@ -134,6 +133,7 @@ class ProductSearch extends SearchBase
                 'INNER JOIN',
                 Collections::DB_TBL_COLLECTION_TO_SELPROD_PREFIX.'selprod_id = selprod_id and '.Collections::DB_TBL_COLLECTION_TO_SELPROD_PREFIX.'collection_id = '.$criteria['collection_product_id']
             );
+            $useTempTable = false;
         }
 
         if ($this->langId) {
@@ -143,8 +143,13 @@ class ProductSearch extends SearchBase
 
         if (isset($criteria['optionvalue']) && $criteria['optionvalue'] !='') {
             $this->addOptionCondition($criteria['optionvalue']);
+            $useTempTable = false;
         }
 
+        if (!empty($criteria['keyword']) || !empty($criteria['shop']) || !empty($criteria['shop_id'])) {
+            $useTempTable = false;
+        }
+        
         if ($useTempTable === true) {
             $srch = new SearchBase(Product::DB_PRODUCT_MIN_PRICE);
             $srch->doNotLimitRecords();
@@ -153,7 +158,7 @@ class ProductSearch extends SearchBase
             $tmpQry = $srch->getQuery();
             $this->joinTable('(' . $tmpQry . ')', 'INNER JOIN', 'pricetbl.pmp_product_id = msellprod.selprod_product_id and msellprod.selprod_id = pricetbl.pmp_selprod_id', 'pricetbl');
             $this->joinTable(SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE, 'LEFT OUTER JOIN', 'msplpric.splprice_selprod_id = pricetbl.pmp_selprod_id and pricetbl.pmp_splprice_id = msplpric.splprice_id', 'msplpric');
-        } else {
+        } else { 
             $this->joinBasedOnPriceCondition($splPriceForDate, $criteria, $checkAvailableFrom);
         }
         // $this->joinBasedOnPriceCondition($splPriceForDate, $criteria, $checkAvailableFrom);
@@ -230,7 +235,7 @@ class ProductSearch extends SearchBase
             $srch->joinTable(SellerProduct::DB_LANG_TBL, 'LEFT OUTER JOIN', 'selprodlang_selprod_id = sprods.selprod_id	AND selprodlang_lang_id = ' . $this->langId, 'sp_l');
             $srch->joinTable(Brand::DB_LANG_TBL, 'LEFT OUTER JOIN', 'brandlang_brand_id = tb.brand_id	AND brandlang_lang_id = ' . $this->langId, 'tb_l');
             $srch->joinTable(ProductCategory::DB_LANG_TBL, 'LEFT OUTER JOIN', 'prodcatlang_prodcat_id = tc.prodcat_id AND prodcatlang_lang_id = ' . $this->langId, 'tc_l');
-            $this->addKeywordSearch($criteria['keyword'], $srch);
+            $this->addKeywordSearch($criteria['keyword'], $srch, false);
         }
 
         /*if (isset($criteria['top_products']) && !empty($criteria['top_products'])) {
@@ -364,7 +369,7 @@ class ProductSearch extends SearchBase
         $this->joinTable(Product::DB_TBL_PRODUCT_SHIPPING, 'LEFT OUTER JOIN', 'ps.ps_product_id = p.product_id and ps.ps_user_id = selprod_user_id', 'ps');
     }
 
-    public function joinShops($langId = 0, $isActive = true, $isDisplayStatus = true)
+    public function joinShops($langId = 0, $isActive = true, $isDisplayStatus = true, $shopId = 0)
     {
         if (!$this->sellerUserJoined) {
             trigger_error(Labels::getLabel('ERR_joinShops_cannot_be_joined,_unless_joinSellers_is_not_applied.', $this->commonLangId), E_USER_ERROR);
@@ -374,19 +379,23 @@ class ProductSearch extends SearchBase
             $langId = $this->langId;
         }
 
-        $activeShopCondition = '';
+        $shopCondition = '';
         if ($isActive) {
-            $activeShopCondition = ' and shop.shop_active = '.applicationConstants::ACTIVE;
+            $shopCondition.= ' and shop.shop_active = '.applicationConstants::ACTIVE;
             $this->addCondition('shop.shop_active', '=', applicationConstants::ACTIVE);
         }
-
-        $shopDisplayStatus = '';
+       
         if ($isDisplayStatus) {
-            $shopDisplayStatus = ' and shop.shop_supplier_display_status = '.applicationConstants::ON;
+            $shopCondition.= ' and shop.shop_supplier_display_status = '.applicationConstants::ON;
             $this->addCondition('shop.shop_supplier_display_status', '=', applicationConstants::ON);
         }
+                
+        $shopId =  FatUtility::int($shopId);
+        if (0< $shopId) {
+            $shopCondition.= ' and shop.shop_id = '.$shopId;
+        }   
 
-        $this->joinTable(Shop::DB_TBL, 'INNER JOIN', 'seller_user.user_id = shop.shop_user_id '.$activeShopCondition.' '.$shopDisplayStatus, 'shop');
+        $this->joinTable(Shop::DB_TBL, 'INNER JOIN', 'seller_user.user_id = shop.shop_user_id '.$shopCondition, 'shop');
 
         if ($langId) {
             $this->joinShopsLang($langId);
@@ -583,6 +592,7 @@ class ProductSearch extends SearchBase
             $obj = $this;
         }
 
+        $keyword = urldecode($keyword);
         $cnd = $obj->addCondition('product_isbn', 'LIKE', '%' . $keyword . '%');
         $cnd->attachCondition('product_upc', 'LIKE', '%' . $keyword . '%');
         /*$cnd->attachCondition('selprod_title', 'LIKE', '%' . $keyword . '%');
@@ -601,7 +611,7 @@ class ProductSearch extends SearchBase
             }
             $arr_keywords[] = $value;
         }
-
+       
         if (count($arr_keywords) > 0) {
             foreach ($arr_keywords as $value) {
                 $cnd->attachCondition('product_tags_string', 'LIKE', '%' . $value . '%');
