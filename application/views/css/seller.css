@@ -563,7 +563,7 @@
 
 	#header.header-supplier,
 	#header.header-supplier ~ .after-header {
-		height: 104px;
+		/*height: 104px;*/
 	}
 
 	.seller-steps li {
