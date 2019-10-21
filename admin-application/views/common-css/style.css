@@ -9615,5 +9615,9 @@ input[type="text"].vd-input, input[type="text"].sp-input {
     height: 2.5rem;
 }
 input[type="text"].vd-input:focus, input[type="text"].sp-input:focus{
-    box-shadow:none;
+    -webkit-box-shadow:none;
+            box-shadow:none;
 }
+
+
+:root{--first-color:#3bc4e7;}
