@@ -10,19 +10,25 @@
         </a>
     </div>
     <ul class="switch-interface">
-        <li><a href="<?php echo CommonHelper::generateUrl('admin');?>"><i class="icn icn--admin">
+        <?php 
+            $url = CommonHelper::generateUrl('admin'); 
+            if (strpos($_SERVER ['REQUEST_URI'], CONF_WEBROOT_BACKEND) !== false) {
+                $url = CommonHelper::generateUrl('', '', array(), CONF_WEBROOT_FRONTEND);
+            }  
+        ?>
+        <li><a href="<?php echo $url;?>"><i class="icn icn--admin">
                     <svg class="svg">
-                        <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#admin" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#admin"></use>
+                        <use xlink:href="<?php echo CONF_WEBROOT_FRONTEND; ?>images/retina/sprite.svg#admin" href="<?php echo CONF_WEBROOT_FRONTEND; ?>images/retina/sprite.svg#admin"></use>
                     </svg>
                 </i></a></li>
        <?php /* ?> <li class="is-active"><a href="javascript:void(0)" onClick="setDemoLayout(360)"><i class="icn icn--desktop">
                     <svg class="svg">
-                        <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#desktop" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#desktop"></use>
+                        <use xlink:href="<?php echo CONF_WEBROOT_FRONTEND; ?>images/retina/sprite.svg#desktop" href="<?php echo CONF_WEBROOT_FRONTEND; ?>images/retina/sprite.svg#desktop"></use>
                     </svg>
                 </i></a></li>
         <li><a href="javascript:void(0);" onClick="setDemoLayout(360)"><i class="icn icn--mobile">
                     <svg class="svg">
-                        <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#mobile" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#mobile"></use>
+                        <use xlink:href="<?php echo CONF_WEBROOT_FRONTEND; ?>images/retina/sprite.svg#mobile" href="<?php echo CONF_WEBROOT_FRONTEND; ?>images/retina/sprite.svg#mobile"></use>
                     </svg>
                 </i></a></li> <?php  */?>
     </ul>    
