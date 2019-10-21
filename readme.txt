@@ -1,3 +1,5 @@
+<!-- Release notes TV-9.0.2.20191021 -->
+
 Bug : 
     -> 031553 - Js Error On Product Detail Page While Scroll
 
