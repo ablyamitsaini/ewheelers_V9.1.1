@@ -818,3 +818,5 @@ UPDATE `tbl_banner_location_dimensions` SET `blocation_banner_width` = '660', bl
 UPDATE `tbl_banner_location_dimensions` SET `blocation_banner_width` = '660', blocation_banner_height = '198' WHERE `bldimension_blocation_id` = 2 and `bldimension_device_type` = 2;
 UPDATE `tbl_banner_location_dimensions` SET `blocation_banner_width` = '660', blocation_banner_height = '198' WHERE `bldimension_blocation_id` = 3 and `bldimension_device_type` = 2;
 /*TV-9.0.1.20191018*/
+DELETE FROM `tbl_language_labels` WHERE `label_key` LIKE 'LBL_COPYRIGHT_TEXT';
+INSERT INTO `tbl_language_labels` (`label_key`, `label_lang_id`, `label_caption`) VALUES ('LBL_COPYRIGHT_TEXT', 1,'Copyright {YEAR} {PRODUCT} Developed by {OWNER}.');
