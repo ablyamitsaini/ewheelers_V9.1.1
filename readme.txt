@@ -1,5 +1,6 @@
 Bug : 
     -> 031553 - Js Error On Product Detail Page While Scroll
+    -> 031569 - In return request listing> displaying random pic for product which is not added by seller(Seller App)
 
 <!-- Release notes TV-9.0.1.20191018 -->
 Bug :     
