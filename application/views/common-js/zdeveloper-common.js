@@ -1208,24 +1208,24 @@ $(document).ready(function () {
 $(document).ready(function () {
 	new ScrollHint('.table');
 });
-$(document).ajaxComplete(function () {
-	new ScrollHint('.table');
+$(document).ajaxComplete(function() {
+    new ScrollHint('.table:not(.scroll-hint)');
 
-	//Remove scrolling on table with hand icon
-	if (0 < $('div.block--empty').length && 0 < $('div.scroll-hint-icon-wrap').length) {
-		$('div.scroll-hint-icon-wrap').remove();
-	}
+    //Remove scrolling on table with hand icon
+    if (0 < $('div.block--empty').length && 0 < $('div.scroll-hint-icon-wrap').length){
+        $('div.block--empty').siblings('table.table.scroll-hint').children('div.scroll-hint-icon-wrap').remove();
+    }
 
-	//Remove Scrolling When Facebox Popup opened
-	if (0 < $("#facebox").length) {
-		if ($("#facebox").is(":visible")) {
-			$('html').addClass('pop-on');
-		} else {
-			$('html').removeClass('pop-on');
-		}
-		$("#facebox .close.close--white").on("click", function () {
-			$("html").removeClass('pop-on');
-		});
-	}
+    //Remove Scrolling When Facebox Popup opened
+    if (0 < $("#facebox").length) {
+        if ($("#facebox").is(":visible")) {
+            $('html').addClass('pop-on');
+        } else {
+            $('html').removeClass('pop-on');
+        }
+        $("#facebox .close.close--white").on("click", function(){
+            $("html").removeClass('pop-on');
+        });
+    }
 });
  
