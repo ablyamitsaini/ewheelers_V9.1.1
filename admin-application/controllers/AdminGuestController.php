@@ -26,11 +26,9 @@ class AdminGuestController extends FatController
         'processing' =>Labels::getLabel('LBL_Processing...', $this->adminLangId),
         'isMandatory' =>Labels::getLabel('LBL_is_mandatory', $this->adminLangId)
         );
-
-        if (CommonHelper::demoUrl() == true) { 
+		if (CommonHelper::demoUrl() == true) { 
             $this->_template->addCss('css/demo.css');
         }
-
         $this->set('isAdminLogged', AdminAuthentication::isAdminLogged());
         $this->set('controllerName', $controllerName);
         $this->set('jsVariables', $jsVariables);
