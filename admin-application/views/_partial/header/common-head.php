@@ -2,7 +2,7 @@
 $additionalAttributes = (CommonHelper::getLayoutDirection() == 'rtl') ? 'direction="rtl" style="direction: rtl;"' : '';
 ?>
 <!doctype html>
-<html <?php echo $additionalAttributes;?>>
+<html <?php echo $additionalAttributes;?> class="<?php if(CommonHelper::demoUrl()) { echo "sticky-demo-header";}?>">
 <head>
 	<meta charset="utf-8">
 	<meta name="description" content="">
