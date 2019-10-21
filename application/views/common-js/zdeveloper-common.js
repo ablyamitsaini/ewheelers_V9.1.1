@@ -1199,7 +1199,7 @@ $(document).ajaxComplete(function() {
     new ScrollHint('.table');
 
     //Remove scrolling on table with hand icon
-    if (0 < $('div.block--empty').length && 0 < $('div.scroll-hint-icon-wrap').length){
+    if (0 < $('div.block--empty').length && 0 < $('div.scroll-hint-icon-wrap').length && 1 > $('div.block--empty').closest('.cart')){
         $('div.scroll-hint-icon-wrap').remove();
     }
 
