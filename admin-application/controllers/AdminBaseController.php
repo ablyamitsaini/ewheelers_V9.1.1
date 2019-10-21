@@ -170,6 +170,9 @@ class AdminBaseController extends FatController
         if ($this->layoutDirection == 'rtl') {
             $this->_template->addCss('css/style--arabic.css');
         }
+        if (CommonHelper::demoUrl() == true) { 
+            $this->_template->addCss('css/demo.css');
+        }
     }
 
     public function getNavigationBreadcrumbArr($action)
