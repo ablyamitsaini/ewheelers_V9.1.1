@@ -257,11 +257,7 @@
 		max-width: 280px;
 	}
 
-	.header-checkout-inner {
-		display: block;
-		position: relative;
-	}
-
+ 
 	.header-checkout {
 		position: relative;
 		height: auto;
@@ -280,11 +276,7 @@
 		margin-inline-end: inherit;
 	}
 
-	.header-checkout .back-store {
-		position: absolute;
-		right: 0;
-		top: 20px;
-	}
+
 
 	.checkout-flow {
 		margin-top: 25px;
@@ -399,7 +391,7 @@
 	}
 
 	.after-header {
-		height: 110px;
+		/*height: 110px;*/
 	}
 
 	.top_bar .slogan {
@@ -1945,7 +1937,7 @@
 	}
 
 	.after-header {
-		height: 102px;
+		/*height: 102px;*/
 	}
 
 	.page-sort ul li .link__filter {

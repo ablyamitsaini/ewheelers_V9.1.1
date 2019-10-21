@@ -1,17 +1,17 @@
 #header.header-supplier,
 #header.header-supplier ~ .after-header {
-	height: 127px;
+	/*height: 127px;*/
 }
 
 
 #header.header-guest-advertiser,
 #header.header-guest-advertiser ~ .after-header {
-	height: 96px;
+	/*height: 96px;*/
 }
 
 #header.header-guest-affiliate,
 #header.header-guest-affiliate ~ .after-header {
-	height: 96px;
+	/*height: 96px;*/
 }
 
 

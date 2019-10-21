@@ -1380,18 +1380,19 @@ input:checked + .slider:before {
 #header {
 	color: var(--header-txt-color);
 	position: fixed;
+	position: sticky;
 	top: 0;
 	width: 100%;
 	font-weight: 300;
 	background: #fff;
-	height: 158px;
+	/*height: 158px;*/
 	border-bottom: none;
 	/*box-shadow: 0 0px 4px 0 rgba(0, 0, 0, 0.20);*/
 	border-bottom: solid 1px var(--border-color);
 }
 
 .after-header {
-	height: 158px;
+	/*height: 158px;*/
 }
 
 
@@ -11111,14 +11112,15 @@ html.quick-view--open {
 	left: 0;
 	right: 0;
 	width: 100%;
-	position: fixed;
-	z-index: 99;
+	/*position: fixed;*/
+	position: sticky;
+	z-index: 98;
 	border-bottom: solid 1px var(--border-color);
 	height: 94px;
 }
 
 .after-checkout-header {
-	height: 94px;
+	/*height: 94px;*/
 }
 
 .header-checkout-inner {
