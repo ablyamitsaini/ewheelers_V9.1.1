@@ -1196,11 +1196,11 @@ $(document).ready(function() {
     new ScrollHint('.table');
 });
 $(document).ajaxComplete(function() {
-    new ScrollHint('.table');
+    new ScrollHint('.table:not(.scroll-hint)');
 
     //Remove scrolling on table with hand icon
-    if (0 < $('div.block--empty').length && 0 < $('div.scroll-hint-icon-wrap').length && 1 > $('div.block--empty').closest('.cart')){
-        $('div.scroll-hint-icon-wrap').remove();
+    if (0 < $('div.block--empty').length && 0 < $('div.scroll-hint-icon-wrap').length){
+        $('div.block--empty').siblings('table.table.scroll-hint').children('div.scroll-hint-icon-wrap').remove();
     }
 
     //Remove Scrolling When Facebox Popup opened
