@@ -136,6 +136,10 @@ class MyAppController extends FatController
         $currencySymbolLeft = CommonHelper::getCurrencySymbolLeft();
         $currencySymbolRight = CommonHelper::getCurrencySymbolRight();
 
+        if (CommonHelper::demoUrl()) {
+            $this->_template->addCss('css/demo.css');
+        }
+
         $this->set('isUserDashboard', false);
         $this->set('currencySymbolLeft', $currencySymbolLeft);
         $this->set('currencySymbolRight', $currencySymbolRight);
