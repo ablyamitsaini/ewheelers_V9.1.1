@@ -4,7 +4,9 @@
   } 
 
   .header-blog {
-  	position: fixed;
+  	/*position: fixed;*/
+  	position: -webkit-sticky;
+  	position: sticky;
   	left: 0;
   	right: 0;
   	top: 0;
@@ -15,7 +17,7 @@
   }
 
   .after-header-blog {
-  	height: 132px;
+  	/*height: 132px;*/
   }
 
   @media(min-width:1199px) {
@@ -933,7 +935,7 @@
   	}
 
   	.after-header-blog {
-  		height: 62px;
+  		/*height: 62px;*/
   	}
 
   	.posted-content {
@@ -974,7 +976,7 @@
   	}
 
   	.after-header-blog {
-  		height: 62px;
+  		/*height: 62px;*/
   	}
 
   	.backto a {
