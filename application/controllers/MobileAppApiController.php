@@ -6066,7 +6066,7 @@ class MobileAppApiController extends MyAppController
         $requests = FatApp::getDb()->fetchAll($rs);
 
         foreach ($requests as &$request) {
-            $mainImgUrl = FatCache::getCachedUrl(CommonHelper::generateFullUrl('image', 'product', array($request['op_selprod_id'], "MEDIUM", $request['selprod_product_id'], 0, $this->siteLangId)), CONF_IMG_CACHE_TIME, '.jpg');
+            $mainImgUrl = FatCache::getCachedUrl(CommonHelper::generateFullUrl('image', 'product', array($request['selprod_product_id'], "MEDIUM", $request['op_selprod_id'], 0, $this->siteLangId)), CONF_IMG_CACHE_TIME, '.jpg');
             $request['product_image'] =  $mainImgUrl;
         }
 
