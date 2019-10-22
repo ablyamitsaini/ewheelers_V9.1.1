@@ -209,7 +209,7 @@ class Labels extends MyAppModel
         if (empty($langCode)) {
             $langCode = Language::getAttributesById($langId, 'language_code', false);
         }
-
+        
         $lastLabelsUpdatedAt = FatApp::getConfig('CONF_LANG_LABELS_UPDATED_AT', FatUtility::VAR_INT, time());
 
         $path = CONF_UPLOADS_PATH.static::JSON_FILE_DIR_NAME.'/'.$type.'/';
@@ -229,6 +229,7 @@ class Labels extends MyAppModel
                 return false;
             }
         }
+        
         return true;
     }
 

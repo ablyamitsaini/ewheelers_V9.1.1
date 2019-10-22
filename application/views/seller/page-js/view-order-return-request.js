@@ -18,7 +18,10 @@ $(document).ready(function(){
 			} else {
 				$(dv).html( ans.html );
 			}
-			
+            
+            if ('' == $.trim(ans.html)) {
+                $(".messageListBlock--js").hide();
+            }
 			/* for LoadMore[ */
 			$("#loadMoreBtnDiv").html( ans.loadMoreBtnHtml );
 			/* ] */

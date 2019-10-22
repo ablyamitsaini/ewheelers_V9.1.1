@@ -2880,12 +2880,14 @@ class AccountController extends LoggedUserController
     public function orderReturnRequestMessageSearch()
     {
         $frm = $this->getOrderReturnRequestMessageSearchForm($this->siteLangId);
-        $post = $frm->getFormDataFromArray(FatApp::getPostedData());
+        $postedData = FatApp::getPostedData();
+        $post = $frm->getFormDataFromArray($postedData);
         $page = (empty($post['page']) || $post['page'] <= 0) ? 1 : FatUtility::int($post['page']);
         $pageSize = FatApp::getConfig('conf_page_size', FatUtility::VAR_INT, 10);
         $user_id = UserAuthentication::getLoggedUserId();
 
         $orrequest_id = isset($post['orrequest_id']) ? FatUtility::int($post['orrequest_id']) : 0;
+        $isSeller = isset($postedData['isSeller']) ? FatUtility::int($postedData['isSeller']) : 0;
 
         $srch = new OrderReturnRequestMessageSearch($this->siteLangId);
         $srch->joinOrderReturnRequests();
@@ -2893,7 +2895,11 @@ class AccountController extends LoggedUserController
         $srch->joinMessageAdmin();
         $srch->joinOrderProducts();
         $srch->addCondition('orrmsg_orrequest_id', '=', $orrequest_id);
-        $srch->addCondition('orrequest_user_id', '=', $user_id);
+        if (0 < $isSeller) {
+            $srch->addCondition('op_selprod_user_id', '=', $user_id);
+        } else {
+            $srch->addCondition('orrequest_user_id', '=', $user_id);
+        }
         $srch->setPageNumber($page);
         $srch->setPageSize($pageSize);
         $srch->addOrder('orrmsg_id', 'DESC');

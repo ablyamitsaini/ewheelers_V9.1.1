@@ -1,6 +1,9 @@
 <?php  defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 
 <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
+<?php 
+    $returnRequestMsgsForm->addHiddenField('', 'isSeller', 1);
+?>
 <main id="main-area" class="main" role="main">
     <div class="content-wrapper content-space">
         <div class="content-header  row justify-content-between mb-3">
@@ -140,10 +143,11 @@
 
             <?php echo $returnRequestMsgsForm->getFormHtml(); ?>
             <div class="gap"></div>
-            <h5><?php echo Labels::getLabel('LBL_Return_Request_Messages', $siteLangId); ?> </h5>
-            <div id="loadMoreBtnDiv"></div>
-            <ul class="messages-list" id="messagesList"></ul>
-
+            <div class="messageListBlock--js">
+                <h5><?php echo Labels::getLabel('LBL_Return_Request_Messages', $siteLangId); ?> </h5>
+                <div id="loadMoreBtnDiv"></div>
+                <ul class="messages-list" id="messagesList"></ul>
+            </div>
             <?php if ($request && ($request['orrequest_status'] != OrderReturnRequest::RETURN_REQUEST_STATUS_REFUNDED && $request['orrequest_status'] != OrderReturnRequest::RETURN_REQUEST_STATUS_WITHDRAWN)) {
                       $frmMsg->setFormTagAttribute('onSubmit', 'setUpReturnOrderRequestMessage(this); return false;');
                       $frmMsg->setFormTagAttribute('class', 'form');
