@@ -79,7 +79,14 @@
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                 <div class="copyright">
-                    <?php echo sprintf(Labels::getLabel('LBL_copyright_text', $siteLangId), date("Y"))?>
+                    <?php 
+                    $replacements = array(
+                        '{YEAR}'=> '&copy; '.date("Y"),
+                        '{PRODUCT}'=>'<a target="_blank" href="https://yo-kart.com">Yo!Kart</a>',
+                        '{OWNER}'=> '<a target="_blank" href="https://www.fatbit.com">FATbit Technologies</a>',
+                    );
+                    echo CommonHelper::replaceStringData(Labels::getLabel('LBL_COPYRIGHT_TEXT', $siteLangId), $replacements);   
+                ?>
                 </div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">

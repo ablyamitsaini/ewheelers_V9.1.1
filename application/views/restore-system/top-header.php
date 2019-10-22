@@ -33,8 +33,8 @@
                 </i></a></li> <?php  */?>
     </ul>    
     <div class="demo-cta">
-        <a target="_blank" href="https://www.yo-kart.com/multivendor-ecommerce-marketplace-platform.html" class=" btn btn-default ripplelink">Start Your Marketplace</a> &nbsp;		
-		<a href="javascript:void(0);" class="request-demo btn ripplelink" id="btn-demo" >Request a Demo</a>
+        <a target="_blank" href="https://www.yo-kart.com/multivendor-ecommerce-marketplace-platform.html" class=" btn btn-primary ripplelink">Start Your Marketplace</a> &nbsp;		
+		<a href="javascript:void(0);" class="request-demo btn btn--primary-border  ripplelink" id="btn-demo" >Request a Demo</a>
        <a href="javascript:void(0)" class="close-layer" id="demoBoxClose"></a>
     </div>	
 </div>
