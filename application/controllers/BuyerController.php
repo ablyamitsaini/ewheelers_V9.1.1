@@ -602,7 +602,8 @@ class BuyerController extends BuyerBaseController
         $opDetail = FatApp::getDb()->fetch($rs);
         if (!$opDetail || CommonHelper::isMultidimArray($opDetail)) {
             Message::addErrorMessage(Labels::getLabel('MSG_ERROR_INVALID_ACCESS', $this->siteLangId));
-            CommonHelper::redirectUserReferer();
+            // CommonHelper::redirectUserReferer();
+            FatApp::redirectUser(CommonHelper::generateUrl('Buyer', 'orderCancellationRequests'));
         }
 
         $oReturnRequestSrch = new OrderReturnRequestSearch();
@@ -614,24 +615,28 @@ class BuyerController extends BuyerBaseController
 
         if (FatApp::getDb()->fetch($oReturnRequestRs)) {
             Message::addErrorMessage(Labels::getLabel('MSG_Already_submitted_return_request', $this->siteLangId));
-            CommonHelper::redirectUserReferer();
+            // CommonHelper::redirectUserReferer();
+            FatApp::redirectUser(CommonHelper::generateUrl('Buyer', 'orderCancellationRequests'));
         }
 
         if ($opDetail["op_product_type"] == Product::PRODUCT_TYPE_DIGITAL) {
             if (!in_array($opDetail["op_status_id"], (array)Orders::getBuyerAllowedOrderCancellationStatuses(true))) {
                 Message::addErrorMessage(Labels::getLabel('MSG_Order_Cancellation_cannot_placed', $this->siteLangId));
-                CommonHelper::redirectUserReferer();
+                // CommonHelper::redirectUserReferer();
+                FatApp::redirectUser(CommonHelper::generateUrl('Buyer', 'orderCancellationRequests'));
             }
         } else {
             if (!in_array($opDetail["op_status_id"], (array)Orders::getBuyerAllowedOrderCancellationStatuses())) {
                 Message::addErrorMessage(Labels::getLabel('MSG_Order_Cancellation_cannot_placed', $this->siteLangId));
-                CommonHelper::redirectUserReferer();
+                // CommonHelper::redirectUserReferer();
+                FatApp::redirectUser(CommonHelper::generateUrl('Buyer', 'orderCancellationRequests'));
             }
         }
 
         if (false !== OrderCancelRequest::getCancelRequestById($opDetail['op_id'])) {
             Message::addErrorMessage(Labels::getLabel('MSG_You_have_already_sent_the_cancellation_request_for_this_order', $this->siteLangId));
-            CommonHelper::redirectUserReferer();
+            // CommonHelper::redirectUserReferer();
+            FatApp::redirectUser(CommonHelper::generateUrl('Buyer', 'orderCancellationRequests'));
         }
 
         $frm = $this->getOrderCancelRequestForm($this->siteLangId);
@@ -1636,7 +1641,8 @@ class BuyerController extends BuyerBaseController
 
         if (!$opDetail || CommonHelper::isMultidimArray($opDetail)) {
             Message::addErrorMessage(Labels::getLabel('MSG_ERROR_INVALID_ACCESS', $this->siteLangId));
-            CommonHelper::redirectUserReferer();
+            // CommonHelper::redirectUserReferer();
+            FatApp::redirectUser(CommonHelper::generateUrl('Buyer', 'orderReturnRequests'));
         }
         /* $ocRequestSrch = new OrderCancelRequestSearch();
         $ocRequestSrch->doNotCalculateRecords();
@@ -1647,7 +1653,8 @@ class BuyerController extends BuyerBaseController
         if( FatApp::getDb()->fetch($ocRequestRs) ){
         if ( !in_array($opDetail["op_status_id"],$getBuyerAllowedOrderReturnStatuses)) {
         Message::addErrorMessage( Labels::getLabel('MSG_Your_request_to_refund_this_order_is_already_is_in_process', $this->siteLangId) );
-        CommonHelper::redirectUserReferer();
+        // CommonHelper::redirectUserReferer();
+        FatApp::redirectUser(CommonHelper::generateUrl('Buyer', 'orderReturnRequests'));
         }
         } */
 
@@ -1666,7 +1673,8 @@ class BuyerController extends BuyerBaseController
                 $status_names[] = $orderStatuses[$status];
             }
             Message::addErrorMessage(sprintf(Labels::getLabel('MSG_Return_Refund_cannot_placed', $this->siteLangId), implode(',', $status_names)));
-            CommonHelper::redirectUserReferer();
+            // CommonHelper::redirectUserReferer();
+            FatApp::redirectUser(CommonHelper::generateUrl('Buyer', 'orderReturnRequests'));
         }
 
         $oReturnRequestSrch = new OrderReturnRequestSearch();
@@ -1676,7 +1684,8 @@ class BuyerController extends BuyerBaseController
         $oReturnRequestRs = $oReturnRequestSrch->getResultSet();
         if (FatApp::getDb()->fetch($oReturnRequestRs)) {
             Message::addErrorMessage(Labels::getLabel('MSG_Already_submitted_return_request_order', $this->siteLangId));
-            CommonHelper::redirectUserReferer();
+            // CommonHelper::redirectUserReferer();
+            FatApp::redirectUser(CommonHelper::generateUrl('Buyer', 'orderReturnRequests'));
         }
 
         $frm = $this->getOrderReturnRequestForm($this->siteLangId, $opDetail);
