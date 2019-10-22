@@ -701,7 +701,7 @@ class AttachedFile extends MyAppModel
             return ;
         }
 
-        $name = preg_replace('/[^a-zA-Z0-9\/\-\_\.]/', '', basename($url));
+        $name = substr(preg_replace('/[^a-zA-Z0-9\/\-\_\.]/', '', basename($url)), 50);
         $path = CONF_UPLOADS_PATH;
 
         /* files path[ */
