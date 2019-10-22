@@ -92,7 +92,7 @@ AND couponlang_lang_id = ' . $langId,
         $lang_id = FatUtility::int($lang_id);
 
         if (!$coupon_id) {
-            trigger_error(Labels::getLabel("ERR_Arguments_not_specified.", $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel("ERR_Arguments_not_specified.", $lang_id), E_USER_ERROR);
             return false;
         }
 
@@ -118,7 +118,7 @@ AND couponlang_lang_id = ' . $langId,
         $lang_id = FatUtility::int($lang_id);
 
         if (!$coupon_id) {
-            trigger_error(Labels::getLabel("ERR_Arguments_not_specified.", $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel("ERR_Arguments_not_specified.", $lang_id), E_USER_ERROR);
             return false;
         }
 
@@ -155,7 +155,7 @@ AND couponlang_lang_id = ' . $langId,
         $lang_id = FatUtility::int($lang_id);
 
         if (!$coupon_id) {
-            trigger_error(Labels::getLabel("ERR_Arguments_not_specified.", $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel("ERR_Arguments_not_specified.", $lang_id), E_USER_ERROR);
             return false;
         }
 
@@ -178,7 +178,7 @@ AND couponlang_lang_id = ' . $langId,
         $coupon_id = FatUtility::int($coupon_id);
 
         if (!$coupon_id) {
-            trigger_error(Labels::getLabel("ERR_Arguments_not_specified.", $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel("ERR_Arguments_not_specified.", CommonHelper::getLangId()), E_USER_ERROR);
             return false;
         }
 
@@ -197,7 +197,7 @@ AND couponlang_lang_id = ' . $langId,
         $user_id = FatUtility::int($user_id);
 
         if (!$user_id) {
-            trigger_error(Labels::getLabel("ERR_Arguments_not_specified.", $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel("ERR_Arguments_not_specified.", $lang_id), E_USER_ERROR);
             return false;
         }
         $interval = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' - 15 minute'));
@@ -417,16 +417,16 @@ AND couponlang_lang_id = ' . $langId,
         $langId = FatUtility::int($langId);
 
         if ($userId <= 0) {
-            trigger_error(Labels::getLabel("ERR_User_id_is_mandatory", $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel("ERR_User_id_is_mandatory", $langId), E_USER_ERROR);
         }
         if ($langId <= 0) {
-            trigger_error(Labels::getLabel("ERR_Language_id_is_mandatory", $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel("ERR_Language_id_is_mandatory", $langId), E_USER_ERROR);
         }
 
         $currDate = date('Y-m-d');
         $interval = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' - 15 minute'));
 
-        $cartObj = new Cart();
+        $cartObj = new Cart($userId);
         $cartProducts = $cartObj->getProducts($langId);
         $cartSubTotal = $cartObj->getSubTotal($langId);
 
@@ -874,7 +874,7 @@ AND couponlang_lang_id = ' . $langId,
         }
         $siteLangId = FatUtility::int($siteLangId);
         if (!$siteLangId) {
-            trigger_error(Labels::getLabel("ERR_Language_Id_Not_Passed.", $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel("ERR_Language_Id_Not_Passed.", $siteLangId), E_USER_ERROR);
         }
 
 

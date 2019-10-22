@@ -33,11 +33,23 @@ $(document).ready(function () {
 		$(content).fadeIn(200);
 
 	});
+    
+    $("body").mouseup(function(e){ 
+        if (1 > $(event.target).parents('.social-toggle').length && $('.social-toggle').next().hasClass('open-menu')) {
+            $('.social-toggle').next().toggleClass('open-menu');
+        }
+    });
 
 });
 
 $(document).on('click', '.social-toggle', function(){
 	$(this).next().toggleClass('open-menu');
+});
+
+$("body").mouseup(function(e){ 
+    if (1 > $(event.target).parents('.social-toggle').length && $('.social-toggle').next().hasClass('open-menu')) {
+        $('.social-toggle').next().toggleClass('open-menu');
+    }
 });
 
 function submitBlogSearch(frm){

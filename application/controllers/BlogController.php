@@ -6,6 +6,9 @@
         $this->set('blogPage', true);
         $this->set('bodyClass', 'is--blog');
         $this->_template->addCss('css/blog.css');
+        if ('rtl' == CommonHelper::getLayoutDirection()) {
+            $this->_template->addCss('css/blog1-arabic.css');
+        }
         $this->_template->addJs('js/blog.js');
     }
 
@@ -460,8 +463,9 @@
 
         $uploadedFile = $_FILES['file']['tmp_name'];
 
-        if (!AttachedFile::checkSize($uploadedFile, 10240000)) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Please_upload_file_size_less_than_10MB', $this->siteLangId));
+        $fileHandlerObj = new AttachedFile();
+        if (!$fileHandlerObj->isUploadedFile($uploadedFile)) {
+            Message::addErrorMessage($fileHandlerObj->getError());
             $this->contributionForm();
             return false;
         }
@@ -488,8 +492,7 @@
             FatUtility::dieJsonError(Message::getHtml());
         }
 
-        $fileHandlerObj = new AttachedFile();
-        if (!$res = $fileHandlerObj->saveAttachment($_FILES['file']['tmp_name'], AttachedFile::FILETYPE_BLOG_CONTRIBUTION, $contributionId, 0, $_FILES['file']['name'], -1, $unique_record = true)) {
+        if (!$res = $fileHandlerObj->saveAttachment($_FILES['file']['tmp_name'], AttachedFile::FILETYPE_BLOG_CONTRIBUTION, $contributionId, 0, $_FILES['file']['name'], -1, true)) {
             Message::addErrorMessage($fileHandlerObj->getError());
             $this->contributionForm();
             return false;
@@ -505,10 +508,10 @@
         $frm->addRequiredField(Labels::getLabel('LBL_First_Name', $this->siteLangId), 'bcontributions_author_first_name', '');
         $frm->addRequiredField(Labels::getLabel('LBL_Last_Name', $this->siteLangId), 'bcontributions_author_last_name', '');
         $frm->addEmailField(Labels::getLabel('LBL_Email_Address', $this->siteLangId), 'bcontributions_author_email', '');
-        $fld_phn = $frm->addRequiredField(Labels::getLabel('LBL_Phone', $this->siteLangId), 'bcontributions_author_phone', '', array('class'=>'phone-js ltr-right', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
+        $fld_phn = $frm->addRequiredField(Labels::getLabel('LBL_Phone', $this->siteLangId), 'bcontributions_author_phone', '', array('class'=>'phone-js ltr-right', 'placeholder' => ValidateElement::PHONE_NO_FORMAT, 'maxlength' => ValidateElement::PHONE_NO_LENGTH));
         $fld_phn->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
         // $fld_phn->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_e.g.', $this->siteLangId).': '.implode(', ', ValidateElement::PHONE_FORMATS).'</small>';
-        $fld_phn->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_format.', $this->siteLangId));
+        $fld_phn->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_phone_number_format.', $this->siteLangId));
 
         $frm->addFileUpload(Labels::getLabel('LBL_Upload_File', $this->siteLangId), 'file')->requirements()->setRequired(true);
         if (FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '')!= '' && FatApp::getConfig('CONF_RECAPTCHA_SECRETKEY', FatUtility::VAR_STRING, '')!= '') {

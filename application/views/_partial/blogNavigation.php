@@ -19,7 +19,7 @@
                     $srchFrm->developerTags['fld_default_col'] = 12;
                     $keywordFld = $srchFrm->getField('keyword');
                     $keywordFld->setFieldTagAttribute('class', 'search--keyword search--keyword--js no--focus');
-                    $keywordFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_I_am_looking_for...', $siteLangId));
+                    $keywordFld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Search_In_Blogs...', $siteLangId));
                     $submitFld = $srchFrm->getField('btnProductSrchSubmit');
                     $submitFld->setFieldTagAttribute('class', 'search--btn submit--js');
                     echo $srchFrm->getFormTag();

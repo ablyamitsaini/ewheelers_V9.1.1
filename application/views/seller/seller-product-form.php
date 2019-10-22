@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="content-body">
-			<div id="listing"> </div>
+            <div id="listing"> </div>
         </div>
     </div>
 </main>

@@ -83,17 +83,14 @@ class SlidesController extends AdminBaseController
             Message::addErrorMessage(current($frm->getValidationErrors()));
             FatUtility::dieJsonError(Message::getHtml());
         }
-        $srch = Slides::getSearchObject();
-        $srch->addCondition('slide_identifier', '=', $post['slide_identifier']);
-        $srch->addMultipleFields(array('slide_id'));
-        $rs = $srch->getResultSet();
-        $slideIdentifier = FatApp::getDb()->fetchAll($rs);
-        if (0 < count($slideIdentifier)) {
+
+        $slide_id = $post['slide_id'];
+        $recordId = Slides::getAttributesByIdentifier($post['slide_identifier'], 'slide_id');
+        if (!empty($recordId) && $recordId != $slide_id) {
             Message::addErrorMessage(Labels::getLabel('MSG_Slide_identifier_must_be_unique', $this->adminLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
 
-        $slide_id = $post['slide_id'];
         unset($post['slide_id']);
 
         $recordObj = new Slides($slide_id);
@@ -323,10 +320,13 @@ class SlidesController extends AdminBaseController
             Message::addErrorMessage($fileHandlerObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
-
+        Slides::setLastModified($slide_id);
         $this->set('slideId', $slide_id);
-        $this->set('file', $_FILES['file']['name']);
-        $this->set('msg', $_FILES['file']['name']. Labels::getLabel('MSG_File_uploaded_successfully', $this->adminLangId));
+        $fileName = $_FILES['file']['name'];
+        $this->set('file', $fileName);
+        $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+        $fileName = strlen($fileName) > 10 ? substr($fileName, 0, 10).'.'.$ext : $fileName;
+        $this->set('msg', $fileName.' '.Labels::getLabel('MSG_File_uploaded_successfully', $this->adminLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
 
@@ -472,6 +472,7 @@ class SlidesController extends AdminBaseController
         $frm->addHiddenField('', 'slide_id');
         $frm->addHiddenField('', 'slide_type', Slides::TYPE_SLIDE);
         $frm->addRequiredField(Labels::getLabel('LBL_Slide_Identifier', $this->adminLangId), 'slide_identifier');
+        
         $fld = $frm->addTextBox(Labels::getLabel('LBL_Slide_URL', $this->adminLangId), 'slide_url');
         $fld->setFieldTagAttribute('placeholder', 'http://');
 

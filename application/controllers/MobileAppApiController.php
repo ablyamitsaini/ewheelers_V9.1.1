@@ -1,9 +1,6 @@
 <?php
 class MobileAppApiController extends MyAppController
 {
-    public $app_user = array();
-    public $appToken = '';
-
     public function __construct($action)
     {
         parent::__construct($action);
@@ -27,14 +24,14 @@ class MobileAppApiController extends MyAppController
         if ($this->appToken) {
             if (!UserAuthentication::isUserLogged('', $this->appToken)) {
                 $arr = array('status'=>-1,'msg'=>Labels::getLabel('L_Invalid_Token', $this->siteLangId));
-                die(json_encode($arr));
+                die(FatUtility::convertToJson($arr, JSON_UNESCAPED_UNICODE));
             }
 
             $userId = UserAuthentication::getLoggedUserId();
             $userObj = new User($userId);
             if (!$row = $userObj->getProfileData()) {
                 $arr = array('status'=>-1,'msg'=>Labels::getLabel('L_Invalid_Token', $this->siteLangId));
-                die(json_encode($arr));
+                die(FatUtility::convertToJson($arr, JSON_UNESCAPED_UNICODE));
             }
             $this->app_user = $row;
             $this->app_user['temp_user_id'] = 0;
@@ -139,7 +136,7 @@ class MobileAppApiController extends MyAppController
 
     public function json_encode_unicode($data, $convertToType = false)
     {
-        die(FatUtility::convertToJson($data, 0));
+        die(FatUtility::convertToJson($data, JSON_UNESCAPED_UNICODE));
         /*
         if($convertToType){
         die(json_encode($data));
@@ -264,7 +261,7 @@ class MobileAppApiController extends MyAppController
                             $rs = $tempObj->getResultSet();
 
                             if (!$productIds = $this->db->fetchAll($rs, 'ctsp_selprod_id')) {
-                                continue;
+                                continue 2;
                             }
 
                             /* fetch Products data[ */
@@ -314,7 +311,7 @@ class MobileAppApiController extends MyAppController
 
                         case Collections::COLLECTION_TYPE_CATEGORY:
                             if ($collection['collection_layout_type'] == Collections::TYPE_CATEGORY_LAYOUT1) {
-                                continue;
+                                continue 2;
                             }
                             $tempObj = clone $collectionObj;
                             $tempObj->addCondition('collection_id', '=', $collection_id);
@@ -325,7 +322,7 @@ class MobileAppApiController extends MyAppController
                             $rs = $tempObj->getResultSet();
 
                             if (!$categoryIds = $this->db->fetchAll($rs, 'ctpc_prodcat_id')) {
-                                continue;
+                                continue 2;
                             }
 
                             /* fetch Categories data[ */
@@ -364,7 +361,7 @@ class MobileAppApiController extends MyAppController
                             $rs = $tempObj->getResultSet();
                             /* echo $tempObj->getQuery(); die; */
                             if (!$shopIds = $this->db->fetchAll($rs, 'ctps_shop_id')) {
-                                continue;
+                                continue 2;
                             }
                             $shopObj = clone $shopSearchObj;
                             $shopObj->joinSellerSubscription();
@@ -392,7 +389,6 @@ class MobileAppApiController extends MyAppController
                                 $productShopSrchTempObj->setPageSize($pageSize);
 
                                 $Prs = $productShopSrchTempObj->getResultSet();
-
 
                                 if (!FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) {
                                     $rating = 0;
@@ -968,7 +964,7 @@ class MobileAppApiController extends MyAppController
             $srch->addFld('if(selprod_title LIKE '.FatApp::getDb()->quoteVariable('%'.$keyword.'%').',  IFNULL(splprice_price, selprod_price),   theprice ) as theprice');
             $srch->addFld(
                 'if(selprod_title LIKE '.FatApp::getDb()->quoteVariable('%'.$keyword.'%').',  CASE WHEN splprice_selprod_id IS NULL THEN 0 ELSE 1
-END,   special_price_found ) as special_price_found'
+                END,   special_price_found ) as special_price_found'
             );
         } else {
             $srch->addFld('theprice');
@@ -1755,8 +1751,8 @@ END,   special_price_found ) as special_price_found'
         $prodSrchObj = new ProductSearch($this->siteLangId);
         $prodSrchObj->setDefinedCriteria();
         $prodSrchObj->joinProductToCategory();
-        $prodSrchObj->    joinSellerSubscription();
-        $prodSrchObj->    addSubscriptionValidCondition();
+        $prodSrchObj->joinSellerSubscription();
+        $prodSrchObj->addSubscriptionValidCondition();
         $prodSrchObj->doNotCalculateRecords();
         $prodSrchObj->addCondition('selprod_id', '=', $seller_product_id);
         $prodSrchObj->addCondition('selprod_deleted', '=', applicationConstants::NO);
@@ -1888,7 +1884,7 @@ END,   special_price_found ) as special_price_found'
         if (!empty($user)) {
             $arr = array(
             'user_id'=>$user['user_id'],
-            'user_image'=>CommonHelper::generateFullUrl('Image', 'user', array($user['user_id'],'ORIGINAL')).'?'.time(),
+            'user_image'=>CommonHelper::generateFullUrl('Image', 'user', array($user['user_id'],'ORIGINAL')),
             'name'=>$user['user_name'],
             'email'=>$user['credential_email'],
             'username'=>$user['credential_username'],
@@ -1953,7 +1949,7 @@ END,   special_price_found ) as special_price_found'
 
             $fileHandlerObj = new AttachedFile();
 
-            if (!$res = $fileHandlerObj->saveImage($_FILES['user_profile_image']['tmp_name'], AttachedFile::FILETYPE_USER_PROFILE_IMAGE, $userId, 0, $_FILES['user_profile_image']['name'], -1, $unique_record = true)
+            if (!$res = $fileHandlerObj->saveImage($_FILES['user_profile_image']['tmp_name'], AttachedFile::FILETYPE_USER_PROFILE_IMAGE, $userId, 0, $_FILES['user_profile_image']['name'], -1, true)
             ) {
                 FatUtility::dieJsonError($fileHandlerObj->getError());
             }
@@ -1966,7 +1962,7 @@ END,   special_price_found ) as special_price_found'
                 )
             );
 
-            $imageUrl = CommonHelper::generateFullUrl('Image', 'user', array($userId,'ORIGINAL')).'?'.time();
+            $imageUrl = CommonHelper::generateFullUrl('Image', 'user', array($userId,'ORIGINAL'));
         }
 
         if ($post['action'] == "avatar") {
@@ -1974,14 +1970,14 @@ END,   special_price_found ) as special_price_found'
                 FatUtility::dieJsonError(Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId));
             }
             $fileHandlerObj = new AttachedFile();
-            if (!$res = $fileHandlerObj->saveImage($_FILES['user_profile_image']['tmp_name'], AttachedFile::FILETYPE_USER_PROFILE_CROPED_IMAGE, $userId, 0, $_FILES['user_profile_image']['name'], -1, $unique_record = true)
+            if (!$res = $fileHandlerObj->saveImage($_FILES['user_profile_image']['tmp_name'], AttachedFile::FILETYPE_USER_PROFILE_CROPED_IMAGE, $userId, 0, $_FILES['user_profile_image']['name'], -1, true)
             ) {
                 FatUtility::dieJsonError($fileHandlerObj->getError());
             }
 
             $data = json_decode(stripslashes($post['img_data']));
             CommonHelper::crop($data, CONF_UPLOADS_PATH .$res, $this->siteLangId);
-            $imageUrl = FatUtility::generateFullUrl('Image', 'user', array($userId,'croped',true)).'?'.time();
+            $imageUrl = FatUtility::generateFullUrl('Image', 'user', array($userId,'croped',true));
         }
 
         $res=array('status'=>1,'msg'=>Labels::getLabel('MSG_File_uploaded_successfully', $this->siteLangId),'image'=>$imageUrl);
@@ -2166,12 +2162,12 @@ END,   special_price_found ) as special_price_found'
     {
         $post = FatApp::getPostedData();
         if (empty($post['username']) || empty($post['password'])) {
-            FatUtility::dieJsonError(strip_tags(Labels::getLabel('ERR_USERNAME_AND_PASSWORD_BOTH_ARE_REQUIRED', $this->siteLangId)));
+            LibHelper::dieJsonError(Labels::getLabel('ERR_USERNAME_AND_PASSWORD_BOTH_ARE_REQUIRED', $this->siteLangId));
         }
 
         $authentication = new UserAuthentication();
         if (!$authentication->login($post['username'], $post['password'], $_SERVER['REMOTE_ADDR'], true, false, $this->app_user['temp_user_id'])) {
-            FatUtility::dieJsonError(strip_tags(Labels::getLabel($authentication->getError(), $this->siteLangId)));
+            LibHelper::dieJsonError(Labels::getLabel($authentication->getError(), $this->siteLangId));
         }
         $this->app_user['temp_user_id'] = 0;
         $userId = UserAuthentication::getLoggedUserId();
@@ -2187,7 +2183,7 @@ END,   special_price_found ) as special_price_found'
         'token'=>$generatedToken,
         'user_name'=>$userInfo["user_name"],
         'user_id'=>$userInfo["user_id"],
-        'user_image'=>CommonHelper::generateFullUrl('image', 'user', array($userInfo['user_id'],'thumb',1)).'?'.time()
+        'user_image'=>CommonHelper::generateFullUrl('image', 'user', array($userInfo['user_id'],'thumb',1))
         );
         die($this->json_encode_unicode($arr));
     }
@@ -2346,8 +2342,7 @@ END,   special_price_found ) as special_price_found'
         }
         $userInfo = $userObj->getUserInfo(array('user_id','user_name'), true, true);
         $arr=array('status'=>1,'token'=>$token, 'user_name'=>$userInfo["user_name"],'user_id'=>$userInfo["user_id"],
-        'user_image'=>CommonHelper::generateFullUrl('image', 'user', array($userInfo['user_id'],'ORIGINAL')).'?'.time()
-                    );
+        'user_image'=>CommonHelper::generateFullUrl('image', 'user', array($userInfo['user_id'],'ORIGINAL')));
         die($this->json_encode_unicode($arr));
     }
 
@@ -2426,8 +2421,7 @@ END,   special_price_found ) as special_price_found'
                     }
                     $userInfo = $userObj->getUserInfo(array('user_id','user_name'), true, true);
                     $arr=array('status'=>1,'token'=>$token, 'user_name'=>$userInfo["user_name"],'user_id'=>$userInfo["user_id"],
-                    'user_image'=>CommonHelper::generateFullUrl('image', 'user', array($userInfo['user_id'],'ORIGINAL')).'?'.time()
-                    );
+                    'user_image'=>CommonHelper::generateFullUrl('image', 'user', array($userInfo['user_id'],'ORIGINAL')));
                     die($this->json_encode_unicode($arr));
                 }
             } else {
@@ -3402,7 +3396,7 @@ END,   special_price_found ) as special_price_found'
                         'mshipapi_id'    =>    $shipping_type,
                         'mshipcompany_id'    =>    $shipOption['scompanylang_scompany_id'],
                         'mshipcompany_name'    =>    $shipOption['scompany_name'],
-                        'shipped_by_seller'    =>    CommonHelper::isShippedBySeller($cartval['selprod_user_id'], $product['product_seller_id'], $product['shippedBySellerId']),
+                        'shipped_by_seller'    =>    Product::isShippedBySeller($cartval['selprod_user_id'], $product['product_seller_id'], $product['shippedBySellerId']),
                         'mshipapi_cost' =>  ($free_shipping_options == 0)? ($shipOption['pship_charges'] + ($shipOption['pship_additional_charges'] * ($cartval['quantity'] -1))) : 0 ,
                         );
                     }
@@ -3416,7 +3410,7 @@ END,   special_price_found ) as special_price_found'
                  'mshipapi_cost' =>  $carrier_price ,
                  'mshipapi_key' =>  $shipping_service ,
                  'mshipapi_label' =>  str_replace("_", " ", $shipping_service) ,
-                 'shipped_by_seller'    =>    CommonHelper::isShippedBySeller($cartval['selprod_user_id'], $product['product_seller_id'], $product['shippedBySellerId']),
+                 'shipped_by_seller'    =>    Product::isShippedBySeller($cartval['selprod_user_id'], $product['product_seller_id'], $product['shippedBySellerId']),
                 );
             } else {
                 FatUtility::dieJsonError(sprintf(Labels::getLabel('M_Shipping_Info_Required_for_%s', $this->siteLangId), htmlentities($cartval['product_name'])));
@@ -3876,7 +3870,7 @@ END,   special_price_found ) as special_price_found'
         'siteLangId'        =>    $this->siteLangId
         );
 
-        $srchCat = Shop::getUserShopProdCategoriesObj($shop['shop_user_id'], $shop['shop_id'], 0, $this->siteLangId);
+        $srchCat = Shop::getUserShopProdCategoriesObj($shop['shop_user_id'], $this->siteLangId, $shop['shop_id'], 0);
         $srchCat->doNotCalculateRecords();
         $srchCat->doNotLimitRecords();
         $rs = $srchCat->getResultSet();
@@ -5179,7 +5173,7 @@ END,   special_price_found ) as special_price_found'
             }
 
             $fileHandlerObj = new AttachedFile();
-            if (!$res = $fileHandlerObj->saveAttachment($_FILES['file']['tmp_name'], AttachedFile::FILETYPE_BUYER_RETURN_PRODUCT, $orrequest_id, 0, $_FILES['file']['name'], -1, $unique_record = true)) {
+            if (!$res = $fileHandlerObj->saveAttachment($_FILES['file']['tmp_name'], AttachedFile::FILETYPE_BUYER_RETURN_PRODUCT, $orrequest_id, 0, $_FILES['file']['name'], -1, true)) {
                 FatUtility::dieJsonError($fileHandlerObj->getError());
             }
         }
@@ -6072,7 +6066,7 @@ END,   special_price_found ) as special_price_found'
         $requests = FatApp::getDb()->fetchAll($rs);
 
         foreach ($requests as &$request) {
-            $mainImgUrl = FatCache::getCachedUrl(CommonHelper::generateFullUrl('image', 'product', array($request['op_selprod_id'], "MEDIUM", $request['selprod_product_id'], 0, $this->siteLangId)), CONF_IMG_CACHE_TIME, '.jpg');
+            $mainImgUrl = FatCache::getCachedUrl(CommonHelper::generateFullUrl('image', 'product', array($request['selprod_product_id'], "MEDIUM", $request['op_selprod_id'], 0, $this->siteLangId)), CONF_IMG_CACHE_TIME, '.jpg');
             $request['product_image'] =  $mainImgUrl;
         }
 
@@ -6475,7 +6469,12 @@ END,   special_price_found ) as special_price_found'
         }
 
         if (($minimumWithdrawLimit > $post["withdrawal_amount"])) {
-            FatUtility::dieJsonError(sprintf(Labels::getLabel('MSG_Withdrawal_Request_Less', $this->siteLangId), CommonHelper::displayMoneyFormat($minimumWithdrawLimit)));
+            FatUtility::dieJsonError(sprintf(Labels::getLabel('MSG_Your_withdrawal_request_amount_is_less_than_the_minimum_allowed_amount_of_%s', $this->siteLangId), CommonHelper::displayMoneyFormat($minimumWithdrawLimit)));
+        }
+
+        $maximumWithdrawLimit = FatApp::getConfig("CONF_MAX_WITHDRAW_LIMIT");
+        if (($maximumWithdrawLimit < $post["withdrawal_amount"])) {
+            FatUtility::dieJsonError(sprintf(Labels::getLabel('MSG_Your_withdrawal_request_amount_is_greater_than_the_maximum_allowed_amount_of_%s', $this->siteLangId), CommonHelper::displayMoneyFormat($maximumWithdrawLimit)));
         }
 
         if (($post["withdrawal_amount"] > $balance)) {
@@ -7009,7 +7008,7 @@ END,   special_price_found ) as special_price_found'
         if ($nObj->readUserNotification($notificationId, $userId)) {
             die(json_encode(array('status'=>1, 'msg'=>Labels::getLabel('Msg_Successfully_Updated', $this->siteLangId))));
         } else {
-            dieJsonError(Utilities::getLabel('M_ERROR_INVALID_REQUEST'));
+            FatUtility::dieJsonError(Labels::getLabel('M_ERROR_INVALID_REQUEST', $this->siteLangId));
         }
     }
 
@@ -7145,22 +7144,5 @@ END,   special_price_found ) as special_price_found'
     private function getAppLoggedUserId()
     {
         return isset($this->app_user["user_id"])?$this->app_user["user_id"]:0;
-    }
-
-    private function getAppTempUserId()
-    {
-        if (array_key_exists('temp_user_id', $this->app_user) && !empty($this->app_user["temp_user_id"])) {
-            return $this->app_user["temp_user_id"];
-        }
-
-        if ($this->appToken && UserAuthentication::isUserLogged('', $this->appToken)) {
-            $userId = UserAuthentication::getLoggedUserId();
-            if ($userId > 0) {
-                return $userId;
-            }
-        }
-
-        $generatedTempId = substr(md5(rand(1, 99999) . microtime()), 0, UserAuthentication::TOKEN_LENGTH);
-        return $this->app_user['temp_user_id'] = $generatedTempId;
     }
 }

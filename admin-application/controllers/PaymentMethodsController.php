@@ -189,7 +189,7 @@ class PaymentMethodsController extends AdminBaseController
 
         if(!$res = $fileHandlerObj->saveAttachment(
             $_FILES['file']['tmp_name'], AttachedFile::FILETYPE_PAYMENT_METHOD,
-            $pmethod_id, 0,    $_FILES['file']['name'], -1, $unique_record = true
+            $pmethod_id, 0,    $_FILES['file']['name'], -1, true
         )
         ) {
             Message::addErrorMessage($fileHandlerObj->getError());

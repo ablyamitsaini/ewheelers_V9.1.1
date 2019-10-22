@@ -171,7 +171,7 @@ class ImportExportController extends SellerBaseController
             case 'BULK_MEDIA':
                 $this->bulkMedia();
                 break;
-            }
+        }
     }
 
     public function exportForm($actionType)
@@ -186,11 +186,11 @@ class ImportExportController extends SellerBaseController
 
         switch ($actionType) {
          /* case Importexport::TYPE_CATEGORIES:         */
-        case Importexport::TYPE_BRANDS:
-        case Importexport::TYPE_PRODUCTS:
-        case Importexport::TYPE_SELLER_PRODUCTS:
-            $displayMediaTab = true;
-            break;
+            case Importexport::TYPE_BRANDS:
+            case Importexport::TYPE_PRODUCTS:
+            case Importexport::TYPE_SELLER_PRODUCTS:
+                $displayMediaTab = true;
+                break;
         }
 
         $frm = $this->getImportExportForm($this->siteLangId, 'EXPORT', $actionType);
@@ -228,11 +228,11 @@ class ImportExportController extends SellerBaseController
 
         $displayMediaTab = false;
         switch ($actionType) {
-        case Importexport::TYPE_CATEGORIES:
-        case Importexport::TYPE_BRANDS:
-        case Importexport::TYPE_PRODUCTS:
-            $displayMediaTab = true;
-            break;
+            case Importexport::TYPE_CATEGORIES:
+            case Importexport::TYPE_BRANDS:
+            case Importexport::TYPE_PRODUCTS:
+                $displayMediaTab = true;
+                break;
         }
 
         $frm = $this->getImportExportForm($this->siteLangId, 'IMPORT', $actionType);
@@ -250,16 +250,16 @@ class ImportExportController extends SellerBaseController
         $pageData = '';
         $displayMediaTab = false;
         switch ($actionType) {
-        case Importexport::TYPE_PRODUCTS:
-            $displayMediaTab = true;
-            $pageData = $obj->getContentByPageType(Extrapage::SELLER_CATALOG_MANAGEMENT_INSTRUCTIONS, $langId);
-            break;
-        case Importexport::TYPE_SELLER_PRODUCTS:
-            $pageData = $obj->getContentByPageType(Extrapage::SELLER_PRODUCT_INVENTORY_INSTRUCTIONS, $langId);
-            break;
-        default:
-            FatUtility::dieWithError(Labels::getLabel('MSG_Invalid_Access', $langId));
-            break;
+            case Importexport::TYPE_PRODUCTS:
+                $displayMediaTab = true;
+                $pageData = $obj->getContentByPageType(Extrapage::SELLER_CATALOG_MANAGEMENT_INSTRUCTIONS, $langId);
+                break;
+            case Importexport::TYPE_SELLER_PRODUCTS:
+                $pageData = $obj->getContentByPageType(Extrapage::SELLER_PRODUCT_INVENTORY_INSTRUCTIONS, $langId);
+                break;
+            default:
+                FatUtility::dieWithError(Labels::getLabel('MSG_Invalid_Access', $langId));
+                break;
         }
         $title = Labels::getLabel('LBL_Import_Instructions', $langId);
         $this->set('pageData', $pageData);
@@ -350,7 +350,7 @@ class ImportExportController extends SellerBaseController
         $obj = new Importexport();
         $settingArr = $obj->getSettingsArr();
 
-        foreach ($settingArr as $k=>$val) {
+        foreach ($settingArr as $k => $val) {
             $data = array(
             'impexp_setting_key'=>$k,
             'impexp_setting_user_id'=>$userId,
@@ -508,53 +508,53 @@ class ImportExportController extends SellerBaseController
         $displayRangeFields = false;
 
         switch (strtoupper($type)) {
-        case 'EXPORT':
-            switch ($actionType) {
-            case Importexport::TYPE_PRODUCTS:
-                $displayRangeFields = true;
-                $frm->addSelectBox(Labels::getLabel('LBL_Select_Data', $langId), 'sheet_type', Importexport::getProductCatalogContentTypeArr($langId), '', array(), '')->requirements()->setRequired();
+            case 'EXPORT':
+                switch ($actionType) {
+                    case Importexport::TYPE_PRODUCTS:
+                        $displayRangeFields = true;
+                        $frm->addSelectBox(Labels::getLabel('LBL_Select_Data', $langId), 'sheet_type', Importexport::getProductCatalogContentTypeArr($langId), '', array(), '')->requirements()->setRequired();
+                        break;
+                    case Importexport::TYPE_SELLER_PRODUCTS:
+                        $displayRangeFields = true;
+                        $frm->addSelectBox(Labels::getLabel('LBL_Select_Data', $langId), 'sheet_type', Importexport::getSellerProductContentTypeArr($langId), '', array(), '')->requirements()->setRequired();
+                        break;
+                    case Importexport::TYPE_USERS:
+                        $displayRangeFields = true;
+                        break;
+                }
                 break;
-            case Importexport::TYPE_SELLER_PRODUCTS:
-                $displayRangeFields = true;
-                $frm->addSelectBox(Labels::getLabel('LBL_Select_Data', $langId), 'sheet_type', Importexport::getSellerProductContentTypeArr($langId), '', array(), '')->requirements()->setRequired();
+            case 'EXPORT_MEDIA':
+                switch ($actionType) {
+                    case Importexport::TYPE_PRODUCTS:
+                    case Importexport::TYPE_SELLER_PRODUCTS:
+                        $displayRangeFields = true;
+                        break;
+                }
                 break;
-            case Importexport::TYPE_USERS:
-                $displayRangeFields = true;
+            case 'IMPORT':
+                switch ($actionType) {
+                    case Importexport::TYPE_PRODUCTS:
+                        $frm->addSelectBox(Labels::getLabel('LBL_Select_Data', $langId), 'sheet_type', Importexport::getProductCatalogContentTypeArr($langId), '', array(), '')->requirements()->setRequired();
+                        break;
+                    case Importexport::TYPE_SELLER_PRODUCTS:
+                        $frm->addSelectBox(Labels::getLabel('LBL_Select_Data', $langId), 'sheet_type', Importexport::getSellerProductContentTypeArr($langId), '', array(), '')->requirements()->setRequired();
+                        break;
+                }
+                $fldImg = $frm->addFileUpload(Labels::getLabel('LBL_File_to_be_uploaded:', $langId), 'import_file', array('id' => 'import_file'));
+                $fldImg->setFieldTagAttribute('onChange', '$(\'#importFileName\').html(this.value)');
+                $fldImg->htmlBeforeField='<div class="filefield"><span class="filename" id="importFileName"></span>';
+                $fldImg->htmlAfterField = "<label class='filelabel'>".Labels::getLabel('LBL_Browse_File', $this->siteLangId)."</label></div><small>".Labels::getLabel('MSG_Invalid_data_will_not_be_processed', $langId)."</small>";
+                /*$fldImg->htmlBeforeField = '<div class="filefield"><span class="filename" id="importFileName"></span>';
+                $fldImg->htmlAfterField = '</div>'; */
                 break;
-            }
-            break;
-        case 'EXPORT_MEDIA':
-            switch ($actionType) {
-            case Importexport::TYPE_PRODUCTS:
-            case Importexport::TYPE_SELLER_PRODUCTS:
-                $displayRangeFields = true;
+            case 'IMPORT_MEDIA':
+                $fldImg = $frm->addFileUpload(Labels::getLabel('LBL_File_to_be_uploaded:', $langId), 'import_file', array('id' => 'import_file'));
+                $fldImg->setFieldTagAttribute('onChange', '$(\'#importFileName\').html(this.value)');
+                $fldImg->htmlBeforeField='<div class="filefield"><span class="filename" id="importFileName"></span>';
+                $fldImg->htmlAfterField = "<label class='filelabel'>".Labels::getLabel('LBL_Browse_File', $this->siteLangId)."</label></div><small>".Labels::getLabel('MSG_Invalid_data_will_not_be_processed', $langId)."</small>";
+                /* $fldImg->htmlBeforeField = '<div class="filefield"><span class="filename" id="importFileName"></span>';
+                $fldImg->htmlAfterField = '</div>'; */
                 break;
-            }
-            break;
-        case 'IMPORT':
-            switch ($actionType) {
-            case Importexport::TYPE_PRODUCTS:
-                $frm->addSelectBox(Labels::getLabel('LBL_Select_Data', $langId), 'sheet_type', Importexport::getProductCatalogContentTypeArr($langId), '', array(), '')->requirements()->setRequired();
-                break;
-            case Importexport::TYPE_SELLER_PRODUCTS:
-                $frm->addSelectBox(Labels::getLabel('LBL_Select_Data', $langId), 'sheet_type', Importexport::getSellerProductContentTypeArr($langId), '', array(), '')->requirements()->setRequired();
-                break;
-            }
-            $fldImg = $frm->addFileUpload(Labels::getLabel('LBL_File_to_be_uploaded:', $langId), 'import_file', array('id' => 'import_file'));
-            $fldImg->setFieldTagAttribute('onChange', '$(\'#importFileName\').html(this.value)');
-            $fldImg->htmlBeforeField='<div class="filefield"><span class="filename" id="importFileName"></span>';
-            $fldImg->htmlAfterField = "<label class='filelabel'>".Labels::getLabel('LBL_Browse_File', $this->siteLangId)."</label></div><small>".Labels::getLabel('MSG_Invalid_data_will_not_be_processed', $langId)."</small>";
-            /*$fldImg->htmlBeforeField = '<div class="filefield"><span class="filename" id="importFileName"></span>';
-            $fldImg->htmlAfterField = '</div>'; */
-            break;
-        case 'IMPORT_MEDIA':
-            $fldImg = $frm->addFileUpload(Labels::getLabel('LBL_File_to_be_uploaded:', $langId), 'import_file', array('id' => 'import_file'));
-            $fldImg->setFieldTagAttribute('onChange', '$(\'#importFileName\').html(this.value)');
-            $fldImg->htmlBeforeField='<div class="filefield"><span class="filename" id="importFileName"></span>';
-            $fldImg->htmlAfterField = "<label class='filelabel'>".Labels::getLabel('LBL_Browse_File', $this->siteLangId)."</label></div><small>".Labels::getLabel('MSG_Invalid_data_will_not_be_processed', $langId)."</small>";
-            /* $fldImg->htmlBeforeField = '<div class="filefield"><span class="filename" id="importFileName"></span>';
-            $fldImg->htmlAfterField = '</div>'; */
-            break;
         }
 
         if ($displayRangeFields) {
@@ -630,37 +630,26 @@ class ImportExportController extends SellerBaseController
         }
 
         $fileName = $_FILES['bulk_images']['name'];
-        $tmp_name = $_FILES['bulk_images']['tmp_name'];
+        $tmpName = $_FILES['bulk_images']['tmp_name'];
 
-        $fileExt = pathinfo($fileName, PATHINFO_EXTENSION);
-        $fileExt = strtolower($fileExt);
-        if ('zip' != $fileExt) {
-            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_FILE', $this->siteLangId));
+        $uploadBulkImgobj = new UploadBulkImages();
+        $savedFile = $uploadBulkImgobj->upload($fileName, $tmpName, UserAuthentication::getLoggedUserId());
+        if (false === $savedFile) {
+            Message::addErrorMessage($uploadBulkImgobj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         $path = CONF_UPLOADS_PATH . AttachedFile::FILETYPE_BULK_IMAGES_PATH;
 
-        $fileHandlerObj = new AttachedFile();
-
-        $savedFile = $fileHandlerObj->saveAttachment($tmp_name, AttachedFile::FILETYPE_BULK_IMAGES, UserAuthentication::getLoggedUserId(), 0, $fileName);
-
-        if (false === $savedFile) {
-            Message::addErrorMessage($fileHandlerObj->getError());
-            FatUtility::dieJsonError(Message::getHtml());
-        }
-
-        if (false === $fileHandlerObj->extractZip($path . $savedFile)) {
-            Message::addErrorMessage(Labels::getLabel('MSG_COULD_NOT_SAVE_FILE', $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
-        }
-
         $filePath = AttachedFile::FILETYPE_BULK_IMAGES_PATH . $savedFile;
 
         $msg = '<br>'.str_replace('{path}', '<br><b>'.$filePath.'</b>', Labels::getLabel('MSG_Your_uploaded_files_path_will_be:_{path}', $this->siteLangId));
         $msg = Labels::getLabel('MSG_Uploaded_Successfully.', $this->siteLangId) .' '.$msg;
-
-        FatUtility::dieJsonSuccess($msg);
+        $json = [
+            "msg" => $msg,
+            "path" => base64_encode($path . $savedFile)
+        ];
+        FatUtility::dieJsonSuccess($json);
     }
 
     public function uploadedBulkMediaList()
@@ -706,8 +695,24 @@ class ImportExportController extends SellerBaseController
             $msg = $obj->deleteSingleBulkMediaDir($directory);
             FatUtility::dieJsonSuccess($msg);
         } else {
-            $errMsg = Labels::getLabel("MSG_Directory_not_found.", $langId);
+            $errMsg = Labels::getLabel("MSG_Directory_not_found.", $this->siteLangId);
             FatUtility::dieJsonError($errMsg);
         }
+    }
+
+    public function downloadPathsFile($path)
+    {
+        if (empty($path)) {
+            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
+        }
+        $filesPathArr = UploadBulkImages::getAllFilesPath(base64_decode($path));
+        if (!empty($filesPathArr) && 0 < count($filesPathArr)) {
+            $headers[] = ['File Path', 'File Name'];
+            $filesPathArr = array_merge($headers, $filesPathArr);
+            CommonHelper::convertToCsv($filesPathArr, time().'.csv');
+            exit;
+        }
+        Message::addErrorMessage(Labels::getLabel('MSG_No_File_Found', $this->siteLangId));
+        CommonHelper::redirectUserReferer();
     }
 }

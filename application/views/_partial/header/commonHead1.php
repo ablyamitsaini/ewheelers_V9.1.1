@@ -6,12 +6,38 @@ if ($controllerName != 'GuestUser' && $controllerName != 'Error') {
 $htmlClass = '';
 $actionName = FatApp::getAction();
 if ($controllerName == 'Products' && $actionName == 'view') {
-	$htmlClass = 'product-view';
+    $htmlClass = 'product-view';
 }
+$additionalAttributes = (CommonHelper::getLayoutDirection() == 'rtl') ? 'direction="rtl" style="direction: rtl;"' : '';
 ?>
 <!DOCTYPE html>
-<html prefix="og: http://ogp.me/ns#" class="<?php echo $htmlClass;?>">
+<html prefix="og: http://ogp.me/ns#" <?php echo $additionalAttributes;?> class="<?php echo $htmlClass;?> <?php if (FatApp::getConfig('CONF_AUTO_RESTORE_ON', FatUtility::VAR_INT, 1) && CommonHelper::demoUrl()) { echo "sticky-demo-header";} ?>">
+
 <head>
+    <!-- Yo!Kart -->
+    <meta charset="utf-8">
+    <meta name="author" content="">
+    <!-- Mobile Specific Metas ===================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- favicon ================================================== -->
+
+    <!--<link rel="shortcut icon" href="">-->
+    <link rel="shortcut icon"
+        href="<?php echo CommonHelper::generateUrl('Image', 'favicon', array($siteLangId)); ?>">
+    <link rel="apple-touch-icon"
+        href="<?php echo CommonHelper::generateUrl('Image', 'appleTouchIcon', array($siteLangId)); ?>">
+    <link rel="apple-touch-icon" sizes="72x72"
+        href="<?php echo CommonHelper::generateUrl('Image', 'appleTouchIcon', array($siteLangId,'MINI')); ?>">
+    <link rel="apple-touch-icon" sizes="114x114"
+        href="<?php echo CommonHelper::generateUrl('Image', 'appleTouchIcon', array($siteLangId,'SMALL')); ?>">
+
+    <?php
+    if ($canonicalUrl == '') {
+        $canonicalUrl = CommonHelper::generateFullUrl($controllerName, FatApp::getAction(), !empty(FatApp::getParameters())?FatApp::getParameters():array());
+    }
+    ?>
+    <link rel="canonical" href="<?php echo $canonicalUrl;?>" />
     <style>
         :root {
             --first-color: #<?php echo $themeDetail['tcolor_first_color']; ?>;
@@ -27,28 +53,9 @@ if ($controllerName == 'Products' && $actionName == 'view') {
             --gray-light: #f8f8f8;
         }
     </style>
-    <meta charset="utf-8">
-    <meta name="author" content="">
-    <!-- Mobile Specific Metas ===================== -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
-    <!-- favicon ================================================== -->
-
-    <!--<link rel="shortcut icon" href="">-->
-    <link rel="shortcut icon" href="<?php echo CommonHelper::generateUrl('Image', 'favicon', array($siteLangId)); ?>">
-    <link rel="apple-touch-icon" href="<?php echo CommonHelper::generateUrl('Image', 'appleTouchIcon', array($siteLangId)).'?'.time(); ?>">
-    <link rel="apple-touch-icon" sizes="72x72" href="<?php echo CommonHelper::generateUrl('Image', 'appleTouchIcon', array($siteLangId,'MINI')).'?'.time(); ?>">
-    <link rel="apple-touch-icon" sizes="114x114" href="<?php echo CommonHelper::generateUrl('Image', 'appleTouchIcon', array($siteLangId,'SMALL')).'?'.time(); ?>">
-
-    <?php
-    if ($canonicalUrl == '') {
-        $canonicalUrl = CommonHelper::generateFullUrl($controllerName, FatApp::getAction(), !empty(FatApp::getParameters())?FatApp::getParameters():array());
-    }
-    ?>
-    <link rel="canonical" href="<?php echo $canonicalUrl;?>" />
     <?php
     echo $str = '<script type="text/javascript">
-        var langLbl = ' . json_encode($jsVariables) . ';
+        var langLbl = ' . FatUtility::convertToJson($jsVariables, JSON_UNESCAPED_UNICODE) . ';
         var CONF_AUTO_CLOSE_SYSTEM_MESSAGES = ' . FatApp::getConfig("CONF_AUTO_CLOSE_SYSTEM_MESSAGES", FatUtility::VAR_INT, 0) . ';
         var CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES = ' . FatApp::getConfig("CONF_TIME_AUTO_CLOSE_SYSTEM_MESSAGES", FatUtility::VAR_INT, 3) . ';
         var extendEditorJs = ' . $extendEditorJs . ';
@@ -60,14 +67,17 @@ if ($controllerName == 'Products' && $actionName == 'view') {
         }
     </script>' . "\r\n";
 
+    if (FatApp::getConfig("CONF_GOOGLE_TAG_MANAGER_HEAD_SCRIPT", FatUtility::VAR_STRING, '')) {
+        echo FatApp::getConfig("CONF_GOOGLE_TAG_MANAGER_HEAD_SCRIPT", FatUtility::VAR_STRING, '');
+    }
+
     if (FatApp::getConfig("CONF_ENABLE_ENGAGESPOT_PUSH_NOTIFICATION", FatUtility::VAR_STRING, '')) {
         echo FatApp::getConfig("CONF_ENGAGESPOT_PUSH_NOTIFICATION_CODE", FatUtility::VAR_STRING, '');
         if (UserAuthentication::getLoggedUserId(true) > 0) { ?>
-            <script type="text/javascript">
-                Engagespot.init()
-                Engagespot.identifyUser('YT_<?php echo UserAuthentication::getLoggedUserId(); ?>');
-            </script>
-            <?php
+    <script type="text/javascript">
+        Engagespot.init()
+        Engagespot.identifyUser('YT_<?php echo UserAuthentication::getLoggedUserId(); ?>');
+    </script>
+    <?php
         }
     }
-    ?>

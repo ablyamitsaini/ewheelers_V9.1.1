@@ -14,16 +14,26 @@
 
     public function contactSubmit()
     {
-        $frm = $this->contactUsForm();
-        $post = $frm->getFormDataFromArray(FatApp::getPostedData());
+        $frm = $this->contactUsForm(MOBILE_APP_API_CALL);
+        $post = FatApp::getPostedData();
+        $post['phone'] = !empty($post['phone']) ? ValidateElement::convertPhone($post['phone']) : '';
+        $post = $frm->getFormDataFromArray($post);
 
         if (false === $post) {
-            Message::addErrorMessage($frm->getValidationErrors());
+            $message = $frm->getValidationErrors();
+            if (true ===  MOBILE_APP_API_CALL) {
+                LibHelper::dieJsonError(current($message));
+            }
+            Message::addErrorMessage($message);
             FatApp::redirectUser(CommonHelper::generateUrl('Custom', 'ContactUs'));
         }
 
-        if (!CommonHelper::verifyCaptcha()) {
-            Message::addErrorMessage(Labels::getLabel('MSG_That_captcha_was_incorrect', $this->siteLangId));
+        if (false ===  MOBILE_APP_API_CALL && !CommonHelper::verifyCaptcha()) {
+            $message = Labels::getLabel('MSG_That_captcha_was_incorrect', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError($message);
+            }
+            Message::addErrorMessage($message);
             $this->ContactUs();
             die();
             //FatApp::redirectUser(CommonHelper::generateUrl('Custom', 'ContactUs'));
@@ -38,9 +48,18 @@
 
             $email = new EmailHandler();
             if (!$email->sendContactFormEmail($emailId, $this->siteLangId, $post)) {
-                Message::addErrorMessage(Labels::getLabel('MSG_email_not_sent_server_issue', $this->siteLangId));
+                $message = Labels::getLabel('MSG_email_not_sent_server_issue', $this->siteLangId);
+                if (true ===  MOBILE_APP_API_CALL) {
+                    FatUtility::dieJsonError($message);
+                }
+                Message::addErrorMessage($message);
             } else {
                 Message::addMessage(Labels::getLabel('MSG_your_message_sent_successfully', $this->siteLangId));
+            }
+
+            if (true ===  MOBILE_APP_API_CALL) {
+                $this->set('msg', Labels::getLabel('MSG_your_message_sent_successfully', $this->siteLangId));
+                $this->_template->render();
             }
 
             FatApp::redirectUser(CommonHelper::generateUrl('Custom', 'ContactUs'));
@@ -449,22 +468,41 @@
         if (!$orderId) {
             FatUtility::exitWithErrorCode(404);
         }
+        $cartObj = new Cart(UserAuthentication::getLoggedUserId(), $this->siteLangId, $this->app_user['temp_user_id']);
+        $cartObj->clear();
+        $cartObj->updateUserCart();
 
         $orderObj = new Orders();
         $orderInfo = $orderObj->getOrderById($orderId, $this->siteLangId);
 
         if ($orderInfo['order_type'] == Orders::ORDER_PRODUCT) {
-            $textMessage = sprintf(Labels::getLabel('MSG_customer_success_order', $this->siteLangId), CommonHelper::generateUrl('buyer'), CommonHelper::generateUrl('buyer', 'orders'), CommonHelper::generateUrl('custom', 'contactUs'));
+            $searchReplaceArray = array(
+              '{account}' => '<a href="'.CommonHelper::generateUrl('buyer').'">'.Labels::getLabel('MSG_My_Account', $this->siteLangId).'</a>',
+              '{history}' => '<a href="'.CommonHelper::generateUrl('buyer', 'orders').'">'.Labels::getLabel('MSG_History', $this->siteLangId).'</a>',
+              '{contactus}' => '<a href="'.CommonHelper::generateUrl('custom', 'contactUs').'">'.Labels::getLabel('MSG_Store_Owner', $this->siteLangId).'</a>',
+            );
+            $textMessage = Labels::getLabel('MSG_customer_success_order_{account}_{history}_{contactus}', $this->siteLangId);
+            $textMessage = str_replace(array_keys($searchReplaceArray), array_values($searchReplaceArray), $textMessage);
         } elseif ($orderInfo['order_type'] == Orders::ORDER_SUBSCRIPTION) {
-            $textMessage = sprintf(Labels::getLabel('MSG_subscription_success_order', $this->siteLangId), CommonHelper::generateUrl('seller'), CommonHelper::generateUrl('seller', 'subscriptions'));
+            $searchReplaceArray = array(
+              '{account}' => '<a href="'.CommonHelper::generateUrl('seller').'">'.Labels::getLabel('MSG_My_Account', $this->siteLangId).'</a>',
+              '{subscription}' => '<a href="'.CommonHelper::generateUrl('seller', 'subscriptions').'">'.Labels::getLabel('MSG_My_Subscription', $this->siteLangId).'</a>',
+            );
+            $textMessage = Labels::getLabel('MSG_subscription_success_order_{account}_{subscription}', $this->siteLangId);
+            $textMessage = str_replace(array_keys($searchReplaceArray), array_values($searchReplaceArray), $textMessage);
         } elseif ($orderInfo['order_type'] == Orders::ORDER_WALLET_RECHARGE) {
-            $textMessage = sprintf(Labels::getLabel('MSG_wallet_success_order', $this->siteLangId), CommonHelper::generateUrl('account'), CommonHelper::generateUrl('account', 'credits'));
+            $searchReplaceArray = array(
+              '{account}' => '<a href="'.CommonHelper::generateUrl('account').'">'.Labels::getLabel('MSG_My_Account', $this->siteLangId).'</a>',
+              '{credits}' => '<a href="'.CommonHelper::generateUrl('account', 'credits').'">'.Labels::getLabel('MSG_My_Credits', $this->siteLangId).'</a>',
+            );
+            $textMessage = Labels::getLabel('MSG_wallet_success_order_{account}_{credits}', $this->siteLangId);
+            $textMessage = str_replace(array_keys($searchReplaceArray), array_values($searchReplaceArray), $textMessage);
         } else {
             FatUtility::exitWithErrorCode(404);
         }
 
         if (!UserAuthentication::isUserLogged() && !UserAuthentication::isGuestUserLogged()) {
-            $textMessage = sprintf(Labels::getLabel('MSG_guest_success_order', $this->siteLangId), CommonHelper::generateUrl('custom', 'contactUs'));
+            $textMessage = str_replace('{contactus}', '<a href="'.CommonHelper::generateUrl('custom', 'contactUs').'">'.Labels::getLabel('MSG_Store_Owner', $this->siteLangId).'</a>', Labels::getLabel('MSG_guest_success_order_{contactus}', $this->siteLangId));
         }
 
         /* Clear cart upon successfull redirection from Payment gateway[ */
@@ -623,20 +661,23 @@
         return $frm;
     }
 
-    private function contactUsForm()
+    private function contactUsForm($mobileApiCall = false)
     {
         $frm = new Form('frmContact');
         $frm->addRequiredField(Labels::getLabel('LBL_Your_Name', $this->siteLangId), 'name', '');
         $frm->addEmailField(Labels::getLabel('LBL_Your_Email', $this->siteLangId), 'email', '');
 
-        $fld_phn = $frm->addRequiredField(Labels::getLabel('LBL_Your_Phone', $this->siteLangId), 'phone', '', array('class'=>'phone-js ltr-right', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
+        $fld_phn = $frm->addRequiredField(Labels::getLabel('LBL_Your_Phone', $this->siteLangId), 'phone', '', array('class'=>'phone-js ltr-right', 'placeholder' => ValidateElement::PHONE_NO_FORMAT, 'maxlength' => ValidateElement::PHONE_NO_LENGTH));
         $fld_phn->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
         // $fld_phn->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_e.g.', $this->siteLangId).': '.implode(', ', ValidateElement::PHONE_FORMATS).'</small>';
-        $fld_phn->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_format.', $this->siteLangId));
+        $fld_phn->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_phone_number_format.', $this->siteLangId));
 
         $frm->addTextArea(Labels::getLabel('LBL_Your_Message', $this->siteLangId), 'message', '')->requirements()->setRequired();
 
-        $frm->addHtml('', 'htmlNote', '<div class="g-recaptcha" data-sitekey="'.FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '').'"></div>');
+        if (false === $mobileApiCall) {
+            $frm->addHtml('', 'htmlNote', '<div class="g-recaptcha" data-sitekey="'.FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '').'"></div>');
+        }
+
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('BTN_SUBMIT', $this->siteLangId));
         return $frm;
     }
@@ -702,5 +743,29 @@
         $obj = new UploadBulkImages();
         $msg = $obj->deleteBulkUploadSubDirs($hoursBefore);
         FatUtility::dieJsonSuccess($msg);
+    }
+
+    public function signupAgreementUrls()
+    {
+        $privacyPolicyLink = FatApp::getConfig('CONF_PRIVACY_POLICY_PAGE', FatUtility::VAR_STRING, '');
+        $termsAndConditionsLink = FatApp::getConfig('CONF_TERMS_AND_CONDITIONS_PAGE', FatUtility::VAR_STRING, '');
+        $data = array(
+            'privacyPolicyLink' => CommonHelper::generateFullUrl('cms', 'view', array($privacyPolicyLink)),
+            'faqLink' => CommonHelper::generateFullUrl('custom', 'faq'),
+            'termsAndConditionsLink' => CommonHelper::generateFullUrl('cms', 'view', array($termsAndConditionsLink)),
+        );
+        $this->set('data', $data);
+        $this->_template->render();
+    }
+
+    public function setupSidebarVisibility($openSidebar = 1)
+    {
+        setcookie('openSidebar', $openSidebar, 0, CONF_WEBROOT_URL);
+    }
+
+    public function updateScreenResolution($width, $height)
+    {
+        setcookie('screenWidth', $width, 0, CONF_WEBROOT_URL);
+        setcookie('screenHeight', $height, 0, CONF_WEBROOT_URL);
     }
 }

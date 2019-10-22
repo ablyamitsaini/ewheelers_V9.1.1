@@ -34,7 +34,7 @@ class Navigation
         if ($isUserLogged) {
             $template->set('userName', ucfirst(CommonHelper::getUserFirstName(UserAuthentication::getLoggedUserAttribute('user_name'))));
         }
-        
+
         $headerTopNavigationCache =  FatCache::get('headerTopNavigation_'.$siteLangId, CONF_HOME_PAGE_CACHE_TIME, '.txt');
 
         if ($headerTopNavigationCache) {
@@ -44,7 +44,7 @@ class Navigation
             FatCache::set('headerTopNavigationCache_'.$siteLangId, serialize($headerTopNavigation), '.txt');
         }
         $template->set('top_header_navigation', $headerTopNavigation);
-        
+
         $template->set('isUserLogged', $isUserLogged);
         $template->set('headerNavigation', $headerNavigation);
     }
@@ -204,20 +204,23 @@ class Navigation
     public static function getNavigation($type = 0, $includeChildCategories = false)
     {
         $siteLangId = CommonHelper::getLangId();
+        $headerNavCache =  FatCache::get('headerNavCache'.$siteLangId.'-'.$type, CONF_HOME_PAGE_CACHE_TIME, '.txt');
+        if ($headerNavCache) {
+            return  unserialize($headerNavCache);
+        }
 
         /* SubQuery, Category have products[ */
-        $prodSrchObj = new ProductSearch($siteLangId);
-        $prodSrchObj->setDefinedCriteria();
-        $prodSrchObj->joinProductToCategory();
+        $prodSrchObj = new ProductSearch();
+        $prodSrchObj->setDefinedCriteria(0, 0, array('doNotJoinSpecialPrice'=>true));
+        $prodSrchObj->joinProductToCategory($siteLangId);
         $prodSrchObj->doNotCalculateRecords();
         $prodSrchObj->doNotLimitRecords();
         $prodSrchObj->joinSellerSubscription($siteLangId, true);
         $prodSrchObj->addSubscriptionValidCondition();
         $prodSrchObj->addGroupBy('prodcat_id');
         $prodSrchObj->addMultipleFields(array('prodcat_code AS prodrootcat_code','count(selprod_id) as productCounts', 'prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name', 'prodcat_parent'));
-
-        $navigationCatCache =  FatCache::get('navigationCatCache', CONF_HOME_PAGE_CACHE_TIME, '.txt');
-
+        $prodSrchObj->addOrder('prodcat_display_order', 'asc');
+        $navigationCatCache =  FatCache::get('navigationCatCache'.$siteLangId, CONF_HOME_PAGE_CACHE_TIME, '.txt');
         if ($navigationCatCache) {
             $categoriesMainRootArr  = unserialize($navigationCatCache);
         } else {
@@ -232,7 +235,7 @@ class Navigation
             );
             $categoriesMainRootArr = array_unique($categoriesMainRootArr);
             array_flip($categoriesMainRootArr);
-            FatCache::set('navigationCatCache', serialize($categoriesMainRootArr), '.txt');
+            FatCache::set('navigationCatCache'.$siteLangId, serialize($categoriesMainRootArr), '.txt');
         }
 
         $catWithProductConditoon ='';
@@ -241,7 +244,6 @@ class Navigation
         }
 
         /* ] */
-
 
         $srch = new NavigationLinkSearch($siteLangId);
         $srch->joinTable('('.$prodSrchObj->getQuery().')', 'LEFT OUTER JOIN', 'qryProducts.prodcat_id = nlink_category_id', 'qryProducts');
@@ -304,7 +306,7 @@ class Navigation
                 $navigation[$previous_nav_id]['pages'][$key]['children'] = $childrenCats;
             }
         }
-
+        FatCache::set('headerNavCache'.$siteLangId.'-'.$type, serialize($navigation), '.txt');
         return $navigation;
     }
 
@@ -312,12 +314,12 @@ class Navigation
     {
         $db = FatApp::getDb();
         $siteLangId = CommonHelper::getLangId();
-        $footerNavigationCache =  FatCache::get('footerNavigation', CONF_HOME_PAGE_CACHE_TIME, '.txt');
+        $footerNavigationCache =  FatCache::get('footerNavigation'.$siteLangId, CONF_HOME_PAGE_CACHE_TIME, '.txt');
         if ($footerNavigationCache) {
             $footerNavigation  = unserialize($footerNavigationCache);
         } else {
             $footerNavigation = self::getNavigation(Navigations::NAVTYPE_FOOTER);
-            FatCache::set('footerNavigationCache', serialize($footerNavigation), '.txt');
+            FatCache::set('footerNavigationCache'.$siteLangId, serialize($footerNavigation), '.txt');
         }
         $template->set('footer_navigation', $footerNavigation);
     }

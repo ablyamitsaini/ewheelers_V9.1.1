@@ -1,9 +1,16 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.');
+$submitBtnFld = $frmSellerProduct->getField('btn_submit');
+$submitBtnFld->setFieldTagAttribute('class', 'btn btn--primary');
+
+$cancelBtnFld = $frmSellerProduct->getField('btn_cancel');
+$cancelBtnFld->setFieldTagAttribute('class', 'btn btn--primary-border');
+$submitBtnFld->developerTags['col'] = 12;
+?>
 <div class="tabs tabs--small tabs--scroll clearfix">
     <?php require_once('sellerCatalogProductTop.php');?>
 </div>
 <div class="cards">
-<div class="cards-content pt-3 pl-4 pr-4 ">    
+<div class="cards-content pt-3 pl-4 pr-4 ">
     <div class="tabs__content form">
     <div class="row">
     <div class="col-md-12">

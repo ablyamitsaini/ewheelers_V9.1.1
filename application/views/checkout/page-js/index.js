@@ -167,10 +167,40 @@ $("document").ready(function()
 		var data = fcom.frmData(frm);
 		fcom.updateWithAjax(fcom.makeUrl('Addresses', 'setUpAddress'), data, function(t) {
 			if( t.status == 1 ){
-				showShippingSummaryDiv(t.ua_id);
-				loadFinancialSummary();
+				if ($("#hasAddress").length > 0) {
+                    $("#hasAddress").val(1);
+                }
+				if($(frm.ua_id).val() == 0){
+					loadAddressDiv();
+					setTimeout(function(){ setDefaultAddress(t.ua_id) }, 1000);
+				}else{
+					showShippingSummaryDiv(t.ua_id);
+					loadFinancialSummary();
+				}
 			}
 		});
+	};
+
+	setDefaultAddress = function(id){
+		/* if( !confirm(langLbl.confirmDefault) ){
+			return false;
+		}
+		data='id='+id;
+		alert(id);*/
+		$('.address-billing').removeClass("is--selected");
+		$("input[name='billing_address_id']").each(function() {
+			$(this).removeAttr("checked");
+		});
+		$('#address_'+id+' input[name=billing_address_id]').attr('checked', 'checked');
+		$('#address_'+id).addClass("is--selected");
+		// $("#btn-continue-js").trigger("click");
+		// setUpAddressSelection($('#btn-continue-js'));
+
+		/* fcom.updateWithAjax(fcom.makeUrl('Addresses','setDefault'),data,function(res){
+			$('.address-billing').removeClass("is--selected");
+			$('.address_'+id).addClass("is--selected");
+			// $("#btn-continue-js").trigger("click");
+		});*/
 	};
 
 	setUpAddressSelection = function(elm){
@@ -178,6 +208,9 @@ $("document").ready(function()
 		var shipping_address_id = $(elm).parent().parent().parent().find('input[name="shipping_address_id"]:checked').val();
 		var billing_address_id = $(elm).parent().parent().parent().parent().find('input[name="billing_address_id"]:checked').val();
 		var isShippingSameAsBilling = $('input[name="isShippingSameAsBilling"]:checked').val();
+		if(isShippingSameAsBilling == 1){
+			shipping_address_id = billing_address_id;
+		}
 		var data = 'shipping_address_id='+shipping_address_id+'&billing_address_id='+billing_address_id+'&isShippingSameAsBilling='+isShippingSameAsBilling;
 		fcom.updateWithAjax(fcom.makeUrl('Checkout', 'setUpAddressSelection'), data , function(t) {
 			if( t.status == 1 ){
@@ -311,7 +344,7 @@ $("document").ready(function()
 		// });
 		$(pageContent).html( fcom.getLoader());
 		fcom.ajax(fcom.makeUrl('Checkout', 'shippingSummary'), '' , function(ans) {
-		 	$(pageContent ).html( ans );
+		 	$(pageContent).html( ans );
 		 	$(".sduration_id-Js").trigger("change");
 			setCheckoutFlow('SHIPPING');
 		});

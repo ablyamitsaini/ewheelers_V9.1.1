@@ -1,6 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 
-<?php /* if($topCategories){ ?>
+<?php  if($topCategories){ ?>
 	 <div class="accordion_triger"><?php echo Labels::getLabel('LBL_Top_Categories', $siteLangId); ?><span></span></div>
 	  <div class="accordion_content">
             <ul class="footerSubCategories">
@@ -12,4 +12,4 @@
 			<li><a href="<?php echo CommonHelper::generateUrl('category'); ?>"><?php echo Labels::getLabel('LBL_View_All', $siteLangId)?></a></li>
 		</ul>
 	</div>
-<?php } */ ?>
+<?php }  ?>

@@ -226,6 +226,10 @@ class CollectionsController extends AdminBaseController
             $langFrm->fill($langData);
         }
 
+        $collectionType = (0 < $collectionId) ? Collections::getAttributesById($collectionId, 'collection_type') : Collections::COLLECTION_TYPE_PRODUCT;
+
+        $this->set('collectionType', $collectionType);
+
         $this->set('languages', Language::getAllNames());
         $this->set('collectionId', $collectionId);
         $this->set('lang_id', $lang_id);
@@ -731,16 +735,17 @@ class CollectionsController extends AdminBaseController
             FatUtility::dieWithError(Message::getHtml());
         }
 
-        if (!false == $collectionDetails) {
+        if (false != $collectionDetails) {
             $collectionImages = AttachedFile::getAttachment(AttachedFile::FILETYPE_COLLECTION_IMAGE, $collectionId);
             $this->set('collectionImages', $collectionImages);
-
-            $collectionBgImages = AttachedFile::getAttachment(AttachedFile::FILETYPE_COLLECTION_BG_IMAGE, $collectionId);
-            $this->set('collectionBgImages', $collectionBgImages);
+            /*$collectionBgImages = AttachedFile::getAttachment(AttachedFile::FILETYPE_COLLECTION_BG_IMAGE, $collectionId);
+            $this->set('collectionBgImages', $collectionBgImages);*/
         }
 
+        $this->set('imgUpdatedOn', Collections::getAttributesById($collectionId, 'collection_img_updated_on'));
         $this->set('collection_id', $collectionId);
-        $this->set('collectionMediaFrm', $this->getMediaForm($collectionId));
+        $this->set('displayMediaOnly', $collectionDetails['collection_display_media_only']);
+        $this->set('collectionMediaFrm', $this->getMediaForm());
         $this->set('languages', Language::getAllNames());
         $this->_template->render(false, false);
     }
@@ -753,24 +758,25 @@ class CollectionsController extends AdminBaseController
     return $frm;
     } */
 
-    private function getMediaForm($collectionId = 0)
+    private function getMediaForm()
     {
         $frm = new Form('frmCollectionMedia');
         $languagesAssocArr = Language::getAllNames();
         $frm->addHTML('', 'collection_image_heading', '');
-        $frm->addSelectBox(Labels::getLabel('LBL_Language', $this->adminLangId), 'image_lang_id', array( 0 => Labels::getLabel('LBL_Universal', $this->adminLangId) ) + $languagesAssocArr, '', array(), '');
+        $frm->addCheckBox(Labels::getLabel("LBL_Display_Media_Only", $this->adminLangId), 'collection_display_media_only', 1, array(), false, 0);
+        $frm->addSelectBox(Labels::getLabel('LBL_Language', $this->adminLangId), 'image_lang_id', array( 0 => Labels::getLabel('LBL_All_Languages', $this->adminLangId) ) + $languagesAssocArr, '', array(), '');
         $frm->addButton(
             Labels::getLabel('LBL_Image', $this->adminLangId),
             'collection_image',
             'Upload File',
-            array('class'=>'File-Js','id'=>'collection_image','data-file_type'=>AttachedFile::FILETYPE_COLLECTION_IMAGE, 'data-collection_id' => $collectionId )
+            array('class'=>'File-Js','id'=>'collection_image','data-file_type'=>AttachedFile::FILETYPE_COLLECTION_IMAGE)
         );
         $frm->addHtml('', 'collection_image_display_div', '');
 
-        $frm->addHTML('', 'collection_bg_image_heading', '');
+        /*$frm->addHTML('', 'collection_bg_image_heading', '');
         $frm->addSelectBox(Labels::getLabel('LBL_Language', $this->adminLangId), 'bg_image_lang_id', array( 0 => Labels::getLabel('LBL_Universal', $this->adminLangId) ) + $languagesAssocArr, '', array(), '');
         $fld = $frm->addButton(Labels::getLabel('LBL_Backgroud_Image(If_Any)', $this->adminLangId), 'collection_bg_image', 'Upload File', array('class' => 'File-Js', 'data-file_type'=>AttachedFile::FILETYPE_COLLECTION_BG_IMAGE, 'data-collection_id'=>$collectionId));
-        $frm->addHtml('', 'collection_bg_image_display_div', '');
+        $frm->addHtml('', 'collection_bg_image_display_div', '');*/
 
         return $frm;
     }
@@ -791,7 +797,13 @@ class CollectionsController extends AdminBaseController
             FatUtility::dieJsonError(Message::getHtml());
         }
 
-        $allowedFileTypeArr = array( AttachedFile::FILETYPE_COLLECTION_IMAGE, AttachedFile::FILETYPE_COLLECTION_BG_IMAGE );
+        $collectionType = (0 < $collection_id) ? Collections::getAttributesById($collection_id, 'collection_type') : Collections::COLLECTION_TYPE_PRODUCT;
+        if (in_array($collectionType, Collections::COLLECTION_WITHOUT_MEDIA)) {
+            Message::addErrorMessage(Labels::getLabel('LBL_Not_Allowed_To_Update_Media_For_This_Collection', $this->adminLangId));
+            FatUtility::dieJsonError(Message::getHtml());
+        }
+
+        $allowedFileTypeArr = array(AttachedFile::FILETYPE_COLLECTION_IMAGE, AttachedFile::FILETYPE_COLLECTION_BG_IMAGE);
 
         if (!in_array($file_type, $allowedFileTypeArr)) {
             Message::addErrorMessage($this->str_invalid_request);
@@ -802,6 +814,14 @@ class CollectionsController extends AdminBaseController
             Message::addErrorMessage(Labels::getLabel('LBL_Please_Select_A_File', $this->adminLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
+        $image_info = getimagesize($_FILES["file"]["tmp_name"]);
+        $image_width = $image_info[0];
+        $image_height = $image_info[1];
+
+        /*if (AttachedFile::APP_IMAGE_WIDTH < $image_width || AttachedFile::APP_IMAGE_HEIGHT < $image_height) {
+            Message::addErrorMessage(Labels::getLabel('LBL_Invalid_Dimensions', $this->adminLangId));
+            FatUtility::dieJsonError(Message::getHtml());
+        }*/
 
         $fileHandlerObj = new AttachedFile();
         if (!$res = $fileHandlerObj->saveAttachment(
@@ -818,6 +838,8 @@ class CollectionsController extends AdminBaseController
             Message::addErrorMessage($fileHandlerObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
+
+        Collections::setLastUpdatedOn($collection_id);
 
         $this->set('file', $_FILES['file']['name']);
         $this->set('collection_id', $collection_id);
@@ -839,6 +861,8 @@ class CollectionsController extends AdminBaseController
             Message::addErrorMessage($fileHandlerObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
+
+        Collections::setLastUpdatedOn($collection_id);
 
         $this->set('msg', Labels::getLabel('MSG_Deleted_Successfully', $this->adminLangId));
         $this->_template->render(false, false, 'json-success.php');
@@ -1004,5 +1028,22 @@ class CollectionsController extends AdminBaseController
                 return Collections::LIMIT_BRAND_LAYOUT1;
             break;
         }
+    }
+
+    public function displayMediaOnly($collectionId, $value = 0)
+    {
+        $collectionId = FatUtility::int($collectionId);
+        if (1 > $collectionId) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Request', $this->adminLangId));
+        }
+        $collectionType = (0 < $collectionId) ? Collections::getAttributesById($collectionId, 'collection_type') : Collections::COLLECTION_TYPE_PRODUCT;
+        if (in_array($collectionType, Collections::COLLECTION_WITHOUT_MEDIA)) {
+            FatUtility::dieJsonError(Labels::getLabel('LBL_Not_Allowed_To_Update_Media_For_This_Collection', $this->adminLangId));
+        }
+
+        $collectionObj = new Collections($collectionId);
+        $collectionObj->addUpdateData(array('collection_display_media_only' => $value));
+        $this->set('msg', Labels::getLabel('MSG_Updated_Successfully', $this->adminLangId));
+        $this->_template->render(false, false, 'json-success.php');
     }
 }

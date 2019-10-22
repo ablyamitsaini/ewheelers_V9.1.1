@@ -27,7 +27,7 @@
         if (!empty($bgImages)) {
             $htmlAfterField .= '<ul class="image-listing grids--onethird">';
             foreach ($bgImages as $bgImage) {
-                $htmlAfterField .= '<li>'.$bannerTypeArr[$bgImage['afile_lang_id']].'<div class="uploaded--image"><img src="'.CommonHelper::generateFullUrl('image', 'cblockBackgroundImage', array($epageData['epage_id'],$bgImage['afile_lang_id'],'THUMB',$bgImage['afile_type']), CONF_WEBROOT_FRONT_URL).'?'.time().'"> <a href="javascript:void(0);" onClick="removeBgImage('.$bgImage['afile_record_id'].','.$bgImage['afile_lang_id'].','.$bgImage['afile_type'].')" class="remove--img"><i class="ion-close-round"></i></a></div>';
+                $htmlAfterField .= '<li>'.$bannerTypeArr[$bgImage['afile_lang_id']].'<div class="uploaded--image"><img src="'.CommonHelper::generateFullUrl('image', 'cblockBackgroundImage', array($epageData['epage_id'],$bgImage['afile_lang_id'],'THUMB',$bgImage['afile_type']), CONF_WEBROOT_FRONT_URL).'"> <a href="javascript:void(0);" onClick="removeBgImage('.$bgImage['afile_record_id'].','.$bgImage['afile_lang_id'].','.$bgImage['afile_type'].')" class="remove--img"><i class="ion-close-round"></i></a></div>';
             }
             $htmlAfterField.='</li></ul>';
         } else {

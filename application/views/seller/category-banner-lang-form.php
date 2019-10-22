@@ -18,7 +18,7 @@ $haveImage = AttachedFile::getAttachment( AttachedFile::FILETYPE_CATEGORY_BANNER
 			<div class="col-md-12">
 				<div class="preview">
 					<?php if( $haveImage ){ ?>
-					<div class="profile__pic"><img src="<?php echo CommonHelper::generateUrl( 'Category', 'sellerBanner', array( $shop_id, $prodCatId, $formLangId, 'WIDE')).'?'.time();?>" alt="<?php echo Labels::getLabel('LBL_Banner', $siteLangId);?>"></div>
+					<div class="profile__pic"><img src="<?php echo CommonHelper::generateUrl( 'Category', 'sellerBanner', array( $shop_id, $prodCatId, $formLangId, 'WIDE'));?>" alt="<?php echo Labels::getLabel('LBL_Banner', $siteLangId);?>"></div>
 					<?php
 					$category_banner_fld->htmlAfterField = '<a class = "btn btn--primary btn--sm" href="javascript:void(0);" onClick="removeCategoryBanner('. $prodCatId .', ' . $formLangId . ')">'.Labels::getLabel('LBL_Remove',$siteLangId).'</a>';
 					} ?>

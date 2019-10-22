@@ -7,7 +7,7 @@ class LabelsController extends AdminBaseController
     public function __construct($action)
     {
         $ajaxCallArray = array('form','search','setup');
-        if(!FatUtility::isAjaxCall() && in_array($action, $ajaxCallArray)) {
+        if (!FatUtility::isAjaxCall() && in_array($action, $ajaxCallArray)) {
             die($this->str_invalid_Action);
         }
         parent::__construct($action);
@@ -35,7 +35,7 @@ class LabelsController extends AdminBaseController
         $data = FatApp::getPostedData();
         //$page = ( empty($data['page']) || $data['page'] <= 0 ) ? 1 : $data['page'];
         $page = FatApp::getPostedData('page', FatUtility::VAR_INT, 1);
-        if($page < 2 ) {
+        if ($page < 2) {
             $page = 1;
         }
         $post = $searchForm->getFormDataFromArray($data);
@@ -48,7 +48,12 @@ class LabelsController extends AdminBaseController
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
 
-        if(!empty($post['keyword'])) {
+        $type = FatApp::getPostedData('label_type', FatUtility::VAR_INT, -1);
+        if ($type > -1) {
+            $srch->addCondition('label_type', '=', $type);
+        }
+
+        if (!empty($post['keyword'])) {
             $cond = $srch->addCondition('lbl.label_key', 'like', '%'.$post['keyword'].'%', 'AND');
             $cond->attachCondition('lbl.label_caption', 'like', '%'.$post['keyword'].'%', 'OR');
         }
@@ -65,24 +70,30 @@ class LabelsController extends AdminBaseController
         $this->_template->render(false, false);
     }
 
-    public function form($label_id)
+    public function form($label_id, $labelType = Labels::TYPE_WEB)
     {
         $this->objPrivilege->canViewLanguageLabels();
 
+        $labelTypeArr = Labels::getTypeArr($this->adminLangId);
+
+        if (!array_key_exists($labelType, $labelTypeArr)) {
+            FatUtility::dieWithError($this->str_invalid_request);
+        }
+
         $label_id = FatUtility::int($label_id);
 
-        if($label_id == 0) {
+        if ($label_id == 0) {
             FatUtility::dieWithError($this->str_invalid_request);
         }
 
         $data =  Labels::getAttributesById($label_id, array('label_key'));
-        if($data ==  false) {
+        if ($data ==  false) {
             FatUtility::dieWithError($this->str_invalid_request);
         }
 
         $labelKey = $data['label_key'];
 
-        $frm = $this->getForm($labelKey);
+        $frm = $this->getForm($labelKey, $labelType);
 
         $srch = Labels::getSearchObject();
         $srch->addCondition('lbl.label_key', '=', $labelKey);
@@ -91,21 +102,22 @@ class LabelsController extends AdminBaseController
         $rs = $srch->getResultSet();
         $record = array();
 
-        if($rs) {
+        if ($rs) {
             $record = FatApp::getDb()->fetchAll($rs, 'label_lang_id');
         }
 
-        if($record ==  false) {
+        if ($record ==  false) {
             FatUtility::dieWithError($this->str_invalid_request);
         }
 
         $arr = array();
 
-        foreach($record as $k => $v){
+        foreach ($record as $k => $v) {
             $arr['label_key'] = $v['label_key'];
             $arr['label_caption'.$k] = $v['label_caption'];
         }
 
+        $arr['label_type'] = $labelType;
         $frm->fill($arr);
 
         $this->set('labelKey', $labelKey);
@@ -119,7 +131,7 @@ class LabelsController extends AdminBaseController
         $this->objPrivilege->canEditLanguageLabels();
         $data = FatApp::getPostedData();
 
-        $frm = $this->getForm($data['label_key']);
+        $frm = $this->getForm($data['label_key'], $data['label_type']);
         $post = $frm->getFormDataFromArray($data);
         if (false === $post) {
             Message::addErrorMessage(current($frm->getValidationErrors()));
@@ -127,6 +139,13 @@ class LabelsController extends AdminBaseController
         }
 
         $labelKey = $post['label_key'];
+        $labelType = FatApp::getPostedData('label_type', FatUtility::VAR_INT, Labels::TYPE_WEB);
+        $labelTypeArr = Labels::getTypeArr($this->adminLangId);
+
+        if (!array_key_exists($labelType, $labelTypeArr)) {
+            FatUtility::dieJsonError($this->str_invalid_request);
+        }
+
         $srch = Labels::getSearchObject();
         $srch->addCondition('lbl.label_key', '=', $labelKey);
         $srch->doNotCalculateRecords();
@@ -134,30 +153,32 @@ class LabelsController extends AdminBaseController
         $rs = $srch->getResultSet();
 
         $record = FatApp::getDb()->fetchAll($rs, 'label_lang_id');
-        if($record == false) {
+        if ($record == false) {
             Message::addErrorMessage($this->str_invalid_request);
             FatUtility::dieJsonError(Message::getHtml());
         }
 
         $languages = Language::getAllNames();
-        foreach($languages as $langId=>$langName){
+        foreach ($languages as $langId => $langName) {
             $keyValue = strip_tags(trim($post['label_caption'.$langId]));
             $data = array(
-            'label_lang_id'=>$langId,
-            'label_key'=>$labelKey,
-            'label_caption'=>$keyValue,
+                'label_lang_id'=>$langId,
+                'label_key'=>$labelKey,
+                'label_caption'=>$keyValue,
+                'label_type'=>$labelType,
             );
             $obj = new Labels();
-            if(!$obj->addUpdateData($data)) {
+            if (!$obj->addUpdateData($data)) {
                 Message::addErrorMessage($obj->getError());
                 FatUtility::dieWithError(Message::getHtml());
             }
 
-            if(Labels::isAPCUcacheAvailable()) {
+            if (Labels::isAPCUcacheAvailable()) {
                 $cacheKey = Labels::getAPCUcacheKey($labelKey, $langId);
                 apcu_store($cacheKey, $keyValue);
             }
         }
+        $this->updateJsonFile(Labels::TYPE_WEB);
         $this->set('msg', $this->str_setup_successful);
         $this->_template->render(false, false, 'json-success.php');
     }
@@ -189,8 +210,8 @@ class LabelsController extends AdminBaseController
 
         /* Sheet Heading Row[ */
         $arr = array( Labels::getLabel('LBL_Key', $adminLangId) );
-        if($languages ) {
-            foreach( $languages as $lang ){
+        if ($languages) {
+            foreach ($languages as $lang) {
                 array_push($arr, $lang['language_code']);
             }
         }
@@ -204,23 +225,23 @@ class LabelsController extends AdminBaseController
         $arr = array();
         $langArr = array();
 
-        while( $row = $db->fetch($rs) ){
-            if($key != $row['label_key'] ) {
-                if(!empty($langArr) ) {
+        while ($row = $db->fetch($rs)) {
+            if ($key != $row['label_key']) {
+                if (!empty($langArr)) {
                     $arr[$counter] = array('label_key' => $key );
-                    foreach($langArr as $k=>$val){
-                        if (is_array($val) ) {
-                            foreach ($val as $key=>$v) { $val[$key] = htmlentities($v);
+                    foreach ($langArr as $k=>$val) {
+                        if (is_array($val)) {
+                            foreach ($val as $key=>$v) {
+                                $val[$key] = htmlentities($v);
                             }
                         }
                         $arr[$counter]['data'] = $val;
-
                     }
                     $counter++;
                 }
                 $key = $row['label_key'];
                 $langArr = array();
-                foreach( $languages as $lang ){
+                foreach ($languages as $lang) {
                     $langArr[$key][$lang['language_id']]  = '';
                 }
                 $langArr[$key][$row['label_lang_id']] = $row['label_caption'] ;
@@ -229,18 +250,19 @@ class LabelsController extends AdminBaseController
             }
         }
 
-        foreach( $arr as $a ){
+        foreach ($arr as $a) {
             $sheetArr = array();
             $sheetArr = array( $a['label_key'] );
-            if(!empty($a['data']) ) {
-                foreach( $a['data'] as $langId=>$caption ){
+            if (!empty($a['data'])) {
+                foreach ($a['data'] as $langId=>$caption) {
                     array_push($sheetArr, html_entity_decode($caption));
                 }
             }
             array_push($sheetData, $sheetArr);
         }
 
-        CommonHelper::convertToCsv($sheetData, 'Labels_'.date("d-M-Y").'.csv', ','); exit;
+        CommonHelper::convertToCsv($sheetData, 'Labels_'.date("d-M-Y").'.csv', ',');
+        exit;
     }
 
     public function importLabelsForm()
@@ -255,13 +277,13 @@ class LabelsController extends AdminBaseController
     {
         $this->objPrivilege->canEditLanguageLabels();
 
-        if (!is_uploaded_file($_FILES['import_file']['tmp_name']) ) {
+        if (!is_uploaded_file($_FILES['import_file']['tmp_name'])) {
             Message::addErrorMessage(Labels::getLabel('LBL_Please_Select_A_CSV_File', $this->adminLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
         $post = FatApp::getPostedData();
 
-        if(!in_array($_FILES['import_file']['type'], CommonHelper::isCsvValidMimes()) ) {
+        if (!in_array($_FILES['import_file']['type'], CommonHelper::isCsvValidMimes())) {
             Message::addErrorMessage(Labels::getLabel("LBL_Not_a_Valid_CSV_File", $this->adminLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
@@ -283,7 +305,7 @@ class LabelsController extends AdminBaseController
         array_shift($firstLine);
         $firstLineLangArr = $firstLine;
         $langIndexLangIds = array();
-        foreach( $firstLineLangArr as $key => $langCode ){
+        foreach ($firstLineLangArr as $key => $langCode) {
             if (!array_key_exists($langCode, $languages)) {
                 Message::addErrorMessage(Labels::getLabel("MSG_Invalid_Coloum_CSV_File", $this->adminLangId));
                 FatUtility::dieJsonError(Message::getHtml());
@@ -292,13 +314,13 @@ class LabelsController extends AdminBaseController
             $langIndexLangIds[$key] = $languages[$langCode]['language_id'];
         }
         /* CommonHelper::printArray($langIndexLangIds); die(); */
-        while( ($line = fgetcsv($csvFilePointer) ) !== false ){
-            if($line[0] != '') {
+        while (($line = fgetcsv($csvFilePointer)) !== false) {
+            if ($line[0] != '') {
                 $labelKey = array_shift($line);
-                foreach( $line as $key => $caption ){
+                foreach ($line as $key => $caption) {
                     $sql = "SELECT label_key FROM ". Labels::DB_TBL ." WHERE label_key = " . $db->quoteVariable($labelKey). " AND label_lang_id = " .  $langIndexLangIds[$key];
                     $rs = $db->query($sql);
-                    if($row = $db->fetch($rs) ) {
+                    if ($row = $db->fetch($rs)) {
                         $db->updateFromArray(Labels::DB_TBL, array( 'label_caption' => $caption ), array('smt' => 'label_key = ? AND label_lang_id = ?', 'vals' => array( $labelKey, $langIndexLangIds[$key] ) ));
                     } else {
                         $dataToSaveArr = array(
@@ -311,6 +333,9 @@ class LabelsController extends AdminBaseController
                 }
             }
         }
+
+        $labelsUpdatedAt = array('conf_name'=>'CONF_LANG_LABELS_UPDATED_AT','conf_val'=>time());
+        FatApp::getDb()->insertFromArray('tbl_configurations', $labelsUpdatedAt, false, array(), $labelsUpdatedAt);
 
         Message::addMessage(Labels::getLabel('LBL_Labels_data_imported/updated_Successfully', $this->adminLangId));
         FatUtility::dieJsonSuccess(Message::getHtml());
@@ -334,20 +359,22 @@ class LabelsController extends AdminBaseController
         $this->objPrivilege->canViewLanguageLabels();
         $frm = new Form('frmLabelsSearch');
         $f1 = $frm->addTextBox(Labels::getLabel('LBL_Keyword', $this->adminLangId), 'keyword', '');
+        $frm->addSelectBox(Labels::getLabel('LBL_Type', $this->adminLangId), 'label_type', array('-1'=>Labels::getLabel('LBL_Does_Not_Matter', $this->adminLangId)) + Labels::getTypeArr($this->adminLangId), -1, array(), '');
         $fld_submit=$frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Search', $this->adminLangId));
         $fld_cancel = $frm->addButton("", "btn_clear", Labels::getLabel('LBL_Clear_Search', $this->adminLangId));
         $fld_submit->attachField($fld_cancel);
         return $frm;
     }
 
-    private function getForm( $label_key )
+    private function getForm($label_key, $label_type)
     {
         $this->objPrivilege->canViewLanguageLabels();
         $frm = new Form('frmLabels');
         $frm->addHiddenField('', 'label_key', $label_key);
+        $frm->addHiddenField('', 'label_type', $label_type);
         $languages = Language::getAllNames();
         $frm->addTextbox(Labels::getLabel('LBL_Key', $this->adminLangId), 'key', $label_key);
-        foreach($languages as $langId => $langName){
+        foreach ($languages as $langId => $langName) {
             //$frm->addRequiredField($langName,'label_caption'.$langId);
             $fld = null;
             $fld = $frm->addTextArea($langName, 'label_caption'.$langId);
@@ -355,5 +382,18 @@ class LabelsController extends AdminBaseController
         }
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $this->adminLangId));
         return $frm;
+    }
+
+    public function updateJsonFile($labelType = Labels::TYPE_WEB)
+    {
+        $languages = Language::getAllCodesAssoc();
+        foreach ($languages as $langId => $langCode) {
+            $resp = Labels::updateDataToFile($langId, $langCode, $labelType, true);
+            if ($resp === false) {
+                FatUtility::dieJsonError(Labels::getLabel('MSG_Unable_to_update_file', $this->adminLangId));
+            }
+        }
+        $message = Labels::getLabel('MSG_File_successfully_updated', $this->adminLangId);
+        FatUtility::dieJsonSuccess($message);
     }
 }

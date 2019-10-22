@@ -75,6 +75,8 @@ class SearchItem extends MyAppModel
                         $arr_url_params['collection_id'] = $valueString;
                         break;
                     case 'keyword':
+                        $arr_url_params[$keyString] = urldecode($valueString);
+                    break;
                     case 'page':
                     case 'category':
                         $arr_url_params[$keyString] = $valueString;

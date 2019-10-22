@@ -1,20 +1,16 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');?>
 
 <section class="section">
-	<div class="sectionhead">
-		
-		<h4><?php echo Labels::getLabel('LBL_Product_Setup',$adminLangId); ?></h4>
+	<div class="sectionhead">		
+		<h4><?php echo Labels::getLabel('LBL_SEO_CONTENT',$adminLangId); ?></h4>
 	</div>
 	<div class="sectionbody space">
-
 			<div class="row">
-
 				<div class="col-sm-12">
-					<div class="tabs_nav_container responsive flat">
+				<?php /* <div class="tabs_nav_container responsive flat">
 						<?php require_once('sellerCatalogProductTop.php');?>
-					</div>		
-					<div class="border-box border-box--space">
-
+					</div> */?>		
+					<div class="border-box">
 					<div class="tabs_nav_container responsive">
 						<?php require_once('sellerProductSeoTop.php');?>
 					</div>

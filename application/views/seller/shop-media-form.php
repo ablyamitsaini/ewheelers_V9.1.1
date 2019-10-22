@@ -33,6 +33,7 @@ $this->includeTemplate('seller/_partial/shop-navigation.php', $variables, false)
                 <div id="mediaResponse"></div>
                 <div class="col-md-6">
                     <div class="preview">
+                    <h5><?php echo Labels::getLabel('LBL_Banner_Setup', $siteLangId); ?></h5>
                       <small class="text--small preferredDimensions-js"><?php echo sprintf(Labels::getLabel('LBL_Preferred_Dimensions_%s', $siteLangId), '2000 x 500'); ?></small>
                         <?php echo $shopBannerFrm->getFormHtml();?>
                         <div id="banner-image-listing" class="row"></div>
@@ -40,6 +41,7 @@ $this->includeTemplate('seller/_partial/shop-navigation.php', $variables, false)
                 </div>
                 <div class="col-md-6">
                     <div class="preview">
+                    <h5><?php echo Labels::getLabel('LBL_Logo_Setup', $siteLangId); ?></h5>
                         <small class="text--small"><?php echo sprintf(Labels::getLabel('MSG_Upload_shop_logo_text', $siteLangId), '150*150')?></small>
                         <?php echo $shopLogoFrm->getFormHtml();?>
                            <div id="logo-image-listing" class="row" ></div>

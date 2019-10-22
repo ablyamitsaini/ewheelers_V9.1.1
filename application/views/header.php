@@ -32,6 +32,7 @@ $this->includeTemplate('_partial/header/commonHead1.php', $commonHead1Data, fals
 /* This is not included in common head, because, commonhead file not able to access the $this->Controller and $this->action[ */
 echo $this->writeMetaTags();
 /* ] */
+
 /* This is not included in common head, because, if we are adding any css/js from any controller then that file is not included[ */
 echo $this->getJsCssIncludeHtml(!CONF_DEVELOPMENT_MODE);
 /* ] */

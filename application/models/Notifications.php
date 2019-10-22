@@ -16,7 +16,7 @@ class Notifications extends MyAppModel
         return $srch;
     }
 
-    public function addNotification($data)
+    public function addNotification($data, $pushNotification = true)
     {
         $userId = FatUtility::int($data['unotification_user_id']);
         if ($userId < 1) {
@@ -29,23 +29,26 @@ class Notifications extends MyAppModel
             return false;
         }
 
-        $uObj = new User($userId);
-        $fcmDeviceIds = $uObj->getPushNotificationTokens();
-        if (empty($fcmDeviceIds)) {
-            return $this->getMainTableRecordId();
-        }
 
-        $google_push_notification_api_key = FatApp::getConfig("CONF_GOOGLE_PUSH_NOTIFICATION_API_KEY", FatUtility::VAR_STRING, '');
-        if (trim($google_push_notification_api_key) == '') {
-            return $this->getMainTableRecordId();
-        }
+        if (true === $pushNotification) {
+            $google_push_notification_api_key = FatApp::getConfig("CONF_GOOGLE_PUSH_NOTIFICATION_API_KEY", FatUtility::VAR_STRING, '');
+            if (trim($google_push_notification_api_key) == '') {
+                return $this->getMainTableRecordId();
+            }
 
-        /* require_once(CONF_INSTALLATION_PATH . 'library/APIs/notifications/pusher.php');
-        $pusher = new Pusher($google_push_notification_api_key); */
-        foreach ($fcmDeviceIds as $pushNotificationApiToken) {
-            $message = array( 'text' => $data['unotification_body'], 'type'=>$data['unotification_type']);
-            self::sendPushNotification($google_push_notification_api_key, $pushNotificationApiToken['uauth_fcm_id'], $message);
-            /* $pusher->notify($pushNotificationApiToken['uauth_fcm_id'], array('text'=>$data['unotification_body'],'type'=>$data['unotification_type'])); */
+            $uObj = new User($userId);
+            $fcmDeviceIds = $uObj->getPushNotificationTokens();
+            if (empty($fcmDeviceIds)) {
+                return $this->getMainTableRecordId();
+            }
+
+            /* require_once(CONF_INSTALLATION_PATH . 'library/APIs/notifications/pusher.php');
+            $pusher = new Pusher($google_push_notification_api_key); */
+            foreach ($fcmDeviceIds as $pushNotificationApiToken) {
+                $message = array( 'text' => $data['unotification_body'], 'type'=>$data['unotification_type']);
+                self::sendPushNotification($google_push_notification_api_key, $pushNotificationApiToken['uauth_fcm_id'], $message);
+                /* $pusher->notify($pushNotificationApiToken['uauth_fcm_id'], array('text'=>$data['unotification_body'],'type'=>$data['unotification_type'])); */
+            }
         }
 
         return $this->getMainTableRecordId();
@@ -87,10 +90,13 @@ class Notifications extends MyAppModel
 
     public function readUserNotification($notificationId, $userId)
     {
-        if (!FatApp::getDb()->updateFromArray(static::DB_TBL, array(static::DB_TBL_PREFIX.'is_read'=>1), array('smt' => static::DB_TBL_PREFIX . 'id = ? AND '.static::DB_TBL_PREFIX . 'user_id = ?', 'vals' => array((int)$notificationId,(int)$userId)))) {
+        $smt = array(
+            'smt' => static::DB_TBL_PREFIX . 'id = ? AND '.static::DB_TBL_PREFIX . 'user_id = ?',
+            'vals' => array((int)$notificationId, (int)$userId)
+        );
+        if (!FatApp::getDb()->updateFromArray(static::DB_TBL, array(static::DB_TBL_PREFIX.'is_read'=>1), $smt)) {
             $this->error = FatApp::getDb()->getError();
-            echo $this->error;
-            die;
+            return false;
         }
         return true;
     }

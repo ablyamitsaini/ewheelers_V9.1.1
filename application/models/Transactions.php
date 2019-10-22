@@ -55,7 +55,7 @@ class Transactions extends MyAppModel
     {
         $langId = FatUtility::int($langId);
         if ($langId == 0) {
-            trigger_error(Labels::getLabel('MSG_Language_Id_not_specified.', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('MSG_Language_Id_not_specified.', $langId), E_USER_ERROR);
         }
         $arr=array(
         static::WITHDRAWL_STATUS_PENDING => Labels::getLabel('LBL_Withdrawal_Request_Pending', $langId),
@@ -70,7 +70,7 @@ class Transactions extends MyAppModel
     {
         $langId = FatUtility::int($langId);
         if ($langId == 0) {
-            trigger_error(Labels::getLabel('MSG_Language_Id_not_specified.', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('MSG_Language_Id_not_specified.', $langId), E_USER_ERROR);
         }
 
         $arr=array(
@@ -215,11 +215,11 @@ class Transactions extends MyAppModel
 
         $srch = static::getSearchObject();
         $srch->joinTable('(' . $qryUserPointsBalance . ')', 'JOIN', 'tqupb.utxn_id <= utxn.utxn_id', 'tqupb');
-        $srch->addMultipleFields(array('utxn.*',"SUM(tqupb.bal) balance"));
+
+        $srch->addMultipleFields(array('utxn.*', "SUM(tqupb.bal) balance", "IF(utxn.utxn_credit > 0, ".static::CREDIT_TYPE.", ".static::DEBIT_TYPE.") as txnPaymentType"));
         $srch->addCondition('utxn.utxn_user_id', '=', $userId);
         $srch->addGroupBy('utxn.utxn_id');
         $srch->addOrder('utxn_id', 'DESC');
-
         return $srch;
     }
 }

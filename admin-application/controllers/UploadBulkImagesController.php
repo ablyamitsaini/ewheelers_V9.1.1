@@ -48,38 +48,25 @@ class UploadBulkImagesController extends AdminBaseController
         }
 
         $fileName = $_FILES['bulk_images']['name'];
-        $tmp_name = $_FILES['bulk_images']['tmp_name'];
+        $tmpName = $_FILES['bulk_images']['tmp_name'];
 
-        $fileExt = pathinfo($fileName, PATHINFO_EXTENSION);
-        $fileExt = strtolower($fileExt);
-        if ('zip' != $fileExt) {
-            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_FILE', $this->langId));
-            FatUtility::dieJsonError(Message::getHtml());
-        }
-
-        $fileHandlerObj = new AttachedFile();
-
-        $savedFile = $fileHandlerObj->saveAttachment($tmp_name, AttachedFile::FILETYPE_BULK_IMAGES, 0, 0, $fileName);
-
+        $uploadBulkImgobj = new UploadBulkImages();
+        $savedFile = $uploadBulkImgobj->upload($fileName, $tmpName);
         if (false === $savedFile) {
-            Message::addErrorMessage($fileHandlerObj->getError());
+            Message::addErrorMessage($uploadBulkImgobj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
-
 
         $path = CONF_UPLOADS_PATH . AttachedFile::FILETYPE_BULK_IMAGES_PATH;
-
-        if (false === $fileHandlerObj->extractZip($path . $savedFile)) {
-            Message::addErrorMessage(Labels::getLabel('MSG_COULD_NOT_SAVE_FILE', $this->langId));
-            FatUtility::dieJsonError(Message::getHtml());
-        }
-
         $filePath = AttachedFile::FILETYPE_BULK_IMAGES_PATH . $savedFile;
 
         $msg = '<br>'.str_replace('{path}', '<br><b>'.$filePath.'</b>', Labels::getLabel('MSG_Your_uploaded_files_path_will_be:_{path}', $this->langId));
         $msg = Labels::getLabel('MSG_Uploaded_Successfully.', $this->langId) .' '.$msg;
-
-        FatUtility::dieJsonSuccess($msg);
+        $json = [
+            "msg" => $msg,
+            "path" => base64_encode($path . $savedFile)
+        ];
+        FatUtility::dieJsonSuccess($json);
     }
 
     private function getSearchForm()
@@ -142,8 +129,8 @@ class UploadBulkImagesController extends AdminBaseController
 
     public function removeDir($directory)
     {
-        $directory = CONF_UPLOADS_PATH . base64_decode($directory).'/' ;
-
+        $directory = CONF_UPLOADS_PATH . base64_decode($directory) ;
+        $obj = new UploadBulkImages();
         $msg = $obj->deleteSingleBulkMediaDir($directory);
         FatUtility::dieJsonSuccess($msg);
     }
@@ -184,5 +171,21 @@ class UploadBulkImagesController extends AdminBaseController
         $rs = $sellersObj->getResultSet();
         $sellers = FatApp::getDb()->fetchAll($rs);
         die(json_encode($sellers));
+    }
+
+    public function downloadPathsFile($path)
+    {
+        if (empty($path)) {
+            Message::addErrorMessage(Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId));
+        }
+        $filesPathArr = UploadBulkImages::getAllFilesPath(base64_decode($path));
+        if (!empty($filesPathArr) && 0 < count($filesPathArr)) {
+            $headers[] = ['File Path', 'File Name'];
+            $filesPathArr = array_merge($headers, $filesPathArr);
+            CommonHelper::convertToCsv($filesPathArr, time().'.csv');
+            exit;
+        }
+        Message::addErrorMessage(Labels::getLabel('MSG_No_File_Found', $this->adminLangId));
+        CommonHelper::redirectUserReferer();
     }
 }

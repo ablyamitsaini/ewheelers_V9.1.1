@@ -7,6 +7,11 @@ class DummyController extends MyAppController
         //CommonHelper::recursiveDelete( $dirName );
     }
 
+    public function addToStore()
+    {
+        $product = Product::isAvailableForAddToStore(64, 11);
+    }
+
     public function createProcedures($printQuery = false)
     {
         $db = FatApp::getDb();
@@ -322,13 +327,32 @@ class DummyController extends MyAppController
 
     public function index()
     {
+       $res = CommonHelper::getUrlTypeData('http://support.apple.com/downloads/safari'); 
+      
+       exit;
 
     }
 
 
     public function test()
     {
-        
+        $warning = Labels::getLabel("MSG_One_of_the_product_in_combo_is_not_available_in_requested_quantity,_you_can_buy_upto_max_{n}_quantity.", $this->siteLangId);
+        echo $warning  = str_replace(array('{n}','{N}'), 1, $warning);
+        exit;
+        $srch = new ProductSearch(1);
+        $srch->setDefinedCriteria();
+        //$srch->joinProductToCategory();
+        $srch->joinTable(Product::DB_TBL_PRODUCT_TO_CATEGORY,'INNER JOIN', 'ptc.ptc_product_id = p.product_id', 'ptc');
+        $srch->joinTable(ProductCategory::DB_TBL, 'INNER JOIN', 'c.prodcat_id = ptc.ptc_prodcat_id and c.prodcat_active = '.applicationConstants::ACTIVE.' and c.prodcat_deleted = '.applicationConstants::NO, 'c');
+        $srch->joinSellerSubscription(0, false, true);
+        $srch->addSubscriptionValidCondition();
+        $srch->doNotCalculateRecords();
+        $srch->doNotLimitRecords();
+        $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
+        $srch->addMultipleFields(array('count(distinct(p.product_id)) as productCounts', 'c.prodcat_code','c.prodcat_id'));
+        $srch->addGroupBy('p.product_id');
+        $srch->addDirectCondition('c.prodcat_code like "%000113%"');
+        echo $srch->getQuery(); exit;
     }
 
     private function getShopInfo($shop_id)

@@ -218,7 +218,7 @@ class UserFavoriteProductSearch extends SearchBase
         //$srch->addMultipleFields(array('fpc.ufp_user_id as userFavProductcount_user_id','count(fpc.ufp_id) as userFavProductcount'));
         //$srch->addGroupBy('fpc.ufp_user_id');
         return $qrytotal = $srch->getQuery();
-        $this->joinTable('(' . $qrytotal . ')', 'LEFT OUTER JOIN', 'ufp.ufp_user_id = fupc.userFavProductcount_user_id', 'fupc');
+        // $this->joinTable('(' . $qrytotal . ')', 'LEFT OUTER JOIN', 'ufp.ufp_user_id = fupc.userFavProductcount_user_id', 'fupc');
     }
 
     public function joinSellerOrder($langId = 0)

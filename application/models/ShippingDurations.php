@@ -40,7 +40,7 @@ class ShippingDurations extends MyAppModel
     {
         $langId = FatUtility::int($langId);
         if ($langId == 0) {
-            trigger_error(Labels::getLabel('MSG_Language_Id_not_specified.', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('MSG_Language_Id_not_specified.', $langId), E_USER_ERROR);
         }
         $arr=array(
         static::SHIPPING_DURATION_DAYS => Labels::getLabel('LBL_Business_Days', $langId),
@@ -98,7 +98,7 @@ class ShippingDurations extends MyAppModel
         }
         $siteLangId = FatUtility::int($siteLangId);
         if (!$siteLangId) {
-            trigger_error(Labels::getLabel("ERR_Language_Id_Not_Passed.", $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel("ERR_Language_Id_Not_Passed.", $siteLangId), E_USER_ERROR);
         }
         $day_or_week = '';
         $day_or_week = static::getShippingDurationDaysOrWeekArr($siteLangId)[$sdurationRow['sduration_days_or_weeks']];

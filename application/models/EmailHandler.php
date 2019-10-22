@@ -247,7 +247,7 @@ class EmailHandler extends FatModel
             $notificationObj = new Notifications();
             $notificationDataArr = array(
             'unotification_user_id'    =>$d['user_id'],
-            'unotification_body'=>Labels::getLabel('M_APP_NOTIFICATION_THANK_YOU_FOR_REGISTERING', $langId),
+            'unotification_body'=>Labels::getLabel('APP_VERIFY_YOUR_ACCCOUNT_FROM_REGISTERED_EMAIL', $langId),
             'unotification_type'=>'REGISTRATION_VERIFICATION',
             );
             if (!$notificationObj->addNotification($notificationDataArr)) {
@@ -379,7 +379,7 @@ class EmailHandler extends FatModel
             $notificationObj = new Notifications();
             $notificationDataArr = array(
             'unotification_user_id'    =>$d['user_id'],
-            'unotification_body'=>Labels::getLabel('M_APP_NOTIFICATION_THANK_YOU_FOR_SIGNING_UP', $langId),
+            'unotification_body'=>Labels::getLabel('APP_THANK_YOU_FOR_ACCOUNT_VERIFICATION', $langId),
             'unotification_type'=>'REGISTRATION',
             );
             if (!$notificationObj->addNotification($notificationDataArr)) {
@@ -590,7 +590,7 @@ class EmailHandler extends FatModel
         return false;
     }
 
-    public function newOrderBuyerAdmin($order_id, $langId = 0)
+    public function newOrderBuyerAdmin($order_id, $langId = 0, $includeAdmin = true, $pushNotification = true)
     {
         if ($order_id == '') {
             trigger_error(Labels::getLabel("MSG_Order_Id_not_specified", $this->commonLangId), E_USER_ERROR);
@@ -657,7 +657,7 @@ class EmailHandler extends FatModel
             '{order_products_table_format}' => $order_products_table_format,
             );
 
-            if (FatApp::getConfig('CONF_NEW_ORDER_EMAIL', FatUtility::VAR_INT, 1)) {
+            if ($includeAdmin && FatApp::getConfig('CONF_NEW_ORDER_EMAIL', FatUtility::VAR_INT, 1)) {
                 $this->sendMailToAdminAndAdditionalEmails("admin_order_email", $arrReplacements, static::ADD_ADDITIONAL_ALERTS, static::NOT_ONLY_SUPER_ADMIN, $langId);
             }
             self::sendMailTpl($userInfo['credential_email'], "customer_order_email", $langId, $arrReplacements);
@@ -665,10 +665,11 @@ class EmailHandler extends FatModel
             $notificationObj = new Notifications();
             $notificationDataArr = array(
             'unotification_user_id'    =>$orderInfo["order_user_id"],
-            'unotification_body'=>Labels::getLabel('M_APP_NOTIFICATION_THANKS_FOR_PLACING_AN_ORDER', $langId),
+            'unotification_body'=>CommonHelper::replaceStringData(Labels::getLabel('APP_YOUR_ORDER_{ORDERID}_HAVE_BEEN_PLACE', $langId), array('{ORDERID}' => $orderInfo['order_id'])),
             'unotification_type'=>'BUYER_ORDER',
+            'unotification_data'=>json_encode(array('orderId'=>$orderInfo['order_id'])),
             );
-            if (!$notificationObj->addNotification($notificationDataArr)) {
+            if (!$notificationObj->addNotification($notificationDataArr, $pushNotification)) {
                 $this->error = $notificationObj->getError();
                 return false;
             }
@@ -735,11 +736,18 @@ class EmailHandler extends FatModel
 
             $this->sendMailToAdminAndAdditionalEmails("primary_order_payment_status_change_admin", $arrReplacements, static::ADD_ADDITIONAL_ALERTS, static::NOT_ONLY_SUPER_ADMIN, $langId);
 
+            $notiArrReplacements = array(
+                '{ORDERID}' => $arrReplacements['{invoice_number}'],
+                '{STATUS}' => $arrReplacements['{new_order_status}']
+            );
+            $appNotification = CommonHelper::replaceStringData(Labels::getLabel('APP_PAYMENT_STATUS_FOR_ORDER_{ORDERID}_UPDATED_{STATUS}', $langId), $notiArrReplacements);
+
             $notificationObj = new Notifications();
             $notificationDataArr = array(
             'unotification_user_id'    =>$orderDetail["order_user_id"],
-            'unotification_body'=>sprintf(Labels::getLabel('M_APP_NOTIFICATION_YOUR_ORDER_PAYMENT_STATUS_CHANGED', $langId), $arrReplacements['{new_order_status}'], $arrReplacements['{invoice_number}']),
+            'unotification_body'=>$appNotification,
             'unotification_type'=>'ORDER_PAYMENT_STATUS',
+            'unotification_data'=>json_encode(array('orderId' => $arrReplacements['{invoice_number}'], 'status' => $arrReplacements['{new_order_status}'])),
             );
             if (!$notificationObj->addNotification($notificationDataArr)) {
                 $this->error = $notificationObj->getError();
@@ -842,11 +850,11 @@ class EmailHandler extends FatModel
                 $userObj = new User($orderDetail["order_user_id"]);
                 $userInfo = $userObj->getUserInfo(array('user_name','credential_email','user_phone'));
                 $arrReplacements = array(
-                    '{vendor_name}' => trim($val['op_shop_owner_name']),
-                    '{order_items_table_format}' => $orderItemsTableFormatHtml,
-                    '{order_shipping_information}' => '',
-                    '{order_user_email}' => $userInfo['credential_email'],
-                    );
+                        '{vendor_name}' => trim($val['op_shop_owner_name']),
+                        '{order_items_table_format}' => $orderItemsTableFormatHtml,
+                        '{order_shipping_information}' => '',
+                        '{order_user_email}' => $userInfo['credential_email'],
+                        );
 
                 if ($val['op_product_type'] == Product::PRODUCT_TYPE_DIGITAL) {
                     self::sendMailTpl($val["op_shop_owner_email"], "vendor_digital_order_email", $langId, $arrReplacements);
@@ -854,12 +862,20 @@ class EmailHandler extends FatModel
                     self::sendMailTpl($val["op_shop_owner_email"], "vendor_order_email", $langId, $arrReplacements);
                 }
 
+                $notiArrReplacements = array(
+                    '{PRODUCT}' => $val["op_product_name"],
+                    '{ORDERID}' => $orderDetail['order_id']
+                );
+
+                $appNotification = CommonHelper::replaceStringData(Labels::getLabel('SAPP_{PRODUCT}_ORDER_{ORDERID}_HAS_BEEN_PLACED', $langId), $notiArrReplacements);
+
                 $notificationObj = new Notifications();
                 $notificationDataArr = array(
-                    'unotification_user_id'    =>$val["op_selprod_user_id"],
-                    'unotification_body'=>sprintf(Labels::getLabel('M_APP_NOTIFICATION_AN_ORDER_HAS_BEEN_PLACED', $langId), $val["op_product_name"]),
-                    'unotification_type'=>'SELLER_ORDER',
-                    );
+                        'unotification_user_id'    =>$val["op_selprod_user_id"],
+                        'unotification_body'=>$appNotification,
+                        'unotification_type'=>'SELLER_ORDER',
+                        'unotification_data'=>json_encode(array('orderId' => $orderDetail['order_id'], 'productName' => $val["op_product_name"])),
+                        );
                 if (!$notificationObj->addNotification($notificationDataArr)) {
                     $this->error = $notificationObj->getError();
                     return false;
@@ -897,6 +913,9 @@ class EmailHandler extends FatModel
             $orderItemsTableFormatHtml = $tpl->render(false, false, '_partial/child-order-detail-email.php', true);
             $statuesArr = Orders::getOrderProductStatusArr($orderComment["order_language_id"]);
 
+
+//
+
             $arrReplacements = array(
             '{user_full_name}' => trim($orderComment["buyer_name"]),
             '{new_order_status}' => $statuesArr[$orderComment["oshistory_orderstatus_id"]],
@@ -907,11 +926,27 @@ class EmailHandler extends FatModel
             );
             self::sendMailTpl($orderComment["buyer_email"], "child_order_status_change", $langId, $arrReplacements);
 
+            $replaceVal = array(
+                '{INVOICE}'=>$orderComment["op_invoice_number"],
+                '{PRODUCT}'=>$orderComment["op_product_name"],
+                '{STATUS}'=>$statuesArr[$orderComment["oshistory_orderstatus_id"]]
+            );
+            $appNotification = CommonHelper::replaceStringData(Labels::getLabel('APP_YOUR_ORDER_{INVOICE}_{PRODUCT}_STATUS_{STATUS}', $langId), $replaceVal, true);
+
+            $notificationData = array(
+                'invoiceNumber' => $orderComment["op_invoice_number"],
+                'productName' => $orderComment["op_product_name"],
+                'status' => $statuesArr[$orderComment["oshistory_orderstatus_id"]],
+                'orderId' => $orderComment["op_order_id"],
+                'orderProductId' => $orderComment["op_id"],
+            );
+
             $notificationObj = new Notifications();
             $notificationDataArr = array(
             'unotification_user_id'    =>$buyerId,
-            'unotification_body'=>sprintf(Labels::getLabel('M_APP_NOTIFICATION_YOUR_ORDER_ITEM_STATUS_CHANGED', $langId), $arrReplacements["{new_order_status}"], $arrReplacements["{invoice_number}"]),
+            'unotification_body'=> $appNotification,
             'unotification_type'=>'BUYER_ORDER_STATUS',
+            'unotification_data'=>json_encode($notificationData),
             );
             if (!$notificationObj->addNotification($notificationDataArr)) {
                 $this->error = $notificationObj->getError();
@@ -981,18 +1016,28 @@ class EmailHandler extends FatModel
 
         $txnAmount = $txnDetail["utxn_credit"]>0?$txnDetail["utxn_credit"]:$txnDetail["utxn_debit"];
         $arrReplacements = array(
-        '{user_name}' => trim($txnDetail["user_name"]),
-        '{txn_id}' => Transactions::formatTransactionNumber($txnId),
-        '{txn_type}' => ($txnDetail["utxn_credit"] > 0)?Labels::getLabel('LBL_credited', $langId):Labels::getLabel('L_debited', $langId),
-        '{txn_amount}' => CommonHelper::displayMoneyFormat($txnAmount, true, true),
-        '{txn_comments}' => Transactions::formatTransactionComments($txnDetail["utxn_comments"]),
+            '{user_name}' => trim($txnDetail["user_name"]),
+            '{txn_id}' => Transactions::formatTransactionNumber($txnId),
+            '{txn_type}' => ($txnDetail["utxn_credit"] > 0)?Labels::getLabel('LBL_credited', $langId):Labels::getLabel('L_debited', $langId),
+            '{txn_amount}' => CommonHelper::displayMoneyFormat($txnAmount, true, true),
+            '{txn_comments}' => Transactions::formatTransactionComments($txnDetail["utxn_comments"]),
         );
         self::sendMailTpl($txnDetail["credential_email"], "account_credited_debited", $langId, $arrReplacements);
+
+        $notiArrReplacements = array(
+            '{txnid}' => Transactions::formatTransactionNumber($txnId),
+            '{txntype}' => ($txnDetail["utxn_credit"] > 0)?Labels::getLabel('LBL_credited', $langId):Labels::getLabel('L_debited', $langId),
+            '{txnamount}' => CommonHelper::displayMoneyFormat($txnAmount, true, true),
+        );
+
+        $appNotification = CommonHelper::replaceStringData(Labels::getLabel('APP_AMOUNT_{txnamount}_WITH_{txnid}_HAS_BEEN_{txntype}', $langId), $notiArrReplacements, true);
+
         $notificationObj = new Notifications();
         $notificationDataArr = array(
         'unotification_user_id'    =>    $txnDetail["utxn_user_id"],
-        'unotification_body'=>sprintf(Labels::getLabel('M_APP_NOTIFICATION_YOUR_ACCOUNT_HAS_BEEN_TXN_TYPE_WITH_AMOUNT', $langId), $arrReplacements['{txn_type}'], $arrReplacements['{txn_amount}']),
+        'unotification_body'=>$appNotification,
         'unotification_type'=>'TXN',
+        'unotification_data'=>json_encode(array('txnAmount' => $arrReplacements['{txn_amount}'], 'txnId' => $arrReplacements['{txn_id}'], 'txnType' => $arrReplacements['{txn_type}'])),
         );
         if (!$notificationObj->addNotification($notificationDataArr)) {
             $this->error = $notificationObj->getError();
@@ -1057,12 +1102,19 @@ class EmailHandler extends FatModel
         } else {
             self::sendMailTpl($withdrawalRequestData["user_email"], "withdrawal_request_approved_declined", $langId, $arrReplacements);
         }
+        $notiArrReplacements = array(
+            '{requestid}' => $formattedRequestValue,
+            '{requestamount}' => CommonHelper::displayMoneyFormat($withdrawalRequestData["withdrawal_amount"], true, true),
+            '{requeststatus}' => $statusArr[$withdrawalRequestData['withdrawal_status']],
+        );
+        $appNotification = CommonHelper::replaceStringData(Labels::getLabel('APP_AMOUNT_{requestamount}_WITH_{requestid}_HAS_BEEN_{requeststatus}', $langId), $notiArrReplacements, true);
 
         $notificationObj = new Notifications();
         $notificationDataArr = array(
         'unotification_user_id'    =>    $withdrawalRequestData["withdrawal_user_id"],
-        'unotification_body'=>sprintf(Labels::getLabel('M_APP_NOTIFICATION_YOUR_FUND_WITHDRAWAL_REQUEST_CHANGED', $langId), $arrReplacements['{request_id}'], $arrReplacements['{request_amount}'], $arrReplacements['{request_status}']),
+        'unotification_body'=>$appNotification,
         'unotification_type'=>'FUNDS_WITHDRAWAL_REQUEST_CHANGED',
+        'unotification_data'=>json_encode(array('requestAmount' => $arrReplacements['{request_amount}'], 'requestId' => $arrReplacements['{request_id}'], 'requestStatus' => $arrReplacements['{request_status}'])),
         );
         if (!$notificationObj->addNotification($notificationDataArr)) {
             $this->error = $notificationObj->getError();
@@ -1106,8 +1158,9 @@ class EmailHandler extends FatModel
         $notificationObj = new Notifications();
         $notificationDataArr = array(
         'unotification_user_id'    =>    $message["message_to"],
-        'unotification_body'=>str_replace('{username}', $message['message_from_username'], Labels::getLabel('M_APP_NOTIFICATION_MESSAGE_RECEIVED_FROM_{USERNAME}', $langId)),
+        'unotification_body'=>CommonHelper::replaceStringData(Labels::getLabel('APP_YOU_HAVE_A_NEW_MESSAGE_FROM_{username}', $langId), array('{username}' => $message['message_from_username'])),
         'unotification_type'=>'MESSAGE',
+        'unotification_data'=>json_encode(array('username' => $message['message_from_username'], 'threadId' => $message['thread_id'], 'messageId' => $messageId)),
         );
         if (!$notificationObj->addNotification($notificationDataArr)) {
             $this->error = $notificationObj->getError();
@@ -1154,11 +1207,14 @@ class EmailHandler extends FatModel
 
         $this->sendMailToAdminAndAdditionalEmails("order_cancellation_notification", $arrReplacements, static::ADD_ADDITIONAL_ALERTS, static::NOT_ONLY_SUPER_ADMIN, $langId);
 
+        $appNotification = CommonHelper::replaceStringData(Labels::getLabel('SAPP_RECEIVED_CANCELLATION_FOR_INVOICE_{invoicenumber}', $langId), array('{invoicenumber}' => $sellerOrderAnchor), true);
+
         $notificationObj = new Notifications();
         $notificationDataArr = array(
         'unotification_user_id'    =>    $ocRequestRow["seller_id"],
-        'unotification_body'=>sprintf(Labels::getLabel('M_APP_NOTIFICATION_BUYER_HAS_SUBMITTED_ORDER_CANCELLATION_REQUEST', $langId), $ocRequestRow["op_invoice_number"]),
+        'unotification_body'=>$appNotification,
         'unotification_type'=>'ORDER_CANCELLATION_REQUEST',
+        'unotification_data'=>json_encode(array('invoiceNumber' => $ocRequestRow["op_invoice_number"])),
         );
         if (!$notificationObj->addNotification($notificationDataArr)) {
             $this->error = $notificationObj->getError();
@@ -1239,11 +1295,19 @@ class EmailHandler extends FatModel
 
         /**** Notification For Seller ***********/
 
+        $notiArrReplacements = array(
+            '{username}' => $msgDetail['buyer_username'],
+            '{returnrequestid}' => $msgDetail['orrequest_reference'],
+        );
+
+        $appNotification = CommonHelper::replaceStringData(Labels::getLabel('SAPP_RECEIVED_RETURN_FROM_{username}_WITH_REFERENCE_NUMBER_{returnrequestid}', $langId), $notiArrReplacements, true);
+
         $notificationObj = new Notifications();
         $notificationDataArr = array(
         'unotification_user_id'    =>$msgDetail['op_selprod_user_id'],
-        'unotification_body'=>sprintf(Labels::getLabel('M_APP_NOTIFICATION_USERNAME_HAS_SUBMITTED_RETURN_REQUEST', $langId), $arrReplacements['{username}'], $arrReplacements["{return_request_type}"]),
+        'unotification_body'=>$appNotification,
         'unotification_type'=>'SELLER_RETURN_REQUEST',
+        'unotification_data'=>json_encode(array('username' => $msgDetail['buyer_username'], 'returnRequestId' => $arrReplacements['{return_request_id}'])),
         );
         if (!$notificationObj->addNotification($notificationDataArr)) {
             $this->error = $notificationObj->getError();
@@ -1253,9 +1317,15 @@ class EmailHandler extends FatModel
 
 
         /**** Notification For Buyer ***********/
+        $notiArrReplacements = array(
+            '{returnprodtitle}' => $prodTitleAnchor,
+            '{returnrequestid}' => $msgDetail['orrequest_reference'],
+        );
+        $appNotification = CommonHelper::replaceStringData(Labels::getLabel('APP_RETURN_FOR_{returnprodtitle}_with_{returnrequestid}_SUBMITTED', $langId), $notiArrReplacements, true);
+
         $notificationDataArr = array(
         'unotification_user_id'    =>$msgDetail['orrequest_user_id'],
-        'unotification_body'=>sprintf(Labels::getLabel('M_APP_NOTIFICATION_YOUR_PRODUCT_RETURN_REQUEST_SUBMITTED', $langId), $arrReplacements["{return_request_type}"]),
+        'unotification_body'=>$appNotification,
         'unotification_type'=>'BUYER_RETURN_REQUEST',
         );
         if (!$notificationObj->addNotification($notificationDataArr)) {
@@ -1348,11 +1418,19 @@ class EmailHandler extends FatModel
             self::sendMailTpl($msgDetail["op_shop_owner_email"], "return_request_message_user", $langId, $arrReplacements);
             $notification_user_id = $msgDetail["seller_id"];
 
+            $notiArrReplacements = array(
+                '{username}' => FatApp::getConfig('CONF_WEBSITE_NAME_'.$langId),
+                '{requestnumber}' => $msgDetail["orrequest_reference"],
+            );
+
+            $appNotification = CommonHelper::replaceStringData(Labels::getLabel('APP_NEW_MESSAGE_POSTED_BY_{username}_ON_RETURN_{requestnumber}', $langId), $notiArrReplacements, true);
+
             $notificationObj = new Notifications();
             $notificationDataArr = array(
             'unotification_user_id'    =>$notification_user_id,
-            'unotification_body'=>sprintf(Labels::getLabel('M_APP_NOTIFICATION_USERNAME_POSTED_MESSAGE_REQUEST_NUMBER', $langId), $arrReplacements["{username}"], $arrReplacements['{request_number}']),
+            'unotification_body'=>$appNotification,
             'unotification_type'=>'MESSAGE_RETURN_REQUEST',
+            'unotification_data'=>json_encode(array('username' => $msgDetail["buyer_username"], 'requestNumber' => $msgDetail["orrequest_reference"])),
             );
             if (!$notificationObj->addNotification($notificationDataArr)) {
                 $this->error = $notificationObj->getError();
@@ -1642,11 +1720,19 @@ class EmailHandler extends FatModel
         );
         self::sendMailTpl($row['buyer_email'], "cancellation_request_approved_declined", $langId, $arrReplacements);
 
+        $notiArrReplacements = array(
+        '{invoicenumber}' => $row["op_invoice_number"],
+        '{requeststatus}' => OrderCancelRequest::getRequestStatusArr($langId)[$row['ocrequest_status']],
+        );
+
+        $appNotification = CommonHelper::replaceStringData(Labels::getLabel('APP_STATUS_FOR_CANCELLATION_{invoicenumber}_UPDATED_{requeststatus}', $langId), $notiArrReplacements, true);
+
         $notificationObj = new Notifications();
         $notificationDataArr = array(
         'unotification_user_id'    =>    $row["buyer_id"],
-        'unotification_body'=>sprintf(Labels::getLabel('M_APP_NOTIFICATION_YOUR_ORDER_CANCELLATION_REQUEST_STATUS_CHANGED', $langId), $arrReplacements['{invoice_number}'], $arrReplacements['{request_status}']),
+        'unotification_body'=>$appNotification,
         'unotification_type'=>'CANCELLATION_REQUEST_STATUS',
+        'unotification_data'=>json_encode(array('invoiceNumber' => $row["op_invoice_number"], 'requestStatus' => $arrReplacements["{request_status}"])),
         );
         if (!$notificationObj->addNotification($notificationDataArr)) {
             $this->error = $notificationObj->getError();
@@ -1870,11 +1956,19 @@ class EmailHandler extends FatModel
 
         $this->sendMailToAdminAndAdditionalEmails("reward_points_credited_debited", $arrReplacements, static::ADD_ADDITIONAL_ALERTS, static::NOT_ONLY_SUPER_ADMIN, $langId);
 
+        $notiArrReplacements = array(
+            '{debitcredittype}' => $row['urp_points'] > 0 ? Labels::getLabel('LBL_credited', $langId) : Labels::getLabel('LBL_debited', $langId),
+            '{rewardpoints}' => abs($row['urp_points']),
+        );
+
+        $appNotification = CommonHelper::replaceStringData(Labels::getLabel('APP_REWARDS_{rewardpoints}_HAS_BEEN_{debitcredittype}_ACCOUNT', $langId), $notiArrReplacements);
+
         $notificationObj = new Notifications();
         $notificationDataArr = array(
         'unotification_user_id'    =>    $row["urp_user_id"],
-        'unotification_body'=>sprintf(Labels::getLabel('M_APP_NOTIFICATION_YOUR_ACCOUNT_CREDITED_DEBITED_REWARD_POINTS', $langId), $arrReplacements['{debit_credit_type}'], abs($arrReplacements['{reward_points}'])),
+        'unotification_body'=>$appNotification,
         'unotification_type'=>'REWARD_POINTS',
+        'unotification_data'=>json_encode(array('rewardPoints' => abs($row['urp_points']), 'debitCreditType' => $arrReplacements["{debit_credit_type}"])),
         );
         if (!$notificationObj->addNotification($notificationDataArr)) {
             $this->error = $notificationObj->getError();
@@ -2103,7 +2197,7 @@ class EmailHandler extends FatModel
         return array(
         '{website_name}'    =>    FatApp::getConfig('CONF_WEBSITE_NAME_'.$langId),
         '{website_url}'        =>    CommonHelper::generateFullUrl('', '', array(), CONF_WEBROOT_FRONT_URL),
-        '{Company_Logo}'    =>    '<img src="' . CommonHelper::generateFullUrl('Image', 'emailLogo', array($langId), CONF_WEBROOT_FRONT_URL).'?'.time(). '" />',
+        '{Company_Logo}'    =>    '<img src="' . CommonHelper::generateFullUrl('Image', 'emailLogo', array($langId), CONF_WEBROOT_FRONT_URL). '" />',
         '{current_date}'    =>    date('M d, Y'),
         '{social_media_icons}' => $social_media_icons,
         '{contact_us_url}' => CommonHelper::generateFullUrl('custom', 'contactUs', array(), CONF_WEBROOT_FRONT_URL),

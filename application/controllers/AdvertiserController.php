@@ -516,7 +516,10 @@ class AdvertiserController extends AdvertiserBaseController
         /* } */
         $db->commitTransaction();
 
-        Message::addMessage($_FILES['file']['name'] . " " . Labels::getLabel('MSG_File_uploaded_successfully_and_send_it_for_admin_approval', $this->siteLangId));
+        $fileName = $_FILES['file']['name'];
+        $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+        $fileName = strlen($fileName) > 10 ? substr($fileName, 0, 10).'.'.$ext : $fileName;
+        Message::addMessage($fileName . " " . Labels::getLabel('MSG_File_uploaded_successfully_and_send_it_for_admin_approval', $this->siteLangId));
 
         $this->set('promotionId', $promotionId);
         $this->set('file', $_FILES['file']['name']);

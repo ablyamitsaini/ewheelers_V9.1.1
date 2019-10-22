@@ -258,7 +258,7 @@ class ProductCategoriesController extends AdminBaseController
             FatUtility::dieJsonError(Message::getHtml());
             // FatUtility::dieJsonError($fileHandlerObj->getError());
         }
-
+        ProductCategory::setImageUpdatedOn($prodcat_id);
         $this->set('file', $_FILES['file']['name']);
         $this->set('prodcat_id', $prodcat_id);
         $this->set('msg', $_FILES['file']['name'].' '.Labels::getLabel('LBL_Uploaded_Successfully', $this->adminLangId));
@@ -285,6 +285,7 @@ class ProductCategoriesController extends AdminBaseController
             Message::addErrorMessage($fileHandlerObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }
+        ProductCategory::setImageUpdatedOn($prodCatId);
         $this->set('imageType', $imageType);
         $this->set('msg', Labels::getLabel('MSG_Image_deleted_successfully', $this->adminLangId));
         $this->_template->render(false, false, 'json-success.php');
@@ -595,6 +596,7 @@ class ProductCategoriesController extends AdminBaseController
             if ($newTabLangId == 0 && !$this->isMediaUploaded($prodcat_id)) {
                 $this->set('openMediaForm', true);
             }
+            Product::updateMinPrices();
             //$id = $record->getMainTableRecordId();
             $this->set('msg', Labels::getLabel('LBL_Category_Setup_Successful', $this->adminLangId));
             $this->set('catId', $catId);
@@ -694,7 +696,7 @@ class ProductCategoriesController extends AdminBaseController
         $status = ($catData['prodcat_active'] == applicationConstants::ACTIVE) ? applicationConstants::INACTIVE : applicationConstants::ACTIVE;
 
         $this->updateProductCategoryStatus($prodcatId, $status);
-
+        Product::updateMinPrices();
         $this->set('msg', $this->str_update_record);
         $this->_template->render(false, false, 'json-success.php');
     }
@@ -751,7 +753,7 @@ class ProductCategoriesController extends AdminBaseController
         }
 
         $this->markAsDeleted($prodcat_id);
-
+        Product::updateMinPrices();
         $this->set("msg", $this->str_delete_record);
         $this->_template->render(false, false, 'json-success.php');
     }
@@ -825,6 +827,7 @@ class ProductCategoriesController extends AdminBaseController
                 Message::addErrorMessage($prodCateObj->getError());
                 FatUtility::dieJsonError(Message::getHtml());
             }
+            ProductCategory::updateCatOrderCode();
             $this->set('msg', Labels::getLabel('LBL_Order_Updated_Successfully', $this->adminLangId));
             //FatUtility::dieJsonSuccess(Labels::getLabel('LBL_Order_Updated_Successfully',$this->adminLangId));
             $this->_template->render(false, false, 'json-success.php');

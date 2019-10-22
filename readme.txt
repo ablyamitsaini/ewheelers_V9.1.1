@@ -1,75 +1,116 @@
-Multivendor - Released Version : RV-9.0.0
+New Features
+    => Google Tag Manager Script section in Admin Console under General Settings->SEO
+    => New text field for adding Robots.txt file content in the Admin console under General
+    Settings->SEO
+    => New App mid banner under banners section in the Admin (Only for mobile apps)
+    => Collection Image management for Mobile Application in admin. Admin can choose to display
+    products or banner for mobile app only.
+    => Sellers can add social profile links to their shop page
+    => Quick books integration (Alpha build)
 
-New Features:
+Enhancements
+    Performance Updates
+        => System now supports 500,000 products with 200 concurrent users with a load speed of under
+        5 secs.
+        => Application labels are fetched from JSON file.
+        => System images rendering functionality is optimized.
+        => Recommended products on product detail page is optimized.
+        => Cache used on the home page for collections templates.
+        => Added 304 headers for JS/CSS browser cache.
+        => Last modified time cache is being used for system Banners and slides.
+        => Header top navigation optimization via cache.
+        Common API Functions
+        => Mobile app, API and web are using the same centralized functions within the same file.
+        => API Documentation:
+        https://docs.google.com/document/d/1OfSDUCczkFVvg8ePo18ykjfLt8CP3gyN/edit#
+        => API Responses:
+        https://drive.google.com/drive/folders/16YnofIcYRhNyOvenKYmEUgGtoPLIAEU_?usp=sharing
+        => Checkout process is handled within the app
+        => RTL & language labels support for mobile app
+        => Domain links such as shop, product, category &amp; band are handled within app
+        Sitemap (HTML &amp; XML)
+        => Added new ‘Sitemap’ menu item in Admin Console with links to
+        => View Sitemap in HTML
+        => View Sitemap in XML
+        => Update Sitemap
+     => Added ‘lastmod’, ‘changefreq’, ‘priority’ tags to the XML file for better search engine crawling.
 
-	• Brand new UI for front-end, Shop and dashboard pages.
-	• Improved user dashboards
-	• Performance optimized
-	• Full screen view of product image
-	• Upload media from local machine. Removed dependency from servers and public URL’s.
-	• Referred User listing page for Affiliate user.
-	• Updated jQuery version to 3.4.1
-	• Multi-Select Options for Admin/Seller & Buyer (Delete, Status Change)
-	• Upgraded scripts to PHP V7.2 (Phpmailer Autoload function deprecated.)
+    Special Price &amp; Volume Discount
+        => New menu items on Admin &amp; Seller consoles for Special Price &amp; Volume discount.
+        => Both have been decoupled from the product inventory option.
+        => User can add multiple entries without having to navigate to the product
+        => Multi select options
+        => Entries can be edited in the field itself.
+        Language Labels
+        => Language labels type column added (Web &amp; App)
+        => App notifications content can be managed from the Admin
+        => Manageable mobile app labels
+        => Added ‘Update’ button for mobile and web labels for manual update.
 
-Enhancements:
+    General Enhancements
+        => Updated application code to handle UTM parameters generated via 3rd party marketing websites.
+        => Search results and products listing can be sort by &#39;Most Discounted&#39;
+        => Warning notification displayed to user if inventories are added for all product options. User will
+        not be able to clone the product as well.
+        => Added Shop, Dashboard, Homepage icons on user dashboards
+        => Upgraded the reward points functionality on checkout. Application show how many reward
+        points are applied for the order instead of the balance.
+        => Replaced the filter reset button with text on the listing pages.
+        => Added Yo!Kart script (&lt;!-- Yo!Kart --->) in application code so that websites like BuiltWith can
+        recognize the platform
+        => Admin can set users maximum withdraw threshold for wallet
 
-	Import-Export Module
-		• Introduced ‘Product temp images’ page under ‘Misc’ in the Admin Console that updates the status of the cron job set for image update through bulk import.
-		• Introduced ‘Upload Bulk images’ page under ‘Misc’ in the Admin Console that lets the user to add zip file for images to be imported via CSV file.
-	Cart and Wish list
-		• Connectivity in Cart and Wish list modules - Product can be moved from cart to Wishlist and vice versa seamlessly.
-		• Cart will display total cart value with items count in header.
-	Listing Pages
-		• Listing pages have been updated where products are loaded through a permanent link and respective filters via Ajax. This will improve page load speed and SEO for listing pages.
-		• Added ‘Sort by most discounted’ filter
-	Orders
-		• Added fields for min/max COD order limit for sellers.
-		• Max negative amount on COD allowed for sellers. Defined at a global level as well as seller level for admin.
-	Performance Optimization
-		• Disabled parent category link in header navigation. Will improve page load speed.
-		• Restricted empty search. Search string must be at least 3 characters. Will improve search results page load speed.
-	User Dashboards
-		• Updated Seller, Buyer, Affiliate and Advertiser dashboard KPI’s to more useful statistics.
-	General Enhancements
-		• Introduced validations handling/messages through a centralized class/repository.
-		• Option values cannot be deleted from the Option group if it is linked with a product and seller inventory.
-		• All Admin links will open in a new tab for better usability.
-		• Introduced Cost Price field for products. Cost price will be reflected in the reports where user can view profits made per product.
-		• On the product detail page user cannot add ‘qty’ more than available inventory for the product.
-		• Added layout template preview for Content pages.
-		• Removed collections primary record field and managed collection from static defined values.
-		• Added filter to refine search listing on the catalog page in admin console based on user.
-		. Added device specific media upload feature on shop, category and brand banners.
+Fixes
 
-Fixes:
+    UI Fixes
+        => Cart and Search icon are manageable via Admin theme settings
+        => Fixed auto-close on sharing options on product detail page.
+        => Fixed UI issue for product image on quick view in favorites
+        => Fixed user dashboard navigation bar issue.
+        => Fixed additional addresses should not be in grey so that they don’t look disabled.
+        => Fixed collection spacing issue on Home Page for Categories
+        => Reordered cart Labels
+        => RTL upgrades &amp; Fixes
+        => Fixed unwanted white space on the product details page, for Recommended Products.
+        => Fixed date picker while Cloning seller inventory.
+        => Fixed configure email page layout when user logs in via Facebook account registered with mobile
+        number
+        => Fixed products images are display on featured shop page in quick view popup.
 
-	UI Fixes
-		• Heading layout direction in Seller order view.
-	Functional Updates & Code Fixes
-		• Fixed Payfort & Paytm payment gateway issues.
-		• Updated Authorize.net payment gateway API’s.
-		• Fixed Product Model mandatory option in the Admin console.
-		• ‘Request new brand’ count will be displayed on admin sidebar.
-		• Fixed ‘available date’ checks for product to display on the front end.
-		• Fixed Featured shops & All Shops listing issues.
-		• Added recently viewed products slider on product view page.
-		• Updated slides banner identifier to be unique.
-		• Fixed system accepting 'Date From' greater than 'Date To' on discount coupon form.
-		• Fixed Integer and Alphanumeric validation for Phone No. and Zip Code.
-		• Applied Validation for adding more than 100% volume discount.
-		• Restriction on entering negative value in the ‘free shipping on’ field, on the manage shop page.
-		• Fixed Price filter accepting decimal input
-		• Apple touch icon does not display correctly
-		• Fixed Aweber code
-		• Fixed redirection to same page after turning on the ‘Shipped by me’ option on the seller dashboard.
-		• Restrict to delete default address, removed confirmation on default address and address selection fixes.
+    Functional Updates &amp; Code Fixes
+        => Fixed listing of messages on seller dashboard for return requests    
+        => Fixed JS issues on product detail page
+        => Handled invalid request error on Wishlist page
+        => Fixed digital downloads JSON error
+        => Removed google fonts from text editor. (Editor shall be upgraded in the next release)
+        => Fixed invalid access error on submitting catalog request from seller for the first time.
+        => Checkout page &amp; Address page buyer address needs to be selected by default
+        => Changed all category/brand page listing to alphabetical.
+        => Removed phone validations
+        => Fixed IP change issues, removed code from the application.
+        => Fixed messaging functionality in the system where incorrect profile image and messages were
+        displayed on listing page
+        => Fixed Import product media issue.
+        => Fixed retain cart on login
+        => Fixed rewards points calculation when discount coupon applied at checkout
+        => Fixed affiliate commission history display for admin
+        => Restricted display of shipping address in case of digital order product.
+        => Remove Support Links from Base copy
+        => Fixed &amp; aligned search results for keyword search and popular searches.
+        => Fixed Google sign in for new email account
+        => Fixed Ship station API rates output when no rates are fetched from the API.
+        => Fixed redirection issue when back button is used on browser
+        => Fixed default commission value that was not getting updated
+        => Fixed search results based on product option filters        
 
-Known Issues and Problems:
+Known Issues and Problems
 
-	Following is a list of known errors that don’t have a workaround. These issues will be fixed in the subsequent release.
-	• Change in minimum selling price
-	• Change in user assignment for a catalog product
+Following is a list of known errors that don’t have a workaround. These issues will be fixed in the
+subsequent release.
+    => Change in minimum selling price when reconfigured by Admin
+    => Additional product when options are added later on front end
+    => Safari and IE 11 do not support our CSS. More info can be found at
+    https://developer.microsoft.com/en-us/microsoft-edge/platform/status/csslevel3attrfunction/
 
 Installation steps:
  	• Download the files and configured with your development/production environment.
@@ -77,4 +118,4 @@ Installation steps:
  	• Renamed -.htaccess file to .htaccess from {document root} and {document root}/public directory
 	• Upload Fatbit library and licence files under {document root}/library.
 	• Define DB configuration under {document root}/public/settings.php
-	• Update basic configuration as per your system requirements under {document root}/conf directory.
+	• Update basic configuration as per your system requirements under {document root}/conf directory.    

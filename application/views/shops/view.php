@@ -2,7 +2,7 @@
 $bgUrl = CommonHelper::generateFullUrl('Image', 'shopBackgroundImage', array($shop['shop_id'], $siteLangId, 0, 0, $template_id)); ?>
 <div id="body" class="body template-<?php echo $template_id;?>" role="main">
     <?php
-        $shopData = array_merge($data, array( 'template_id'=>$template_id,'collectionData'=>$collectionData,'action'=>$action,'shopTotalReviews'=>$shopTotalReviews,'shopRating'=>$shopRating));
+        $shopData = array_merge($data, array( 'template_id'=>$template_id,'collectionData'=>$collectionData,'action'=>$action,'shopTotalReviews'=>$shopTotalReviews,'shopRating'=>$shopRating,'socialPlatforms'=>$socialPlatforms));
         $this->includeTemplate('shops/templates/'.$template_id.'.php', $shopData, false);
     ?>
 <?php echo $this->includeTemplate('products/listing-page.php', $shopData, false); ?>
@@ -12,7 +12,7 @@ $bgUrl = CommonHelper::generateFullUrl('Image', 'shopBackgroundImage', array($sh
         <div class="js-shop-slider shop-slider">
             <?php foreach ($collectionData as $collection) {?>
             <div class="item">
-                <figure><img class="" src="<?php echo CommonHelper::generateUrl('Image', 'shopCollectionImage', array($collection['scollection_id'], $siteLangId,'SHOP')).'?'.time();?>" alt="" data-ratio="16:9"></figure>
+                <figure><img class="" src="<?php echo CommonHelper::generateUrl('Image', 'shopCollectionImage', array($collection['scollection_id'], $siteLangId,'SHOP'));?>" alt="" data-ratio="16:9"></figure>
                 <div class="overlay-content">
                     <h4><?php echo $collection['scollection_name'];?></h4>
                     <!--<p>From the runway to your wardrobe</p>-->
@@ -28,10 +28,15 @@ $bgUrl = CommonHelper::generateFullUrl('Image', 'shopBackgroundImage', array($sh
 <script>
     $(document).ready(function(){
         $('.js-shop-slider').slick( getSlickSliderSettings(3, 1, langLbl.layoutDirection, false, {1199: 3,1024: 2,767: 1,480: 1}) );
-        
+
         $('.social-toggle').on('click', function() {
             $(this).next().toggleClass('open-menu');
         });
-    
+        
+        $("body").mouseup(function(e){ 
+            if (1 > $(event.target).parents('.social-toggle').length && $('.social-toggle').next().hasClass('open-menu')) {
+                $('.social-toggle').next().toggleClass('open-menu');
+            }
+        });
     });
 </script>

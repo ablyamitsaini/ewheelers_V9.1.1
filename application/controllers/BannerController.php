@@ -85,17 +85,63 @@ class BannerController extends MyAppController
 
     public function HomePageBannerTopLayout($bannerId, $langId = 0, $screen = 0)
     {
-        $this->showBanner($bannerId, $langId, 1350, 405, $screen);
+        $bannerDimensions = BannerLocation::getDimensions(BannerLocation::HOME_PAGE_TOP_BANNER, $screen);
+        $w = 1350;
+        $h = 405;
+        /*Desktop default value need to update in DB*/
+        if (array_key_exists('blocation_banner_width', $bannerDimensions)) {
+            $w = $bannerDimensions['blocation_banner_width'];
+        }
+        if (array_key_exists('blocation_banner_height', $bannerDimensions)) {
+            $h = $bannerDimensions['blocation_banner_height'];
+        }
+        $this->showBanner($bannerId, $langId, $w, $h, $screen);
+    }
+
+    // For Mobile API
+    public function HomePageBannerMiddleLayout($bannerId, $langId = 0, $screen = 0)
+    {
+        $bannerDimensions = BannerLocation::getDimensions(BannerLocation::HOME_PAGE_MIDDLE_BANNER, $screen);
+        $w = 600;
+        $h = 338;
+         /*Desktop default value need to update in DB*/
+        if (array_key_exists('blocation_banner_width', $bannerDimensions)) {
+            $w = $bannerDimensions['blocation_banner_width'];
+        }
+        if (array_key_exists('blocation_banner_height', $bannerDimensions)) {
+            $h = $bannerDimensions['blocation_banner_height'];
+        }
+        $this->showBanner($bannerId, $langId, $w, $h, $screen);
     }
 
     public function HomePageBannerBottomLayout($bannerId, $langId = 0, $screen = 0)
     {
-        $this->showBanner($bannerId, $langId, 660, 198, $screen);
+        $bannerDimensions = BannerLocation::getDimensions(BannerLocation::HOME_PAGE_BOTTOM_BANNER, $screen);
+        $w = 600;
+        $h = 198;
+         /*Desktop default value need to update in DB*/
+        if (array_key_exists('blocation_banner_width', $bannerDimensions)) {
+            $w = $bannerDimensions['blocation_banner_width'];
+        }
+        if (array_key_exists('blocation_banner_height', $bannerDimensions)) {
+            $h = $bannerDimensions['blocation_banner_height'];
+        }
+        $this->showBanner($bannerId, $langId, $w, $h, $screen);
     }
 
     public function productDetailPageBanner($bannerId, $langId = 0, $screen = 0)
     {
-        $this->showBanner($bannerId, $langId, 660, 198, $screen);
+        $bannerDimensions = BannerLocation::getDimensions(BannerLocation::PRODUCT_DETAIL_PAGE_BANNER, $screen);
+        $w = 600;
+        $h = 198;
+         /*Desktop default value need to update in DB*/
+        if (array_key_exists('blocation_banner_width', $bannerDimensions)) {
+            $w = $bannerDimensions['blocation_banner_width'];
+        }
+        if (array_key_exists('blocation_banner_height', $bannerDimensions)) {
+            $h = $bannerDimensions['blocation_banner_height'];
+        }
+        $this->showBanner($bannerId, $langId, $w, $h, $screen);
     }
 
     public function Thumb($bannerId, $langId = 0, $screen = 0)
@@ -125,51 +171,56 @@ class BannerController extends MyAppController
 
     public function categories()
     {
-        $bannerListing = $this->getBanners('Category_Page_Left');
+        $bannerListing = $this->getBanners('Category_Page_Left', $this->siteLangId);
         $this->set('bannerListing', $bannerListing);
         $this->_template->render(false, false);
     }
 
     public function Products()
     {
-        $bannerListing = $this->getBanners('Product_Page_Right');
+        $bannerListing = $this->getBanners('Product_Page_Right', $this->siteLangId);
         $this->set('bannerListing', $bannerListing);
         $this->_template->render(false, false);
     }
 
     public function allProducts()
     {
-        $bannerListing = $this->getBanners('All_Products_Left');
+        $bannerListing = $this->getBanners('All_Products_Left', $this->siteLangId);
         $this->set('bannerListing', $bannerListing);
         $this->_template->render(false, false);
     }
 
     public function blogPage()
     {
-        $bannerListing = $this->getBanners('Blog_Section_Right');
+        $bannerListing = $this->getBanners('Blog_Section_Right', $this->siteLangId);
         $this->set('bannerListing', $bannerListing);
         $this->_template->render(false, false);
     }
 
     public function Brands()
     {
-        $bannerListing = $this->getBanners('Brand_Page_Left');
+        $bannerListing = $this->getBanners('Brand_Page_Left', $this->siteLangId);
         $this->set('bannerListing', $bannerListing);
         $this->_template->render(false, false);
     }
 
     public function searchListing()
     {
-        $bannerListing = $this->getBanners('Search_Page_Left');
+        $bannerListing = $this->getBanners('Search_Page_Left', $this->siteLangId);
 
         $this->set('bannerListing', $bannerListing);
         $this->_template->render(false, false);
     }
 
-    private function getBanners($type)
+    private function getBanners($type, $langId)
     {
         if ($type == '') {
             return;
+        }
+
+        $bannerDataCache =  FatCache::get('bannersCache'.$type.'_'.$langId, CONF_IMG_CACHE_TIME, '.txt');
+        if ($bannerDataCache) {
+            return unserialize($bannerDataCache);
         }
 
         $db = FatApp::getDb();
@@ -182,16 +233,18 @@ class BannerController extends MyAppController
             return;
         }
 
-        $srch = Banner::getSearchObject($this->siteLangId, true);
+        $srch = Banner::getSearchObject($langId, true);
         $srch->doNotCalculateRecords();
 
-        if ($bannerLocation['blocation_banner_count']>0) {
+        if ($bannerLocation['blocation_banner_count'] > 0) {
             $srch->setPageSize($bannerLocation['blocation_banner_count']);
         }
 
         $srch->addCondition('banner_blocation_id', '=', $bannerLocation['blocation_id']);
         $rs = $srch->getResultSet();
+
         return $bannerListing = $db->fetchAll($rs, 'banner_id');
+        FatCache::set('bannersCache'.$type.'_'.$langId, serialize($bannerListing), '.txt');
     }
 
     public function locationFrames($frameId, $sizeType='')

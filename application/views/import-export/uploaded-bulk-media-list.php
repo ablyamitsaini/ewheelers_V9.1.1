@@ -29,22 +29,29 @@ foreach ($arr_listing as $sn=>$row) {
                 $td->appendElement('plaintext', array(), $path, true);
             break;
             case 'files':
-                $allFiles = scandir(CONF_UPLOADS_PATH . AttachedFile::FILETYPE_BULK_IMAGES_PATH . $row['afile_physical_path']);
-                $files_count = array_diff($allFiles, array( '..', '.' ));
+                $fullPath = CONF_UPLOADS_PATH . AttachedFile::FILETYPE_BULK_IMAGES_PATH . $row['afile_physical_path'];
+                $count = Labels::getLabel('LBL_NA', $siteLangId);
+                if (file_exists($fullPath)) {
+                    $allFiles = scandir($fullPath);
+                    $files_count = array_diff($allFiles, array( '..', '.' ));
+                    $count = count($files_count);
+                }
 
-                $td->appendElement('plaintext', array(), count($files_count));
+                $td->appendElement('plaintext', array(), $count);
             break;
             case 'action':
                 $ul = $td->appendElement("ul", array("class"=>"actions actions--centered"));
 
-                $innerLiEdit = $ul->appendElement("li");
-                $innerLiEdit->appendElement(
+                $li = $ul->appendElement("li");
+                $li->appendElement(
                     'a',
                     array('href'=>'javascript:void(0)', 'class'=>'button small green',
                 'title'=>Labels::getLabel('LBL_Delete', $siteLangId),"onclick"=>"removeDir('".base64_encode($row['afile_physical_path'])."')"),
                     '<i class="fa fa-trash"></i>',
                     true
                 );
+                $li = $ul->appendElement("li");
+                $li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'button small green', 'title'=>Labels::getLabel('LBL_Download', $siteLangId),"onclick"=>"downloadPathsFile('".base64_encode($fullPath)."')"), '<i class="fa fa-download"></i>', true);
             break;
             default:
                 $td->appendElement('plaintext', array(), $row[$key], true);

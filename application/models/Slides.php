@@ -20,8 +20,8 @@ class Slides extends MyAppModel
             $langId = FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG');
         }
         return array(
-        static::TYPE_SLIDE    =>    Labels::getLabel('LBL_Slide', $langId),
-        static::TYPE_PPC    =>    Labels::getLabel('LBL_Promotion', $langId),
+            static::TYPE_SLIDE => Labels::getLabel('LBL_Slide', $langId),
+            static::TYPE_PPC => Labels::getLabel('LBL_Promotion', $langId),
         );
     }
 
@@ -139,5 +139,10 @@ class Slides extends MyAppModel
         );
 
         $this->joinTable('(' . $srch->getQuery() . ')', 'LEFT OUTER JOIN', 'pr.promotion_id = pcb.pclick_promotion_id', 'pcb');
+    }
+
+    public static function setLastModified($slide_id){
+        $where = array('smt'=>'slide_id = ?', 'vals'=>array($slide_id));
+        FatApp::getDb()->updateFromArray(static::DB_TBL, array('slide_img_updated_on'=>date('Y-m-d  H:i:s')), $where);
     }
 }

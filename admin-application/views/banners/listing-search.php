@@ -58,22 +58,23 @@ foreach ($arr_listing as $sn=>$row) {
                 } else {
                     $slideArr = AttachedFile::getMultipleAttachments(AttachedFile::FILETYPE_BANNER, $row['banner_id'], 0, $adminLangId);
                     foreach ($slideArr as $slideScreen) {
+                        $uploadedTime = AttachedFile::setTimeParam($slideScreen['afile_updated_at']);
                         switch ($slideScreen['afile_screen']) {
                             case applicationConstants::SCREEN_MOBILE:
-                                $mobile_url = '<480:' .CommonHelper::generateFullUrl('Banner', 'Thumb', array($row['banner_id'], $adminLangId, applicationConstants::SCREEN_MOBILE)).",";
+                                $mobile_url = '<480:' .CommonHelper::generateFullUrl('Banner', 'Thumb', array($row['banner_id'], $adminLangId, applicationConstants::SCREEN_MOBILE)).$uploadedTime.",";
                                 break;
                             case applicationConstants::SCREEN_IPAD:
-                                $tablet_url = ' <768:' .CommonHelper::generateFullUrl('Banner', 'Thumb', array($row['banner_id'], $adminLangId, applicationConstants::SCREEN_IPAD)).','.'  <1024:' .CommonHelper::generateFullUrl('Banner', 'Thumb', array($row['banner_id'], $adminLangId, applicationConstants::SCREEN_IPAD)).",";
+                                $tablet_url = ' <768:' .CommonHelper::generateFullUrl('Banner', 'Thumb', array($row['banner_id'], $adminLangId, applicationConstants::SCREEN_IPAD)).$uploadedTime.','.'  <1024:' .CommonHelper::generateFullUrl('Banner', 'Thumb', array($row['banner_id'], $adminLangId, applicationConstants::SCREEN_IPAD)).$uploadedTime.",";
                                 break;
                             case applicationConstants::SCREEN_DESKTOP:
-                                $desktop_url = ' >1024:' .CommonHelper::generateFullUrl('Banner', 'Thumb', array($row['banner_id'], $adminLangId, applicationConstants::SCREEN_DESKTOP)).",";
+                                $desktop_url = ' >1024:' .CommonHelper::generateFullUrl('Banner', 'Thumb', array($row['banner_id'], $adminLangId, applicationConstants::SCREEN_DESKTOP)).$uploadedTime.",";
                                 break;
                         }
                     }
                 }
 
-
-                $img = '<img src="'.CommonHelper::generateFullUrl('Banner', 'Thumb', array($row['banner_id'] , $adminLangId), CONF_WEBROOT_FRONT_URL).'?'.time().'" />';
+                $uploadedTime = AttachedFile::setTimeParam($row['banner_img_updated_on']);
+                $img = '<img src="'.CommonHelper::generateFullUrl('Banner', 'Thumb', array($row['banner_id'] , $adminLangId), CONF_WEBROOT_FRONT_URL).$uploadedTime.'" />';
                 $td->appendElement('plaintext', array(), $img, true);
             break;
             case 'action':

@@ -64,7 +64,7 @@ class Notification extends MyAppModel
         $notificationObj = new Notification();
         $notificationObj->assignValues($notificationData);
         if (!$notificationObj->save()) {
-            $this->error = $notificationObj->getError();
+            return false;
         }
         return true;
     }

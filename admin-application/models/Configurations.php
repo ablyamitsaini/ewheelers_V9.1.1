@@ -2,9 +2,9 @@
 class Configurations extends FatModel
 {
     const DB_TBL = 'tbl_configurations';
-    const DB_TBL_PREFIX = 'conf_';    
+    const DB_TBL_PREFIX = 'conf_';
     private $db;
-    
+
     const FORM_GENERAL = 1;
     const FORM_LOCAL = 2;
     const FORM_SEO = 3;
@@ -28,12 +28,12 @@ class Configurations extends FatModel
     const FORM_USER_ACCOUNT = 21;
     const FORM_CART_WISHLIST = 22;
     const FORM_COMMISSION = 23;
-    
-    function __construct()
+
+    public function __construct()
     {
-        parent::__construct();    
+        parent::__construct();
     }
-    
+
     public static function getLangTypeFormArr()
     {
         return  array(
@@ -43,14 +43,14 @@ class Configurations extends FatModel
         Configurations::FORM_MEDIA,
         Configurations::FORM_PPC,
         Configurations::FORM_SERVER,
-        );        
+        );
     }
-    
+
     public static function getTabsArr()
     {
-        $adminLangId = CommonHelper::getLangId();    
+        $adminLangId = CommonHelper::getLangId();
         $additionalArr  = array();
-        if(FatApp::getConfig('CONF_ENABLE_IMPORT_EXPORT')) {
+        if (FatApp::getConfig('CONF_ENABLE_IMPORT_EXPORT')) {
             $additionalArr = array(Configurations::FORM_IMPORT_EXPORT => Labels::getLabel('MSG_IMPORT_EXPORT', $adminLangId),);
         }
         $configurationArr =  array(
@@ -70,7 +70,7 @@ class Configurations extends FatModel
         Configurations::FORM_EMAIL =>Labels::getLabel('MSG_Email', $adminLangId),
         Configurations::FORM_MEDIA => Labels::getLabel('MSG_Media', $adminLangId),
         Configurations::FORM_SUBSCRIPTION => Labels::getLabel('MSG_Subscription', $adminLangId),
-        Configurations::FORM_REFERAL =>Labels::getLabel('MSG_Referal', $adminLangId), 
+        Configurations::FORM_REFERAL =>Labels::getLabel('MSG_Referal', $adminLangId),
         Configurations::FORM_SHARING =>Labels::getLabel('MSG_Sharing', $adminLangId),
         Configurations::FORM_SYSTEM => Labels::getLabel('MSG_System', $adminLangId),
         Configurations::FORM_LIVE_CHAT =>Labels::getLabel('MSG_Live_Chat', $adminLangId),
@@ -79,45 +79,48 @@ class Configurations extends FatModel
         );
         return $configurationArr+$additionalArr;
     }
-    
-    
+
+
     public static function dateFormatPhpArr()
     {
         return array( 'Y-m-d' => 'Y-m-d', 'd/m/Y' => 'd/m/Y', 'm-d-Y' => 'm-d-Y', 'M d, Y' => 'M d, Y');
     }
-    
+
     public static function dateFormatMysqlArr()
     {
         return array('%Y-%m-%d','%d/%m/%Y','%m-%d-%Y','%b %d, %Y');
     }
-    
+
     public static function dateTimeZoneArr()
     {
         $arr = DateTimeZone::listIdentifiers();
         $arr=array_combine($arr, $arr);
         return $arr;
     }
-    
+
     public static function getConfigurations()
     {
         $srch = new SearchBase(static::DB_TBL, 'conf');
         $rs = $srch->getResultSet();
         $record = array();
-        while($row = FatApp::getDb()->fetch($rs)){            
+        while ($row = FatApp::getDb()->fetch($rs)) {
             $record [strtoupper($row['conf_name'])] = $row['conf_val'];
         }
         return $record;
     }
 
     public function update($data)
-    {    
-    
-        foreach($data as $key => $val){
-            $assignValues = array('conf_name'=>$key,'conf_val'=>$val);                
+    {
+        foreach ($data as $key => $val) {
+            $assignValues = array('conf_name'=>$key,'conf_val'=>$val);
             FatApp::getDb()->insertFromArray(
-                static::DB_TBL, $assignValues, false, array(), $assignValues
+                static::DB_TBL,
+                $assignValues,
+                false,
+                array(),
+                $assignValues
             );
         }
         return true;
-    }    
+    }
 }

@@ -80,7 +80,9 @@ var cart = {
 			if( ans.status ){
 				if(loadDiv!=undefined){
 					loadFinancialSummary();
-					resetCheckoutDiv();
+					if (1 > $("#hasAddress").length || ($("#hasAddress").length > 0 && 0 < $("#hasAddress").val())) {
+						resetCheckoutDiv();
+					}
 				}else{
 					listCartProducts();
 				}

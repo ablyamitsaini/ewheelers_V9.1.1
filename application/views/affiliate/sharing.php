@@ -19,14 +19,14 @@ $sharingFrm->developerTags['fld_default_col'] = 12;
 			<div class="col-md-12">
 				<div class="cards">
 					<div class="cards-header p-4"><h5 class="cards-title "><?php echo Labels::getLabel('LBL_Sharing_Information',$siteLangId);?></h5></div>
-					<div class="grids--container">
+					
 						<div class="row">						
 							<div class="col-md-12">
 								<p class="note"><?php echo Labels::getLabel('LBL_Affiliate_Sharing_information_text',$siteLangId)?><br/><strong><?php echo Labels::getLabel('LBL_You_may_copy_invitation_link_below',$siteLangId)?></strong></p>
 								<div class="alert--gray"><?php echo $affiliateTrackingUrl; ?></div>
 							</div>
 						</div>
-					</div>
+					
 					<div class="cards-content pl-4 pr-4 ">
 						<ul class="grid--onethird grid--onethird-large">
 						  <?php if (!empty(FatApp::getConfig("CONF_FACEBOOK_APP_ID")) && !empty(FatApp::getConfig("CONF_FACEBOOK_APP_SECRET"))){?>

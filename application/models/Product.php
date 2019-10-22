@@ -37,6 +37,9 @@ class Product extends MyAppModel
     const DB_PRODUCT_SHIPPED_BY_SELLER = 'tbl_products_shipped_by_seller';
     const DB_PRODUCT_SHIPPED_BY_SELLER_PREFIX = 'psbs_';
 
+    const DB_PRODUCT_MIN_PRICE = 'tbl_products_min_price';
+    const DB_PRODUCT_MIN_PRICE_PREFIX = 'pmp_';
+
     const PRODUCT_TYPE_PHYSICAL = 1;
     const PRODUCT_TYPE_DIGITAL = 2;
 
@@ -224,7 +227,7 @@ class Product extends MyAppModel
     {
         $langId = FatUtility::convertToType($langId, FatUtility::VAR_INT);
         if (!$langId) {
-            trigger_error(Labels::getLabel("ERR_Arguments_not_specified.", $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel("ERR_Arguments_not_specified.", $langId), E_USER_ERROR);
             return false;
         }
         return array(
@@ -605,7 +608,7 @@ class Product extends MyAppModel
         $product_id = FatUtility::convertToType($product_id, FatUtility::VAR_INT);
         $lang_id = FatUtility::convertToType($lang_id, FatUtility::VAR_INT);
         if (!$product_id) {
-            trigger_error(Labels::getLabel("ERR_Arguments_not_specified.", $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel("ERR_Arguments_not_specified.", $lang_id), E_USER_ERROR);
             return false;
         }
 
@@ -648,7 +651,7 @@ class Product extends MyAppModel
         $option_id = FatUtility::int($option_id);
         $lang_id = FatUtility::int($lang_id);
         if (!$option_id || !$lang_id) {
-            trigger_error(Labels::getLabel('ERR_Invalid_Arguments!', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('ERR_Invalid_Arguments!', $lang_id), E_USER_ERROR);
         }
         $srch = new SearchBase(OptionValue::DB_TBL);
         $srch->joinTable(OptionValue::DB_TBL.'_lang', 'LEFT JOIN', 'lang.optionvaluelang_optionvalue_id = ' . OptionValue::DB_TBL_PREFIX.'id AND optionvaluelang_lang_id = '.$lang_id, 'lang');
@@ -714,7 +717,7 @@ class Product extends MyAppModel
         $product_id = FatUtility::int($product_id);
         $langId = FatUtility::int($langId);
         if (!$product_id || !$langId) {
-            trigger_error(Labels::getLabel('ERR_Invalid_Arguments!', $this->commonLangId), E_USER_ERROR);
+            trigger_error(Labels::getLabel('ERR_Invalid_Arguments!', $langId), E_USER_ERROR);
         }
         $record = new TableRecord(static::DB_TEXT_ATTRIBUTES_TBL);
         $record->loadFromDb(array('smt' => static::DB_TEXT_ATTRIBUTES_PREFIX . 'product_id = ? AND ' . static::DB_TEXT_ATTRIBUTES_PREFIX . 'lang_id = ?', 'vals' => array($product_id, $langId)));
@@ -745,7 +748,7 @@ class Product extends MyAppModel
         //echo $prodSrch->getQuery();
         $product = FatApp::getDb()->fetch($productRs);
         if ($product) {
-            if($returnId){
+            if ($returnId) {
                 return $product['selprod_id'];
             }
             return CommonHelper::generateUrl('Products', 'view', array($product['selprod_id']));
@@ -763,7 +766,7 @@ class Product extends MyAppModel
             $product = FatApp::getDb()->fetch($productRs);
 
             if ($product) {
-                if($returnId){
+                if ($returnId) {
                     return $product['selprod_id'];
                 }
                 return CommonHelper::generateUrl('Products', 'view', array($product['selprod_id']))."::";
@@ -1043,6 +1046,37 @@ class Product extends MyAppModel
         return $row;
     }
 
+    public static function availableForAddToStore($productId, $userId)
+    {
+        $productId = FatUtility::int($productId);
+        $userId = FatUtility::int($userId);
+
+        $srch = SellerProduct::getSearchObject();
+        $srch->joinTable(SellerProduct::DB_TBL_SELLER_PROD_OPTIONS, 'LEFT JOIN', 'selprod_id = selprodoption_selprod_id', 'tspo');
+        $srch->addCondition('selprod_product_id', '=', $productId);
+        $srch->addCondition('selprod_user_id', '=', $userId);
+        $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
+        // $srch->addCondition('tspo.selprodoption_optionvalue_id', 'is', 'mysql_func_null', 'and', true);
+        $srch->addFld('selprodoption_optionvalue_id');
+        $rs = $srch->getResultSet();
+        $alreadyAdded = FatApp::getDb()->fetchAll($rs, 'selprodoption_optionvalue_id');
+        if ($alreadyAdded == false) {
+            return true;
+        }
+
+        $srch = new SearchBase(static::DB_PRODUCT_TO_OPTION);
+        $srch->addCondition(static::DB_PRODUCT_TO_OPTION_PREFIX . 'product_id', '=', $productId);
+        $srch->joinTable(OptionValue::DB_TBL, 'LEFT JOIN', 'prodoption_option_id = opval.optionvalue_option_id', 'opval');
+        $srch->addFld('optionvalue_id');
+        $rs = $srch->getResultSet();
+        $allOptions = FatApp::getDb()->fetchAll($rs, 'optionvalue_id');
+        $result = array_diff_key($allOptions, $alreadyAdded);
+        if (empty($result)) {
+            return false;
+        }
+        return true;
+    }
+
     public static function addUpdateProductSellerShipping($product_id, $data_to_be_save, $userId)
     {
         $productSellerShiping = array();
@@ -1051,7 +1085,6 @@ class Product extends MyAppModel
         $productSellerShiping['ps_from_country_id']= $data_to_be_save['ps_from_country_id'];
         $productSellerShiping['ps_free']=  $data_to_be_save['ps_free'];
         if (!FatApp::getDb()->insertFromArray(PRODUCT::DB_TBL_PRODUCT_SHIPPING, $productSellerShiping, false, array(), $productSellerShiping)) {
-            $this->error = FatApp::getDb()->getError();
             return false;
         }
         return true;
@@ -1062,7 +1095,7 @@ class Product extends MyAppModel
         static::removeProductShippingRates($product_id, $userId);
 
         if (empty($data) || count($data) == 0) {
-            $this->error = Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId);
+            // $this->error = Labels::getLabel('MSG_INVALID_REQUEST', $this->adminLangId);
             return false;
         }
 
@@ -1079,8 +1112,7 @@ class Product extends MyAppModel
                 );
 
                 if (!FatApp::getDb()->insertFromArray(ShippingApi::DB_TBL_PRODUCT_SHIPPING_RATES, $prodShipData, false, array(), $prodShipData)) {
-                    $this->error = FatApp::getDb()->getError();
-
+                    // $this->error = FatApp::getDb()->getError();
                     return false;
                 }
             }
@@ -1096,7 +1128,7 @@ class Product extends MyAppModel
         $userId = FatUtility::int($userId);
 
         if (!$db->deleteRecords(ShippingApi::DB_TBL_PRODUCT_SHIPPING_RATES, array('smt'=> ShippingApi::DB_TBL_PRODUCT_SHIPPING_RATES_PREFIX.'prod_id = ? and '.ShippingApi::DB_TBL_PRODUCT_SHIPPING_RATES_PREFIX.'user_id = ?','vals' => array($product_id,$userId)))) {
-            $this->error = $db->getError();
+            // $this->error = $db->getError();
             return false;
         }
         return true;
@@ -1181,7 +1213,6 @@ class Product extends MyAppModel
     public static function getListingObj($criteria, $langId = 0, $userId = 0)
     {
         $srch = new ProductSearch($langId);
-
         $join_price = 0;
         if (array_key_exists('join_price', $criteria)) {
             $join_price = FatUtility::int($criteria['join_price']);
@@ -1192,8 +1223,24 @@ class Product extends MyAppModel
             $keyword = $criteria['keyword'];
         }
 
-        $srch->setDefinedCriteria($join_price, 0, $criteria, true);
-        $srch->joinProductToCategory();
+        if (true ===  MOBILE_APP_API_CALL) {
+            $criteria['optionvalue'] = !empty($criteria['optionvalue']) ? json_decode($criteria['optionvalue'], true) : '';
+        }
+
+        $shop_id = 0;   
+        if (array_key_exists('shop_id', $criteria)) {
+            $shop_id =  FatUtility::int($criteria['shop_id']);           
+        }
+
+        //$srch->setDefinedCriteria($join_price, 0, $criteria, true);
+        $srch->joinForPrice('', $criteria, true);
+        $srch->unsetDefaultLangForJoins();
+        $srch->joinSellers();
+        $srch->joinShops($langId, true, true, $shop_id);
+        $srch->joinShopCountry();
+        $srch->joinShopState();
+        $srch->joinBrands($langId);
+        $srch->joinProductToCategory($langId);
         $srch->joinSellerSubscription(0, false, true);
         $srch->addSubscriptionValidCondition();
 
@@ -1203,19 +1250,23 @@ class Product extends MyAppModel
             $srch->addFld('ufp_id');
         } else {
             $srch->joinUserWishListProducts($userId);
-            $srch->addFld('IFNULL(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
+            $srch->addFld('COALESCE(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
         }
-
+        /*substring_index(group_concat(IFNULL(prodcat_name, prodcat_identifier) ORDER BY IFNULL(prodcat_name, prodcat_identifier) ASC SEPARATOR "," ) , ",", 1) as prodcat_name*/
         $srch->addMultipleFields(
-            array('prodcat_code','product_id', 'prodcat_id', 'IFNULL(product_name, product_identifier) as product_name', 'product_model',  'product_image_updated_on','substring_index(group_concat(IFNULL(prodcat_name, prodcat_identifier) ORDER BY IFNULL(prodcat_name, prodcat_identifier) ASC SEPARATOR "," ) , ",", 1) as prodcat_name',
-            'selprod_id', 'selprod_user_id',  'selprod_code', 'selprod_stock', 'selprod_condition', 'selprod_price', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title',
+            array('prodcat_code','product_id', 'prodcat_id', 'COALESCE(product_name, product_identifier) as product_name', 'product_model',  'product_image_updated_on','COALESCE(prodcat_name, prodcat_identifier) as prodcat_name',
+            'selprod_id', 'selprod_user_id',  'selprod_code', 'selprod_stock', 'selprod_condition', 'selprod_price', 'COALESCE(selprod_title  ,COALESCE(product_name, product_identifier)) as selprod_title',
             'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type', 'splprice_start_date', 'splprice_end_date',
-            'brand_id', 'IFNULL(brand_name, brand_identifier) as brand_name', 'user_name', 'IF(selprod_stock > 0, 1, 0) AS in_stock',
+            'brand_id', 'COALESCE(brand_name, brand_identifier) as brand_name', 'user_name', 'IF(selprod_stock > 0, 1, 0) AS in_stock',
             'selprod_sold_count','selprod_return_policy',/* 'ifnull(sq_sprating.totReviews,0) totReviews','IF(ufp_id > 0, 1, 0) as isfavorite', */'selprod_min_order_qty'
             )
         );
 
         $includeRating = false;
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $includeRating = true;
+        }
 
         if (array_key_exists('top_products', $criteria)) {
             $includeRating = true;
@@ -1247,7 +1298,7 @@ class Product extends MyAppModel
             $selProdRviewSubQuery = $selProdReviewObj->getQuery();
             /*$srch->joinTable('(' . $selProdRviewSubQuery . ')', 'LEFT OUTER JOIN', 'sq_sprating.spreview_selprod_id = selprod_id', 'sq_sprating');*/
             $srch->joinTable('(' . $selProdRviewSubQuery . ')', 'LEFT OUTER JOIN', 'sq_sprating.spreview_product_id = product_id', 'sq_sprating');
-            $srch->addFld('ifnull(prod_rating,0) prod_rating');
+            $srch->addFld('coalesce(prod_rating,0) prod_rating');
         }
 
 
@@ -1256,15 +1307,16 @@ class Product extends MyAppModel
         }
 
         if (array_key_exists('prodcat', $criteria)) {
+            if (true ===  MOBILE_APP_API_CALL) {
+                $criteria['prodcat'] = json_decode($criteria['prodcat'], true);
+            }
             $srch->addCategoryCondition($criteria['prodcat']);
         }
 
-        if (array_key_exists('shop_id', $criteria)) {
-            $shop_id =  FatUtility::int($criteria['shop_id']);
-            if (0 < $shop_id) {
-                $srch->addShopIdCondition($shop_id);
-            }
+        if (0 < $shop_id) {
+            $srch->addShopIdCondition($shop_id);
         }
+        
 
         if (array_key_exists('collection_id', $criteria)) {
             $collection_id =  FatUtility::int($criteria['collection_id']);
@@ -1290,6 +1342,9 @@ END,   special_price_found ) as special_price_found'
 
         if (array_key_exists('brand', $criteria)) {
             if (!empty($criteria['brand'])) {
+                if (true ===  MOBILE_APP_API_CALL) {
+                    $criteria['brand'] = json_decode($criteria['brand'], true);
+                }
                 $srch->addBrandCondition($criteria['brand']);
             }
         }
@@ -1301,12 +1356,10 @@ END,   special_price_found ) as special_price_found'
         }
 
         if (array_key_exists('condition', $criteria)) {
-            $condition = $criteria['condition'];
-        } else {
-            $condition = FatApp::getPostedData('condition', null, '');
-        }
-
-        if (!empty($condition)) {
+            if (true ===  MOBILE_APP_API_CALL) {
+                $criteria['condition'] = json_decode($criteria['condition'], true);
+            }
+            $condition = is_array($criteria['condition']) ? array_filter($criteria['condition']) : $criteria['condition'];
             $srch->addConditionCondition($condition);
         }
 
@@ -1368,7 +1421,7 @@ END,   special_price_found ) as special_price_found'
                 $sortOrder = 'asc';
             }
 
-            if (!in_array($sortBy, array('keyword','price','popularity','rating'))) {
+            if (!in_array($sortBy, array('keyword','price','popularity','rating', 'discounted'))) {
                 $sortOrder = 'keyword_relevancy';
             }
 
@@ -1381,6 +1434,10 @@ END,   special_price_found ) as special_price_found'
                     break;
                 case 'popularity':
                     $srch->addOrder('selprod_sold_count', $sortOrder);
+                    break;
+                case 'discounted':
+                    $srch->addFld('ROUND(((selprod_price - theprice)*100)/selprod_price) as discountedValue');
+                    $srch->addOrder('discountedValue', 'DESC');
                     break;
                 case 'rating':
                     $srch->addOrder('prod_rating', $sortOrder);
@@ -1403,7 +1460,7 @@ END,   special_price_found ) as special_price_found'
     public static function getActiveCount($sellerId, $prodId = 0)
     {
         if (0 > FatUtility::int($sellerId)) {
-            $this->error = Labels::getLabel('ERR_Invalid_Request', $this->commonLangId);
+            // $this->error = Labels::getLabel('ERR_Invalid_Request', $this->commonLangId);
             return false;
         }
         $prodId = FatUtility::int($prodId);
@@ -1422,5 +1479,72 @@ END,   special_price_found ) as special_price_found'
         $rs = $srch->getResultSet();
         $records = FatApp::getDb()->fetchAll($rs);
         return $srch->recordCount();
+    }
+
+    public static function isShippedBySeller($selprodUserId = 0, $productSellerId = 0, $shippedBySellerId = false)
+    {
+        $productSellerId = FatUtility::int($productSellerId);
+        $selprodUserId = FatUtility::int($selprodUserId);
+        /* if(FatApp::getConfig('CONF_SHIPPED_BY_ADMIN',FatUtility::VAR_INT,0)){
+            return false;
+        } */
+
+        if ($productSellerId > 0 && $selprodUserId == $productSellerId) {
+            /* Catalog-Product Added By Seller so also shipped by seller */
+            return $selprodUserId;
+        } else {
+            $shippedBySellerId = FatUtility::int($shippedBySellerId);
+            if ($shippedBySellerId > 0 && $selprodUserId == $shippedBySellerId) {
+                return $shippedBySellerId;
+            }
+        }
+        return false;
+    }
+
+    public static function updateMinPrices($productId = 0, $shopId = 0, $brandId = 0)
+    {
+        $criteria = array();
+        $shopId = FatUtility::int($shopId);
+        $brandId = FatUtility::int($brandId);
+        $productId = FatUtility::int($productId);
+
+        if (0 < $shopId) {
+            $criteria = array('shop_id'=>$shopId );
+        }/* else {
+            $shop = Shop::getAttributesByUserId($sellerId);
+            if (!empty($shop) && array_key_exists('shop_id', $shop)) {
+                $criteria = array('shop_id'=>$shop['shop_id'] );
+            }
+        }*/
+
+        if (0 < $brandId) {
+            $criteria = array('brand_id'=>$brandId );
+        }
+
+        $srch = new ProductSearch();
+        $srch->setDefinedCriteria(1, 0, $criteria, true, false);
+        $srch->joinProductToCategory();
+        $srch->joinSellerSubscription(0, false, true);
+        $srch->addSubscriptionValidCondition();
+        $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
+        $srch->addMultipleFields(array('product_id','selprod_id','theprice','IFNULL(splprice_id, 0) as splprice_id'));
+        $srch->doNotLimitRecords();
+        $srch->doNotCalculateRecords();
+        $srch->addGroupBy('product_id');
+        if (!empty($shop) && array_key_exists('shop_id', $shop)) {
+            $srch->addCondition('shop_id', '=', $shop['shop_id']);
+        }
+
+        if (0 < $productId) {
+            $srch->addCondition('product_id', '=', $productId);
+        }
+
+        $tmpQry = $srch->getQuery();
+
+        $qry = "INSERT INTO ".static::DB_PRODUCT_MIN_PRICE." (pmp_product_id, pmp_selprod_id, pmp_min_price, pmp_splprice_id) SELECT * FROM (".$tmpQry.") AS t ON DUPLICATE KEY UPDATE pmp_selprod_id = t.selprod_id, pmp_min_price = t.theprice, pmp_splprice_id = t.splprice_id";
+
+        FatApp::getDb()->query($qry);
+        $query = "DELETE m FROM ".static::DB_PRODUCT_MIN_PRICE." m LEFT OUTER JOIN (".$tmpQry.") ON pmp_product_id = selprod_product_id WHERE m.pmp_product_id IS NULL";
+        FatApp::getDb()->query($query);
     }
 }

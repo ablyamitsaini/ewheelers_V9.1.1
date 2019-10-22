@@ -1,5 +1,5 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
-$brandReqMediaFrm->setFormTagAttribute('class', 'web_form form_horizontal');
+$brandReqMediaFrm->setFormTagAttribute('class', 'form form_horizontal');
 $brandReqMediaFrm->developerTags['colClassPrefix'] = 'col-lg-12 col-md-12 col-sm-';
 $brandReqMediaFrm->developerTags['fld_default_col'] = 12;
 $fld2 = $brandReqMediaFrm->getField('logo');
@@ -11,7 +11,7 @@ $htmlAfterField = $preferredDimensionsStr;
 if( !empty($brandImages) ){
 	$htmlAfterField .= '<div class="gap"></div><div class="row"><div class="col-lg-12 col-md-12"><div id="imageupload_div"><ul class="inline-images">';
 	foreach($brandImages as $bannerImg){
-		$htmlAfterField .= '<li>'.$bannerTypeArr[$bannerImg['afile_lang_id']].'<img src="'.CommonHelper::generateFullUrl('Image','brandReal',array($bannerImg['afile_record_id'],$bannerImg['afile_lang_id'],'THUMB'),CONF_WEBROOT_FRONT_URL).'?'.time().'"> <a href="javascript:void(0);" onClick="removeBrandLogo('.$bannerImg['afile_record_id'].','.$bannerImg['afile_lang_id'].')" class="deleteLink white"><i class="fa fa-times"></i></a>';
+		$htmlAfterField .= '<li>'.$bannerTypeArr[$bannerImg['afile_lang_id']].'<img src="'.CommonHelper::generateFullUrl('Image','brandReal',array($bannerImg['afile_record_id'],$bannerImg['afile_lang_id'],'THUMB'),CONF_WEBROOT_FRONT_URL).'"> <a href="javascript:void(0);" onClick="removeBrandLogo('.$bannerImg['afile_record_id'].','.$bannerImg['afile_lang_id'].')" class="deleteLink white"><i class="fa fa-times"></i></a>';
 		$lang_name = Labels::getLabel('LBL_All',$siteLangId);
 				if( $bannerImg['afile_lang_id'] > 0 ){
 					$lang_name = $languages[$bannerImg['afile_lang_id']];
@@ -50,7 +50,7 @@ if( !empty($brandImages) ){
         <ul class="inline-images">
           <?php
 	foreach($brandImages as $bannerImg){
-		$htmlAfterField .= '<li>'.$bannerTypeArr[$bannerImg['afile_lang_id']].'<img src="'.CommonHelper::generateFullUrl('Image','brandReal',array($bannerImg['afile_record_id'],$bannerImg['afile_lang_id'],'THUMB'),CONF_WEBROOT_FRONT_URL).'?'.time().'"> <a href="javascript:void(0);" onClick="removeBrandLogo('.$bannerImg['afile_record_id'].','.$bannerImg['afile_lang_id'].')" class="deleteLink white"><i class="fa fa-times"></i></a>';
+		$htmlAfterField .= '<li>'.$bannerTypeArr[$bannerImg['afile_lang_id']].'<img src="'.CommonHelper::generateFullUrl('Image','brandReal',array($bannerImg['afile_record_id'],$bannerImg['afile_lang_id'],'THUMB'),CONF_WEBROOT_FRONT_URL).'"> <a href="javascript:void(0);" onClick="removeBrandLogo('.$bannerImg['afile_record_id'].','.$bannerImg['afile_lang_id'].')" class="deleteLink white"><i class="fa fa-times"></i></a>';
 		$lang_name = Labels::getLabel('LBL_All',$siteLangId);
 				if( $bannerImg['afile_lang_id'] > 0 ){
 					$lang_name = $languages[$bannerImg['afile_lang_id']];

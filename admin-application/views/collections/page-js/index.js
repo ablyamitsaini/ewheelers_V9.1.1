@@ -1,5 +1,13 @@
 $(document).ready(function() {
     searchCollection(document.frmSearch);
+    $(document).on("click", ".language-js", function(){
+        $(".CollectionImages-js li").addClass('d-none');
+        $('#Image-'+$(this).val()).removeClass('d-none');
+    });
+    $(document).on("click", ".bgLanguage-js", function(){
+        $(".bgCollectionImages-js li").addClass('d-none');
+        $('#bgImage-'+$(this).val()).removeClass('d-none');
+    });
 });
 
 (function() {
@@ -287,6 +295,12 @@ $(document).ready(function() {
     collectionMediaForm = function(collectionId) {
         fcom.ajax(fcom.makeUrl('Collections', 'mediaForm', [collectionId]), '', function(t) {
             $.facebox(t);
+            var parentSiblings = $(".displayMediaOnly--js").closest("div.row").siblings('div.row:not(:first)');
+            if (0 < $(".displayMediaOnly--js:checked").val()) {
+                parentSiblings.show();
+            } else {
+                parentSiblings.hide();
+            }
         });
     };
 
@@ -339,6 +353,20 @@ $(document).ready(function() {
         $("#frmCollectionListing").attr("action",fcom.makeUrl('Collections','deleteSelected')).submit();
     };
 
+    displayMediaOnly = function(collectionId, obj) {
+        var parentSiblings = $(obj).closest("div.row").siblings('div.row:not(:first)');
+        var value = (obj.checked) ? 1 : 0;
+        fcom.ajax(fcom.makeUrl('Collections', 'displayMediaOnly', [collectionId, value]), '', function(t) {
+			var ans = $.parseJSON(t);
+            if(0 == ans.status){
+                $.systemMessage(ans.msg,'alert--danger');
+                $(obj).prop('checked', false);
+                return false
+            } else{
+                (0 < value) ? parentSiblings.show() : parentSiblings.hide();
+            }
+		});
+    };
 })();
 
 $(document).on('click', '.File-Js', function() {
@@ -349,8 +377,7 @@ $(document).on('click', '.File-Js', function() {
 
     if (fileType == FILETYPE_COLLECTION_IMAGE) {
         var langId = document.frmCollectionMedia.image_lang_id.value;
-    }
-    if (fileType == FILETYPE_COLLECTION_BG_IMAGE) {
+    } else if (fileType == FILETYPE_COLLECTION_BG_IMAGE) {
         var langId = document.frmCollectionMedia.bg_image_lang_id.value;
     }
 
@@ -384,7 +411,12 @@ $(document).on('click', '.File-Js', function() {
                     $(node).val($val);
                 },
                 success: function(ans) {
-                    collectionMediaForm(ans.collection_id);
+                    if(0 == ans.status){
+            			$.mbsmessage.close();
+            			$.systemMessage(ans.msg,'alert--danger');
+            		} else {
+                        collectionMediaForm(ans.collection_id);
+                    }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
                     alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);

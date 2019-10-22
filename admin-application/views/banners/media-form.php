@@ -12,6 +12,10 @@ $langFld->addFieldTagAttribute('class', 'language-js');
 $screenFld = $mediaFrm->getField('banner_screen');
 $screenFld->addFieldTagAttribute('class', 'display-js');
 
+if ($blocation_id == BannerLocation::HOME_PAGE_MIDDLE_BANNER) {
+    $screenFld->setFieldTagAttribute('disabled', 'disabled');
+}
+
 $preferredDimensionsStr = '<span class="uploadimage--info" ></span>';
 
 $htmlAfterField = $preferredDimensionsStr;
@@ -48,7 +52,7 @@ $fld1->htmlAfterField = $htmlAfterField;
     $(document).on('change', '.display-js', function() {
         var deviceType = $(this).val();
         fcom.ajax(fcom.makeUrl('Banners', 'getBannerLocationDimensions', [<?php echo $blocation_id;?>, deviceType]), '', function(t) {
-            var ans = $.parseJSON(t);
+            var ans = $.parseJSON(t);            
             $('.uploadimage--info').html((langLbl.preferredDimensions).replace(/%s/g, ans.bannerWidth + ' * ' + ans.bannerHeight));
         });
     });

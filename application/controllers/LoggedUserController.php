@@ -23,18 +23,18 @@ class LoggedUserController extends MyAppController
             $userPreferedDashboardType = ($userInfo['user_preferred_dashboard'])?$userInfo['user_preferred_dashboard']:$userInfo['user_registered_initially_for'];
 
             switch ($userPreferedDashboardType) {
-            case User::USER_TYPE_BUYER:
-                $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'B';
-                break;
-            case User::USER_TYPE_SELLER:
-                $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'S';
-                break;
-            case User::USER_TYPE_AFFILIATE:
-                $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'AFFILIATE';
-                break;
-            case User::USER_TYPE_ADVERTISER:
-                $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'Ad';
-                break;
+                case User::USER_TYPE_BUYER:
+                    $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'B';
+                    break;
+                case User::USER_TYPE_SELLER:
+                    $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'S';
+                    break;
+                case User::USER_TYPE_AFFILIATE:
+                    $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'AFFILIATE';
+                    break;
+                case User::USER_TYPE_ADVERTISER:
+                    $_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'Ad';
+                    break;
             }
         }
 
@@ -47,7 +47,11 @@ class LoggedUserController extends MyAppController
         }
 
         if (empty($userInfo['credential_email'])) {
-            Message::addErrorMessage(Labels::getLabel('MSG_Please_Configure_Your_Email', $this->siteLangId));
+            $message = Labels::getLabel('MSG_Please_Configure_Your_Email', $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                LibHelper::dieJsonError($message);
+            }
+            Message::addErrorMessage($message);
             FatApp::redirectUser(CommonHelper::generateUrl('GuestUser', 'configureEmail'));
         }
         $this->initCommonValues();
@@ -55,6 +59,7 @@ class LoggedUserController extends MyAppController
 
     private function initCommonValues()
     {
+        $this->_template->addCss('css/dashboard.css');
         $this->set('isUserDashboard', true);
     }
 

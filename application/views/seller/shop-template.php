@@ -21,7 +21,7 @@
     <?php foreach($shopTemplateLayouts as $k=>$layout){?>
     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 " >
       <div class="shop-template <?php echo ($shopLayoutTemplateId == $layout['ltemplate_id'])?'is--active':'';?> "> <a href="javascript:void(0)" onClick="setTemplate(<?php echo $layout['ltemplate_id'];?>)">
-        <figure class="thumb--square"><img src="<?php echo CommonHelper::generateUrl('Image','shopLayout',array($layout['ltemplate_id'],'SMALL')).'?'.time(); ?>" alt="<?php echo Labels::getLabel('TXT_Shop_Layout', $siteLangId);?>"></figure>
+        <figure class="thumb--square"><img src="<?php echo CommonHelper::generateUrl('Image','shopLayout',array($layout['ltemplate_id'],'SMALL')); ?>" alt="<?php echo Labels::getLabel('TXT_Shop_Layout', $siteLangId);?>"></figure>
         <p><?php echo Labels::getLabel('LBL_Layout',$siteLangId);?> <strong><?php echo $layout['ltemplate_id'];?></strong> </p>
         </a> </div>
     </div>

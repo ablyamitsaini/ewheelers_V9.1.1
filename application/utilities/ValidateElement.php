@@ -2,7 +2,9 @@
 class ValidateElement extends FatUtility
 {
     // const PHONE_REGEX = '^(\+\d{1,2}\s)?\(?\d{3}\)?[\s#-]\d{3}[\s#-]\d{4}$';
-    const PHONE_REGEX = '^\(\d\d\d\) \d\d\d-\d\d\d\d$';
+    const PHONE_NO_FORMAT = '';
+    const PHONE_NO_LENGTH = 14;
+    const PHONE_REGEX = '^(?!0+$)[0-9]{1,14}$';
     const ZIP_REGEX = '^[a-zA-Z0-9]+$';
     const CITY_NAME_REGEX = '^([^0-9]*)$';
     const PASSWORD_REGEX = '^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%-_]{8,15}$';
@@ -14,7 +16,6 @@ class ValidateElement extends FatUtility
     const DISCOVER_REGEX = '^6(?:011|5)';
     const JCB_REGEX = '^(?:2131|1800|35\d{3})';
     const TIME_REGEX = '^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$';
-
     /*const PHONE_FORMATS = [
         '123-456-7890',
         '(123) 456-7890',
@@ -34,6 +35,23 @@ class ValidateElement extends FatUtility
             return false;
         }
         return true;
+    }
+
+    public static function convertPhone($string)
+    {
+        /*// Allow only Digits, remove all other characters.
+        $number = preg_replace("/[^\d]/", "", $string);
+
+        // get number length.
+        $length = strlen($number);
+
+        // if number = 10
+        if ($length == 10) {
+            $number = preg_replace("/^1?(\d{3})(\d{3})(\d{4})$/", "($1) $2-$3", $number);
+        }
+
+        return $number;*/
+        return $string;
     }
 
     public static function password($string = '')

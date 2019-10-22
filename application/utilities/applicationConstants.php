@@ -69,6 +69,16 @@ class applicationConstants
     const DASHBOARD_PAGE_SIZE = 3;
     const PAGE_SIZE = 20;
 
+    const ALLOWED_HTML_TAGS_FOR_APP = '<b><strong><i><u><small><br><p><h1><h2><h3><h4><h5><h6><div><a>';
+
+    const MOBILE_SCREEN_WIDTH = 768;
+
+    const URL_TYPE_EXTERNAL = 1;
+    const URL_TYPE_SHOP = 2;
+    const URL_TYPE_PRODUCT = 3;
+    const URL_TYPE_CATEGORY = 4;
+    const URL_TYPE_BRAND = 5;
+
     public static function getWeightUnitsArr($langId)
     {
         $langId = FatUtility::int($langId);
@@ -337,24 +347,6 @@ class applicationConstants
         );
     }
 
-    /* static function getShopUrlRewriteLink($customLink ='',$id = 0){
-    return array(
-    Shop::SHOP_VIEW_ORGINAL_URL.$id           =>  $customLink,
-    Shop::SHOP_TOP_PRODUCTS_ORGINAL_URL.$id   =>  $customLink.'/top-products',
-    Shop::SHOP_REVIEWS_ORGINAL_URL.$id        =>  $customLink.'/reviews',
-    Shop::SHOP_SEND_MESSAGE_ORGINAL_URL.$id   =>  $customLink.'/contact',
-    Shop::SHOP_POLICY_ORGINAL_URL.$id         =>  $customLink.'/policy'
-    );
-    } */
-
-    /* static function getProductUrlRewriteLink($customLink ='',$id = 0){
-    return array(
-    Product::PRODUCT_VIEW_ORGINAL_URL.$id           =>  $customLink.'/'.$id,
-    Product::PRODUCT_REVIEWS_ORGINAL_URL.$id        =>  $customLink.'/reviews/'.$id,
-    Product::PRODUCT_MORE_SELLERS_ORGINAL_URL.$id        =>  $customLink.'/sellers/'.$id,
-    );
-    } */
-
     public static function getSmtpSecureArr($langId)
     {
         return array(
@@ -368,36 +360,6 @@ class applicationConstants
         return array(
         static :: SMTP_TLS       =>  'tls',
         static :: SMTP_SSL       =>  'ssl',
-        );
-    }
-
-    public static function getLgColsForPackages()
-    {
-        return array('1'=>4,
-        '2'=>6,
-        '3'=>4,
-        '4'=>4,
-        '5'=>4,
-        '6'=>4,
-        '7'=>4,
-        '8'=>4,
-        '9'=>4,
-        '10'=>4
-        );
-    }
-
-    public static function getMdColsForPackages()
-    {
-        return array('1'=>4,
-        '2'=>6,
-        '3'=>4,
-        '4'=>3,
-        '5'=>4,
-        '6'=>4,
-        '7'=>4,
-        '8'=>4,
-        '9'=>4,
-        '10'=>4
         );
     }
 

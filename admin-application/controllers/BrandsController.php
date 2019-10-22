@@ -150,6 +150,8 @@ class BrandsController extends AdminBaseController
         if ($newTabLangId == 0 && !$this->isMediaUploaded($brand_id)) {
             $this->set('openMediaForm', true);
         }
+
+        Product::updateMinPrices(0, 0, $brandId);
         $this->set('msg', Labels::getLabel('MSG_Brand_Setup_Successful', $this->adminLangId));
         $this->set('brandId', $brandId);
         $this->set('langId', $newTabLangId);
@@ -244,6 +246,8 @@ class BrandsController extends AdminBaseController
         if ($newTabLangId == 0 && !$this->isMediaUploaded($brand_id)) {
             $this->set('openMediaForm', true);
         }
+
+        Product::updateMinPrices(0, 0, $brandId);
         $this->set('msg', Labels::getLabel('MSG_Brand_Setup_Successful', $this->adminLangId));
         $this->set('brandId', $brandId);
         $this->set('langId', $newTabLangId);
@@ -661,7 +665,7 @@ class BrandsController extends AdminBaseController
         );
         $htmlAfterField = '<span id="input-field"></span>
         <span class = "uploadimage--info" >It will be displayed in 192 × 82 pixels</span>
-        <div class="uploaded--image"><img src="'.CommonHelper::generateUrl('image','brand',array($brand_id, $lang_id, '?'.time()),CONF_WEBROOT_FRONT_URL).'">';
+        <div class="uploaded--image"><img src="'.CommonHelper::generateUrl('image','brand',array($brand_id, $lang_id),CONF_WEBROOT_FRONT_URL).'">';
         if( AttachedFile::getAttachment( AttachedFile::FILETYPE_BRAND_LOGO, $brand_id, 0, $lang_id ) ){
             $htmlAfterField .= '<a href="javascript:void(0);" onclick="removeBrandLogo('.$brand_id.', '.$lang_id.')" class="remove--img"><i class="ion-close-round"></i></a>';
         }
@@ -683,7 +687,7 @@ class BrandsController extends AdminBaseController
         }
 
         $this->markAsDeleted($brand_id);
-
+        Product::updateMinPrices(0, 0, $brand_id);
         $this->set('msg', $this->str_delete_record);
         $this->_template->render(false, false, 'json-success.php');
     }
@@ -850,7 +854,7 @@ class BrandsController extends AdminBaseController
         $status = ($brandData['brand_active'] == applicationConstants::ACTIVE) ? applicationConstants::INACTIVE : applicationConstants::ACTIVE;
 
         $this->updateBrandStatus($brandId, $status);
-
+        Product::updateMinPrices(0, 0, $brandId);
         $this->set('msg', $this->str_update_record);
         $this->_template->render(false, false, 'json-success.php');
     }
@@ -874,6 +878,7 @@ class BrandsController extends AdminBaseController
 
             $this->updateBrandStatus($brandId, $status);
         }
+        Product::updateMinPrices();
         $this->set('msg', $this->str_update_record);
         $this->_template->render(false, false, 'json-success.php');
     }

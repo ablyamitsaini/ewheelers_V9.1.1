@@ -22,7 +22,7 @@ class Common
         $productsArr = $cartObj->getProducts($siteLangId);
 
         $cartSummary = $cartObj->getCartFinancialSummary($siteLangId);
-        
+
         $template->set('siteLangId', $siteLangId);
         $template->set('products', $productsArr);
         $template->set('cartSummary', $cartSummary);
@@ -74,9 +74,13 @@ class Common
         $isUserLogged = UserAuthentication::isUserLogged();
         $template->set('isUserLogged', $isUserLogged);
         if ($isUserLogged) {
+            $userId = UserAuthentication::getLoggedUserId();
+            $userImgUpdatedOn = User::getAttributesById($userId, 'user_img_updated_on');
+            $uploadedTime = AttachedFile::setTimeParam($userImgUpdatedOn);
+            $profileImage = FatCache::getCachedUrl(CommonHelper::generateUrl('Account', 'userProfileImage', array($userId,'croped',true)).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg');
             $template->set('userName', ucfirst(CommonHelper::getUserFirstName(UserAuthentication::getLoggedUserAttribute('user_name'))));
             $template->set('userEmail', UserAuthentication::getLoggedUserAttribute('user_email'));
-            $template->set('profilePicUrl', CommonHelper::generateUrl('Account', 'userProfileImage', array(UserAuthentication::getLoggedUserId(),'croped',true)));
+            $template->set('profilePicUrl', $profileImage);
         }
     }
 
@@ -92,47 +96,53 @@ class Common
         $headerSrchFrm->fill($paramsAssocArr);
         /* ] */
 
-        /* SubQuery, Category have products[ */
-        $prodSrchObj = new ProductSearch($siteLangId);
-        $prodSrchObj->setDefinedCriteria();
-        $prodSrchObj->joinProductToCategory();
-        $prodSrchObj->doNotCalculateRecords();
-        $prodSrchObj->doNotLimitRecords();
-        $prodSrchObj->joinSellerSubscription($siteLangId, true);
-        $prodSrchObj->addSubscriptionValidCondition();
-        $prodSrchObj->addGroupBy('prodcat_id');
-        $prodSrchObj->addMultipleFields(array('prodcat_code AS prodrootcat_code','count(selprod_id) as productCounts', 'prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name', 'prodcat_parent'));
+        $headerRootCatArr =  FatCache::get('headerRootCatArr'.$siteLangId, CONF_HOME_PAGE_CACHE_TIME, '.txt');
+        if ($headerRootCatArr) {
+            $categoriesArr = unserialize($headerRootCatArr);
+        } else {
+            /* SubQuery, Category have products[ */
+            $prodSrchObj = new ProductSearch();
+            $prodSrchObj->setDefinedCriteria(0 , 0, array('doNotJoinSpecialPrice'=>true));
+            $prodSrchObj->joinProductToCategory($siteLangId);
+            $prodSrchObj->doNotCalculateRecords();
+            $prodSrchObj->doNotLimitRecords();
+            $prodSrchObj->joinSellerSubscription($siteLangId, true);
+            $prodSrchObj->addSubscriptionValidCondition();
+            $prodSrchObj->addGroupBy('prodcat_id');
+            $prodSrchObj->addMultipleFields(array('prodcat_code AS prodrootcat_code','count(selprod_id) as productCounts', 'prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as prodcat_name', 'prodcat_parent'));
 
-        $rs = $prodSrchObj->getResultSet();
+            $rs = $prodSrchObj->getResultSet();
 
-        $productRows = FatApp::getDb()->fetchAll($rs);
-        $mainRootCategories = FatUtility::int(array_column($productRows, 'prodrootcat_code'));
+            $productRows = FatApp::getDb()->fetchAll($rs);
 
-        $categoriesMainRootArr = array();
+            $mainRootCategories = FatUtility::int(array_column($productRows, 'prodrootcat_code'));
 
-        if ($productRows) {
-            $categoriesMainRootArr = array_unique($mainRootCategories);
+            $categoriesMainRootArr = array();
 
-            array_flip($categoriesMainRootArr);
+            if ($productRows) {
+                $categoriesMainRootArr = array_unique($mainRootCategories);
+                array_flip($categoriesMainRootArr);
+            }
+            /* ] */
+
+            $catSrch = ProductCategory::getSearchObject(false, $siteLangId);
+            $catSrch->addMultipleFields(array('prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as category_name'));
+            $catSrch->addOrder('category_name');
+            $catSrch->doNotCalculateRecords();
+            $catSrch->addCondition('prodcat_active', '=', applicationConstants::YES);
+            $catSrch->addCondition('prodcat_deleted', '=', applicationConstants::NO);
+            if ($categoriesMainRootArr) {
+                $catSrch->addCondition('prodcat_id', 'in', $categoriesMainRootArr);
+            }
+            $catSrch->setPageSize(25);
+            $catRs = $catSrch->getResultSet();
+            $categoriesArr = [];
+            while ($row = FatApp::getDb()->fetch($catRs)) {
+                $categoriesArr[$row['prodcat_id']] = strip_tags($row['category_name']);
+            }
         }
 
-        /* ] */
-
-        $catSrch = ProductCategory::getSearchObject(false, $siteLangId);
-        $catSrch->addMultipleFields(array('prodcat_id', 'IFNULL(prodcat_name, prodcat_identifier) as category_name'));
-        $catSrch->addOrder('category_name');
-        $catSrch->doNotCalculateRecords();
-        $catSrch->addCondition('prodcat_active', '=', applicationConstants::YES);
-        $catSrch->addCondition('prodcat_deleted', '=', applicationConstants::NO);
-        if ($categoriesMainRootArr) {
-            $catSrch->addCondition('prodcat_id', 'in', $categoriesMainRootArr);
-        }
-        $catSrch->setPageSize(25);
-        $catRs = $catSrch->getResultSet();
-        $categoriesArr = [];
-        while ($row = FatApp::getDb()->fetch($catRs)) {
-            $categoriesArr[$row['prodcat_id']] = strip_tags($row['category_name']);
-        }
+        FatCache::set('headerRootCatArr'.$siteLangId, serialize($categoriesArr), '.txt');
 
         $template->set('categoriesArr', $categoriesArr);
         $template->set('headerSrchFrm', $headerSrchFrm);

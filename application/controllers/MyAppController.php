@@ -1,23 +1,36 @@
 <?php
 class MyAppController extends FatController
 {
+    public $app_user = array();
+    public $appToken = '';
+
     public function __construct($action)
-    {
+    {            
         parent::__construct($action);
         $this->action = $action;
 
         if (FatApp::getConfig("CONF_MAINTENANCE", FatUtility::VAR_INT, 0) && (get_class($this) != "MaintenanceController") && (get_class($this) !=' Home' && $action != 'setLanguage')) {
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError(Labels::getLabel('MSG_Site_under_maintenance', CommonHelper::getLangId()));
+            }
             FatApp::redirectUser(CommonHelper::generateUrl('maintenance'));
         }
 
         CommonHelper::initCommonVariables();
         $this->initCommonVariables();
+        $this->tempTokenLogin();
     }
 
     public function initCommonVariables()
     {
         $this->siteLangId = CommonHelper::getLangId();
         $this->siteCurrencyId = CommonHelper::getCurrencyId();
+
+        $this->app_user['temp_user_id'] = 0;
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->setApiVariables();
+        }
+
         $this->set('siteLangId', $this->siteLangId);
         $this->set('siteCurrencyId', $this->siteCurrencyId);
         $loginData = array(
@@ -36,7 +49,7 @@ class MyAppController extends FatController
         $controllerName = ucfirst(FatUtility::dashed2Camel($urlController));
 
         /* to keep track of temporary hold the product stock, update time in each row of tbl_product_stock_hold against current user[ */
-        $cartObj = new Cart(0, $this->siteLangId);
+        $cartObj = new Cart(UserAuthentication::getLoggedUserId(true), $this->siteLangId, $this->app_user['temp_user_id']);
         $cartProducts = $cartObj->getProducts($this->siteLangId);
         if ($cartProducts) {
             foreach ($cartProducts as $product) {
@@ -44,6 +57,11 @@ class MyAppController extends FatController
             }
         }
         /* ] */
+
+        if (true ===  MOBILE_APP_API_CALL) {
+            $this->cartItemsCount = $cartObj->countProducts();
+            $this->set('cartItemsCount', $this->cartItemsCount);
+        }
 
         $jsVariables = array(
         'confirmRemove' =>Labels::getLabel('LBL_Do_you_want_to_remove', $this->siteLangId),
@@ -118,6 +136,10 @@ class MyAppController extends FatController
         $currencySymbolLeft = CommonHelper::getCurrencySymbolLeft();
         $currencySymbolRight = CommonHelper::getCurrencySymbolRight();
 
+        if (CommonHelper::demoUrl()) {
+            $this->_template->addCss('css/demo.css');
+        }
+
         $this->set('isUserDashboard', false);
         $this->set('currencySymbolLeft', $currencySymbolLeft);
         $this->set('currencySymbolRight', $currencySymbolRight);
@@ -128,13 +150,92 @@ class MyAppController extends FatController
         $this->set('action', $this->action);
     }
 
-    public function getStates($countryId, $stateId = 0)
+    private function setApiVariables()
+    {
+        $this->db = FatApp::getDb();
+        $post = FatApp::getPostedData();
+
+        $this->appToken = CommonHelper::getAppToken();
+
+        $this->app_user['temp_user_id'] = 0;
+        if (!empty($_SERVER['HTTP_X_TEMP_USER_ID'])) {
+            $this->app_user['temp_user_id'] = $_SERVER['HTTP_X_TEMP_USER_ID'];
+        }
+
+        $forTempTokenBasedActions = array('send_to_web');
+        if (('1.0' == MOBILE_APP_API_VERSION || in_array($this->action, $forTempTokenBasedActions) || empty($this->appToken)) && array_key_exists('_token', $post)) {
+            $this->appToken = ($post['_token']!='')?$post['_token']:'';
+        }
+
+        if ($this->appToken) {
+            if (!UserAuthentication::isUserLogged('', $this->appToken)) {
+                $arr = array('status'=>-1,'msg'=>Labels::getLabel('L_Invalid_Token', $this->siteLangId));
+                die(json_encode($arr));
+            }
+
+            $userId = UserAuthentication::getLoggedUserId();
+            $userObj = new User($userId);
+            if (!$row = $userObj->getProfileData()) {
+                $arr = array('status'=>-1,'msg'=>Labels::getLabel('L_Invalid_Token', $this->siteLangId));
+                die(json_encode($arr));
+            }
+            $this->app_user = $row;
+            $this->app_user['temp_user_id'] = 0;
+        }
+
+        if (array_key_exists('language', $post)) {
+            $this->siteLangId = FatUtility::int($post['language']);
+            $_COOKIE['defaultSiteLang'] = $this->siteLangId;
+        }
+
+        if (array_key_exists('currency', $post)) {
+            $this->siteCurrencyId = FatUtility::int($post['currency']);
+            $_COOKIE['defaultSiteCurrency'] = $this->siteCurrencyId;
+        }
+
+        $currencyRow = Currency::getAttributesById($this->siteCurrencyId);
+
+        $this->currencySymbol = !empty($currencyRow['currency_symbol_left'])?$currencyRow['currency_symbol_left']:$currencyRow['currency_symbol_right'];
+        $this->set('currencySymbol', $this->currencySymbol);
+
+        $user_id = $this->getAppLoggedUserId();
+        $userObj = new User($user_id);
+        $srch = $userObj->getUserSearchObj();
+        $srch->addMultipleFields(array('u.*'));
+        $rs = $srch->getResultSet();
+        $this->user_details = $this->db->fetch($rs, 'user_id');
+        /*$cObj = new Cart($user_id, 0, $this->app_user['temp_user_id']);
+        $this->cartItemsCount = $cObj->countProducts();
+        $this->set('cartItemsCount', $this->cartItemsCount);*/
+
+        $this->totalFavouriteItems = UserFavorite::getUserFavouriteItemCount($user_id);
+        $this->set('totalFavouriteItems', $this->totalFavouriteItems);
+
+        $threadObj = new Thread();
+        $this->totalUnreadMessageCount = $threadObj->getMessageCount($user_id);
+        $this->set('totalUnreadMessageCount', $this->totalUnreadMessageCount);
+
+        $notificationObj = new Notifications();
+        $this->totalUnreadNotificationCount = $notificationObj->getUnreadNotificationCount($user_id);
+        $this->set('totalUnreadNotificationCount', $this->totalUnreadNotificationCount);
+    }
+
+    private function getAppLoggedUserId()
+    {
+        return isset($this->app_user["user_id"])?$this->app_user["user_id"]:0;
+    }
+
+    public function getStates($countryId, $stateId = 0, $return = false)
     {
         $countryId = FatUtility::int($countryId);
         $stateId = FatUtility::int($stateId);
 
         $stateObj = new States();
         $statesArr = $stateObj->getStatesByCountryId($countryId, $this->siteLangId);
+
+        if (true === $return) {
+            return $statesArr;
+        }
 
         $this->set('statesArr', $statesArr);
         $this->set('stateId', $stateId);
@@ -219,7 +320,8 @@ class MyAppController extends FatController
     {
         $siteLangId = CommonHelper::getLangId();
         $frm = new Form('frmLogin');
-        $userName ='';$pass = '';
+        $userName ='';
+        $pass = '';
         if (CommonHelper::demoUrl()) {
             $userName = 'login@dummyid.com';
             $pass = 'kanwar@123';
@@ -241,13 +343,16 @@ class MyAppController extends FatController
         $frm->addHiddenField('', 'user_id', 0, array('id'=>'user_id'));
         $frm->addRequiredField(Labels::getLabel('LBL_NAME', $siteLangId), 'user_name', '', array('placeholder'=>Labels::getLabel('LBL_NAME', $siteLangId)));
         $fld = $frm->addTextBox(Labels::getLabel('LBL_USERNAME', $siteLangId), 'user_username', '', array('placeholder'=>Labels::getLabel('LBL_USERNAME', $siteLangId)));
-        $fld->setUnique('tbl_user_credentials', 'credential_username', 'credential_user_id', 'user_id', 'user_id');
+        if (false ===  MOBILE_APP_API_CALL) {
+            $fld->setUnique('tbl_user_credentials', 'credential_username', 'credential_user_id', 'user_id', 'user_id');
+        }
         $fld->requirements()->setRequired();
         $fld->requirements()->setUsername();
 
         $fld = $frm->addEmailField(Labels::getLabel('LBL_EMAIL', $siteLangId), 'user_email', '', array('placeholder'=>Labels::getLabel('LBL_EMAIL', $siteLangId)));
-        $fld->setUnique('tbl_user_credentials', 'credential_email', 'credential_user_id', 'user_id', 'user_id');
-
+        if (false ===  MOBILE_APP_API_CALL) {
+            $fld->setUnique('tbl_user_credentials', 'credential_email', 'credential_user_id', 'user_id', 'user_id');
+        }
         $fld = $frm->addPasswordField(Labels::getLabel('LBL_PASSWORD', $siteLangId), 'user_password', '', array('placeholder'=>Labels::getLabel('LBL_PASSWORD', $siteLangId)));
         $fld->requirements()->setRequired();
         $fld->requirements()->setRegularExpressionToValidate(ValidateElement::PASSWORD_REGEX);
@@ -308,10 +413,10 @@ class MyAppController extends FatController
         $zipFld->requirements()->setRegularExpressionToValidate(ValidateElement::ZIP_REGEX);
         $zipFld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Only_alphanumeric_value_is_allowed.', $this->siteLangId));
 
-        $phnFld = $frm->addRequiredField(Labels::getLabel('LBL_Phone', $siteLangId), 'ua_phone', '', array('class'=>'phone-js ltr-right', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
+        $phnFld = $frm->addRequiredField(Labels::getLabel('LBL_Phone', $siteLangId), 'ua_phone', '', array('class'=>'phone-js ltr-right', 'placeholder' => ValidateElement::PHONE_NO_FORMAT, 'maxlength' => ValidateElement::PHONE_NO_LENGTH));
         $phnFld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
         // $phnFld->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_e.g.', $this->siteLangId).': '.implode(', ', ValidateElement::PHONE_FORMATS).'</small>';
-        $phnFld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_format.', $this->siteLangId));
+        $phnFld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_phone_number_format.', $this->siteLangId));
 
         $frm->addHiddenField('', 'ua_id');
         $fldCancel = $frm->addButton('', 'btn_cancel', Labels::getLabel('LBL_Cancel', $siteLangId));
@@ -322,7 +427,17 @@ class MyAppController extends FatController
 
     protected function getProductSearchForm($addKeywordRelvancy = false)
     {
-        $sortByArr = array( 'price_asc' => Labels::getLabel('LBL_Price_(Low_to_High)', $this->siteLangId), 'price_desc' => Labels::getLabel('LBL_Price_(High_to_Low)', $this->siteLangId), 'popularity_desc' => Labels::getLabel('LBL_Sort_by_Popularity', $this->siteLangId), 'rating_desc' => Labels::getLabel('LBL_Sort_by_Rating', $this->siteLangId) );
+        $sortByArr = array(
+            'price_asc' => Labels::getLabel('LBL_Price_(Low_to_High)', $this->siteLangId),
+            'price_desc' => Labels::getLabel('LBL_Price_(High_to_Low)', $this->siteLangId),
+            'popularity_desc' => Labels::getLabel('LBL_Sort_by_Popularity', $this->siteLangId),
+            'discounted' => Labels::getLabel('LBL_Most_discounted', $this->siteLangId),
+        );
+
+        if (0 < FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) {
+            $sortByArr['rating_desc'] = Labels::getLabel('LBL_Sort_by_Rating', $this->siteLangId);
+        }
+
         $sortBy = 'popularity_desc';
         if ($addKeywordRelvancy) {
             $sortByArr = array('keyword_relevancy' => Labels::getLabel('LBL_Keyword_Relevancy', $this->siteLangId)) + $sortByArr;
@@ -465,5 +580,60 @@ class MyAppController extends FatController
         $this->_template->addJs('js/listing-functions.js');
         $this->_template->addCss('css/ion.rangeSlider.css');
         $this->_template->addCss('css/ion.rangeSlider.skinHTML5.css');
+    }
+
+    public function getAppTempUserId()
+    {
+        if (array_key_exists('temp_user_id', $this->app_user) && !empty($this->app_user["temp_user_id"])) {
+            return $this->app_user["temp_user_id"];
+        }
+
+        if ($this->appToken && UserAuthentication::isUserLogged('', $this->appToken)) {
+            $userId = UserAuthentication::getLoggedUserId();
+            if ($userId > 0) {
+                return $userId;
+            }
+        }
+
+        $generatedTempId = substr(md5(rand(1, 99999) . microtime()), 0, UserAuthentication::TOKEN_LENGTH);
+        return $this->app_user['temp_user_id'] = $generatedTempId;
+    }
+
+    public function tempTokenLogin()
+    {
+        $forTempTokenBasedGetActions = array('downloadDigitalFile');
+        if (!in_array($this->action, $forTempTokenBasedGetActions)) {
+            return;
+        }
+
+        $get = FatApp::getQueryStringData();
+        if (empty($get) || !array_key_exists('ttk', $get)) {
+            return;
+        }
+      
+        $ttk = ($get['ttk']!='') ? $get['ttk'] : '';
+
+        if (strlen($ttk) != UserAuthentication::TOKEN_LENGTH) {
+            FatUtility::dieJSONError(Labels::getLabel('LBL_Invalid_Temp_Token', CommonHelper::getLangId()));
+        }
+
+        $userId = 0;
+        if (!empty($get) && array_key_exists('user_id', $get)) {
+            $userId = FatUtility::int($get['user_id']);
+        }
+
+        $uObj = new User($userId);
+        if (!$user_temp_token_data = $uObj->validateAPITempToken($ttk)) {
+            FatUtility::dieJSONError(Labels::getLabel('LBL_Invalid_Token_Data', CommonHelper::getLangId()));
+        }
+
+        if (!$user = $uObj->getUserInfo(array('credential_username','credential_password','user_id'), true, true)) {
+            FatUtility::dieJSONError(Labels::getLabel('LBL_Invalid_Request', CommonHelper::getLangId()));
+        }
+
+        $authentication = new UserAuthentication();
+        if ($authentication->login($user['credential_username'], $user['credential_password'], $_SERVER['REMOTE_ADDR'], false)) {
+            $uObj->deleteUserAPITempToken() ;
+        }
     }
 }

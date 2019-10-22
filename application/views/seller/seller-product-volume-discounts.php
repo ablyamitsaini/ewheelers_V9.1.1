@@ -3,17 +3,18 @@
     <?php require_once('sellerCatalogProductTop.php');?>
 </div>
 <div class="cards">
-<?php if(count($arrListing) > 0) { ?>
+<?php if (count($arrListing) > 0) { ?>
     <div class="cards-header p-4">
-        <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Volume_Discount_Setup', $siteLangId);?></h5>
+        <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Volume_Discount', $siteLangId);?></h5>
         <div class="action">
             <a class="btn btn--primary btn--sm" href="javascript:void(0); " onClick="sellerProductVolumeDiscountForm(<?php echo $selprod_id; ?>, 0);"><?php echo Labels::getLabel('LBL_Add_New_Volume_Discount', $siteLangId)?></a>
+            <!-- <a class="btn btn--primary-border btn--sm" href="<?php echo CommonHelper::generateUrl('Seller', 'volumeDiscount', array($selprod_id)); ?>" target="_blank"><?php echo Labels::getLabel('LBL_Manage_Volume_Discount', $siteLangId)?></a> -->
         </div>
     </div>
 <?php } ?>
 <div class="cards-content pl-4 pr-4 ">
         <div class="row">
-            <div class="<?php echo (count($arrListing) > 0) ? 'col-md-6' : 'col-md-12' ;?>">
+            <div class="<?php echo (count($arrListing) > 0) ? 'col-md-8' : 'col-md-12' ;?>">
                 <div class="form__subcontent">
                     <?php
                         $arr_flds = array(
@@ -45,16 +46,6 @@
                                         $li = $ul->appendElement("li");
                                         $li->appendElement('a', array('href'=>'javascript:void(0)', 'class'=>'', 'title'=>Labels::getLabel('LBL_Delete', $siteLangId), "onclick"=>"deleteSellerProductVolumeDiscount(".$row['voldiscount_id'].")"), '<i class="fa fa-trash"></i>', true);
                                         break;
-                                /* case 'splprice_price':
-                                $td->appendElement( 'plaintext', array(), CommonHelper::displayMoneyFormat($row[$key]),true );
-                                break;
-                                case 'splprice_start_date';
-                                $td->appendElement( 'plaintext', array(), FatDate::format($row[$key]),true );
-                                break;
-                                case 'splprice_end_date';
-                                $td->appendElement( 'plaintext', array(), FatDate::format($row[$key]),true );
-                                break;
-                                 */
                                     default:
                                         $td->appendElement('plaintext', array(), $row[$key], true);
                                         break;

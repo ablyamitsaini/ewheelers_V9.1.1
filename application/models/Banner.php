@@ -37,7 +37,7 @@ class Banner extends MyAppModel
         static::TYPE_PPC    =>    Labels::getLabel('LBL_Promotion', $langId),
         );
     }
-
+    
     public static function getSearchObject($langId = 0, $isActive = true)
     {
         $srch = new SearchBase(static::DB_TBL, 'b');
@@ -111,5 +111,10 @@ class Banner extends MyAppModel
 
         $onDuplicateBannerLogData = array_merge($bannerLogData, array('lbanner_impressions'=>'mysql_func_lbanner_impressions+1'));
         FatApp::getDb()->insertFromArray(static::DB_TBL_LOGS, $bannerLogData, true, array(), $onDuplicateBannerLogData);
+    }
+
+    public static function setLastModified($banner_id){
+        $where = array('smt'=>'banner_id = ?', 'vals'=>array($banner_id));
+        FatApp::getDb()->updateFromArray(static::DB_TBL, array('banner_img_updated_on'=>date('Y-m-d  H:i:s')), $where);
     }
 }

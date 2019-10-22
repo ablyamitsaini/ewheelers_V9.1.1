@@ -183,6 +183,17 @@ $(document).on('change','.language-js',function(){
 		});
 	}
 
+	checkIfAvailableForInventory = function(product_id) {
+		fcom.ajax(fcom.makeUrl('Seller','checkIfAvailableForInventory', [product_id]), '', function(t){
+			$res = $.parseJSON(t);
+			if($res.status==0){
+				$.mbsmessage($res.msg, true, 'alert--danger');
+				return false;
+			}
+			window.location.href = fcom.makeUrl('Seller' ,'sellerProductForm' , [product_id]);
+		});
+	}
+
 	catalogInfo = function(product_id) {
 		$.facebox(function() {
 			fcom.ajax(fcom.makeUrl('Seller','catalogInfo',[product_id]), '', function(t){

@@ -22,9 +22,9 @@
                 </div>
 				<div class="products__body">
 				<?php $this->includeTemplate('_partial/collection-ui.php',array('product'=>$rProduct,'siteLangId'=>$siteLangId),false);?>
-                <?php $uploadedTime = ($rProduct['product_image_updated_on'] > 0) ? '?'.strtotime($rProduct['product_image_updated_on']) : '' ;?>
+                <?php $uploadedTime = AttachedFile::setTimeParam($product['product_image_updated_on']);?>
 					<div class="products__img">
-						<a title="<?php echo $rProduct['selprod_title'];?>" href="<?php echo !isset($rProduct['promotion_id'])?CommonHelper::generateUrl('Products','View',array($rProduct['selprod_id'])):CommonHelper::generateUrl('Products','track',array($rProduct['promotion_record_id']));?>"><img data-ratio="1:1 (500x500)" src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('image','product', array($rProduct['product_id'], "CLAYOUT3", $rProduct['selprod_id'], 0, $siteLangId)), CONF_IMG_CACHE_TIME, '.jpg').$uploadedTime; ?>" alt="<?php echo $rProduct['prodcat_name'];?>"> </a>
+						<a title="<?php echo $rProduct['selprod_title'];?>" href="<?php echo !isset($rProduct['promotion_id'])?CommonHelper::generateUrl('Products','View',array($rProduct['selprod_id'])):CommonHelper::generateUrl('Products','track',array($rProduct['promotion_record_id']));?>"><img data-ratio="1:1 (500x500)" src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('image','product', array($rProduct['product_id'], "CLAYOUT3", $rProduct['selprod_id'], 0, $siteLangId)).$uploadedTime, CONF_IMG_CACHE_TIME, '.jpg'); ?>" alt="<?php echo $rProduct['prodcat_name'];?>"> </a>
 					</div>
 				</div>
 				<div class="products__footer">
@@ -38,7 +38,10 @@
 						<?php } ?>
 					</div>
 					<?php } */ ?>
-					<div class="products__category"><a href="<?php echo CommonHelper::generateUrl('Category','View',array($rProduct['prodcat_id']));?>"><?php echo $rProduct['prodcat_name'];?> </a></div>
+					<div class="products__category">
+                    <a href="<?php echo CommonHelper::generateUrl('Category','View',array($rProduct['prodcat_id']));?>">
+                    <?php echo $rProduct['prodcat_name'];?> </a>
+                    </div>
 					<div class="products__title"><a title="<?php echo $rProduct['selprod_title'];?>" href="<?php echo CommonHelper::generateUrl('Products','View',array($rProduct['selprod_id']));?>"><?php echo (mb_strlen($rProduct['selprod_title']) > 50) ? mb_substr($rProduct['selprod_title'],0,50)."..." : $rProduct['selprod_title'];?> </a></div>
                     <?php $this->includeTemplate('_partial/collection-product-price.php',array('product'=>$rProduct,'siteLangId'=>$siteLangId),false);?>
 				</div>

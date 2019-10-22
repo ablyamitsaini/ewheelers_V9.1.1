@@ -10,11 +10,12 @@ class JsCssController{
 
 	private function setHeaders($contentType) {
 		header('Content-Type: ' . $contentType);
-		header('Pragma: public' );
 		header('Cache-Control: public, max-age=2592000, stale-while-revalidate=604800');
-		header("Expires: " . date('r', strtotime("+30 Day")));
+        header("Pragma: public");
+        header("Expires: " . date('r', strtotime("+30 days")));
+		$this->checkModifiedHeader();
 		if (isset($_GET['sid'])) {
-			header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $_GET['sid']).' GMT', true);
+			header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $_GET['sid']).' GMT', true, 200);
 		}
 
 		if (! in_array ( 'ob_gzhandler', ob_list_handlers () )) {
@@ -26,16 +27,14 @@ class JsCssController{
 		}
 	}
 
-    function css(){ 
-    	$this->checkModifiedHeader();
-
+    function css(){
     	$this->setHeaders('text/css');
 
         $arr = explode(',', $_GET['f']);
 
         $str = '';
-		
-        foreach ($arr as $fl){ 
+
+        foreach ($arr as $fl){
             if (substr($fl, '-4') != '.css') continue;
         	$file = CONF_THEME_PATH . $fl;
             if (file_exists($file)) $str .= file_get_contents($file);
@@ -48,18 +47,18 @@ class JsCssController{
             $str = str_replace("\r", '', $str);
             $str = str_replace("\n", '', $str);
         }
-	
-		$cacheKey = $_SERVER['REQUEST_URI']; 		
+
+		$cacheKey = $_SERVER['REQUEST_URI'];
 		FatCache::set($cacheKey, $str, '.css');
-		
+
         echo $str;
     }
 
     function cssCommon(){
-		
-		if (empty($_SESSION['preview_theme']) && !isset($_SESSION['preview_theme']) ) {
+
+	/*	if (empty($_SESSION['preview_theme']) && !isset($_SESSION['preview_theme']) ) {
 			$this->checkModifiedHeader();
-		}
+		}*/
     	$this->setHeaders('text/css');
 
         if ( isset($_GET['f']) ) {
@@ -88,13 +87,13 @@ class JsCssController{
         $str = '';
         foreach ($arr as $fl){
             if (substr($fl, '-4') != '.css') continue;
-			
+
 			$file = CONF_THEME_PATH . 'common-css' . DIRECTORY_SEPARATOR . $fl;
 			if (file_exists($file)) {
 				$str .= file_get_contents($file);
 			}
 			/* if (!empty($_SESSION['preview_theme']) && isset($_SESSION['preview_theme']) ) {
-				
+
 				$Cfile = 'common-css' . DIRECTORY_SEPARATOR . $fl;
 				$filesArr =  array(
 					'common-css/1base.css'=>'css/css-templates/1base.css',
@@ -103,14 +102,14 @@ class JsCssController{
 					'common-css/4phone.css'=>'css/css-templates/4phone.css'
 				);
 				$file = CONF_THEME_PATH . 'common-css' . DIRECTORY_SEPARATOR . $fl;
-				
+
 				if (file_exists($file) && !array_key_exists($Cfile,$filesArr)) {
 					$str .= file_get_contents($file);
 				}else if (file_exists($file) && array_key_exists($Cfile,$filesArr)) {
 					$str .= $this->getPreviewThemeStr(CONF_THEME_PATH.$filesArr[$Cfile]);
 				}
 			}else{
-				
+
 				$file = CONF_THEME_PATH . 'common-css' . DIRECTORY_SEPARATOR . $fl;
 				if (file_exists($file)) {
 					$str .= file_get_contents($file);
@@ -127,16 +126,16 @@ class JsCssController{
 			$str = str_replace("\r", '', $str);
 			$str = str_replace("\n", '', $str);
 		}
-		
+
 		$cacheKey = $_SERVER['REQUEST_URI'];
 
-		
+
 		FatCache::set($cacheKey, $str, '.css');
-		
+
         echo $str;
     }
-	function getPreviewThemeStr($Cfile){ 
-	
+	function getPreviewThemeStr($Cfile){
+
 			$str= file_get_contents($Cfile);
 			$selected_theme=$_SESSION['preview_theme'];
 			$theme_detail = ThemeColor::getAttributesById($selected_theme);
@@ -160,8 +159,8 @@ class JsCssController{
 					"var(--border-color-second)"=>$theme_detail['tcolor_border_second_color'],
 
 					"var(--second-btn-color)"=>$theme_detail['tcolor_second_btn_color'],
-					
-					
+
+
 
 					);
 			foreach ($replace_arr as $key => $val) {
@@ -170,11 +169,9 @@ class JsCssController{
 
 			}
 		return $str;
-	
+
 	}
     function js(){
-    	$this->checkModifiedHeader();
-
     	$this->setHeaders('application/javascript');
 
         $arr = explode(',', $_GET['f']);
@@ -184,15 +181,13 @@ class JsCssController{
             if (substr($fl, '-3') != '.js') continue;
             if (file_exists(CONF_THEME_PATH . $fl)) $str .= file_get_contents(CONF_THEME_PATH . $fl);
         }
-		$cacheKey = $_SERVER['REQUEST_URI'];	 	
+		$cacheKey = $_SERVER['REQUEST_URI'];
 		FatCache::set($cacheKey, $str, '.js');
-		
+
         echo($str);
     }
 
     function jsCommon(){
-        $this->checkModifiedHeader();
-
     	$this->setHeaders('application/javascript');
 
         if ( isset($_GET['f']) ) {
@@ -221,8 +216,8 @@ class JsCssController{
             if (substr($fl, '-3') != '.js') continue;
             if (file_exists(CONF_THEME_PATH . 'common-js' . DIRECTORY_SEPARATOR . $fl)) $str .= file_get_contents(CONF_THEME_PATH . 'common-js' . DIRECTORY_SEPARATOR . $fl);
         }
-		
-		$cacheKey = $_SERVER['REQUEST_URI'];		
+
+		$cacheKey = $_SERVER['REQUEST_URI'];
 		FatCache::set($cacheKey, $str, '.js');
 
         echo($str);

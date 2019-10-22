@@ -49,7 +49,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                 </div>
                                 <?php } ?>
 
-                           
+
                         </div>
 						</div>
                         <div class="col-lg-5 col-details-right">
@@ -366,9 +366,15 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                             <div class="h6 m-0 -color-light"><?php echo Labels::getLabel('LBL_Seller', $siteLangId);?></div>
                                             <h6 class="m-0">
                                                 <a href="<?php echo CommonHelper::generateUrl('shops', 'View', array($shop['shop_id'])); ?>"><?php echo $shop['shop_name'];?></a>
-                                                <div class="products__rating -display-inline m-0"> - <i class="icn"><svg class="svg">
-                                                            <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
-                                                        </svg></i> <span class="rate"><?php echo round($shop_rating,1),'','', '';  if($shopTotalReviews){ ?><?php } ?> </span>
+                                                <div class="products__rating -display-inline m-0">
+                                                    <?php if (0 < FatApp::getConfig("CONF_ALLOW_REVIEWS", FatUtility::VAR_INT, 0)) { ?>
+                                                        - <i class="icn">
+                                                            <svg class="svg">
+                                                                <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
+                                                            </svg>
+                                                        </i> 
+                                                        <span class="rate"><?php echo round($shop_rating,1),'','', '';  if($shopTotalReviews){ ?><?php } ?> </span>
+                                                    <?php } ?>
                                                 </div>
 
                                             </h6>
@@ -545,7 +551,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                 }
                             }
                         } ?>
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-3 mb-md-0">
                         <div class="banner-ppc"><a href="<?php echo CommonHelper::generateUrl('Banner', 'url', array($val['banner_id'])); ?>" target="<?php echo $val['banner_target']; ?>" title="<?php echo $val['banner_title']; ?>"
                                 class="advertise__block"><img data-ratio="10:3" data-src-base="" data-src-base2x="" data-src="<?php echo $mobile_url  . $tablet_url  . $desktop_url; ?>"
                                     src="<?php echo CommonHelper::generateUrl('Banner', 'productDetailPageBanner', array($val['banner_id'],$siteLangId,applicationConstants::SCREEN_DESKTOP)); ?>" alt="<?php echo $val['banner_title']; ?>"

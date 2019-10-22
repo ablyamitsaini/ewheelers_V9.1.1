@@ -1,8 +1,22 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 </div>
-	<!--footer start here-->
+	<!--footer start here-->	
 	<footer id="footer">
-		<p><?php echo FatApp::getConfig("CONF_WEBSITE_NAME_".$adminLangId, FatUtility::VAR_STRING, 'Copyright &copy; '.date('Y').' <a href="javascript:void(0);">FATbit.com'); echo " ".CONF_WEB_APP_VERSION;?> </p>
+		<p>
+		<?php if(CommonHelper::demoUrl()){
+				$replacements = array(
+					'{YEAR}'=> '&copy; '.date("Y"),
+					'{PRODUCT}'=>'<a target="_blank" href="https://yo-kart.com">Yo!Kart</a>',
+					'{OWNER}'=> '<a target="_blank" href="https://www.fatbit.com/">FATbit Technologies</a>',
+				);
+				echo CommonHelper::replaceStringData(Labels::getLabel('LBL_COPYRIGHT_TEXT', $adminLangId), $replacements);
+			} else {		 
+				echo FatApp::getConfig("CONF_WEBSITE_NAME_".$adminLangId, FatUtility::VAR_STRING, 'Copyright &copy; '.date('Y').' <a href="https://www.fatbit.com/">FATbit.com');?> 
+		<?php }
+		echo " ".CONF_WEB_APP_VERSION;
+		?>
+		</p>
+
 	</footer>
 	<!--footer start here-->
 </div>
@@ -64,13 +78,10 @@
 		if(FatApp::getConfig('CONF_SITE_TRACKER_CODE',FatUtility::VAR_STRING,'')){
 			echo FatApp::getConfig('CONF_SITE_TRACKER_CODE',FatUtility::VAR_STRING,'');
 		}
-		if (FatApp::getConfig('CONF_AUTO_RESTORE_ON', FatUtility::VAR_INT, 1)) {
+		if (FatApp::getConfig('CONF_AUTO_RESTORE_ON', FatUtility::VAR_INT, 1) && CommonHelper::demoUrl()) { 
 			$this->includeTemplate( 'restore-system/page-content.php');
 		}
 	}
-
-
 	?>
-
 </body>
 </html>

@@ -236,6 +236,7 @@ class ShopsController extends AdminBaseController
             $newTabLangId = $this->adminLangId;
         }
 
+        Product::updateMinPrices();
         $this->set('msg', Labels::getLabel("MSG_Setup_Successful", $this->adminLangId));
         $this->set('shopId', $shop_id);
         $this->set('langId', $newTabLangId);
@@ -379,8 +380,11 @@ class ShopsController extends AdminBaseController
         }
 
         $this->set('shopId', $shop_id);
-        $this->set('file', $_FILES['file']['name']);
-        $this->set('msg', $_FILES['file']['name'].' '.Labels::getLabel('LBL_File_Uploaded_Successfully', $this->adminLangId));
+        $fileName = $_FILES['file']['name'];
+        $this->set('file', $fileName);
+        $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+        $fileName = strlen($fileName) > 10 ? substr($fileName, 0, 10).'.'.$ext : $fileName;
+        $this->set('msg', $fileName.' '.Labels::getLabel('LBL_File_Uploaded_Successfully', $this->adminLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
 
@@ -518,7 +522,7 @@ class ShopsController extends AdminBaseController
         $fld = $frm->addTextBox(Labels::getLabel('LBL_Shop_SEO_Friendly_URL', $this->adminLangId), 'urlrewrite_custom');
         $fld->requirements()->setRequired();
         $frm->addTextBox(Labels::getLabel('LBL_Postal_Code', $this->adminLangId), 'shop_postalcode');
-        $phnFld = $frm->addTextBox(Labels::getLabel('LBL_Phone', $this->adminLangId), 'shop_phone', '', array('class'=>'phone-js ltr-right', 'placeholder' => '(XXX) XXX-XXXX', 'maxlength' => 14));
+        $phnFld = $frm->addTextBox(Labels::getLabel('LBL_Phone', $this->adminLangId), 'shop_phone', '', array('class'=>'phone-js ltr-right', 'placeholder' => ValidateElement::PHONE_NO_FORMAT, 'maxlength' => ValidateElement::PHONE_NO_LENGTH));
         $phnFld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
         $countryObj = new Countries();
         $countriesArr = $countryObj->getCountriesArr($this->adminLangId);
@@ -558,13 +562,13 @@ class ShopsController extends AdminBaseController
         /* $fld = $frm->addButton('Logo','shop_logo','Upload File',
         array('class'=>'shopFile-Js','id'=>'shop_logo','data-file_type'=>AttachedFile::FILETYPE_SHOP_LOGO));
         $fld->htmlAfterField='<span id="input-field'.AttachedFile::FILETYPE_SHOP_LOGO.'"></span>
-        <div class="uploaded--image"><img src="'.CommonHelper::generateUrl('Image','shopLogo',array($shop_id,$lang_id,'THUMB?'.time()),CONF_WEBROOT_FRONT_URL).'"></div>';
+        <div class="uploaded--image"><img src="'.CommonHelper::generateUrl('Image','shopLogo',array($shop_id,$lang_id,'THUMB'),CONF_WEBROOT_FRONT_URL).'"></div>';
 
         $fld1 = $frm->addButton('Banner','shop_banner','Upload File',
         array('class'=>'shopFile-Js','id'=>'shop_banner','data-file_type'=>AttachedFile::FILETYPE_SHOP_BANNER));
         $fld1->htmlAfterField='<span id="input-field'.AttachedFile::FILETYPE_SHOP_BANNER.'"></span>
         <span class="uploadimage--info">Preferred Dimension: Width = 1000px, Height = 250px </span>
-        <div class="uploaded--image"><img src="'.CommonHelper::generateUrl('Image','shopBanner',array($shop_id,$lang_id,'THUMB?'.time()),CONF_WEBROOT_FRONT_URL).'"></div>'; */
+        <div class="uploaded--image"><img src="'.CommonHelper::generateUrl('Image','shopBanner',array($shop_id,$lang_id,'THUMB'),CONF_WEBROOT_FRONT_URL).'"></div>'; */
 
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $this->adminLangId));
         return $frm;
@@ -1200,6 +1204,7 @@ class ShopsController extends AdminBaseController
         $status = ($shopData['shop_active'] == applicationConstants::ACTIVE) ? applicationConstants::INACTIVE : applicationConstants::ACTIVE;
 
         $this->updateShopStatus($shopId, $status);
+        Product::updateMinPrices();
         //FatUtility::dieJsonSuccess($this->str_update_record);
         $this->set('msg', $this->str_update_record);
         $this->_template->render(false, false, 'json-success.php');
