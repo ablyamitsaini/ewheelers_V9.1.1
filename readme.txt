@@ -78,6 +78,7 @@ Fixes
         => Fixed products images are display on featured shop page in quick view popup.
 
     Functional Updates &amp; Code Fixes
+        => Fixed listing of messages on seller dashboard for return requests    
         => Fixed JS issues on product detail page
         => Handled invalid request error on Wishlist page
         => Fixed digital downloads JSON error
@@ -100,8 +101,7 @@ Fixes
         => Fixed Ship station API rates output when no rates are fetched from the API.
         => Fixed redirection issue when back button is used on browser
         => Fixed default commission value that was not getting updated
-        => Fixed search results based on product option filters
-        => Fixed order return request messages listing
+        => Fixed search results based on product option filters        
 
 Known Issues and Problems
 
