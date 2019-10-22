@@ -1,170 +1,120 @@
-<!-- Release notes TV-9.0.2.20191021 -->
+New Features
+    => Google Tag Manager Script section in Admin Console under General Settings->SEO
+    => New text field for adding Robots.txt file content in the Admin console under General
+    Settings->SEO
+    => New App mid banner under banners section in the Admin (Only for mobile apps)
+    => Collection Image management for Mobile Application in admin. Admin can choose to display
+    products or banner for mobile app only.
+    => Sellers can add social profile links to their shop page
+    => Quick books integration (Alpha build)
 
-Bug : 
-    -> 031553 - Js Error On Product Detail Page While Scroll
-    -> 031569 - In return request listing> displaying random pic for product which is not added by seller(Seller App)
+Enhancements
+    Performance Updates
+        => System now supports 500,000 products with 200 concurrent users with a load speed of under
+        5 secs.
+        => Application labels are fetched from JSON file.
+        => System images rendering functionality is optimized.
+        => Recommended products on product detail page is optimized.
+        => Cache used on the home page for collections templates.
+        => Added 304 headers for JS/CSS browser cache.
+        => Last modified time cache is being used for system Banners and slides.
+        => Header top navigation optimization via cache.
+        Common API Functions
+        => Mobile app, API and web are using the same centralized functions within the same file.
+        => API Documentation:
+        https://docs.google.com/document/d/1OfSDUCczkFVvg8ePo18ykjfLt8CP3gyN/edit#
+        => API Responses:
+        https://drive.google.com/drive/folders/16YnofIcYRhNyOvenKYmEUgGtoPLIAEU_?usp=sharing
+        => Checkout process is handled within the app
+        => RTL &amp; language labels support for mobile app
+        => Domain links such as shop, product, category &amp; band are handled within app
+        Sitemap (HTML &amp; XML)
+        => Added new ‘Sitemap’ menu item in Admin Console with links to
+        => View Sitemap in HTML
+        => View Sitemap in XML
+        => Update Sitemap
+     => Added ‘lastmod’, ‘changefreq’, ‘priority’ tags to the XML file for better search engine crawling.
 
-<!-- Release notes TV-9.0.1.20191018 -->
-Bug :     
-    -> 031401 - While moving item to the same wish list, displaying error invalid request.
-    -> 031454 - After applying most discounted sorting> products are not listed accordingly
-    -> 031408 - Share options should get closed when clicked outside anywhere on product, shop and blog page.
-    -> 031491 - While uploading banner file of shop, If file name is large then it's exceeding the success message length.
-    -> 031501 - Getting json error message on downloading digital file.
+    Special Price &amp; Volume Discount
+        => New menu items on Admin &amp; Seller consoles for Special Price &amp; Volume discount.
+        => Both have been decoupled from the product inventory option.
+        => User can add multiple entries without having to navigate to the product
+        => Multi select options
+        => Entries can be edited in the field itself.
+        Language Labels
+        => Language labels type column added (Web &amp; App)
+        => App notifications content can be managed from the Admin
+        => Manageable mobile app labels
+        => Added ‘Update’ button for mobile and web labels for manual update.
 
-Enhancements : 
-    -> Added <!-- Yo!Kart --> for builtwith.com.
-    -> Set Banners according to screen size.
+    General Enhancements
+        => Updated application code to handle UTM parameters generated via 3rd party marketing websites.
+        => Search results and products listing can be sort by &#39;Most Discounted&#39;
+        => Warning notification displayed to user if inventories are added for all product options. User will
+        not be able to clone the product as well.
+        => Added Shop, Dashboard, Homepage icons on user dashboards
+        => Upgraded the reward points functionality on checkout. Application show how many reward
+        points are applied for the order instead of the balance.
+        => Replaced the filter reset button with text on the listing pages.
+        => Added Yo!Kart script (&lt;!-- Yo!Kart --->) in application code so that websites like BuiltWith can
+        recognize the platform
+        => Admin can set users maximum withdraw threshold for wallet
 
-<!-- Release notes TV-9.0.1.20191015 -->
-Bug:
-    -> 031400 - Services were not displaying under shipping carrier
-Enhancements :
-    -> Updated reset all link in products listing page filters
-    -> Added icons for dashboard and shop. Added new link for home redirection in user's dashboard.
-    -> Let admin order categories - navigation
-    -> Added alphabetical order for category listing page.
-    -> 030974 - categories are not displaying properly in admin
-    -> 031400 - Services were not displaying under shipping carrier
-    -> Updated Phone Number Regex
-    -> Disabled stripe gateway form button after click to prevent multiple form submit.
-    -> Removed Google fonts option from innova text editor.
+Fixes
 
-<!---- Release notes TV-9.0.1.20191009 -- >
-Bug:
-    -> 030974 - categories are not displaying properly in admin
-    -> 030980 - When reviews are disabled from admin then they shouldn't be listed on front end
-    -> 030918 - Getting error on shop policy page
-    -> 030864 - Special price is not getting added for product which one having future date
-    -> 030862 - Special Price & Volume Discount list label updated
-    -> 030850 - In Special Price & Volume Discount listing, search by seller option should be there.
-    -> 030848 - When invalid amount is added for special price then it sets the previous added amount without currency symbol(Admin & Frontend)
-    -> 030849 - Latest added Special Price & Volume Discount are not listing on top in admin
-    -> 030977 - Default affiliate commission entry is not there.
-    -> 030567 - In Arabic language > Scroll bar should be display on RTL Mode
-    -> 030560 - In Arabic language> on blogs page> subscribe button and text field are not properly arranged
-    -> 030504 - Design changes of Save Changes and Cancel buttons
-    -> 030501 - On "Rewards Points" page > columns should get display on whole screen and column name should not be scrollable.
-    -> 030087 - Logo is displaying very large in Email template
-    -> 030861 - Seller> on special price/volume discount> there needs to be some space between 'keyword", "search", "clear" buttons and between "select product", "price start date","price end date","special price".
-    -> 030911 - On product details page, under recently viewed product,height needs to be same and name should be in 2 lines only
-    -> 030563 - In arabic language, custom scroll bar displaying on on the wrong side
-    -> 031119 - By deleting all Special Price or Volume Discount rows one by one, at last no message displayed for no record found
-    -> 031123 - On deleting special price consecutively, error triggered.
-    -> 031115 - Displaying invalid access> on submitting catalog request from seller for the first time.
-    -> 031117 - Cost price is displaying 0 on editing requested catalog after approval.
-    -> 030860 - On product details page, Under Recommended Products, unwanted white space above image is displaying.
-    -> 030856 - No record found is displaying while records are there.
-    -> 030774 - While Cloning seller inventory, datepicker is not displaying.
-    -> 030738 - In Arabic, While adding shipping in case of product request or custom product setup "shopping info charges" is not getting displayed properly
-    -> 030978 - Affiliate commission history is displaying wrong data in admin
-    -> 031150 -Shipping address should not be displayed in case of digital order product.
-    -> 031267 - On shop detail page, Shop identifier is displayed instead of shop name entered by the seller.
-    -> 031233 - Last message from the conversation is still displayed in message listing whether admin deletes all messages from conversation.
-    -> 030858 - On selling price page, Date fields calender icon overlaps content place holder.
-    -> 030726 - While uploading profile image "rotate right" button is not displaying properly.
-    -> 030794 - Configure email page layout distorted when user get logged In through fb (number)
-    -> 030628 - Overlay should be displayed behind side in mobile devices when we click on drawer.
-    -> 030518 - On quick view popup, product image alignment is not proper.
-    -> 031294 - Two labels are displaying together without having space. While adding links from custom product form.
-    -> 031460 - products images are not displaying properly on featured shop page in quick view popup.
+    UI Fixes
+        => Cart and Search icon are manageable via Admin theme settings
+        => Fixed auto-close on sharing options on product detail page.
+        => Fixed UI issue for product image on quick view in favorites
+        => Fixed user dashboard navigation bar issue.
+        => Fixed additional addresses should not be in grey so that they don’t look disabled.
+        => Fixed collection spacing issue on Home Page for Categories
+        => Reordered cart Labels
+        => RTL upgrades &amp; Fixes
+        => Fixed unwanted white space on the product details page, for Recommended Products.
+        => Fixed date picker while Cloning seller inventory.
+        => Fixed configure email page layout when user logs in via Facebook account registered with mobile
+        number
+        => Fixed products images are display on featured shop page in quick view popup.
 
-<!---- Release notes TV-9.0.1.20191004 -- >
-Bug:
-    -> 030847 - Retain No Record Found if new volume discount or special price added for any product.
-    -> 030841 - Admin> special price, volume discount > seller name column needs to be there
-    -> 030840 - When currency is changed from front end> then it's displaying in INR while on editing it's in $
-    -> 030839 - Club the special price and vol. discount in single section
-    -> 030838 - When seller clicks on manage special price from product then it redirect to 404
-    -> 030815 - Catalog requested by seller is not listing in admin
-    -> 030638 - in arabic language> Throughout the website Vertical loader overlaps text
-    -> 030973 - Rewards on purschase.
-    -> 030631 - Datepicker calender set layout direction.
-    -> 030832 - shadow is there around the search result on searching item
-    -> 030502 - on referral> clear search text in button is cropped.
-    -> 030917 - Multiple special price are getting added for same date
-    -> 030636 - If any popup is open then background page should not be scrolable
-    -> 030632 - Drag&Drop functionality not working in mobile device for seller options(frontend)
-    -> 030629 - In mobile devices > when we click on any option in drawer menu then drawer should get close.
-New Features :
-	> Task - 64235 - Collection Image management for Mobile Application in admin.
-    > Task - 66034 - Search based on most discounted products.
+    Functional Updates &amp; Code Fixes
+        => Fixed JS issues on product detail page
+        => Handled invalid request error on Wishlist page
+        => Fixed digital downloads JSON error
+        => Removed google fonts from text editor. (Editor shall be upgraded in the next release)
+        => Fixed invalid access error on submitting catalog request from seller for the first time.
+        => Checkout page &amp; Address page buyer address needs to be selected by default
+        => Changed all category/brand page listing to alphabetical.
+        => Removed phone validations
+        => Fixed IP change issues, removed code from the application.
+        => Fixed messaging functionality in the system where incorrect profile image and messages were
+        displayed on listing page
+        => Fixed Import product media issue.
+        => Fixed retain cart on login
+        => Fixed rewards points calculation when discount coupon applied at checkout
+        => Fixed affiliate commission history display for admin
+        => Restricted display of shipping address in case of digital order product.
+        => Remove Support Links from Base copy
+        => Fixed &amp; aligned search results for keyword search and popular searches.
+        => Fixed Google sign in for new email account
+        => Fixed Ship station API rates output when no rates are fetched from the API.
+        => Fixed redirection issue when back button is used on browser
+        => Fixed default commission value that was not getting updated
+        => Fixed search results based on product option filters
 
-Enhancements :
-    -> Handling language labels file for APP
+Known Issues and Problems
 
-<!-- Release notes TV-9.0.1.20190923 -- >
-New Features :
-	> Task - 66013 - Special Price Module
-	> Task - 66013 - Volume Discount Module
+Following is a list of known errors that don’t have a workaround. These issues will be fixed in the
+subsequent release.
+    => Change in minimum selling price when reconfigured by Admin
+    => Additional product when options are added later on front end
+    => Safari and IE 11 do not support our CSS. More info can be found at
+    https://developer.microsoft.com/en-us/microsoft-edge/platform/status/csslevel3attrfunction/
 
-Updates:
-    > Message - 1017343 - Volume Discount Module.
-	> App labels updated for all type of notifications
-
-Enhancements :
-    -> Display System image for product and banners
-    -> JS/CSS handled browser cache with 304 headers.
-    -> APP labels Management.
-    -> For system Banners and slides - used cache by last modified time.
-    -> Home page collections performance updates.
-	-> Header top navigation optimization.
-
-Bug:
-    -> 030531 - Rewards points with discount coupon issue.
-    -> 030635 - Retain cart on login
-    -> 030272 - Import procuct media issue fixed.
-    -> 030555 - On updating existing slide info details admin> it warns to have unique identifier
-    -> 030456 - under wallet> display upto 2 digits after decimal
-    -> 030520 - in blog section> on search box> place holder needs to be updated
-    -> 030519 - admin> seller inventory> special price> button and heading are not aligned
-
-API Feature:
-    -> Downnload digital files in app.
-
-<!--  Release notes TV-9.0.1.20190914 -- >
-Bug :
-    => 030496 - redirect back issue from browser back button.
-    => 030167 - menu on dashboard is not loading randomly
-    => 030287 - catalog data is not getting imported from admin
-    => 029519 - User skips add address screen.
-    => 030088 - admin> if wrong file is attached then warning message is not displaying properly
-    => 030096 - default commission value is not getting changed.
-    => 030097 - sales report> tax having wrong value on exporting file
-
-<!--  Release notes TV-9.0.1.20190907 -- >
-
-Updates:
-    Buyer API
-
-Enhancements :
-   => Optimization for home page used cache for collections.
-   => App notification labels update
-
-<!--  Release notes TV-9.0.1.20190907 -- >
-
-      Buyer API
-
-      Sheet url : https://docs.google.com/spreadsheets/d/1FpUtNMAX3Zub5RIKe4ESxtXqcE7gkxJf_pe0hdKTTUI/edit#gid=0
-      Notes: Check colomn "Web Status" in above sheet url for testing.
-
-      => Login/Registration
-      => Homepage/Landing
-      => Account Management
-      => Cart/Checkout
-      => Address
-      => General
-      => Category
-      => Product
-      => Shop
-      => Message
-      => Order
-      => Payment Gateways
-      => Msg-1018591 Used Labels via json file.
-
-   Enhancements :
-      => Performance optimization : Used labels from json file.
-      => Maintenance mode handling for API.
-      => Optimization for system images.
-      => Optimization for recommended products on product details page.
-      => Optimization for home page used cache for collections templates.
+Installation steps:
+ 	• Download the files and configured with your development/production environment.
+ 	• You can get all the files mentioned in .gitignore file from git-ignored-files directory.
+ 	• Renamed -.htaccess file to .htaccess from {document root} and {document root}/public directory
+	• Upload Fatbit library and licence files under {document root}/library.
+	• Define DB configuration under {document root}/public/settings.php
+	• Update basic configuration as per your system requirements under {document root}/conf directory.    
