@@ -457,4 +457,8 @@ function getSlickSliderSettings(slidesToShow, slidesToScroll, layoutDirection) {
         }
     });
 
+    if ($(window).width() < 767) {
+        $('html').removeClass('sticky-demo-header');
+    }
+
 })();

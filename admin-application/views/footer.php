@@ -64,13 +64,10 @@
 		if(FatApp::getConfig('CONF_SITE_TRACKER_CODE',FatUtility::VAR_STRING,'')){
 			echo FatApp::getConfig('CONF_SITE_TRACKER_CODE',FatUtility::VAR_STRING,'');
 		}
-		if (FatApp::getConfig('CONF_AUTO_RESTORE_ON', FatUtility::VAR_INT, 1)) {
+		if (FatApp::getConfig('CONF_AUTO_RESTORE_ON', FatUtility::VAR_INT, 1) && CommonHelper::demoUrl()) { 
 			$this->includeTemplate( 'restore-system/page-content.php');
 		}
 	}
-
-
 	?>
-
 </body>
 </html>

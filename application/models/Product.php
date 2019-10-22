@@ -1227,11 +1227,16 @@ class Product extends MyAppModel
             $criteria['optionvalue'] = !empty($criteria['optionvalue']) ? json_decode($criteria['optionvalue'], true) : '';
         }
 
+        $shop_id = 0;   
+        if (array_key_exists('shop_id', $criteria)) {
+            $shop_id =  FatUtility::int($criteria['shop_id']);           
+        }
+
         //$srch->setDefinedCriteria($join_price, 0, $criteria, true);
         $srch->joinForPrice('', $criteria, true);
         $srch->unsetDefaultLangForJoins();
         $srch->joinSellers();
-        $srch->joinShops($langId);
+        $srch->joinShops($langId, true, true, $shop_id);
         $srch->joinShopCountry();
         $srch->joinShopState();
         $srch->joinBrands($langId);
@@ -1308,12 +1313,10 @@ class Product extends MyAppModel
             $srch->addCategoryCondition($criteria['prodcat']);
         }
 
-        if (array_key_exists('shop_id', $criteria)) {
-            $shop_id =  FatUtility::int($criteria['shop_id']);
-            if (0 < $shop_id) {
-                $srch->addShopIdCondition($shop_id);
-            }
+        if (0 < $shop_id) {
+            $srch->addShopIdCondition($shop_id);
         }
+        
 
         if (array_key_exists('collection_id', $criteria)) {
             $collection_id =  FatUtility::int($criteria['collection_id']);
