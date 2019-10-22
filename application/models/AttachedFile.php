@@ -723,8 +723,8 @@ class AttachedFile extends MyAppModel
         /* ] */
         $path  = $path . $date_wise_path;
 
-        $saveName = time() . '-' . preg_replace('/[^a-zA-Z0-9]/', '', $name);
-
+        // $saveName = time() . '-' . preg_replace('/[^a-zA-Z0-9]/', '', $name);
+        $saveName = time() . '-' . substr(preg_replace('/[^a-zA-Z0-9]/', '', $name), -12);
         if (!file_exists($path)) {
             mkdir($path, 0777, true);
         }

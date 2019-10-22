@@ -12,11 +12,13 @@
     <ul class="switch-interface">
         <?php 
             $url = CommonHelper::generateUrl('admin'); 
+            $title  = 'Admin';
             if (strpos($_SERVER ['REQUEST_URI'], CONF_WEBROOT_BACKEND) !== false) {
                 $url = CommonHelper::generateUrl('', '', array(), CONF_WEBROOT_FRONTEND);
+                $title  = 'Marketplace';
             }  
         ?>
-        <li><a href="<?php echo $url;?>"><i class="icn icn--admin">
+        <li><a title="<?php echo $title;?>" href="<?php echo $url;?>"><i class="icn icn--admin">
                     <svg class="svg">
                         <use xlink:href="<?php echo CONF_WEBROOT_FRONTEND; ?>images/retina/sprite.svg#admin" href="<?php echo CONF_WEBROOT_FRONTEND; ?>images/retina/sprite.svg#admin"></use>
                     </svg>
