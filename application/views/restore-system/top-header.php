@@ -13,7 +13,7 @@
         <?php 
             $url = CommonHelper::generateUrl('admin'); 
             $title  = 'Admin';
-            if (strpos($_SERVER ['REQUEST_URI'], CONF_WEBROOT_BACKEND) !== false) {
+            if (strpos($_SERVER['REQUEST_URI'], rtrim(CONF_WEBROOT_BACKEND, '/')) !== false) {
                 $url = CommonHelper::generateUrl('', '', array(), CONF_WEBROOT_FRONTEND);
                 $title  = 'Marketplace';
             }  
@@ -36,7 +36,7 @@
     </ul>    
     <div class="demo-cta">
         <a target="_blank" href="https://www.yo-kart.com/multivendor-ecommerce-marketplace-platform.html" class=" btn btn-primary ripplelink">Start Your Marketplace</a> &nbsp;		
-		<a href="javascript:void(0);" class="request-demo btn btn--primary-border  ripplelink" id="btn-demo" >Request a Demo</a>
+		<a target="_blank" href="https://www.yo-kart.com/request-demo.html" class="request-demo btn btn--primary-border  ripplelink">Request a Demo</a>
        <a href="javascript:void(0)" class="close-layer" id="demoBoxClose"></a>
     </div>	
 </div>
