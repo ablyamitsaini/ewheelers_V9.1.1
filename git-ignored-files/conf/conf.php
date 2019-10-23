@@ -2,14 +2,12 @@
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'conf-common.php';
 
 define('CONF_APPLICATION_PATH', CONF_INSTALLATION_PATH . CONF_FRONT_END_APPLICATION_DIR);
-define('CONF_VIEW_DIR_PATH', CONF_APPLICATION_PATH . 'views/');
-
-if (strpos($_SERVER ['REQUEST_URI'], '/mobile-app-api/') !== false) {
-   define('CONF_THEME_PATH', CONF_APPLICATION_PATH . 'mobile-views/');
-} elseif (strpos($_SERVER ['REQUEST_URI'], '/app-api/') !== false) {
-   define('CONF_THEME_PATH', CONF_APPLICATION_PATH . 'mobile-views/');
+if (strpos($_SERVER['REQUEST_URI'], '/mobile-app-api/') !== false) {
+    define('CONF_THEME_PATH', CONF_APPLICATION_PATH . 'mobile-views/');
+} else if (strpos($_SERVER['REQUEST_URI'], '/app-api/') !== false) {
+    define('CONF_THEME_PATH', CONF_APPLICATION_PATH . 'mobile-views/');
 } else {
-   define('CONF_THEME_PATH', CONF_VIEW_DIR_PATH);
+    define('CONF_THEME_PATH', CONF_APPLICATION_PATH . 'views/');
 }
 
 define('CONF_WEBROOT_URL', CONF_WEBROOT_FRONTEND);
