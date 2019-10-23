@@ -1,2 +1,3 @@
 Enhancements
-    => Update new labels for IOS APP.
+    => Updated new labels for IOS APP.
+    => Updated htaccess rule for cache.

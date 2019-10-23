@@ -2,6 +2,12 @@ RewriteEngine on
 RewriteRule ^sitemap/list_([0-9]+).xml$ user-uploads/sitemap/list_$1.xml [L]
 
 RewriteRule ^sitemap.xml$ user-uploads/sitemap.xml [L]
+
+<IfModule mod_headers.c>
+	Header unset ETag
+</IfModule>
+FileETag None
+
 <IfModule mod_rewrite.c>
     Options +FollowSymlinks
     Options -Multiviews
