@@ -542,7 +542,7 @@ class GuestUserController extends MyAppController
                 }
             } else {
                 $userType = (0 < $userType ? $userType : User::USER_TYPE_BUYER);
-                $userId = $this->setupUser($user_type, $userGoogleName, $userGoogleId, 0, $userGoogleEmail);
+                $userId = $this->setupUser($userType, $userGoogleName, $userGoogleId, 0, $userGoogleEmail);
             }
 
             $userObj = new User($userId);
