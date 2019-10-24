@@ -832,13 +832,14 @@ class CheckoutController extends MyAppController
 
         $cartSummary = $this->cartObj->getCartFinancialSummary($this->siteLangId);
         $userId = UserAuthentication::getLoggedUserId();
-
+        $userWalletBalance = User::getUserBalance($userId, true);
         /* Payment Methods[ */
         $pmSrch = PaymentMethods::getSearchObject($this->siteLangId);
         $pmSrch->doNotCalculateRecords();
         $pmSrch->doNotLimitRecords();
         $pmSrch->addMultipleFields(array('pmethod_id', 'IFNULL(pmethod_name, pmethod_identifier) as pmethod_name', 'pmethod_code', 'pmethod_description'));
-        if (!$cartSummary["isCodEnabled"]) {
+        
+        if (!$cartSummary["isCodEnabled"] || ($cartSummary['cartWalletSelected'] && $userWalletBalance < $cartSummary['orderNetAmount'])) {
             $pmSrch->addCondition('pmethod_code', '!=', 'CashOnDelivery');
         }
 
@@ -1551,12 +1552,31 @@ class CheckoutController extends MyAppController
         $userWalletBalance = FatUtility::convertToType(User::getUserBalance($user_id, true), FatUtility::VAR_FLOAT);
         $orderNetAmount = isset($cartSummary['orderNetAmount']) ? FatUtility::convertToType($cartSummary['orderNetAmount'], FatUtility::VAR_FLOAT) : 0;
 
+        $paymentMethodRow = PaymentMethods::getAttributesById($pmethod_id);
+
+        if (!$paymentMethodRow || $paymentMethodRow['pmethod_active'] != applicationConstants::ACTIVE) {
+            $this->errMessage = Labels::getLabel("LBL_Invalid_Payment_method,_Please_contact_Webadmin.", $this->siteLangId);
+            if (true ===  MOBILE_APP_API_CALL) {
+                LibHelper::dieJsonError($this->errMessage);
+            }
+            Message::addErrorMessage($this->errMessage);
+            FatUtility::dieWithError(Message::getHtml());
+        }
+
+        if ($cartSummary['cartWalletSelected'] && $userWalletBalance < $orderNetAmount) {
+            $str = Labels::getLabel('MSG_Wallet_can_not_be_used_along_with_{COD}', $this->siteLangId);
+            $str = str_replace('{cod}', $paymentMethodRow['pmethod_identifier'], $str);
+            if (true ===  MOBILE_APP_API_CALL) {
+                LibHelper::dieJsonError($str);
+            }
+            FatUtility::dieWithError($str);
+        }
+
         if (true ===  MOBILE_APP_API_CALL) {
             $paymentUrl = '';
             $sendToWeb = 1;
             if (0 < $pmethod_id) {
-                $paymentMethod = $this->getPaymentMethodData($pmethod_id);
-                $controller = $paymentMethod['pmethod_code'].'Pay';
+                $controller = $paymentMethodRow['pmethod_code'] . 'Pay';
                 $paymentUrl = CommonHelper::generateFullUrl($controller, 'charge', array($order_id));
             }
             if (Orders::ORDER_WALLET_RECHARGE != $order_type && $cartSummary['cartWalletSelected'] && $userWalletBalance >= $orderNetAmount) {
@@ -1585,16 +1605,6 @@ class CheckoutController extends MyAppController
             }
 
             $user_id = UserAuthentication::getLoggedUserId();
-
-            $paymentMethodRow = PaymentMethods::getAttributesById($pmethod_id);
-            if (!$paymentMethodRow || $paymentMethodRow['pmethod_active'] != applicationConstants::ACTIVE) {
-                $this->errMessage = Labels::getLabel("LBL_Invalid_Payment_method,_Please_contact_Webadmin.", $this->siteLangId);
-                if (true ===  MOBILE_APP_API_CALL) {
-                    LibHelper::dieJsonError($this->errMessage);
-                }
-                Message::addErrorMessage($this->errMessage);
-                FatUtility::dieWithError(Message::getHtml());
-            }
 
             if ($order_id == '') {
                 $this->errMessage = Labels::getLabel("MSG_INVALID_Request", $this->siteLangId);
