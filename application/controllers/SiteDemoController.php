@@ -5,7 +5,7 @@ class SiteDemoController extends MyAppController
     {
         $this->set('width', '375px');
         $this->set('height', '624px');
-		$this->set('exculdeMainHeaderDiv', true);
+        $this->set('exculdeMainHeaderDiv', true);
         $this->_template->render(true, false, 'site-demo/index.php');
     }
 
