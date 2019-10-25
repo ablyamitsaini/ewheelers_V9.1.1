@@ -11,8 +11,8 @@ class SiteDemoController extends MyAppController
 
     public function tab()
     {
-        $this->set('width', '1024px');
-        $this->set('height', '768px');
+        $this->set('width', '768px');
+        $this->set('height', '1024px');
         $this->set('exculdeMainHeaderDiv', true);
         $this->_template->render(true, false, 'site-demo/index.php');
     }

@@ -9,8 +9,11 @@ $this->includeTemplate('restore-system/page-content.php');
  
 	<main role="main" id="main">
 		<div class="device-preview">
-			<div class="device-preview__container"><iframe class="device-preview__iframe" src="<?php echo CommonHelper::generateFullUrl(); ?>" scrolling="yes" frameborder="0" width="<?php echo $width; ?>" height="<?php echo $height; ?>">
+			<div class="device-preview__container smartphone">
+			<div class="device-preview__content">
+			<iframe class="device-preview__iframe" src="<?php echo CommonHelper::generateFullUrl(); ?>" scrolling="yes" frameborder="0" width="<?php echo $width; ?>" height="<?php echo $height; ?>">
 				</iframe></div>
+				</div>
 		</div>
 	</main>
  
