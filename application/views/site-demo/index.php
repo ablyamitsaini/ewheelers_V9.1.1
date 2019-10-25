@@ -7,7 +7,7 @@ $this->includeTemplate('restore-system/page-content.php');
     <div class="device-preview">
         <div class="device-preview__container">
             <iframe class="device-preview__iframe"
-                src="<?php echo CommonHelper::generateFullUrl(); ?>"
+                src="<?php echo CommonHelper::generateFullUrl() . '?demo=1'; ?>"
                 scrolling="yes" frameborder="0"
                 width="<?php echo $width; ?>"
                 height="<?php echo $height; ?>">
