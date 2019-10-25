@@ -14,7 +14,7 @@ class SiteDemoController extends MyAppController
     {
         $this->set('width', '768px');
         $this->set('height', '1024px');
-		$this->set('deviceClass', 'tablet');
+        $this->set('deviceClass', 'tablet');
         $this->set('exculdeMainHeaderDiv', true);
         $this->_template->render(true, false, 'site-demo/index.php');
     }
