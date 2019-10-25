@@ -33,7 +33,7 @@ class HomeController extends MyAppController
                         $optionTitle = '';
                         if (is_array($options) && count($options)) {
                             foreach ($options as $op) {
-                                $optionTitle .= $op['option_name'].': '.$op['optionvalue_name'].', ';
+                                $optionTitle .= $op['option_name'] . ': ' . $op['optionvalue_name'] . ', ';
                             }
                         }
                         $orderProducts['pendingForReviews'][$key]['optionsTitle'] = rtrim($optionTitle, ', ');
@@ -46,10 +46,10 @@ class HomeController extends MyAppController
         } else {
             $this->_template->addJs(array('js/slick.min.js', 'js/responsive-img.min.js'));
             $this->_template->addCss(array('css/slick.css', 'css/product-detail.css'));
-            $cacheKey = $this->siteLangId.'-'.$this->siteCurrencyId;
+            $cacheKey = $this->siteLangId . '-' . $this->siteCurrencyId;
 
             /*[ As all layout in sequence so added in one cache]*/
-            $homePageFirstLayout =  FatCache::get('homePageFirstLayout'.$cacheKey, CONF_HOME_PAGE_CACHE_TIME, '.txt');
+            $homePageFirstLayout =  FatCache::get('homePageFirstLayout' . $cacheKey, CONF_HOME_PAGE_CACHE_TIME, '.txt');
             if (!$homePageFirstLayout) {
                 $homePageProdLayout1 = '';
                 if (isset($collections[Collections::TYPE_PRODUCT_LAYOUT1])) {
@@ -599,7 +599,7 @@ class HomeController extends MyAppController
             $i++;
         }
 
-        FatCache::set('collectionCache_'.$langId.'_'.$apiCall, serialize($collections), '.txt');
+        FatCache::set('collectionCache_' . $langId . '_' . $apiCall, serialize($collections), '.txt');
         return $collections;
     }
 
@@ -625,7 +625,7 @@ class HomeController extends MyAppController
         $ppcSlides = array();
         $adminSlides = array();
 
-        $slidesSrch = new SearchBase('('.$srchSlide->getQuery().') as t');
+        $slidesSrch = new SearchBase('(' . $srchSlide->getQuery() . ') as t');
         $slidesSrch->addMultipleFields(array('slide_id','slide_type','slide_record_id','slide_url','slide_target','slide_title','promotion_id','userBalance','daily_cost','weekly_cost','monthly_cost','total_cost','promotion_budget' ,'promotion_duration','slide_img_updated_on'));
         $slidesSrch->addOrder('', 'rand()');
 
@@ -633,10 +633,10 @@ class HomeController extends MyAppController
             $ppcSrch  = clone $slidesSrch;
             $ppcSrch->addDirectCondition(
                 '((CASE
-					WHEN promotion_duration='.Promotion::DAILY.' THEN promotion_budget > COALESCE(daily_cost,0)
-					WHEN promotion_duration='.Promotion::WEEKLY.' THEN promotion_budget > COALESCE(weekly_cost,0)
-					WHEN promotion_duration='.Promotion::MONTHLY.' THEN promotion_budget > COALESCE(monthly_cost,0)
-					WHEN promotion_duration='.Promotion::DURATION_NOT_AVAILABALE.' THEN promotion_budget = -1
+					WHEN promotion_duration=' . Promotion::DAILY . ' THEN promotion_budget > COALESCE(daily_cost,0)
+					WHEN promotion_duration=' . Promotion::WEEKLY . ' THEN promotion_budget > COALESCE(weekly_cost,0)
+					WHEN promotion_duration=' . Promotion::MONTHLY . ' THEN promotion_budget > COALESCE(monthly_cost,0)
+					WHEN promotion_duration=' . Promotion::DURATION_NOT_AVAILABALE . ' THEN promotion_budget = -1
 				  END ) )'
             );
 
