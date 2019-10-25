@@ -1198,7 +1198,7 @@ $("document").ready(function () {
 $(document).ready(function () {
 	/* $('select').niceSelect();
 	$('#category--js').niceSelect('destroy'); */
-	if ($(window).width() < 767) {
+	if ($(window).width() < 1025) {
        $('html').removeClass('sticky-demo-header');
    }
 

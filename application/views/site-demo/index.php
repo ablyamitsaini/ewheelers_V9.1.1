@@ -5,7 +5,7 @@ $this->includeTemplate('restore-system/page-content.php');
 
 <main role="main" id="main">
     <div class="device-preview">
-        <div class="device-preview__container smartphone">
+        <div class="device-preview__container <?php echo $deviceClass; ?>">
            	<div class="device-preview__content">
 				<iframe class="device-preview__iframe"
 					src="<?php echo CommonHelper::generateFullUrl(); ?>"
