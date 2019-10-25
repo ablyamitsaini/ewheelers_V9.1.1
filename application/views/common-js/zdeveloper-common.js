@@ -1200,7 +1200,8 @@ $(document).ready(function () {
 	$('#category--js').niceSelect('destroy'); */
 	if ($(window).width() < 1025) {
        $('html').removeClass('sticky-demo-header');
-   }
+       $("div.demo-header").remove();
+    }
 
 });
 
