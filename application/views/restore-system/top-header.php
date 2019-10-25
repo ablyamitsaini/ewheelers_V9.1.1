@@ -17,6 +17,7 @@
         $mobileSite = '';
         $tabSite = '';
         $desktopSite = '';
+        $adminUrl = 'admin';
         if ('SiteDemoController' == FatApp::getController()) {
             switch (FatApp::getAction()) {
                 case 'mobile':
@@ -28,6 +29,7 @@
             }
         } elseif (strpos($_SERVER ['REQUEST_URI'], rtrim(CONF_WEBROOT_BACKEND, '/')) !== false) {
             $admin = 'is-active';
+            $adminUrl = '';
         } else {
             $desktopSite = 'is-active';
         }
@@ -35,7 +37,7 @@
 
         <li class="<?php echo $admin; ?>">
             <a title="Admin"
-                href="<?php echo CommonHelper::generateUrl('admin'); ?>">
+                href="<?php echo CommonHelper::generateUrl($adminUrl); ?>">
                 <i class="icn icn--admin">
                     <svg class="svg">
                         <use xlink:href="<?php echo CONF_WEBROOT_FRONTEND; ?>images/retina/sprite.svg#admin"
