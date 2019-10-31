@@ -1552,15 +1552,16 @@ class CheckoutController extends MyAppController
         $userWalletBalance = FatUtility::convertToType(User::getUserBalance($user_id, true), FatUtility::VAR_FLOAT);
         $orderNetAmount = isset($cartSummary['orderNetAmount']) ? FatUtility::convertToType($cartSummary['orderNetAmount'], FatUtility::VAR_FLOAT) : 0;
 
-        $paymentMethodRow = PaymentMethods::getAttributesById($pmethod_id);
-
-        if (!$paymentMethodRow || $paymentMethodRow['pmethod_active'] != applicationConstants::ACTIVE) {
-            $this->errMessage = Labels::getLabel("LBL_Invalid_Payment_method,_Please_contact_Webadmin.", $this->siteLangId);
-            if (true ===  MOBILE_APP_API_CALL) {
-                LibHelper::dieJsonError($this->errMessage);
+        if (0 < $pmethod_id) {
+            $paymentMethodRow = PaymentMethods::getAttributesById($pmethod_id);
+            if (!$paymentMethodRow || $paymentMethodRow['pmethod_active'] != applicationConstants::ACTIVE) {
+                $this->errMessage = Labels::getLabel("LBL_Invalid_Payment_method,_Please_contact_Webadmin.", $this->siteLangId);
+                if (true ===  MOBILE_APP_API_CALL) {
+                    LibHelper::dieJsonError($this->errMessage);
+                }
+                Message::addErrorMessage($this->errMessage);
+                FatUtility::dieWithError(Message::getHtml());
             }
-            Message::addErrorMessage($this->errMessage);
-            FatUtility::dieWithError(Message::getHtml());
         }
 
         if ($cartSummary['cartWalletSelected'] && $userWalletBalance < $orderNetAmount) {
