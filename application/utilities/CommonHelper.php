@@ -1628,7 +1628,7 @@ class CommonHelper extends FatUtility
 
         $file = fopen($fName, 'w');
         if (!fwrite($file, $data)) {
-            $response = Labels::getLabel('MSG_Could_not_save_file.');
+            $response = Labels::getLabel('MSG_Could_not_save_file.', CommonHelper::getLangId());
             return false;
         }
         fclose($file);

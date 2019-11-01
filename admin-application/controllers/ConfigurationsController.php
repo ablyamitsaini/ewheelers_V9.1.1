@@ -542,6 +542,8 @@ class ConfigurationsController extends AdminBaseController
                 $fld1 = $frm->addCheckBox(Labels::getLabel('LBL_Cookies_Policies', $this->adminLangId), 'CONF_ENABLE_COOKIES', 1, array(), false, 0);
                 $fld1->htmlAfterField = "<br><small>".Labels::getLabel("LBL_cookies_policies_section_will_be_shown_on_frontend", $this->adminLangId)."</small>";
                 $fld3 = $frm->addTextBox(Labels::getLabel("LBL_Admin_Default_Items_Per_Page", $this->adminLangId), "CONF_ADMIN_PAGESIZE");
+                $fld3->requirements()->setInt();
+                $fld3->requirements()->setRange('1', '2000');
                 $fld3->htmlAfterField = "<br><small>".Labels::getLabel("LBL_Determines_how_many_items_are_shown_per_page_(user_listing,_categories,_etc)", $this->adminLangId).".</small>";
 
                 $iframeFld = $frm->addTextarea(Labels::getLabel('LBL_Google_Map_Iframe', $this->adminLangId), 'CONF_MAP_IFRAME_CODE');
@@ -591,7 +593,7 @@ class ConfigurationsController extends AdminBaseController
 
                 $robotsFld = $frm->addTextarea(Labels::getLabel('LBL_Robots_Txt', $this->adminLangId), 'CONF_SITE_ROBOTS_TXT');
                 $robotsFld->htmlAfterField = '<small>'.Labels::getLabel("LBL_This_will_update_your_Robots.txt_file._This_is_to_help_search_engines_index_your_site_more_appropriately.", $this->adminLangId).'</small>';
-                
+
                 $frm->addHtml('', 'Analytics', '<h3>'.Labels::getLabel("LBL_Google_Tag_Manager", $this->adminLangId).'</h3>');
                 $fld = $frm->addTextarea(Labels::getLabel("LBL_Head_Script", $this->adminLangId), 'CONF_GOOGLE_TAG_MANAGER_HEAD_SCRIPT');
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_This_is_the_code_provided_by_google_tag_manager_for_integration.", $this->adminLangId)."</small>";
@@ -651,6 +653,8 @@ class ConfigurationsController extends AdminBaseController
                 $fld->htmlAfterField = "<br><small>".Labels::getLabel("LBL_On_Enabling_This_Feature,_Admin_Need_To_Approve_the_brand_requests_(User_Cannot_link_the_requested_brand_with_any_product_until_it_gets_approved_by_Admin)", $this->adminLangId)."</small>";
 
                 $fld3 = $frm->addTextBox(Labels::getLabel("LBL_Default_Items_Per_Page_(Catalog)", $this->adminLangId), "CONF_ITEMS_PER_PAGE_CATALOG");
+                $fld3->requirements()->setInt();
+                $fld3->requirements()->setRange('1', '2000');
                 $fld3->htmlAfterField = "<br><small>".Labels::getLabel("LBL_Determines_how_many_catalog_items_are_shown_per_page_(products,_categories,_etc)", $this->adminLangId).".</small>";
 
                 break;
