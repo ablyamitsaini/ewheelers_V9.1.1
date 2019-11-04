@@ -215,7 +215,7 @@ class ProductCategory extends MyAppModel
             $prodCatSrch->addOrder('prodcat_name');
             $prodCatSrch->addOrder('prodcat_identifier');
         } else {
-            $prodCatSrch->addOrder('prodrootcat_code');
+            //$prodCatSrch->addOrder('prodrootcat_code');
             $prodCatSrch->addOrder('prodcat_ordercode');
         }
         // echo $prodCatSrch->getQuery();exit;
@@ -717,7 +717,7 @@ class ProductCategory extends MyAppModel
             $prodCatSrch->addOrder('prodcat_name');
             $prodCatSrch->addOrder('prodcat_identifier');
         } else {
-            $prodCatSrch->addOrder('prodrootcat_code');
+            //$prodCatSrch->addOrder('prodrootcat_code');
             $prodCatSrch->addOrder('prodcat_ordercode');
         }
         
