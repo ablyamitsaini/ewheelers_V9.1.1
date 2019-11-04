@@ -294,3 +294,6 @@ INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `l
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_SOLD_OUT","2", 2,"بيعت كلها");
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_YOUR_FAVORITE_IS_EMPTY","1", 2,"Your favorite list is empty?");
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_YOUR_FAVORITE_IS_EMPTY","2", 2,"قائمة المفضلة لديك فارغة؟");
+
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_AND","1", 2,"And");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_AND","2", 2,"و");
