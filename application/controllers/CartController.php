@@ -42,10 +42,9 @@ class CartController extends MyAppController
                 }
             } */
 
-            $cartSummary = $cartObj->getCartFinancialSummary($this->siteLangId);
-            $PromoCouponsFrm = $this->getPromoCouponsForm($this->siteLangId);
-
             if (true ===  MOBILE_APP_API_CALL) {
+                $cartObj->removeProductShippingMethod();
+
                 $loggedUserId = UserAuthentication::getLoggedUserId(true);
 
                 $billingAddressDetail = array();
@@ -72,6 +71,9 @@ class CartController extends MyAppController
                 $this->set('selectedBillingAddressId', $billingAddressId);
                 $this->set('selectedShippingAddressId', $shippingAddressId);
             }
+            
+            $cartSummary = $cartObj->getCartFinancialSummary($this->siteLangId);
+            $PromoCouponsFrm = $this->getPromoCouponsForm($this->siteLangId);
 
             $this->set('products', $productsArr);
             $this->set('prodGroupIds', $prodGroupIds);

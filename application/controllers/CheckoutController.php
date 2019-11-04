@@ -592,19 +592,19 @@ class CheckoutController extends MyAppController
         $shippingAddressDetail = UserAddress::getUserAddresses($user_id, $this->siteLangId, 0, $this->cartObj->getCartShippingAddress());
         /* ] */
 
-        $sn= 0;
-        $json= array();
+        $sn = 0;
+        $json = array();
         if (!empty($cartProducts)) {
             $prodSrchObj = new ProductSearch();
             foreach ($cartProducts as $cartkey => $cartval) {
                 $sn++;
                 $shipping_address = UserAddress::getUserAddresses($user_id, $this->siteLangId);
-                $shipBy=0;
+                $shipBy = 0;
 
                 if ($cartProducts[$cartkey]['psbs_user_id']) {
                     $shipBy =$cartProducts[$cartkey]['psbs_user_id'];
                 }
-                $ua_country_id = isset($shippingAddressDetail['ua_country_id'])?$shippingAddressDetail['ua_country_id']:0;
+                $ua_country_id = isset($shippingAddressDetail['ua_country_id']) ? $shippingAddressDetail['ua_country_id'] : 0;
                 $shipping_options = Product::getProductShippingRates($cartval['product_id'], $this->siteLangId, $ua_country_id, $shipBy);
                 $free_shipping_options = Product::getProductFreeShippingAvailabilty($cartval['product_id'], $this->siteLangId, $ua_country_id, $shipBy);
                 $productKey = md5($cartval["key"]);
@@ -629,7 +629,7 @@ class CheckoutController extends MyAppController
 
                     if (isset($post["data"][$productKey]['shipping_type']) && ($post["data"][$productKey]['shipping_type'] ==  ShippingCompanies::MANUAL_SHIPPING) &&  !empty($post["data"][$productKey]['shipping_locations'])) {
                         foreach ($shipping_options as $shipOption) {
-                            if ($shipOption['pship_id']==$post['data'][$productKey]["shipping_locations"]) {
+                            if ($shipOption['pship_id'] == $post['data'][$productKey]["shipping_locations"]) {
                                 $productToShippingMethods['product'][$cartval['selprod_id']] = array(
                                 'selprod_id'    =>    $cartval['selprod_id'],
                                 'pship_id'    =>    $post['data'][$productKey]["shipping_locations"],
@@ -1819,7 +1819,7 @@ class CheckoutController extends MyAppController
         $addressFrm->fill($address);
         $this->set('addressFrm', $addressFrm);
         $this->set('address_id', $address_id);
-        if ($address_id>0) {
+        if ($address_id > 0) {
             $labelHeading =  Labels::getLabel('LBL_Edit_Address', $this->siteLangId);
         } else {
             $labelHeading =  Labels::getLabel('LBL_Add_Address', $this->siteLangId);
@@ -1845,7 +1845,7 @@ class CheckoutController extends MyAppController
             $city = $address['ua_city'];
             $state = (strlen($address['ua_city']) > 0) ? ', '. $address['state_name'] : $address['state_name'];
             $country = (strlen($state) > 0) ? ', '.$address['country_name'] : $address['country_name'];
-            $location = $city . $state. $country;
+            $location = $city . $state . $country;
             $addressAssoc[$address['ua_id']] = $location;
         }
         $frm->addRadioButtons('', 'shipping_address_id', $addressAssoc);
@@ -1880,8 +1880,8 @@ class CheckoutController extends MyAppController
         $frm = new Form('frmPaymentTabForm');
         $frm->setFormTagAttribute('id', 'frmPaymentTabForm');
 
-        if (strtolower($paymentMethodCode) == "cashondelivery" && FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '')!= '' && FatApp::getConfig('CONF_RECAPTCHA_SECRETKEY', FatUtility::VAR_STRING, '')!= '') {
-            $frm->addHtml('htmlNote', 'htmlNote', '<div class="g-recaptcha" data-sitekey="'.FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '').'"></div>');
+        if (strtolower($paymentMethodCode) == "cashondelivery" && FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '') != '' && FatApp::getConfig('CONF_RECAPTCHA_SECRETKEY', FatUtility::VAR_STRING, '') != '') {
+            $frm->addHtml('htmlNote', 'htmlNote', '<div class="g-recaptcha" data-sitekey="' . FatApp::getConfig('CONF_RECAPTCHA_SITEKEY', FatUtility::VAR_STRING, '').'"></div>');
         }
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Confirm_Payment', $langId));
         $frm->addHiddenField('', 'order_type');
@@ -1908,7 +1908,7 @@ class CheckoutController extends MyAppController
     {
         $langId = FatUtility::int($langId);
         $frm = new Form('frmRewards');
-        $fld = $frm->addTextBox(Labels::getLabel('LBL_Reward_Points', $langId), 'redeem_rewards', '', array('placeholder'=>Labels::getLabel('LBL_Use_Reward_Point', $langId)));
+        $fld = $frm->addTextBox(Labels::getLabel('LBL_Reward_Points', $langId), 'redeem_rewards', '', array('placeholder' => Labels::getLabel('LBL_Use_Reward_Point', $langId)));
         $fld->requirements()->setRequired();
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Apply', $langId));
         return $frm;
@@ -1991,7 +1991,7 @@ class CheckoutController extends MyAppController
         FatUtility::dieWithError( Message::getHtml() );
     } */
         $loggedUserId = UserAuthentication::getLoggedUserId();
-        $orderId = isset($_SESSION['order_id'])?$_SESSION['order_id']:'';
+        $orderId = isset($_SESSION['order_id']) ? $_SESSION['order_id'] : '';
         $couponsList = DiscountCoupons::getValidCoupons($loggedUserId, $this->siteLangId, '', $orderId);
         $this->set('couponsList', $couponsList);
 
@@ -2004,7 +2004,7 @@ class CheckoutController extends MyAppController
     {
         $langId = FatUtility::int($langId);
         $frm = new Form('frmPromoCoupons');
-        $fld = $frm->addTextBox(Labels::getLabel('LBL_Coupon_code', $langId), 'coupon_code', '', array('placeholder'=>Labels::getLabel('LBL_Enter_Your_code', $langId)));
+        $fld = $frm->addTextBox(Labels::getLabel('LBL_Coupon_code', $langId), 'coupon_code', '', array('placeholder' => Labels::getLabel('LBL_Enter_Your_code', $langId)));
         $fld->requirements()->setRequired();
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Apply', $langId));
         return $frm;
