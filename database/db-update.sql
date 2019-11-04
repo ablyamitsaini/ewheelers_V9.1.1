@@ -280,3 +280,17 @@ INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `l
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_INTERNET_CONNECTION","2", 2, "ويبدو أن الاتصال بالإنترنت لتكون حاليا.");
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_NETWORK_ERROR","1", 2, "Network Error");
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_NETWORK_ERROR","2", 2, "خطأ في الشبكة");
+
+UPDATE `tbl_language_labels` SET `label_caption`="Okay",`label_type`=2 WHERE `label_key`="APP_OK" AND `label_lang_id`="1";
+UPDATE `tbl_language_labels` SET `label_caption`="حسنا",`label_type`=2 WHERE `label_key`="APP_OK" AND `label_lang_id`="2";
+
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_READ_MORE","1", 2,"Read More");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_READ_MORE","2", 2,"اقرأ أكثر");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_DOWNLOAD","1", 2,"Download");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_DOWNLOAD","2", 2,"تحميل");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_TERMS_OF_SERVICES","1", 2,"Terms of Services");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_TERMS_OF_SERVICES","2", 2,"شروط الخدمة");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_SOLD_OUT","1", 2,"Sold Out");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_SOLD_OUT","2", 2,"بيعت كلها");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_YOUR_FAVORITE_IS_EMPTY","1", 2,"Your favorite list is empty?");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_YOUR_FAVORITE_IS_EMPTY","2", 2,"قائمة المفضلة لديك فارغة؟");
