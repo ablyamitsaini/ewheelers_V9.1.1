@@ -249,6 +249,7 @@ if (isset($prodcat_code)) {
 
         <?php if (isset($conditionsArr) && count($conditionsArr) > 1) {
             $conditionsCheckedArr = (isset($conditionsCheckedArr) && !empty($conditionsCheckedArr))? $conditionsCheckedArr : array(); ?>
+            <div class="divider--filters"></div>
         <div class="widgets__heading filter-head-js"><?php echo Labels::getLabel('LBL_Condition', $siteLangId); ?></div>
         <div>
             <ul class="list-vertical">
