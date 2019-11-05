@@ -1,45 +1,48 @@
 <?php
+namespace Braintree;
 
-class Braintree_ClientTokenGateway
+use InvalidArgumentException;
+
+class ClientTokenGateway
 {
     /**
      *
-     * @var Braintree_Gateway
+     * @var Gateway
      */
     private $_gateway;
 
     /**
      *
-     * @var Braintree_Configuration
+     * @var Configuration
      */
     private $_config;
 
     /**
      *
-     * @var Braintree_Http
+     * @var Http
      */
     private $_http;
 
     /**
      *
-     * @param Braintree_Gateway $gateway
+     * @param Gateway $gateway
      */
     public function __construct($gateway)
     {
         $this->_gateway = $gateway;
         $this->_config = $gateway->config;
         $this->_config->assertHasAccessTokenOrKeys();
-        $this->_http = new Braintree_Http($gateway->config);
+        $this->_http = new Http($gateway->config);
     }
 
-    public function generate($params=array())
+    public function generate($params=[])
     {
         if (!array_key_exists("version", $params)) {
-            $params["version"] = Braintree_ClientToken::DEFAULT_VERSION;
+            $params["version"] = ClientToken::DEFAULT_VERSION;
         }
 
         $this->conditionallyVerifyKeys($params);
-        $generateParams = array("client_token" => $params);
+        $generateParams = ["client_token" => $params];
 
         return $this->_doGenerate('/client_token', $generateParams);
     }
@@ -50,7 +53,7 @@ class Braintree_ClientTokenGateway
      * @ignore
      * @param var $url
      * @param array $params
-     * @return mixed
+     * @return string
      */
     public function _doGenerate($subPath, $params)
     {
@@ -68,9 +71,9 @@ class Braintree_ClientTokenGateway
     public function conditionallyVerifyKeys($params)
     {
         if (array_key_exists("customerId", $params)) {
-            Braintree_Util::verifyKeys($this->generateWithCustomerIdSignature(), $params);
+            Util::verifyKeys($this->generateWithCustomerIdSignature(), $params);
         } else {
-            Braintree_Util::verifyKeys($this->generateWithoutCustomerIdSignature(), $params);
+            Util::verifyKeys($this->generateWithoutCustomerIdSignature(), $params);
         }
     }
 
@@ -80,10 +83,10 @@ class Braintree_ClientTokenGateway
      */
     public function generateWithCustomerIdSignature()
     {
-        return array(
+        return [
             "version", "customerId", "proxyMerchantId",
-            array("options" => array("makeDefault", "verifyCard", "failOnDuplicatePaymentMethod")),
-            "merchantAccountId", "sepaMandateType", "sepaMandateAcceptanceLocation");
+            ["options" => ["makeDefault", "verifyCard", "failOnDuplicatePaymentMethod"]],
+            "merchantAccountId"];
     }
 
     /**
@@ -92,7 +95,7 @@ class Braintree_ClientTokenGateway
      */
     public function generateWithoutCustomerIdSignature()
     {
-        return array("version", "proxyMerchantId", "merchantAccountId");
+        return ["version", "proxyMerchantId", "merchantAccountId"];
     }
 
     /**
@@ -116,10 +119,11 @@ class Braintree_ClientTokenGateway
                 $response['apiErrorResponse']['message']
             );
         } else {
-            throw new Braintree_Exception_Unexpected(
+            throw new Exception\Unexpected(
                 "Expected clientToken or apiErrorResponse"
             );
         }
     }
 
 }
+class_alias('Braintree\ClientTokenGateway', 'Braintree_ClientTokenGateway');

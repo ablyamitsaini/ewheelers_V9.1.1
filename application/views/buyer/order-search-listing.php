@@ -48,16 +48,16 @@ foreach ($orders as $sn => $order) {
             case 'product':
                 $txt = '<div class="item__description">';
                 if ($order['op_selprod_title'] != '') {
-                    $txt .= '<div class="item__title">'.$order['op_selprod_title'].'</div>';
+                    $txt .= '<div class="item__title">' . $order['op_selprod_title'] . '</div>';
                 }
-                $txt .= '<div class="item__sub_title">'.$order['op_product_name'].' ('.Labels::getLabel('LBL_Qty', $siteLangId).': '.$order['op_qty'].')</div>';
-                $txt .= '<div class="item__brand">'.Labels::getLabel('LBL_Brand', $siteLangId).': '.$order['op_brand_name'];
+                $txt .= '<div class="item__sub_title">' . $order['op_product_name'] . ' (' . Labels::getLabel('LBL_Qty', $siteLangId) . ': ' . $order['op_qty'] . ')</div>';
+                $txt .= '<div class="item__brand">' . Labels::getLabel('LBL_Brand', $siteLangId) . ': ' . $order['op_brand_name'];
                 if ($order['op_selprod_options'] != '') {
                     $txt .= ' | ' . $order['op_selprod_options'];
                 }
                 $txt .='</div>';
                 if ($order['totOrders'] > 1) {
-                    $txt .= '<div class="item__specification">'.Labels::getLabel('LBL_Part_combined_order', $siteLangId).' <a title="'.Labels::getLabel('LBL_View_Order_Detail', $siteLangId).'" href="'.CommonHelper::generateUrl('Buyer', 'viewOrder', array($order['order_id'])).'">'.$order['order_id'].'</div>';
+                    $txt .= '<div class="item__specification">' . Labels::getLabel('LBL_Part_combined_order', $siteLangId) . ' <a title="' . Labels::getLabel('LBL_View_Order_Detail', $siteLangId) . '" href="' . CommonHelper::generateUrl('Buyer', 'viewOrder', array($order['order_id'])) . '">' . $order['order_id'] . '</div>';
                 }
                 $txt .= '</div>';
                 $td->appendElement('plaintext', array(), $txt, true);
@@ -76,10 +76,10 @@ foreach ($orders as $sn => $order) {
                 break;
             case 'status':
                 $pMethod ='';
-                if ($order['order_pmethod_id']==PaymentSettings::CASH_ON_DELIVERY && $order['order_status']==FatApp::getConfig('CONF_DEFAULT_ORDER_STATUS')) {
-                    $pMethod = " - ".$order['pmethod_name'] ;
+                if ($order['order_pmethod_id'] == PaymentSettings::CASH_ON_DELIVERY && $order['order_status'] == FatApp::getConfig('CONF_DEFAULT_ORDER_STATUS')) {
+                    $pMethod = " - " . $order['pmethod_name'] ;
                 }
-                $txt = $order['orderstatus_name'].$pMethod;
+                $txt = $order['orderstatus_name'] . $pMethod;
                 $td->appendElement('plaintext', array(), $txt, true);
                 break;
 

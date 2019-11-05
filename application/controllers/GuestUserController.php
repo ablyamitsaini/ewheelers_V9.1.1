@@ -77,7 +77,7 @@ class GuestUserController extends MyAppController
             }
         }
 
-        setcookie('uc_id', $userId, time()+3600*24*30, CONF_WEBROOT_URL);
+        setcookie('uc_id', $userId, time() + 3600 * 24 * 30, CONF_WEBROOT_URL);
 
         $data = User::getAttributesById($userId, array('user_preferred_dashboard','user_registered_initially_for'));
 
@@ -93,7 +93,7 @@ class GuestUserController extends MyAppController
             unset($_SESSION['referer_page_url']);
 
 
-            $userPreferedDashboardType = ($data['user_preferred_dashboard'])?$data['user_preferred_dashboard']:$data['user_registered_initially_for'];
+            $userPreferedDashboardType = ($data['user_preferred_dashboard']) ? $data['user_preferred_dashboard'] : $data['user_registered_initially_for'];
 
             switch ($userPreferedDashboardType) {
                 case User::USER_TYPE_BUYER:

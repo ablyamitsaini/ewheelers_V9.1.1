@@ -41,44 +41,44 @@ class OrderPayment extends Orders
         $orderCurrencyCode = !empty($currencyArr[FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1)]) ? $currencyArr[FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1)] : '' ;
 
         $billingArr = array(
-        "customer_billing_name"=>'',
-        "customer_billing_address_1"=>'',
-        "customer_billing_address_2"=>'',
-        "customer_billing_city"=>'',
-        "customer_billing_postcode"=>'',
-        "customer_billing_state"=>'',
-        "customer_billing_country"=>'',
-        "customer_billing_country_code"=>'',
-        "customer_billing_phone"=>'',
+        "customer_billing_name" => '',
+        "customer_billing_address_1" => '',
+        "customer_billing_address_2" => '',
+        "customer_billing_city" => '',
+        "customer_billing_postcode" => '',
+        "customer_billing_state" => '',
+        "customer_billing_country" => '',
+        "customer_billing_country_code" => '',
+        "customer_billing_phone" => '',
         );
 
         $shippingArr = array(
-        "customer_shipping_name"=>'',
-        "customer_shipping_address_1"=>'',
-        "customer_shipping_address_2"=>'',
-        "customer_shipping_city"=>'',
-        "customer_shipping_state"=>'',
-        "customer_shipping_postcode"=>'',
-        "customer_shipping_country"=>'',
-        "customer_shipping_country_code"=>'',
-        "customer_shipping_phone"=>'',
+        "customer_shipping_name" => '',
+        "customer_shipping_address_1" => '',
+        "customer_shipping_address_2" => '',
+        "customer_shipping_city" => '',
+        "customer_shipping_state" => '',
+        "customer_shipping_postcode" => '',
+        "customer_shipping_country" => '',
+        "customer_shipping_country_code" => '',
+        "customer_shipping_phone" => '',
         );
 
         $arrOrder = array(
-        "id"=>$orderInfo["order_id"],
-        "invoice"=>$orderInfo["order_id"],
-        "customer_id"=>$orderInfo["order_user_id"],
-        "customer_name"=>$userInfo["user_name"],
-        "customer_email"=>$userInfo["credential_email"],
-        "customer_phone"=>$userInfo["user_phone"],
-        "order_currency_code"=> $orderCurrencyCode,
-        "order_type"=>$orderInfo['order_type'],
-        "order_is_paid"=>$orderInfo["order_is_paid"],
-        "order_language"=>$orderInfo["order_language_code"],
-        "site_system_name"=>FatApp::getConfig("CONF_WEBSITE_NAME_".$orderInfo["order_language_id"]),
-        "site_system_admin_email"=>FatApp::getConfig("CONF_SITE_OWNER_EMAIL", FatUtility::VAR_STRING, ''),
-        "order_wallet_amount_charge"    =>    $orderInfo['order_wallet_amount_charge'],
-        "paypal_bn"=>"FATbit_SP",
+        "id" => $orderInfo["order_id"],
+        "invoice" => $orderInfo["order_id"],
+        "customer_id" => $orderInfo["order_user_id"],
+        "customer_name" => $userInfo["user_name"],
+        "customer_email" => $userInfo["credential_email"],
+        "customer_phone" => $userInfo["user_phone"],
+        "order_currency_code" =>  $orderCurrencyCode,
+        "order_type" => $orderInfo['order_type'],
+        "order_is_paid" => $orderInfo["order_is_paid"],
+        "order_language" => $orderInfo["order_language_code"],
+        "site_system_name" => FatApp::getConfig("CONF_WEBSITE_NAME_".$orderInfo["order_language_id"]),
+        "site_system_admin_email" => FatApp::getConfig("CONF_SITE_OWNER_EMAIL", FatUtility::VAR_STRING, ''),
+        "order_wallet_amount_charge"     =>     $orderInfo['order_wallet_amount_charge'],
+        "paypal_bn" => "FATbit_SP",
         );
 
         /* if (empty($orderInfo) || empty($userInfo) || empty($addresses)){
@@ -87,29 +87,29 @@ class OrderPayment extends Orders
         /* CommonHelper::printArray($addresses);die; */
         if (!empty($addresses[Orders::BILLING_ADDRESS_TYPE])) {
             $billingArr = array(
-            "customer_billing_name"=>$addresses[Orders::BILLING_ADDRESS_TYPE]["oua_name"],
-            "customer_billing_address_1"=>$addresses[Orders::BILLING_ADDRESS_TYPE]["oua_address1"],
-            "customer_billing_address_2"=>$addresses[Orders::BILLING_ADDRESS_TYPE]["oua_address2"],
-            "customer_billing_city"=>$addresses[Orders::BILLING_ADDRESS_TYPE]["oua_city"],
-            "customer_billing_postcode"=>$addresses[Orders::BILLING_ADDRESS_TYPE]["oua_zip"],
-            "customer_billing_state"=>$addresses[Orders::BILLING_ADDRESS_TYPE]["oua_state"],
-            "customer_billing_country"=>$addresses[Orders::BILLING_ADDRESS_TYPE]["oua_country"],
-            "customer_billing_country_code"=>$addresses[Orders::BILLING_ADDRESS_TYPE]["oua_country_code"],
-            "customer_billing_phone"=>$addresses[Orders::BILLING_ADDRESS_TYPE]["oua_phone"],
+            "customer_billing_name" => $addresses[Orders::BILLING_ADDRESS_TYPE]["oua_name"],
+            "customer_billing_address_1" => $addresses[Orders::BILLING_ADDRESS_TYPE]["oua_address1"],
+            "customer_billing_address_2" => $addresses[Orders::BILLING_ADDRESS_TYPE]["oua_address2"],
+            "customer_billing_city" => $addresses[Orders::BILLING_ADDRESS_TYPE]["oua_city"],
+            "customer_billing_postcode" => $addresses[Orders::BILLING_ADDRESS_TYPE]["oua_zip"],
+            "customer_billing_state" => $addresses[Orders::BILLING_ADDRESS_TYPE]["oua_state"],
+            "customer_billing_country" => $addresses[Orders::BILLING_ADDRESS_TYPE]["oua_country"],
+            "customer_billing_country_code" => $addresses[Orders::BILLING_ADDRESS_TYPE]["oua_country_code"],
+            "customer_billing_phone" => $addresses[Orders::BILLING_ADDRESS_TYPE]["oua_phone"],
             );
         }
 
         if (!empty($addresses[Orders::SHIPPING_ADDRESS_TYPE])) {
             $shippingArr = array(
-            "customer_shipping_name"=>$addresses[Orders::SHIPPING_ADDRESS_TYPE]["oua_name"],
-            "customer_shipping_address_1"=>$addresses[Orders::SHIPPING_ADDRESS_TYPE]["oua_address1"],
-            "customer_shipping_address_2"=>$addresses[Orders::SHIPPING_ADDRESS_TYPE]["oua_address2"],
-            "customer_shipping_city"=>$addresses[Orders::SHIPPING_ADDRESS_TYPE]["oua_city"],
-            "customer_shipping_state"=>$addresses[Orders::SHIPPING_ADDRESS_TYPE]["oua_state"],
-            "customer_shipping_postcode"=>$addresses[Orders::SHIPPING_ADDRESS_TYPE]["oua_zip"],
-            "customer_shipping_country"=>$addresses[Orders::SHIPPING_ADDRESS_TYPE]["oua_country"],
-            "customer_shipping_country_code"=>$addresses[Orders::SHIPPING_ADDRESS_TYPE]["oua_country_code"],
-            "customer_shipping_phone"=>$addresses[Orders::SHIPPING_ADDRESS_TYPE]["oua_phone"],
+            "customer_shipping_name" => $addresses[Orders::SHIPPING_ADDRESS_TYPE]["oua_name"],
+            "customer_shipping_address_1" => $addresses[Orders::SHIPPING_ADDRESS_TYPE]["oua_address1"],
+            "customer_shipping_address_2" => $addresses[Orders::SHIPPING_ADDRESS_TYPE]["oua_address2"],
+            "customer_shipping_city" => $addresses[Orders::SHIPPING_ADDRESS_TYPE]["oua_city"],
+            "customer_shipping_state" => $addresses[Orders::SHIPPING_ADDRESS_TYPE]["oua_state"],
+            "customer_shipping_postcode" => $addresses[Orders::SHIPPING_ADDRESS_TYPE]["oua_zip"],
+            "customer_shipping_country" => $addresses[Orders::SHIPPING_ADDRESS_TYPE]["oua_country"],
+            "customer_shipping_country_code" => $addresses[Orders::SHIPPING_ADDRESS_TYPE]["oua_country_code"],
+            "customer_shipping_phone" => $addresses[Orders::SHIPPING_ADDRESS_TYPE]["oua_phone"],
             );
         } else {
             //$shippingArr = $billingArr;
@@ -145,13 +145,13 @@ class OrderPayment extends Orders
 
             $orderDetails = $this->getOrderById($paymentOrderId);
 
-            if (!FatApp::getDb()->insertFromArray('tbl_order_payments', array('opayment_order_id' => $paymentOrderId, 'opayment_method' => $paymentMethodName,'opayment_gateway_txn_id'=>$txnId,'opayment_amount'=>$amount,'opayment_comments'=>$comments,'opayment_gateway_response'=>$response,'opayment_date' => date('Y-m-d H:i:s')))) {
+            if (!FatApp::getDb()->insertFromArray('tbl_order_payments', array('opayment_order_id' => $paymentOrderId, 'opayment_method' => $paymentMethodName,'opayment_gateway_txn_id' => $txnId,'opayment_amount' => $amount,'opayment_comments' => $comments,'opayment_gateway_response' => $response,'opayment_date' => date('Y-m-d H:i:s')))) {
                 $this->error = FatApp::getDb()->getError();
                 return false;
             }
 
             $totalPaymentPaid = $this->getOrderPaymentPaid($paymentOrderId);
-            $orderBalance = ($orderDetails['order_net_amount'] - $totalPaymentPaid) ;
+            $orderBalance = ($orderDetails['order_net_amount'] - $totalPaymentPaid);
 
             if ($orderBalance <= 0) {
                 $this->addOrderPaymentHistory($paymentOrderId, Orders::ORDER_IS_PAID, Labels::getLabel('LBL_Received_Payment', $defaultSiteLangId), 1);
@@ -172,12 +172,12 @@ class OrderPayment extends Orders
                     $rs = $srch->getResultSet();
                     $row = FatApp::getDb()->fetch($rs);
                     if (!empty($row)) {
-                        if (!FatApp::getDb()->insertFromArray(CouponHistory::DB_TBL, array('couponhistory_coupon_id' => $row['coupon_id'], 'couponhistory_order_id' => $orderDetails['order_id'],'couponhistory_user_id'=>$orderDetails['order_user_id'],'couponhistory_amount'=>$orderDetails['order_discount_total'],'couponhistory_added_on' => date('Y-m-d H:i:s')))) {
+                        if (!FatApp::getDb()->insertFromArray(CouponHistory::DB_TBL, array('couponhistory_coupon_id' => $row['coupon_id'], 'couponhistory_order_id' => $orderDetails['order_id'], 'couponhistory_user_id' => $orderDetails['order_user_id'], 'couponhistory_amount' => $orderDetails['order_discount_total'],'couponhistory_added_on' => date('Y-m-d H:i:s')))) {
                             $this->error = FatApp::getDb()->getError();
                             return false;
                         }
                         FatApp::getDb()->deleteRecords(DiscountCoupons::DB_TBL_COUPON_HOLD, array('smt' => 'couponhold_coupon_id = ? and couponhold_user_id = ?', 'vals' => array($row['coupon_id'], $orderDetails['order_user_id'] ) ));
-                        FatApp::getDb()->deleteRecords(DiscountCoupons::DB_TBL_COUPON_HOLD_PENDING_ORDER, array( 'smt' => 'ochold_order_id = ?', 'vals'=> array( $orderDetails['order_id'] ) ));
+                        FatApp::getDb()->deleteRecords(DiscountCoupons::DB_TBL_COUPON_HOLD_PENDING_ORDER, array( 'smt' => 'ochold_order_id = ?', 'vals' => array( $orderDetails['order_id'] ) ));
                     }
                 }
             }
@@ -262,7 +262,7 @@ class OrderPayment extends Orders
         $langId = FatUtility::int($langId);
 
         $db = FatApp::getDb();
-        if (!$db->updateFromArray('tbl_order_products', array('op_status_id'=>FatApp::getConfig('CONF_COD_ORDER_STATUS', FatUtility::VAR_INT, 0)), array('smt' => 'op_order_id = ? ', 'vals' => array($orderId)))) {
+        if (!$db->updateFromArray('tbl_order_products', array('op_status_id' => FatApp::getConfig('CONF_COD_ORDER_STATUS', FatUtility::VAR_INT, 0)), array('smt' => 'op_order_id = ? ', 'vals' => array($orderId)))) {
             $this->error = $db->getError();
             return false;
         }

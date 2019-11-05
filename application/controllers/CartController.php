@@ -42,10 +42,9 @@ class CartController extends MyAppController
                 }
             } */
 
-            $cartSummary = $cartObj->getCartFinancialSummary($this->siteLangId);
-            $PromoCouponsFrm = $this->getPromoCouponsForm($this->siteLangId);
-
             if (true ===  MOBILE_APP_API_CALL) {
+                $cartObj->removeProductShippingMethod();
+
                 $loggedUserId = UserAuthentication::getLoggedUserId(true);
 
                 $billingAddressDetail = array();
@@ -72,6 +71,9 @@ class CartController extends MyAppController
                 $this->set('selectedBillingAddressId', $billingAddressId);
                 $this->set('selectedShippingAddressId', $shippingAddressId);
             }
+            
+            $cartSummary = $cartObj->getCartFinancialSummary($this->siteLangId);
+            $PromoCouponsFrm = $this->getPromoCouponsForm($this->siteLangId);
 
             $this->set('products', $productsArr);
             $this->set('prodGroupIds', $prodGroupIds);
@@ -148,8 +150,6 @@ class CartController extends MyAppController
         $selprod_id_arr = !empty($selprod_id_arr) ? array_filter($selprod_id_arr) : array();
         if (!empty($selprod_id_arr) && is_array($selprod_id_arr)) {
             foreach ($selprod_id_arr as $selprod_id) {
-                $productsToAdd = array();
-
                 $srch = SellerProduct::getSearchObject();
                 $srch->addCondition('selprod_id', '=', $selprod_id);
                 $srch->addMultipleFields(
@@ -169,7 +169,7 @@ class CartController extends MyAppController
 
                 $minQty = $sellerProductRow['selprod_min_order_qty'];
 
-                $productsToAdd[$selprod_id] = $minQty;
+                $productsToAdd = [$selprod_id => $minQty];
                 $this->addProductToCart($productsToAdd, $selprod_id);
             }
             if (true ===  MOBILE_APP_API_CALL) {
