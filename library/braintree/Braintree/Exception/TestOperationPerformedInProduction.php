@@ -1,11 +1,15 @@
 <?php
+namespace Braintree\Exception;
+
+use Braintree\Exception;
+
 /**
 * Raised when a test method is used in production.
 *
 * @package Braintree
 * @subpackage Exception
-* @copyright 2014 Braintree, a division of PayPal, Inc.
 */
-class Braintree_Exception_TestOperationPerformedInProduction extends Braintree_Exception
+class TestOperationPerformedInProduction extends Exception
 {
 }
+class_alias('Braintree\Exception\TestOperationPerformedInProduction', 'Braintree_Exception_TestOperationPerformedInProduction');

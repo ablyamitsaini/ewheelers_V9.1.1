@@ -1,10 +1,8 @@
 <?php
-require_once CONF_INSTALLATION_PATH . 'library/braintree/Braintree.php';
-
 class BraintreePayController extends PaymentController
 {
-    const ENVOIRMENT_LIVE = 'live';
-    const ENVOIRMENT_SANDBOX = 'sandbox';
+    public const ENVOIRMENT_LIVE = 'live';
+    public const ENVOIRMENT_SANDBOX = 'sandbox';
 
     private $keyName = "Braintree";
     private $error = false;
@@ -180,7 +178,7 @@ class BraintreePayController extends PaymentController
         } else {
             $currencyCode = strtolower($orderInfo["order_currency_code"]);
             $checkPayment = $this->doPayment($payableAmount, $orderInfo);
-            $frm=$this->getPaymentForm($orderId);
+            $frm = $this->getPaymentForm($orderId);
             $this->set('frm', $frm);
             if ($checkPayment) {
                 $this->set('success', true);
@@ -211,7 +209,7 @@ class BraintreePayController extends PaymentController
     public function checkCardType()
     {
         $post = FatApp::getPostedData();
-        $res=ValidateElement::ccNumber($post['cc']);
+        $res = ValidateElement::ccNumber($post['cc']);
         echo json_encode($res);
         exit;
     }
@@ -222,19 +220,19 @@ class BraintreePayController extends PaymentController
             return false;
         }
         $amount = number_format($amount, 2, '.', '');
-        return $amount*100;
+        return $amount * 100;
     }
 
     private function getPaymentSettings()
     {
-        $pmObj=new PaymentSettings($this->keyName);
+        $pmObj = new PaymentSettings($this->keyName);
         return $pmObj->getPaymentSettings();
     }
 
     private function getPaymentForm($orderId)
     {
-        $frm = new Form('frmPaymentForm', array('id'=>'frmPaymentForm','action'=>CommonHelper::generateUrl('BraintreePay', 'charge', array($orderId)), 'class' =>"form form--normal"));
-        $frm->addButton('', 'btn_submit', Labels::getLabel('LBL_Pay_Now', $this->siteLangId), array("disabled"=>"disabled","id"=>"submit-button"));
+        $frm = new Form('frmPaymentForm', array('id' => 'frmPaymentForm', 'action' => CommonHelper::generateUrl('BraintreePay', 'charge', array($orderId)), 'class' => "form form--normal"));
+        $frm->addButton('', 'btn_submit', Labels::getLabel('LBL_Pay_Now', $this->siteLangId), array("disabled" => "disabled","id" => "submit-button"));
         return $frm;
     }
 
@@ -267,20 +265,19 @@ class BraintreePayController extends PaymentController
                     );
 
                     $charge = (array)$charge;
-
                     if (isset($charge['success'])) {
                         $message = '';
                         $orderPaymentObj = new OrderPayment($orderInfo['id']);
 
                         if ($charge['success'] || (isset($charge['transaction']) && !is_null($charge['transaction']))) {
-                            $message .= 'Id: '.(string)$charge['transaction']->_attributes['id']. "&";
-                            $message .= 'Object: '.(string)$charge['transaction']. "&";
-                            $message .= 'Amount: '.(string)$charge['transaction']->_attributes['amount']. "&";
+                            $message .= 'Id: ' . (string)$charge['transaction']->_attributes['id'] . "&";
+                            $message .= 'Object: ' . (string)$charge['transaction'] . "&";
+                            $message .= 'Amount: ' . (string)$charge['transaction']->_attributes['amount'] . "&";
 
-                            $message .= 'Status: '.(string)$charge['transaction']->_attributes['status']. "&";
+                            $message .= 'Status: ' . (string)$charge['transaction']->_attributes['status'] . "&";
                             /* Recording Payment in DB */
 
-                            $orderPaymentObj->addOrderPayment($this->paymentSettings["pmethod_name"], $charge['transaction']->_attributes['id'], ($payment_amount/100), Labels::getLabel("MSG_Received_Payment", $this->siteLangId), $message);
+                            $orderPaymentObj->addOrderPayment($this->paymentSettings["pmethod_name"], $charge['transaction']->_attributes['id'], ($payment_amount / 100), Labels::getLabel("MSG_Received_Payment", $this->siteLangId), $message);
                             /* End Recording Payment in DB */
                             $checkPayment = true;
 
@@ -300,21 +297,45 @@ class BraintreePayController extends PaymentController
 
     private function getClientToken()
     {
+        $this->autoloadRequiredFunctions();
         try {
             $this->paymentSettings = $this->getPaymentSettings();
             if (!isset($this->paymentSettings['private_key']) || !isset($this->paymentSettings['public_key']) || !isset($this->paymentSettings['merchant_id'])) {
                 return false;
             }
-            $envoirment = (FatApp::getConfig('CONF_TRANSACTION_MODE', FatUtility::VAR_BOOLEAN, false) == true)? static::ENVOIRMENT_LIVE : static::ENVOIRMENT_SANDBOX;
+            $envoirment = (FatApp::getConfig('CONF_TRANSACTION_MODE', FatUtility::VAR_BOOLEAN, false) == true) ? static::ENVOIRMENT_LIVE : static::ENVOIRMENT_SANDBOX;
 
             Braintree_Configuration::environment($envoirment);
             Braintree_Configuration::merchantId($this->paymentSettings['merchant_id']);
             Braintree_Configuration::publicKey($this->paymentSettings['public_key']);
             Braintree_Configuration::privateKey($this->paymentSettings['private_key']);
+
             return Braintree_ClientToken::generate();
         } catch (Exception $e) {
             // return $e->getMessage();
             return false;
         }
+    }
+
+    public function autoloadRequiredFunctions()
+    {
+        spl_autoload_register(function ($className) {
+            if (strpos($className, 'Braintree') !== 0) {
+                return;
+            }
+        
+            $fileName = CONF_INSTALLATION_PATH . 'library' . DIRECTORY_SEPARATOR . 'braintree' . DIRECTORY_SEPARATOR;
+        
+            if ($lastNsPos = strripos($className, '\\')) {
+                $namespace = substr($className, 0, $lastNsPos);
+                $className = substr($className, $lastNsPos + 1);
+                $fileName  .= str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
+            }
+        
+            $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
+            if (is_file($fileName)) {
+                require_once $fileName;
+            }
+        });
     }
 }
