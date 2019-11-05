@@ -9,9 +9,12 @@ if (applicationConstants::ON != $status) {
 }
 
 $response = array(
-    'status'=> $status,
+    'status' => $status,
     'msg' => !empty($msg) ? $msg : Labels::getLabel('MSG_Success', $siteLangId),
     'data' => $data
 );
+
+// This line is added because we don't want to display web messages from APP.
+$messages = Message::getHtml();
 
 CommonHelper::jsonEncodeUnicode($response, true);
