@@ -3514,19 +3514,14 @@ a.link:after {
 	position: relative;
 	width: 60px;
 	overflow: hidden;
-}
-
-.avtar {
-	width: 60px;
-	height: 60px;
 	border-radius: 100%;
 	border: 1px solid var(--border-color);
 	position: relative;
 }
 
-.avtar--large {
-	width: 130px;
-	height: 130px;
+.avtar.avtar--large {
+	width: 6.125rem;
+	height: 6.125rem;
 }
 
 .avtar img {
@@ -4231,7 +4226,7 @@ input.sp-input {
 
 /*Responsive*/
 @media only screen and (max-width: 1499px) {
-	.is-dashboard .wrapper { 
+	.is-dashboard .wrapper {
 		margin: 2rem;
 	}
 }
@@ -4313,6 +4308,10 @@ input.sp-input {
 }
 
 @media only screen and (max-width:1080px) {
+	.is-dashboard .wrapper {
+		margin: 0;
+	}
+
 	.sidebar-is-expanded .header-dashboard {
 		padding-inline-start: 20px;
 	}
@@ -4355,6 +4354,7 @@ input.sp-input {
 }
 
 @media only screen and (max-width:767px) {
+	
 
 	/*.sidebar-is-expanded .sidebar {
 		width: 0;
@@ -4495,6 +4495,9 @@ input.sp-input {
 	.credits-number ul li:first-child {
 		margin-top: 0;
 	}
+	
+	.avtar.avtar--large{width: 5.125rem;
+    height: 5.125rem;}
 }
 
 @media only screen and (max-width: 500px) {

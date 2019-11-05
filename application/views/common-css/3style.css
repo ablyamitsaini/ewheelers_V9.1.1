@@ -4468,8 +4468,8 @@ img {
 
 .login-wrapper .form-side .field_label,
 .login-wrapper .form-side label {
-	/*color: #fff;*/
-	text-transform: uppercase;
+	/*color: #fff;
+	text-transform: uppercase;*/
 	font-size: 0.9em;
 }
 
@@ -4490,7 +4490,7 @@ img {
 .login-wrapper .forgot {
 	text-align: right;
 	color: #fff;
-	text-transform: uppercase;
+	/*text-transform: uppercase;*/
 	font-size: 0.9em;
 	line-height: 1;
 }
