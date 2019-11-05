@@ -265,19 +265,18 @@ class BraintreePayController extends PaymentController
                     );
 
                     $charge = (array)$charge;
-                    if (isset($charge['success'])) {
-                        $message = '';
+                    $message = Labels::getLabel("MSG_PAYMENT_FAILED", $this->siteLangId);
+                    if (!empty($charge) && 0 < count($charge)) {
                         $orderPaymentObj = new OrderPayment($orderInfo['id']);
-
-                        if ($charge['success'] || (isset($charge['transaction']) && !is_null($charge['transaction']))) {
-                            $message .= 'Id: ' . (string)$charge['transaction']->_attributes['id'] . "&";
+                        if (isset($charge['success']) && 0 < $charge['success'] || (isset($charge['transaction']) && !is_null($charge['transaction']))) {
+                            $message = 'Id: ' . (string)$charge['transaction']->id . "&";
                             $message .= 'Object: ' . (string)$charge['transaction'] . "&";
-                            $message .= 'Amount: ' . (string)$charge['transaction']->_attributes['amount'] . "&";
+                            $message .= 'Amount: ' . (string)$charge['transaction']->amount . "&";
 
-                            $message .= 'Status: ' . (string)$charge['transaction']->_attributes['status'] . "&";
+                            $message .= 'Status: ' . (string)$charge['transaction']->status . "&";
                             /* Recording Payment in DB */
 
-                            $orderPaymentObj->addOrderPayment($this->paymentSettings["pmethod_name"], $charge['transaction']->_attributes['id'], ($payment_amount / 100), Labels::getLabel("MSG_Received_Payment", $this->siteLangId), $message);
+                            $orderPaymentObj->addOrderPayment($this->paymentSettings["pmethod_name"], $charge['transaction']->id, ($payment_amount / 100), Labels::getLabel("MSG_Received_Payment", $this->siteLangId), $message);
                             /* End Recording Payment in DB */
                             $checkPayment = true;
 
@@ -286,6 +285,9 @@ class BraintreePayController extends PaymentController
                             $orderPaymentObj->addOrderPaymentComments($message);
                             FatApp::redirectUser(CommonHelper::generateUrl('custom', 'paymentFailed'));
                         }
+                    } else {
+                        $orderPaymentObj->addOrderPaymentComments($message);
+                        FatApp::redirectUser(CommonHelper::generateUrl('custom', 'paymentFailed'));
                     }
                 }
             } catch (Exception $e) {
