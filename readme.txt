@@ -8,6 +8,7 @@ Bugs
     => 032016 - if Facebook secret key is not there then Affiliate dashboard is not accessible
     => 030499 - Fixed admin login issue for mobile devices.
     => 031689 - Fixed page scrolls issue on iphone.
+    => 031810 - Separator missing before condition filter labels
 
 Enhancements
     => Updated new labels for IOS APP.
