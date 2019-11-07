@@ -146,6 +146,8 @@ class CollectionsController extends MyAppController
                 /* ] */
                 if (true ===  MOBILE_APP_API_CALL) {
                     foreach ($collections as &$product) {
+                        $product['selprod_price'] = CommonHelper::displayMoneyFormat($product['selprod_price'], false, false, false);
+                        $product['theprice'] = CommonHelper::displayMoneyFormat($product['theprice'], false, false, false);
                         $product['product_image_url'] = CommonHelper::generateFullUrl('image', 'product', array($product['product_id'], "CLAYOUT3", $product['selprod_id'], 0, $this->siteLangId));
                     }
                 }

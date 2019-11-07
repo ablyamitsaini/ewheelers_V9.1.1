@@ -1,10 +1,13 @@
 <?php
+namespace Braintree\Transaction;
+
+use Braintree\Instance;
+
 /**
  * Android Pay card details from a transaction
  *
  * @package    Braintree
  * @subpackage Transaction
- * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
 /**
@@ -13,25 +16,32 @@
  *
  * @package    Braintree
  * @subpackage Transaction
- * @copyright  2014 Braintree, a division of PayPal, Inc.
  *
  * @property-read string $bin
+ * @property-read string $commercial
+ * @property-read string $countryOfIssuance
+ * @property-read string $debit
  * @property-read string $default
+ * @property-read string $durbinRegulated
  * @property-read string $expirationMonth
  * @property-read string $expirationYear
  * @property-read string $googleTransactionId
+ * @property-read string $healthcare
  * @property-read string $imageUrl
+ * @property-read string $issuingBank
+ * @property-read string $payroll
+ * @property-read string $prepaid
+ * @property-read string $productId
  * @property-read string $sourceCardLast4
  * @property-read string $sourceCardType
  * @property-read string $sourceDescription
  * @property-read string $token
  * @property-read string $virtualCardLast4
  * @property-read string $virtualCardType
- * @uses Braintree_Instance inherits methods
  */
-class Braintree_Transaction_AndroidPayCardDetails extends Braintree_Instance
+class AndroidPayCardDetails extends Instance
 {
-    protected $_attributes = array();
+    protected $_attributes = [];
 
     /**
      * @ignore
@@ -43,3 +53,4 @@ class Braintree_Transaction_AndroidPayCardDetails extends Braintree_Instance
         $this->_attributes['last4'] = $this->virtualCardLast4;
     }
 }
+class_alias('Braintree\Transaction\AndroidPayCardDetails', 'Braintree_Transaction_AndroidPayCardDetails');

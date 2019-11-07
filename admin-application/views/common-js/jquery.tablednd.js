@@ -91,7 +91,7 @@ var hasTouch = 'ontouchstart' in document.documentElement,
 
 if (hasTouch) {
     $.each("touchstart touchmove touchend".split(" "), function(i, name) {
-        jQuery.event.fixHooks[name] = jQuery.event.mouseHooks;
+        try { $.event.fixHooks[name] = $.event.mouseHooks; } catch(e) { }
     });
 }
 

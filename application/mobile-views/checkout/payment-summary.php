@@ -9,7 +9,7 @@ $data = array(
     'paymentMethods' => $paymentMethods,
 );
 
-require_once(CONF_THEME_PATH.'cart/price-detail.php');
+require_once(CONF_THEME_PATH . 'cart/price-detail.php');
 
 if (empty($products)) {
     $status = applicationConstants::OFF;

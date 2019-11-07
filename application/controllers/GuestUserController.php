@@ -77,7 +77,7 @@ class GuestUserController extends MyAppController
             }
         }
 
-        setcookie('uc_id', $userId, time()+3600*24*30, CONF_WEBROOT_URL);
+        setcookie('uc_id', $userId, time() + 3600 * 24 * 30, CONF_WEBROOT_URL);
 
         $data = User::getAttributesById($userId, array('user_preferred_dashboard','user_registered_initially_for'));
 
@@ -93,7 +93,7 @@ class GuestUserController extends MyAppController
             unset($_SESSION['referer_page_url']);
 
 
-            $userPreferedDashboardType = ($data['user_preferred_dashboard'])?$data['user_preferred_dashboard']:$data['user_registered_initially_for'];
+            $userPreferedDashboardType = ($data['user_preferred_dashboard']) ? $data['user_preferred_dashboard'] : $data['user_registered_initially_for'];
 
             switch ($userPreferedDashboardType) {
                 case User::USER_TYPE_BUYER:
@@ -397,9 +397,9 @@ class GuestUserController extends MyAppController
             FatUtility::dieWithError(Message::getHtml());
         }
 
-        unset($_SESSION['fb_'.FatApp::getConfig("CONF_FACEBOOK_APP_ID").'_code']);
-        unset($_SESSION['fb_'.FatApp::getConfig("CONF_FACEBOOK_APP_ID").'_access_token']);
-        unset($_SESSION['fb_'.FatApp::getConfig("CONF_FACEBOOK_APP_ID").'_user_id']);
+        unset($_SESSION['fb_' . FatApp::getConfig("CONF_FACEBOOK_APP_ID") . '_code']);
+        unset($_SESSION['fb_' . FatApp::getConfig("CONF_FACEBOOK_APP_ID") . '_access_token']);
+        unset($_SESSION['fb_' . FatApp::getConfig("CONF_FACEBOOK_APP_ID") . '_user_id']);
 
         $cartObj = new Cart();
         if ($cartObj->hasProducts() && false ===  MOBILE_APP_API_CALL) {
@@ -442,7 +442,7 @@ class GuestUserController extends MyAppController
         include_once CONF_INSTALLATION_PATH . 'library/GoogleAPI/vendor/autoload.php'; // include the required calss files for google login
 
         $client = new Google_Client();
-        $client->setApplicationName(FatApp::getConfig('CONF_WEBSITE_NAME_'.$this->siteLangId)); // Set your applicatio name
+        $client->setApplicationName(FatApp::getConfig('CONF_WEBSITE_NAME_' . $this->siteLangId)); // Set your applicatio name
         $client->setScopes(['email']); // set scope during user login
         $client->setClientId(FatApp::getConfig("CONF_GOOGLEPLUS_CLIENT_ID")); // paste the client id which you get from google API Console
         $client->setClientSecret(FatApp::getConfig("CONF_GOOGLEPLUS_CLIENT_SECRET")); // set the client secret
@@ -451,7 +451,7 @@ class GuestUserController extends MyAppController
         $client->setRedirectUri($currentPageUri);
         $client->setDeveloperKey(FatApp::getConfig("CONF_GOOGLEPLUS_DEVELOPER_KEY")); // Developer key
 
-        $oauth2 =new Google_Service_Oauth2($client); // Call the OAuth2 class for get email address
+        $oauth2 = new Google_Service_Oauth2($client); // Call the OAuth2 class for get email address
 
         if (false ===  MOBILE_APP_API_CALL) {
             $get = FatApp::getQueryStringData();
@@ -480,7 +480,7 @@ class GuestUserController extends MyAppController
             $exp = explode("@", $user['email']);
             $userGoogleName = substr($exp[0], 0, 80);
         }
-
+        
         if (isset($userGoogleEmail) && (!empty($userGoogleEmail))) {
             $db = FatApp::getDb();
             $userObj = new User();
@@ -488,7 +488,6 @@ class GuestUserController extends MyAppController
             $srch->addCondition('credential_email', '=', $userGoogleEmail);
             $rs = $srch->getResultSet();
             $row = $db->fetch($rs);
-
             if ($row) {
                 if ($row['credential_active'] != applicationConstants::ACTIVE) {
                     $message = Labels::getLabel('ERR_YOUR_ACCOUNT_HAS_BEEN_DEACTIVATED', $this->siteLangId);
@@ -550,7 +549,7 @@ class GuestUserController extends MyAppController
             $userInfo = $userObj->getUserInfo(array('user_googleplus_id','user_preferred_dashboard','credential_username','credential_password'));
 
 
-            if (!$userInfo || ($userInfo && $userInfo['user_googleplus_id']!= $userGoogleId)) {
+            if (!$userInfo || ($userInfo && $userInfo['user_googleplus_id'] != $userGoogleId)) {
                 $message = Labels::getLabel("MSG_USER_COULD_NOT_BE_SET", $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
                     LibHelper::dieJsonError($message);
@@ -619,16 +618,15 @@ class GuestUserController extends MyAppController
         $db->startTransaction();
 
         $userData = array(
-        'user_name' => $userName,
-        'user_is_buyer' => (isset($user_type) && $user_type == User::USER_TYPE_BUYER) ? 1:0,
-        'user_is_supplier' => (isset($user_type) && $user_type == User::USER_TYPE_SELLER) ? 1:0,
-        'user_is_advertiser' => $user_is_advertiser,
-        'user_googleplus_id' => !empty($userGoogleId) ? $userGoogleId : '',
-        'user_facebook_id' => !empty($userFacebookId) ? $userFacebookId : '',
-        'user_preferred_dashboard' => $userPreferredDashboard,
-        'user_registered_initially_for' => $user_registered_initially_for
+            'user_name' => $userName,
+            'user_is_buyer' => (isset($user_type) && $user_type == User::USER_TYPE_BUYER) ? 1 : 0,
+            'user_is_supplier' => (isset($user_type) && $user_type == User::USER_TYPE_SELLER) ? 1 : 0,
+            'user_is_advertiser' => $user_is_advertiser,
+            'user_googleplus_id' => !empty($userGoogleId) ? $userGoogleId : '',
+            'user_facebook_id' => !empty($userFacebookId) ? $userFacebookId : '',
+            'user_preferred_dashboard' => $userPreferredDashboard,
+            'user_registered_initially_for' => $user_registered_initially_for
         );
-
         $userObj->assignValues($userData);
         if (!$userObj->save()) {
             $message = Labels::getLabel("MSG_USER_COULD_NOT_BE_SET", $this->siteLangId) . $userObj->getError();

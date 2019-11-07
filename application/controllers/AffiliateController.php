@@ -30,21 +30,22 @@ class AffiliateController extends AffiliateBaseController
         $loggedUserId = UserAuthentication::getLoggedUserId();
         $userInfo = User::getAttributesById($loggedUserId, array('user_fb_access_token', 'user_referral_code'));
 
-        $config = array(
-        'app_id' => FatApp::getConfig('CONF_FACEBOOK_APP_ID', FatUtility::VAR_STRING, ''),
-        'app_secret' => FatApp::getConfig('CONF_FACEBOOK_APP_SECRET', FatUtility::VAR_STRING, ''),
-        );
-        $fb = new Fbapi($config);
-
         $fbAccessToken = '';
         $fbLoginUrl = '';
 
-        $redirectUrl = CommonHelper::generateFullUrl('Affiliate', 'getFbToken', array(), '', false);
-        $fbLoginUrl = $fb->getLoginUrl($redirectUrl);
-        if ($userInfo['user_fb_access_token']!='') {
-            $fbAccessToken = $userInfo['user_fb_access_token'];
-        }
+        if (!empty(FatApp::getConfig("CONF_FACEBOOK_APP_ID")) && !empty(FatApp::getConfig("CONF_FACEBOOK_APP_SECRET"))) {
+            $config = array(
+            'app_id' => FatApp::getConfig('CONF_FACEBOOK_APP_ID', FatUtility::VAR_STRING, ''),
+            'app_secret' => FatApp::getConfig('CONF_FACEBOOK_APP_SECRET', FatUtility::VAR_STRING, ''),
+            );
+            $fb = new Fbapi($config);
 
+            $redirectUrl = CommonHelper::generateFullUrl('Affiliate', 'getFbToken', array(), '', false);
+            $fbLoginUrl = $fb->getLoginUrl($redirectUrl);
+            if ($userInfo['user_fb_access_token']!='') {
+                $fbAccessToken = $userInfo['user_fb_access_token'];
+            }
+        }
         //$_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab'] = 'AFFILIATE';
 
         /*

@@ -1,10 +1,11 @@
 <?php
+namespace Braintree\Test;
+
 /**
  * Nonces used for testing purposes
  *
  * @package    Braintree
  * @subpackage Test
- * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
 
 /**
@@ -15,9 +16,8 @@
  *
  * @package    Braintree
  * @subpackage Test
- * @copyright  2014 Braintree, a division of PayPal, Inc.
  */
-class Braintree_Test_Nonces
+class Nonces
 {
    public static $transactable = "fake-valid-nonce";
    public static $consumed = "fake-consumed-nonce";
@@ -32,9 +32,9 @@ class Braintree_Test_Nonces
    public static $androidPayVisa = "fake-android-pay-visa-nonce";
    public static $androidPayMasterCard = "fake-android-pay-mastercard-nonce";
    public static $androidPayAmEx = "fake-android-pay-amex-nonce";
+   public static $amexExpressCheckout = "fake-amex-express-checkout-nonce";
    public static $abstractTransactable = "fake-abstract-transactable-nonce";
    public static $europe = "fake-europe-bank-account-nonce";
-   public static $coinbase = "fake-coinbase-nonce";
    public static $transactableVisa = "fake-valid-visa-nonce";
    public static $transactableAmEx = "fake-valid-amex-nonce";
    public static $transactableMasterCard = "fake-valid-mastercard-nonce";
@@ -48,6 +48,7 @@ class Braintree_Test_Nonces
    public static $transactableHealthcare = "fake-valid-healthcare-nonce";
    public static $transactableDebit = "fake-valid-debit-nonce";
    public static $transactablePayroll = "fake-valid-payroll-nonce";
+   public static $threeDSecureVisaFullAuthenticationNonce = "fake-three-d-secure-visa-full-authentication-nonce";
    public static $transactableNoIndicators = "fake-valid-no-indicators-nonce";
    public static $transactableUnknownIndicators = "fake-valid-unknown-indicators-nonce";
    public static $transactableCountryOfIssuanceUSA = "fake-valid-country-of-issuance-usa-nonce";
@@ -59,7 +60,23 @@ class Braintree_Test_Nonces
    public static $processorDeclinedDiscover = "fake-processor-declined-discover-nonce";
    public static $processorFailureJCB = "fake-processor-failure-jcb-nonce";
    public static $luhnInvalid = "fake-luhn-invalid-nonce";
+   public static $localPayment = "fake-local-payment-method-nonce";
    public static $paypalFuturePaymentRefreshToken = "fake-paypal-future-refresh-token-nonce";
    public static $sepa = "fake-sepa-bank-account-nonce";
    public static $gatewayRejectedFraud = "fake-gateway-rejected-fraud-nonce";
+   public static $gatewayRejectedTokenIssuance = "fake-token-issuance-error-venmo-account-nonce";
+   public static $venmoAccount = "fake-venmo-account-nonce";
+   public static $visaCheckoutAmEx = "fake-visa-checkout-amex-nonce";
+   public static $visaCheckoutDiscover = "fake-visa-checkout-discover-nonce";
+   public static $visaCheckoutMasterCard = "fake-visa-checkout-mastercard-nonce";
+   public static $visaCheckoutVisa = "fake-visa-checkout-visa-nonce";
+   public static $masterpassAmEx = "fake-masterpass-amex-nonce";
+   public static $masterpassDiscover = "fake-masterpass-discover-nonce";
+   public static $masterpassMasterCard = "fake-masterpass-mastercard-nonce";
+   public static $masterpassVisa = "fake-masterpass-visa-nonce";
+   public static $samsungPayAmEx = "tokensam_fake_american_express";
+   public static $samsungPayDiscover = "tokensam_fake_discover";
+   public static $samsungPayMasterCard = "tokensam_fake_mastercard";
+   public static $samsungPayVisa = "tokensam_fake_visa";
 }
+class_alias('Braintree\Test\Nonces', 'Braintree_Test_Nonces');

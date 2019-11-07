@@ -100,7 +100,7 @@
 	}
 
 	.short-links > ul > li.dropdown--user:last-child > a.dropdown__trigger {
-		font-weight: 700;
+		font-weight:600;
 	}
 
 	.main-search-form .search--keyword,
@@ -1117,7 +1117,7 @@
 }
 
 @media only screen and (max-width:1023px) {
-	html {
+	html { overflow-x: hidden;
 		/*overflow: hidden;
 		overflow-y: scroll;*/
 	}

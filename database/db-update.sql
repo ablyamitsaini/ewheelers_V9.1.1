@@ -14,7 +14,7 @@ INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`,
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_SIGN_IN_ACCOUNT_WITH_SOCIAL','1','Sign in an account with social',2);
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_NETWORK_LOSS_ERROR','1','To use Yokart App,turn on mobile data or connect to Wi-Fi',2);
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_PLEASE_ENTER_YOUR_PASSWORD','1','Please Enter your password',2);
-INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_PLEASE_ENTER_YOUR registered_email_address','1','Please enter your registered email address',2);
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_PLEASE_ENTER_YOUR_REGISTERED_EMAIL_ADDRESS','1','Please enter your registered email address',2);
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_PLEASE_ENTER_YOUR_NAME','1','Please enter your name',2);
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_PLEASE_ENTER_YOUR_USERNAME','1','Please enter your username',2);
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_PLEASE_ENTER_YOUR_EMAIL_ADDRESS','1','Please enter your email address',2);
@@ -59,7 +59,7 @@ INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`,
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_HINT_CITY','1','City',2);
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_YOU_HAVE_NO_ITEMS_FAVORITE_LIST','1','You have no items in your favorite list',2);
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_LOGIN_TO_ADD_ITEMS_IN_YOUR_FAVORITE','1','Login to add items in your favorite',2);
-INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_THERE are no items in your favorite list','1','There are no items in your favorite list',2);
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_THERE_ARE_NO_ITEMS_IN_YOUR_FAVORITE_LIST','1','There are no items in your favorite list',2);
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_FAVOURITE','1','Favorites',2);
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_REQUETS','1','Requests',2);
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_RETURN','1','Return',2);
@@ -95,7 +95,6 @@ INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`,
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_REMOVE_IMAGE','1','Remove Image',2);
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_REWARDS_POINTS_AVIABLE_FOR_THIS_ORDER','1','Rewards Points Available for this order',2);
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_APPLIED_WALLET_CREDIT','1','Applied Wallet Credit',2);
-INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ("APP_WE_HAVE_SENT_YOU_EMAIL_CONFIRMATION",'1',"We've sent you e-mail confirmation",2);
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_ADD_REVIEW','1','Add Review',2);
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_PLEASE_REVIEW_THE_PRODUCT','1','Please Review the Product',2);
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_caption`, `label_type`) VALUES ('APP_PLEASE_FILL_ALL_THE_MANDATORY_DATA','1','Please fill all the mandatory data',2);
@@ -139,7 +138,7 @@ INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `l
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_SIGN_IN_ACCOUNT_WITH_SOCIAL','2', 2,'تسجيل الدخول حساب مع الاجتماعية');
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_NETWORK_LOSS_ERROR','2', 2,'لاستخدام Yokart التطبيقات، تشغيل البيانات المتنقلة أو اتصال واي فاي');
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_PLEASE_ENTER_YOUR_PASSWORD','2', 2,'من فضلك أدخل رقمك السري');
-INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_PLEASE_ENTER_YOUR registered_email_address','2', 2,'يرجى إدخال عنوان بريدك الإلكتروني المسجل');
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_PLEASE_ENTER_YOUR_REGISTERED_EMAIL_ADDRESS','2', 2,'يرجى إدخال عنوان بريدك الإلكتروني المسجل');
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_PLEASE_ENTER_YOUR_NAME','2', 2,'يرجى إدخال اسمك');
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_PLEASE_ENTER_YOUR_USERNAME','2', 2,'الرجاء إدخال اسم المستخدم');
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_PLEASE_ENTER_YOUR_EMAIL_ADDRESS','2', 2,'الرجاء إدخال عنوان البريد الإلكتروني الخاص بك');
@@ -184,7 +183,7 @@ INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `l
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_HINT_CITY','2', 2,'مدينة');
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_YOU_HAVE_NO_ITEMS_FAVORITE_LIST','2', 2,'لديك أي سلع في قائمة المفضلة لديك');
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_LOGIN_TO_ADD_ITEMS_IN_YOUR_FAVORITE','2', 2,'تسجيل الدخول لإضافة عناصر في المفضلة لديك');
-INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_THERE are no items in your favorite list','2', 2,'لا توجد أي عناصر في قائمة المفضلة لديك');
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_THERE_ARE_NO_ITEMS_IN_YOUR_FAVORITE_LIST','2', 2,'لا توجد أي عناصر في قائمة المفضلة لديك');
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_FAVOURITE','2', 2,'المفضلة');
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_REQUETS','2', 2,'طلبات');
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_RETURN','2', 2,'إرجاع');
@@ -220,7 +219,6 @@ INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `l
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_REMOVE_IMAGE','2', 2,'إزالة الصورة');
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_REWARDS_POINTS_AVIABLE_FOR_THIS_ORDER','2', 2,'المكافآت نقاط المتوفرة لهذا النظام');
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_APPLIED_WALLET_CREDIT','2', 2,'محفظة الائتمان التطبيقية');
-INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_WE_HAVE_SENT_YOU_EMAIL_CONFIRMATION','2', 2,'لقد أرسلت لك تأكيد البريد الإلكتروني');
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_ADD_REVIEW','2', 2,'إضافة مراجعة');
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_PLEASE_REVIEW_THE_PRODUCT','2', 2,'الرجاء مراجعة المنتج');
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_PLEASE_FILL_ALL_THE_MANDATORY_DATA','2', 2,'يرجى ملء جميع البيانات الإلزامية');
@@ -247,3 +245,55 @@ INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `l
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_VIEW_MORE_SELLERS','2', 2,'شاهد المزيد من البائعين');
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_ASK_QUESTIONS','2', 2,'اسال اسئلة');
 INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ('APP_NO_DATA_FOUND','2', 2,'لاتوجد بيانات');
+
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_OFF_UPTO","1", 2, "Off upto");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_OFF_UPTO","2", 2, "قبالة تصل");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_CHANGE_LANGUAGE","1", 2, "Change Language");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_CHANGE_LANGUAGE","2", 2, "غير اللغة");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_RE_ORDER","1", 2, "Re-Order");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_RE_ORDER","2", 2, "إعادة ترتيب");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_MONEY_IN_YOUR_WALLET","1", 2, "Money in your wallet");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_MONEY_IN_YOUR_WALLET","2", 2, "المال في محفظتك");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_CURRENCY_UPDATED_SUCCESSFULLY","1", 2, "Currency updated successfully");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_CURRENCY_UPDATED_SUCCESSFULLY","2", 2, "العملة تجديد بنجاح");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_MOVE_TO","1", 2, "Move to");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_MOVE_TO","2", 2, "الانتقال إلى");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_ADD_SHIPPING","1", 2, "Add Shipping");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_ADD_SHIPPING","2", 2, "إضافة شحن");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_TO_CHANGE_LANGUAGES_CLOSE_THE_APP_AND_RESTART_IT","1", 2, "To change languages close the app and restart it.");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_TO_CHANGE_LANGUAGES_CLOSE_THE_APP_AND_RESTART_IT","2", 2, "لتغيير اللغات إغلاق التطبيق وإعادة تشغيله.");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_CLOSE","1", 2, "Close");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_CLOSE","2", 2, "قريب");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_MIN_PRICE","1", 2, "Min. Price");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_MIN_PRICE","2", 2, "دقيقة. السعر");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_MAX_PRICE","1", 2, "Max. Price");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_MAX_PRICE","2", 2, "ماكس. السعر");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_PLEASE_LOGIN_SEND_TO_SHOP","1", 2, "Please login send message to shop");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_PLEASE_LOGIN_SEND_TO_SHOP","2", 2, "الرجاء الدخول إرسال رسالة للتسوق");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_SELECT","1", 2, "Select");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_SELECT","2", 2, "تحديد");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_SERVER_ERROR","1", 2, "Server Error");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_SERVER_ERROR","2", 2, "خطأ في الخادم");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_PLEASE_TRY_AGAIN","1", 2, "Please try again later");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_PLEASE_TRY_AGAIN","2", 2, "الرجاء معاودة المحاولة في وقت لاحق");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_INTERNET_CONNECTION","1", 2, "The Internet connection appears to be offline.");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_INTERNET_CONNECTION","2", 2, "ويبدو أن الاتصال بالإنترنت لتكون حاليا.");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_NETWORK_ERROR","1", 2, "Network Error");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_NETWORK_ERROR","2", 2, "خطأ في الشبكة");
+
+UPDATE `tbl_language_labels` SET `label_caption`="Okay",`label_type`=2 WHERE `label_key`="APP_OK" AND `label_lang_id`="1";
+UPDATE `tbl_language_labels` SET `label_caption`="حسنا",`label_type`=2 WHERE `label_key`="APP_OK" AND `label_lang_id`="2";
+
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_READ_MORE","1", 2,"Read More");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_READ_MORE","2", 2,"اقرأ أكثر");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_DOWNLOAD","1", 2,"Download");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_DOWNLOAD","2", 2,"تحميل");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_TERMS_OF_SERVICES","1", 2,"Terms of Services");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_TERMS_OF_SERVICES","2", 2,"شروط الخدمة");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_SOLD_OUT","1", 2,"Sold Out");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_SOLD_OUT","2", 2,"بيعت كلها");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_YOUR_FAVORITE_IS_EMPTY","1", 2,"Your favorite list is empty?");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_YOUR_FAVORITE_IS_EMPTY","2", 2,"قائمة المفضلة لديك فارغة؟");
+
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_AND","1", 2,"And");
+INSERT INTO `tbl_language_labels`(`label_key`, `label_lang_id`, `label_type`, `label_caption`) VALUES ("APP_AND","2", 2,"و");

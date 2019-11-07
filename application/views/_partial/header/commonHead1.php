@@ -11,7 +11,7 @@ if ($controllerName == 'Products' && $actionName == 'view') {
 $additionalAttributes = (CommonHelper::getLayoutDirection() == 'rtl') ? 'direction="rtl" style="direction: rtl;"' : '';
 ?>
 <!DOCTYPE html>
-<html prefix="og: http://ogp.me/ns#" <?php echo $additionalAttributes;?> class="<?php echo $htmlClass;?> <?php if (FatApp::getConfig('CONF_AUTO_RESTORE_ON', FatUtility::VAR_INT, 1) && CommonHelper::demoUrl()) { echo "sticky-demo-header";} ?>">
+<html prefix="og: http://ogp.me/ns#" <?php echo $additionalAttributes;?> class="<?php echo $htmlClass;?> <?php if (FatApp::getConfig('CONF_AUTO_RESTORE_ON', FatUtility::VAR_INT, 1) && CommonHelper::demoUrl()) { echo "sticky-demo-header"; } ?>">
 
 <head>
     <!-- Yo!Kart -->
