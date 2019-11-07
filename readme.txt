@@ -1,3 +1,4 @@
+<!--- Released notes TV-9.1.1.20191107 -->
 Bugs
     => 031822 - Sub category sorting for navigation.
     => 031665 - Google login is not working when user tries to login after successfull signup through google.
