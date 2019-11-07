@@ -10,6 +10,7 @@ Bugs
     => 030499 - Fixed admin login issue for mobile devices.
     => 031689 - Fixed page scrolls issue on iphone.
     => 031810 - Separator missing before condition filter labels
+    => Fixed #031874 - Added range for pagesize field.
 
 Enhancements
     => Updated new labels for IOS APP.
