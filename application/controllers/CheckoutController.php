@@ -1564,7 +1564,7 @@ class CheckoutController extends MyAppController
             }
         }
 
-        if ($cartSummary['cartWalletSelected'] && $userWalletBalance < $orderNetAmount) {
+        if (!empty($paymentMethodRow) && strtolower($paymentMethodRow['pmethod_code']) == "cashondelivery" && $cartSummary['cartWalletSelected'] && $userWalletBalance < $orderNetAmount) {
             $str = Labels::getLabel('MSG_Wallet_can_not_be_used_along_with_{COD}', $this->siteLangId);
             $str = str_replace('{cod}', $paymentMethodRow['pmethod_identifier'], $str);
             if (true ===  MOBILE_APP_API_CALL) {

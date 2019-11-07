@@ -11,6 +11,7 @@ Bugs
     => 031689 - Fixed page scrolls issue on iphone.
     => 031810 - Separator missing before condition filter labels
     => Fixed #031874 - Added range for pagesize field.
+    => 032039 - Stripe payment is not working if wallet is selected and wallet amount is less than order payable amount.
 
 Enhancements
     => Updated new labels for IOS APP.
