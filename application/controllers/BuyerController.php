@@ -820,8 +820,7 @@ class BuyerController extends BuyerBaseController
             $this->_template->render();
         }
 
-        Message::addMessage($msg);
-        FatUtility::dieJsonSuccess(Message::getHtml());
+        FatUtility::dieJsonSuccess($msg);
         //$this->_template->render( false, false, 'json-success.php' );
     }
 

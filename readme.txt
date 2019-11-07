@@ -12,6 +12,7 @@ Bugs
     => 031810 - Separator missing before condition filter labels
     => Fixed #031874 - Added range for pagesize field.
     => 032039 - Stripe payment is not working if wallet is selected and wallet amount is less than order payable amount.
+    => 032041 - Incorrect success message handling while submiting cancellation request.
 
 Enhancements
     => Updated new labels for IOS APP.
