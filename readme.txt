@@ -5,6 +5,9 @@ Bugs
     => #031109 - Displyed same success messages mulitple time on payment page in APP
     => #032003 - Braintree payment gateway library functions are deprecated. Updated code and library accordingly.
     => #032016 - if Facebook secret key is not there then Affiliate dashboard is not accessible
+    => #030499 - Fixed admin login issue for mobile devices.
+    => #031689 - Fixed page scrolls issue on iphone.
+
 
 Enhancements
     => Updated new labels for IOS APP.
