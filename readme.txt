@@ -13,6 +13,7 @@ Bugs
     => Fixed #031874 - Added range for pagesize field.
     => 032039 - Stripe payment is not working if wallet is selected and wallet amount is less than order payable amount.
     => 032041 - Incorrect success message handling while submiting cancellation request.
+    => 032058 - Products listing issue when using price filter and change currency from header.
 
 Enhancements
     => Updated new labels for IOS APP.
