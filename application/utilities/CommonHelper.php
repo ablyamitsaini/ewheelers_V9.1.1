@@ -521,6 +521,7 @@ class CommonHelper extends FatUtility
 
     public static function getDefaultCurrencyValue($val, $format = true, $displaySymbol = true)
     {
+        //$currency_id = FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1);
         $currencyValue = self::getCurrencyValue();
         $defaultCurrencyValue = $val / $currencyValue;
         return static::displayMoneyFormat($defaultCurrencyValue, $format, true, $displaySymbol);

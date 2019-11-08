@@ -1375,9 +1375,10 @@ END,   special_price_found ) as special_price_found'
         } elseif (array_key_exists('min_price_range', $criteria)) {
             $minPriceRange = floor($criteria['min_price_range']);
         }
-
+        //currency_id
         if (!empty($minPriceRange)) {
-            $min_price_range_default_currency =  CommonHelper::getDefaultCurrencyValue($minPriceRange, false, false);
+            $min_price_range_default_currency = CommonHelper::convertExistingToOtherCurrency($criteria['currency_id'], $minPriceRange, FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1), false);            
+            //$min_price_range_default_currency =  CommonHelper::getDefaultCurrencyValue($minPriceRange, false, false);
             $srch->addHaving('theprice', '>=', $min_price_range_default_currency);
         }
 
@@ -1389,7 +1390,8 @@ END,   special_price_found ) as special_price_found'
         }
 
         if (!empty($maxPriceRange)) {
-            $max_price_range_default_currency =  CommonHelper::getDefaultCurrencyValue($maxPriceRange, false, false);
+            $max_price_range_default_currency = CommonHelper::convertExistingToOtherCurrency($criteria['currency_id'], $maxPriceRange, FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1), false);
+            //$max_price_range_default_currency =  CommonHelper::getDefaultCurrencyValue($maxPriceRange, false, false);
             $srch->addHaving('theprice', '<=', $max_price_range_default_currency);
         }
 
