@@ -16,7 +16,7 @@ class RestoreSystemController extends MyAppController
             Message::addMessage('Restore process is only valid for Demo urls!');
             FatUtility::dieJsonSuccess(Message::getHtml());
         }
-        die('ddsds');
+        
         if (!FatApp::getConfig('CONF_AUTO_RESTORE_ON', FatUtility::VAR_INT, 1)) {
             Message::addErrorMessage('Auto restore disabled by admin!');
             FatUtility::dieJsonError(Message::getHtml());
