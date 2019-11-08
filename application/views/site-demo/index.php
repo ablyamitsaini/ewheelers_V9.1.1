@@ -1,5 +1,6 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage');
 $this->includeTemplate('restore-system/top-header.php');
+$this->includeTemplate('restore-system/page-content.php');
 ?>
 
 <main role="main" id="main">

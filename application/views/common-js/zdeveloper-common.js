@@ -1194,15 +1194,11 @@ $("document").ready(function () {
 	});
 });
 
-/* nice select */
-$(document).ready(function () {
-	/* $('select').niceSelect();
-	$('#category--js').niceSelect('destroy'); */
+$(document).ready(function () {	
 	if ($(window).width() < 1025) {
        $('html').removeClass('sticky-demo-header');
        $("div.demo-header").hide();
     }
-
 });
 
 /* Scroll Hint */
