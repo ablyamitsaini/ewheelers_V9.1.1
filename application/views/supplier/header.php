@@ -41,8 +41,7 @@ if( isset($socialShareContent) && $socialShareContent != '' ){
 $this->includeTemplate('_partial/header/commonHead2.php', $commonHead2Data,false);
 ?>
 <?php if (FatApp::getConfig('CONF_AUTO_RESTORE_ON', FatUtility::VAR_INT, 1) && CommonHelper::demoUrl()) { 
-	$this->includeTemplate('restore-system/top-header.php');
-    $this->includeTemplate('restore-system/page-content.php');
+	$this->includeTemplate('restore-system/top-header.php');    
 } ?>
 <div class="wrapper">
   <div  id="header" class="header-supplier">

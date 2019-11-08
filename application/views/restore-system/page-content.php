@@ -39,7 +39,7 @@
         var progressPercentage = 100 - (parseFloat(hours + '.' + parseFloat(minutes / 15 * 25)) * 100 / 4);
         $('.restore__progress-bar').css('width', progressPercentage + '%');
         // If the count down is finished, write some text
-        if (distance < 0) {
+        if (distance < 0) {           
             clearInterval(x);
             $('#restoreCounter').html("Process...");
             showRestorePopup();
@@ -60,7 +60,7 @@
             resp) {
             setTimeout(function() {
                 window.location.reload();
-            }, 3000);
+            }, 5000);
         }, false, false);
     }
 </script>

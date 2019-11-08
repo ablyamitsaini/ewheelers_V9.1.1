@@ -1,6 +1,5 @@
 <?php if (FatApp::getConfig('CONF_AUTO_RESTORE_ON', FatUtility::VAR_INT, 1) && CommonHelper::demoUrl()) { 
-	$this->includeTemplate('restore-system/top-header.php');
-    $this->includeTemplate('restore-system/page-content.php');
+	$this->includeTemplate('restore-system/top-header.php');    
 } ?>
 <div class="wrapper">
     <header id="header-dashboard" class="header-dashboard no-print" role="header-dashboard">
