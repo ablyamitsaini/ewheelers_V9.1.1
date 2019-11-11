@@ -580,6 +580,8 @@ class AdminBaseController extends FatController
             $fld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Minimum_selling_price_for_this_product_is', $this->adminLangId).' '.CommonHelper::displayMoneyFormat($productData['product_min_selling_price'], true, true));
             $fld->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_This_price_is_excluding_the_tax_rates', $this->adminLangId).'</small> <br><small class="text--small">'.Labels::getLabel('LBL_Min_Selling_price', $this->adminLangId). CommonHelper::displayMoneyFormat($productData['product_min_selling_price'], true, true).'</small>';
         }
+		
+		$frm->addCheckBox(Labels::getLabel('LBL_Enable_Test_Drive', $this->adminLangId), 'selprod_test_drive_enable', 1, array(), false, 0);
 
         $fld = $frm->addIntegerField(Labels::getLabel('LBL_Quantity', $this->adminLangId), 'selprod_stock');
         $fld->requirements()->setPositive();

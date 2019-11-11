@@ -102,6 +102,11 @@ class Navigation
         $gdprSrch->addCondition('ureq_deleted', '=', applicationConstants::NO);
         $gdprSrch->getResultSet();
         $gdprReqCount = $gdprSrch->recordCount();
+		
+		$tdSrch = TestDrive::getSearchObject();		
+		$tdSrch->addMultipleFields(array('count(ptdr_id) as countOfRec'));		
+        $tdReq = $db->fetch($tdSrch->getResultSet());		
+        $tdReqCount = FatUtility::int($tdReq['countOfRec']);
         
         /* set counter variables [ */
         $template->set('brandReqCount', $brandReqCount);
@@ -115,6 +120,7 @@ class Navigation
         $template->set('blogCommentsCount', $blogCommentsCount);
         $template->set('threshSelProdCount', $threshSelProdCount);
         $template->set('gdprReqCount', $gdprReqCount);
+		$template->set('tdReqCount', $tdReqCount);
         $template->set('adminLangId', CommonHelper::getLangId());
         /* ] */
         

@@ -245,7 +245,8 @@
 				$objPrivilege->canViewAffiliateCommissionSettings(AdminAuthentication::getLoggedAdminId(), true) ||
 
 				$objPrivilege->canViewRewardsOnPurchase(AdminAuthentication::getLoggedAdminId(), true)  ||
-				$objPrivilege->canViewSellerPackages(AdminAuthentication::getLoggedAdminId(), true)
+				$objPrivilege->canViewSellerPackages(AdminAuthentication::getLoggedAdminId(), true) ||
+				$objPrivilege->canViewTestDriveManagement(AdminAuthentication::getLoggedAdminId(), true)
 				){ ?>
 			<li class="haschild"><a href="javascript:void(0);"><?php echo Labels::getLabel('LBL_Settings',$adminLangId);?></a>
 				<ul>
@@ -268,6 +269,9 @@
 					<?php if($objPrivilege->canViewAffiliateCommissionSettings(AdminAuthentication::getLoggedAdminId(), true)){ ?>
 						<li><a href="<?php echo CommonHelper::generateUrl('AffiliateCommission'); ?>"><?php echo Labels::getLabel('LBL_Affiliate_Commission_Settings',$adminLangId);?></a></li>
 					<?php } ?>
+					<?php if($objPrivilege->canViewTestDriveManagement(AdminAuthentication::getLoggedAdminId(), true)){?>
+						<li><a href="<?php echo CommonHelper::generateUrl('TestDriveManagement'); ?>"><?php echo Labels::getLabel('LBL_Test_Drive_Management',$adminLangId);?></a></li>
+					<?php } ?>
 
 					<?php if($objPrivilege->canViewEmailTemplates(AdminAuthentication::getLoggedAdminId(), true)){?>
 						<li><a href="<?php echo CommonHelper::generateUrl('EmailTemplates'); ?>"><?php echo Labels::getLabel('LBL_Email_Templates_Management',$adminLangId);?></a></li>
@@ -288,7 +292,8 @@
 				$objPrivilege->canViewSubscriptionOrders(AdminAuthentication::getLoggedAdminId(), true) ||
 				$objPrivilege->canViewWithdrawRequests(AdminAuthentication::getLoggedAdminId(), true) ||
 				$objPrivilege->canViewOrderCancellationRequests(AdminAuthentication::getLoggedAdminId(), true) ||
-				$objPrivilege->canViewOrderReturnRequests(AdminAuthentication::getLoggedAdminId(), true)
+				$objPrivilege->canViewOrderReturnRequests(AdminAuthentication::getLoggedAdminId(), true) ||
+				$objPrivilege->canViewTestDriveRequests(AdminAuthentication::getLoggedAdminId(), true)
 				){ ?>
 			<li class="haschild"><a href="javascript:void(0);"><?php echo Labels::getLabel('LBL_Orders',$adminLangId);?></a>
 				<ul>
@@ -302,6 +307,9 @@
 					<?php if($objPrivilege->canViewSubscriptionOrders(AdminAuthentication::getLoggedAdminId(), true)){?>
 						<li><a href="<?php echo CommonHelper::generateUrl('SubscriptionOrders'); ?>"><?php echo Labels::getLabel('LBL_Subscription_Orders',$adminLangId);?> </a></li>
 					<?php }?>
+					<?php if($objPrivilege->canViewTestDriveRequests(AdminAuthentication::getLoggedAdminId(), true)){ ?>
+						 <li><a href="<?php echo CommonHelper::generateUrl('testDrive');?>"><?php echo Labels::getLabel('LBL_Test_Drive_Requests',$adminLangId);?><span class='badge'>(<?php echo $tdReqCount; ?>)</span></a></li>
+					<?php } ?>
 					<?php if($objPrivilege->canViewWithdrawRequests(AdminAuthentication::getLoggedAdminId(), true)){?>
 						<li><a href="<?php echo CommonHelper::generateUrl('WithdrawalRequests'); ?>"><?php echo Labels::getLabel('LBL_Withdrawl_Requests',$adminLangId);?> <?php if($drReqCount){ ?><span class='badge'>(<?php echo $drReqCount; ?>)</span><?php } ?></a></li>
 					<?php }?>

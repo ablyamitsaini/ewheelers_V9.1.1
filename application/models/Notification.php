@@ -51,7 +51,7 @@ class Notification extends MyAppModel
     const SUPPLIER_APPROVAL = 6;
     const RETURN_REQUEST_STATUS_CHANGE_NOTIFICATION = 13;
     const NOTIFICATION_ABUSIVE_WORD = 15;
-
+	const TEST_DRIVE_COMPLETION_REQUEST = 16;
 
 
     public function __construct($notificationId = 0)
@@ -105,6 +105,7 @@ class Notification extends MyAppModel
         Notification::NEW_CUSTOM_CATALOG_REQUEST_NOTIFICATION=>array(Labels::getLabel('admin_custom_catalog_request_notification', $langId),'custom-products'),
         Notification::BLOG_COMMENT_NOTIFICATION=>array(Labels::getLabel('user_blog_comment_notification', $langId),'blog-comments'),
         Notification::BLOG_CONTRIBUTION_NOTIFICATION=>array(Labels::getLabel('user_blog_contibution_notification', $langId),'blog-contributions'),
+		Notification::TEST_DRIVE_COMPLETION_REQUEST=>array(Labels::getLabel('admin_test_drive_delivered_notification', $langId),'test-drive'),
         );
 
         return $labelArr;

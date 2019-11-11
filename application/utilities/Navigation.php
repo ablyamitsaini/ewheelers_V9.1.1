@@ -59,6 +59,15 @@ class Navigation
         $threadObj = new Thread();
         $todayUnreadMessageCount = $threadObj->getMessageCount($userId, Thread::MESSAGE_IS_UNREAD, date('Y-m-d'));
         /*]*/
+		
+		$db = FatApp::getDb();		
+		$tdSrch = TestDrive::getSearchObject();		
+		$tdSrch->addCondition('ptdr_user_id', '=', UserAuthentication::getLoggedUserId());		
+		$tdSrch->addMultipleFields(array('count(ptdr_id) as countOfRec'));		
+        $tdReq = $db->fetch($tdSrch->getResultSet());		
+        $tdReqCount = FatUtility::int($tdReq['countOfRec']);		
+        $template->set('tdReqCount', $tdReqCount);
+		
         $template->set('siteLangId', $siteLangId);
         $template->set('controller', $controller);
         $template->set('action', $action);
@@ -125,7 +134,16 @@ class Navigation
         if (!false == $shopDetails) {
             $shop_id = $shopDetails['shop_id'];
         }
-
+		
+				
+		$db = FatApp::getDb();		
+		$tdSrch = TestDrive::getSearchObject();		
+		$tdSrch->addCondition('sp.selprod_user_id', '=', UserAuthentication::getLoggedUserId());		
+		$tdSrch->addMultipleFields(array('count(ptdr_id) as countOfRec'));		
+        $tdReq = $db->fetch($tdSrch->getResultSet());		
+        $tdReqCount = FatUtility::int($tdReq['countOfRec']);		
+        $template->set('tdReqCount', $tdReqCount);
+		
         $template->set('shop_id', $shop_id);
         $template->set('isShopActive', Shop::isShopActive($userId));
         $template->set('siteLangId', $siteLangId);
