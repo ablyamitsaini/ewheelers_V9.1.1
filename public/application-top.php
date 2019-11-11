@@ -52,4 +52,4 @@ $_SESSION['WYSIWYGFileManagerRequirements'] = CONF_INSTALLATION_PATH . 'public/W
 
 
 define('SYSTEM_INIT', true);
-define('CONF_WEB_APP_VERSION', 'RV-9.1.0');
+define('CONF_WEB_APP_VERSION', 'RV-9.1.1');
