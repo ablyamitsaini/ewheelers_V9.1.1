@@ -1,0 +1,43 @@
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.'); 
+$frmSearch->setFormTagAttribute('class', 'web_form last_td_nowrap');
+$frmSearch->setFormTagAttribute('onsubmit', 'searchTestDriveReport(this); return(false);');
+
+?>
+<div class='page'>
+	<div class='container container-fluid'>
+		<div class="row">
+			<div class="col-lg-12 col-md-12 space">
+				<div class="page__title">
+					<div class="row">
+						<div class="col--first col-lg-6">
+							<span class="page__icon"><i class="ion-android-star"></i></span>
+							<h5><?php echo Labels::getLabel('LBL_Test_Drive_Report',$adminLangId); ?></h5>
+							<?php $this->includeTemplate('_partial/header/header-breadcrumb.php'); ?>
+						</div>
+					</div>
+				</div>
+			<section class="section searchform_filter">
+						<div class="sectionhead">
+							<h4> <?php echo Labels::getLabel('LBL_Search...',$adminLangId); ?></h4>
+						</div>
+						<div class="sectionbody space togglewrap" style="display:none;">
+							<?php echo $frmSearch->getFormHtml(); ?>
+						</div>
+			</section>
+			<section class="section">
+				<div class="sectionhead">
+					<h4><?php echo Labels::getLabel('LBL_Test_Drive_Report_List',$adminLangId); ?> </h4>
+					<ul class="actions actions--centered"><li class="droplink"><a href="javascript:void(0)" class="button small green" title="Edit"><i class="ion-android-more-horizontal icon"></i></a><div class="dropwrap"><ul class="linksvertical"><li><a href="javascript:void(0)" class="button small green" title="Export" onclick="exportReport()"><?php echo Labels::getLabel('LBL_Export',$adminLangId); ?></a></li></ul></div></li></ul>
+				</div>
+				<div class="sectionbody">
+					<div class="tablewrap">
+						<div id="listing">
+							<?php echo Labels::getLabel('LBL_Processing...',$adminLangId); ?>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>		
+	</div>
+</div>
+</div>
