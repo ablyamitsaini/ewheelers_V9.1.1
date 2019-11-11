@@ -720,7 +720,7 @@ class ProductCategory extends MyAppModel
             //$prodCatSrch->addOrder('prodrootcat_code');
             $prodCatSrch->addOrder('prodcat_ordercode');
         }
-        
+
         $rs = $prodCatSrch->getResultSet();
 
         if ($forSelectBox) {
