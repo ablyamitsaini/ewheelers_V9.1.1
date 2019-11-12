@@ -23,6 +23,7 @@ class Transactions extends MyAppModel
     const TYPE_PPC = 9;
     const TYPE_MONEY_WITHDRAWL_REFUND = 10;
     const TYPE_ORDER_SHIPPING = 11;
+	const TYPE_TEST_DRIVE_CREDITS = 12;
 
     const CREDIT_TYPE = 1;
     const DEBIT_TYPE = 2;

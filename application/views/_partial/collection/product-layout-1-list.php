@@ -11,6 +11,10 @@
                 </svg>
             </span><?php echo Labels::getLabel('LBL_Quick_View', $siteLangId); ?>
         </a>
+		<?php if($product['selprod_test_drive_enable'] == 1){ ?>
+				<a onClick='testDriveRequestHomeCollection(<?php echo $product['selprod_id']; ?>)' class="modaal-inline-content" style="margin-top:5px">
+                <?php echo Labels::getLabel('LBL_REQUEST_A_DRIVE', $siteLangId);?></a>
+			<?php } ?>
     </div>
 	<div class="products__body">
 		<?php include(CONF_THEME_PATH.'_partial/collection-ui.php'); ?>

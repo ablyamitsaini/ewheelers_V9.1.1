@@ -52,7 +52,17 @@ $action = strtolower($action);
                                     <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-import-export" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-import-export"></use>
                                 </svg>
                             </i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Import_Export', $siteLangId); ?></span></a></div>
-                </li> <?php
+                </li> 
+				
+				<li class="menu__item <?php echo ($controller == 'testdrive' && $action == 'sellerrequests') ? 'is-active' : ''; ?>">
+                    <div class="menu__item__inner"><a title="<?php echo Labels::getLabel('LBL_Manage_Shop', $siteLangId);?>" href="<?php echo CommonHelper::generateUrl('TestDrive', 'sellerRequests'); ?>">
+                            <i class="icn shop"><svg class="svg">
+                                    <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#manage-shop" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#manage-shop"></use>
+                                </svg>
+                            </i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Test_Drive_Requests', $siteLangId) . ' (' . $tdReqCount .')';?></span></a></div>
+                </li>
+				
+				<?php
             } ?>
             <li class="divider"></li>
             <li class="menu__item">
@@ -200,6 +210,13 @@ $action = strtolower($action);
                                     <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-sales-report" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-sales-report"></use>
                                 </svg>
                             </i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Sales_Report', $siteLangId); ?></span></a></div>
+                </li>
+				<li class="menu__item <?php echo ($controller == 'testdrive' && $action == 'report') ? 'is-active' : ''; ?>">
+                    <div class="menu__item__inner"><a title="<?php echo Labels::getLabel('LBL_Test_Drive_Report', $siteLangId);?>" href="<?php echo CommonHelper::generateUrl('TestDrive', 'Report'); ?>"> 
+                            <i class="icn shop"><svg class="svg">
+                                    <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-sales-report" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-sales-report"></use>
+                                </svg>
+                            </i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Test_Drive_Report', $siteLangId); ?></span></a></div>
                 </li>
                 <li class="menu__item <?php echo ($controller == 'reports' && $action == 'productsperformance') ? 'is-active' : ''; ?>">
                     <div class="menu__item__inner"><a title="<?php echo Labels::getLabel('LBL_Products_Performance', $siteLangId);?>" href="<?php echo CommonHelper::generateUrl('Reports', 'ProductsPerformance'); ?>">

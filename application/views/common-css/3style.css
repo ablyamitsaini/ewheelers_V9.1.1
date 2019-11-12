@@ -14322,4 +14322,20 @@ div.faqanswer p {
 	transition: all 265ms ease-in;
 }
 
+
+@media(min-width:1199px){
+	#facebox .content.productQuickView{width:1000px!important;}
+}
+#facebox .content.productQuickView{overflow-y:hidden!important;}
+#facebox .content.productQuickView .quick-col-2{overflow-y:auto;max-height:450px;min-height:470px;}
+.-request-form .form .field-set{margin-bottom:1rem;}
+.-request-form .form .link{font-size:0.9em;}
+.-request-form .form .-col-custom .caption-wraper{display:none;}
+.-request-form{margin-top: 15px;   background: rgba(0,0,0,0.03);   padding: 20px 20px 0;   border-radius: 3px;}
+.-request-form .-col-custom .field-wraper label .errorlist{position:absolute;}
+.-request-form .-col-custom .field-wraper .btn{margin-top:10px;}
+.table-borderless th, .table-borderless td{border:0!important;}
+/* .table-cols.table tr:last-child td{border-bottom: solid 1px var(--border-color);} */
+.table-cols.table tr:last-child td,.table-cols.table tr:last-child th{border-bottom:none;}
+/** ] /
     

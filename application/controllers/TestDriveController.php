@@ -278,8 +278,8 @@ class TestDriveController extends LoggedUserController
         $frm = new Form('frmTestDrive', array('id'=>'frmTestDrive'));
         $frm->addHiddenField('', 'selprod_id');
         $frm->addRequiredField(Labels::getLabel('LBL_Location', $this->siteLangId), 'ptdr_location');
-        $phnFld = $frm->addRequiredField(Labels::getLabel('LBL_Phone', $this->siteLangId), 'ptdr_contact', '');
-        $phnFld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
+        $phnFld = $frm->addRequiredField(Labels::getLabel('LBL_Phone', $this->siteLangId), 'ptdr_contact', '', array('class'=>'phone-js ltr-right', 'placeholder' => '', 'maxlength' => 14));
+		$phnFld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
         $phnFld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_format.', $this->siteLangId));
         $date = $frm->addRequiredField(Labels::getLabel('LBL_Date_Time', $this->siteLangId), 'ptdr_date', '');
         $fld = $frm->addCheckBox(Labels::getLabel('', $this->siteLangId), 'terms', 1, array(), false, 0);

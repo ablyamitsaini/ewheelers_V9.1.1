@@ -22,3 +22,22 @@
 .formActions-css {
 	display: none !important;
 }
+
+ul.errorlist.erlist_ptdr_comments li {
+    list-style-type: none;
+}
+
+.morecontent span {
+    display: none;
+}
+.morelink {
+    display: block;
+}
+
+
+.row-flexible [class*="col-"]:last-child {    flex: 0 0 100%;
+    max-width: 100%;}
+.row-flexible .buy-group .btn{    flex:0 0 32.39%;
+}
+
+.field_cover{position:relative;}

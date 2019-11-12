@@ -20,6 +20,10 @@ if ($recentViewedProducts) {
                                     </svg>
                                 </span><?php echo Labels::getLabel('LBL_Quick_View', $siteLangId); ?>
                             </a>
+							<?php if($rProduct['selprod_test_drive_enable'] == 1){ ?>
+								<a onClick='testDriveRequestHomeCollection(<?php echo $rProduct['selprod_id']; ?>)' class="modaal-inline-content" style="margin-top:5px">
+								<?php echo Labels::getLabel('LBL_REQUEST_A_DRIVE', $siteLangId);?></a>
+							<?php } ?>
                             </div>
                             <div class="products__body"> <?php $this->includeTemplate('_partial/collection-ui.php', array('product'=>$rProduct,'siteLangId'=>$siteLangId), false); ?>
                                 <div class="products__img">

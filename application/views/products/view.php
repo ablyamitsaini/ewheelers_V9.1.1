@@ -228,7 +228,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                     $qtyField =  $frmBuyProduct->getField('quantity');
                                     $qtyFieldName =  $qtyField->getCaption();
                                 if (strtotime($product['selprod_available_from'])<= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))) { ?>
-                                    <div class="row align-items-end">
+                                    <div class="row align-items-end <?php echo $product['selprod_test_drive_enable']?'row-flexible':'';?>">
                                         <div class="col-xl-4 col-lg-5 col-md-5 mb-2">
                                             <div class="form__group form__group-select">
                                                 <label class="h6"><?php echo $qtyFieldName; ?></label>
@@ -247,8 +247,15 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                             <label class="h6">&nbsp;</label>
                                             <div class="buy-group">
                                                 <?php if (strtotime($product['selprod_available_from']) <= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))) {
-                                            echo $frmBuyProduct->getFieldHtml('btnProductBuy');
-                                            echo $frmBuyProduct->getFieldHtml('btnAddToCart');
+													echo $frmBuyProduct->getFieldHtml('btnProductBuy');
+														echo $frmBuyProduct->getFieldHtml('btnAddToCart');
+													if($product['selprod_test_drive_enable']){
+														echo $frmBuyProduct->getFieldHtml('btnTestDrive');
+													}
+													
+                                            /* echo $frmBuyProduct->getFieldHtml('btnProductBuy');
+                                            echo $frmBuyProduct->getFieldHtml('btnAddToCart'); */
+											
                                         }
                                         echo $frmBuyProduct->getFieldHtml('selprod_id'); ?>
                                             </div>
@@ -258,7 +265,9 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                     <div class="gap"></div>
 
                                     </form>
-                                    <?php echo $frmBuyProduct->getExternalJs();
+                                    <?php echo $frmBuyProduct->getExternalJs();?>
+									<div id="testDrivefrm"></div>
+									<?php
                                 } else { ?>
                                     <div class="sold">
                                         <h3 class="text--normal-secondary"><?php echo Labels::getLabel('LBL_Sold_Out', $siteLangId); ?></h3>

@@ -33,7 +33,9 @@
 					<h2 class="mb-0"><?php echo Labels::getLabel('LBL_All_Sellers', $siteLangId);?></h2>
 				</div>
 			</div>
-
+			<?php 
+				$selprod_test_drive_enable = $product['selprod_test_drive_enable'];
+			?>
             <div class=""> <?php
             $arr_flds = array(
                 'shop_name'    =>    Labels::getLabel('LBL_Seller', $siteLangId),
@@ -95,7 +97,11 @@
 
                         case 'Action':
                             if (date('Y-m-d', strtotime($moresellers['selprod_available_from'])) <=  FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d')) {
-                                $txt ='<div class="align--right"> <a data-id="'.$moresellers['selprod_id'].'" data-min-qty="'.$moresellers['selprod_min_order_qty'].'"  href="javascript:void(0)" class="btn btn--primary btn--sm ripplelink block-on-mobile btnProductBuy--js">  '.Labels::getLabel('LBL_Buy_Now', $siteLangId).'</a> <a data-id="'.$moresellers['selprod_id'].'" data-min-qty="'.$moresellers['selprod_min_order_qty'].'"  href="javascript:void(0)" class="btn btn--primary-border btn--sm ripplelink block-on-mobile btnAddToCart--js">  '.Labels::getLabel('LBL_Add_To_Cart', $siteLangId).'</a> </div>';
+								if($selprod_test_drive_enable == 0){
+									$txt ='<div class="align--right"> <a data-id="'.$moresellers['selprod_id'].'" data-min-qty="'.$moresellers['selprod_min_order_qty'].'"  href="javascript:void(0)" class="btn btn--primary btn--sm ripplelink block-on-mobile btnProductBuy--js">  '.Labels::getLabel('LBL_Buy_Now', $siteLangId).'</a> <a data-id="'.$moresellers['selprod_id'].'" data-min-qty="'.$moresellers['selprod_min_order_qty'].'"  href="javascript:void(0)" class="btn btn--primary-border btn--sm ripplelink block-on-mobile btnAddToCart--js">  '.Labels::getLabel('LBL_Add_To_Cart', $siteLangId).'</a> </div>';
+								}else{
+									$txt ='<div class="align--right"> <a onClick="testDriveRequestHomeCollection('.$moresellers['selprod_id'].')"  href="javascript:void(0)" class="btn btn--primary btn--sm ripplelink block-on-mobile ">  '.Labels::getLabel('LBL_REQUEST_A_DRIVE', $siteLangId).'</a> </div>';									
+								}
                             } else {
                                 $txt = str_replace('{available-date}', FatDate::Format($moresellers['selprod_available_from']), Labels::getLabel('LBL_This_item_will_be_available_from_{available-date}', $siteLangId));
                             }

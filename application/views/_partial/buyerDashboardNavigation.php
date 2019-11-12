@@ -73,6 +73,22 @@
                         </a>
                     </div>
                 </li>
+				
+						
+				<li class="menu__item <?php echo ($controller == 'testdrive' && ($action == 'buyerrequests')) ? 'is-active' : ''; ?>">		
+                    <div class="menu__item__inner">		
+                        <a title="<?php echo Labels::getLabel("LBL_Test_Drive_Requests", $siteLangId); ?>" href="<?php echo CommonHelper::generateUrl('TestDrive', 'buyerRequests'); ?>">		
+                            <i class="icn shop">		
+                                <svg class="svg">		
+                                    <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-order" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-order"></use>		
+                                </svg>		
+                            </i>		
+                            <span class="menu-item__title"><?php echo Labels::getLabel("LBL_Test_Drive_Requests", $siteLangId) . ' (' . $tdReqCount .')' ; ?></span>		
+                        </a>		
+                    </div>		
+                </li>		
+			
+				
                 <li class="divider"></li>
                 <?php if (User::canViewBuyerTab()) { ?>
                 <li class="menu__item">

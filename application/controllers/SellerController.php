@@ -3845,6 +3845,7 @@ class SellerController extends SellerBaseController
                 }
             }
         }
+		$frm->addCheckBox(Labels::getLabel('LBL_Enable_Test_Drive', $this->siteLangId), 'selprod_test_drive_enable', 1, array(), false, 0);
 
         $frm->addHiddenField('', 'selprod_product_id', $product_id);
         $frm->addHiddenField('', 'selprod_urlrewrite_id');

@@ -23,7 +23,7 @@
     </div>
 
     <div class="col-lg-6 col-md-6 quick-col-2">
-        <div class="product-detail product-description product-detail-quickview">
+        <div class="product-detail product-description product-detail-quickview <?php echo $product['selprod_test_drive_enable']?'row-flexible':'';?>">
             <div>
                 <div class="product-description-inner">
                     <div class="products__title"><a title="<?php echo $product['selprod_title']; ?>" href="<?php echo !isset($product['promotion_id']) ? CommonHelper::generateUrl('Products', 'View', array($product['selprod_id'])) : CommonHelper::generateUrl('Products', 'track', array($product['promotion_record_id']))?>"><?php echo $product['selprod_title'];?></a>
@@ -127,7 +127,10 @@
                     <?php
                     if (strtotime($product['selprod_available_from'])<= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))) {
                         echo $frmBuyProduct->getFieldHtml('btnProductBuy');
-                        echo $frmBuyProduct->getFieldHtml('btnAddToCart');
+						echo $frmBuyProduct->getFieldHtml('btnAddToCart');
+                        if($product['selprod_test_drive_enable']){
+							echo $frmBuyProduct->getFieldHtml('btnTestDrive');
+						}
                     }
                         echo $frmBuyProduct->getFieldHtml('selprod_id'); ?>
                 </div>
@@ -146,6 +149,7 @@
             </div>
             <?php }?>
             <!-- ] -->
+			<div id="testDrivefrm"></div>
         </div>
     </div>
 </div>

@@ -1225,4 +1225,60 @@ $(document).ajaxComplete(function() {
         });
     }
 });
+
+function addTestDriveRequest(frm){
+		if (!$(frm).validate()) return;
+	var data = fcom.frmData(frm);
+	debugger
+	return false;
+}
+
+function testDriveRequest(){
+
+	if (isUserLogged() == 0) {
+		loginPopUpBox();
+		return false;
+	}
+	
+	var selprod_id = $("input[name=selprod_id]").val();
+	
+	fcom.ajax(fcom.makeUrl('TestDrive', 'form', [selprod_id]), '', function(res) {
+        //fcom.updateFaceboxContent(res, 'faceboxWidth testDriveRequest ');
+		$('div #testDrivefrm').html(res);
+    });
+
+}
+
+function testDriveRequestHomeCollection(selprod_id){
+
+	if (isUserLogged() == 0) {
+		loginPopUpBox();
+		return false;
+	}
+
+	$.facebox(function() {
+        fcom.ajax(fcom.makeUrl('Products', 'productQuickDetail', [selprod_id]), '', function(t) {
+            fcom.updateFaceboxContent(t, 'faceboxWidth productQuickView ');
+			$('div #testDrivefrm').html(t);
+		
+			$("#facebox .btnTestDriveNow").trigger("click");
+        });
+    });
+
+}
+
+(function() {
+		addTestDrive = function(frm){
+		if (!$(frm).validate()) return;
+		var data = fcom.frmData(frm);
+		fcom.updateWithAjax(fcom.makeUrl('TestDrive', 'setup'), data, function(t) {
+			/* profileInfoForm();
+			$.mbsmessage.close();
+			console.log(t); */
+			$.facebox.close();
+		});
+	};
+	
+})();
+
  
