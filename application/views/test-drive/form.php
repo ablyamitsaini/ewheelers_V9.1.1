@@ -16,7 +16,6 @@ if(empty($termsAndConditionsLinkHref)){
 		
 		$fld = $frmTestDrive->getField('ptdr_contact');
 		$fld->setFieldTagAttribute('class', 'phone-js ltr-right');
-		$fld->setFieldTagAttribute('placeholder', '(XXX) XXX-XXXX');
 		$fld->setFieldTagAttribute('maxlength', 14);
 		
 		$fld = $frmTestDrive->getField('ptdr_date');
