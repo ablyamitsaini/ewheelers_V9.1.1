@@ -1239,11 +1239,19 @@ function testDriveRequest(){
 		loginPopUpBox();
 		return false;
 	}
-	
+
+	if ($('div #testDrivefrm').is(':empty')){
+
+	}else{
+		$('div #testDrivefrm').html('');
+		return;
+	}
+
 	var selprod_id = $("input[name=selprod_id]").val();
 	
 	fcom.ajax(fcom.makeUrl('TestDrive', 'form', [selprod_id]), '', function(res) {
         //fcom.updateFaceboxContent(res, 'faceboxWidth testDriveRequest ');
+		//$('div #testDrivefrm').html(res);
 		$('div #testDrivefrm').html(res);
     });
 
@@ -1275,10 +1283,11 @@ function testDriveRequestHomeCollection(selprod_id){
 			/* profileInfoForm();
 			$.mbsmessage.close();
 			console.log(t); */
+			
 			$.facebox.close();
+			$("#frmTestDrive")[0].reset();
 		});
 	};
 	
 })();
 
- 
