@@ -192,9 +192,9 @@ class TestDriveController extends LoggedUserController
             FatUtility::dieJsonError($obj->getError());
         }
 		
-		if (!$obj->sendStatusChangedEmailUpdateBuyer($requestId, TestDrive::STATUS_CANCELLED, $this->siteLangId)) {
+		/* if (!$obj->sendStatusChangedEmailUpdateBuyer($requestId, TestDrive::STATUS_CANCELLED, $this->siteLangId)) {
             FatUtility::dieJsonError($obj->getError());
-        }
+        } */
 
         $this->set('msg', Labels::getLabel('MSG_Request_has_been_cancelled_successfully', $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
