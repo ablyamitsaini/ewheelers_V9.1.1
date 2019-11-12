@@ -82,7 +82,7 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true;
                                     <div class="col-lg-4 col-md-12">
                                         <div class="replaced amount-added-box">
                                             <h5 class="cards-title mb-2">
-                                            <?php echo Labels::getLabel('LBL_Enter_amount_to_be_Added'.'_['.CommonHelper::getDefaultCurrencySymbol().']', $siteLangId); ?></h5>
+                                            <?php echo Labels::getLabel('LBL_Enter_amount_to_be_Added', $siteLangId); ?></h5>
                                             <div id="rechargeWalletDiv" class="cellright nopadding--bottom">
                                                 <?php
                                                 $frmRechargeWallet->setFormTagAttribute('onSubmit', 'setUpWalletRecharge(this); return false;');
