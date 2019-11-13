@@ -3846,6 +3846,10 @@ class SellerController extends SellerBaseController
             }
         }
 		$frm->addCheckBox(Labels::getLabel('LBL_Enable_Test_Drive', $this->siteLangId), 'selprod_test_drive_enable', 1, array(), false, 0);
+		
+		if (FatApp::getConfig("CONF_ENABLE_BOOK_NOW_MODULE", FatUtility::VAR_INT, 1)) {
+           $fld = $frm->addRadioButtons(Labels::getLabel("", $this->siteLangId), 'selprod_book_now_enable', applicationConstants::getProductBuyStatusArr($this->siteLangId), applicationConstants::BUY_NOW, array('class'=>'list-inline'));
+        }
 
         $frm->addHiddenField('', 'selprod_product_id', $product_id);
         $frm->addHiddenField('', 'selprod_urlrewrite_id');
