@@ -100,7 +100,7 @@ class Cart extends FatModel
         return;
     }
 
-    public function add($selprod_id, $qty = 1, $prodgroup_id = 0, $returnUserId = false)
+    public function add($selprod_id, $qty = 1, $prodgroup_id = 0, $returnUserId = false, $isForbooking = 0)
     {
         $this->products = array();
         $selprod_id = FatUtility::int($selprod_id);

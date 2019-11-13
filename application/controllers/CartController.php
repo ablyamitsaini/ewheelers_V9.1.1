@@ -97,6 +97,12 @@ class CartController extends MyAppController
     public function add()
     {
         $post = FatApp::getPostedData();
+		
+		$isForbooking = 0;
+		if(isset($post['type']) && $post['type']=='book'){
+			$isForbooking = 1;
+		}
+		
         if (empty($post)) {
             $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
@@ -132,7 +138,7 @@ class CartController extends MyAppController
         }
         $productsToAdd[$selprod_id] = $quantity;
 
-        $this->addProductToCart($productsToAdd, $selprod_id);
+        $this->addProductToCart($productsToAdd, $selprod_id, $isForbooking);
 
         if (true ===  MOBILE_APP_API_CALL) {
             $cartObj = new Cart();
@@ -186,7 +192,7 @@ class CartController extends MyAppController
         }
     }
 
-    private function addProductToCart($productsToAdd, $selprod_id)
+    private function addProductToCart($productsToAdd, $selprod_id, $isForbooking = 0)
     {
         $ProductAdded = false;
         foreach ($productsToAdd as $productId => $quantity) {
@@ -292,14 +298,33 @@ class CartController extends MyAppController
                 }
             }
             /* ] */
-            if ($productAdd) {
+           /*  if ($productAdd) {
                 $returnUserId = (true ===  MOBILE_APP_API_CALL) ? true : false;
                 $cartUserId = $cartObj->add($productId, $quantity, 0, $returnUserId);
                 if (true ===  MOBILE_APP_API_CALL) {
                     $this->set('tempUserId', $cartUserId);
                 }
                 $ProductAdded = true;
+            } */
+			
+			if ($productAdd) {
+				if($isForbooking == 1){
+					$returnUserId = (true ===  MOBILE_APP_API_CALL) ? true : false;
+					$cartObj->add($productId, $quantity, 0, $isForbooking);
+					if (true ===  MOBILE_APP_API_CALL) {
+						$this->set('tempUserId', $cartUserId);
+					}
+					$ProductAdded = true;
+				}else{
+					$returnUserId = (true ===  MOBILE_APP_API_CALL) ? true : false;
+					$cartUserId = $cartObj->add($productId, $quantity, 0, '' ,$returnUserId);
+					if (true ===  MOBILE_APP_API_CALL) {
+						$this->set('tempUserId', $cartUserId);
+					}
+					$ProductAdded = true;
+					}
             }
+			
         }
         $strProduct = '<a href="'.CommonHelper::generateUrl('Products', 'view', array($selprod_id)).'">'.strip_tags(html_entity_decode($sellerProductRow['product_name'], ENT_QUOTES, 'UTF-8')).'</a>';
         $strCart = '<a href="'.CommonHelper::generateUrl('Cart').'">'.Labels::getLabel('Lbl_Shopping_Cart', $this->siteLangId).'</a>';
