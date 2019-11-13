@@ -81,7 +81,7 @@ class applicationConstants
 	
 	const BUY_NOW = 1;
     const BOOK_NOW = 2;
-    const BOTH = 3;
+    const BOTH = 0;
 
     public static function getWeightUnitsArr($langId)
     {

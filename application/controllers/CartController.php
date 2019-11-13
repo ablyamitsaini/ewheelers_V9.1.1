@@ -96,6 +96,9 @@ class CartController extends MyAppController
 
     public function add()
     {
+		$cartObj = new Cart();
+		$cartObj->removeProductShippingMethod();
+		
         $post = FatApp::getPostedData();
 		
 		$isForbooking = 0;
@@ -141,7 +144,7 @@ class CartController extends MyAppController
         $this->addProductToCart($productsToAdd, $selprod_id, $isForbooking);
 
         if (true ===  MOBILE_APP_API_CALL) {
-            $cartObj = new Cart();
+            
             $this->set('cartItemsCount', $cartObj->countProducts());
             $this->set('msg', Labels::getLabel('LBL_Added_Successfully', $this->siteLangId));
             $this->_template->render();
