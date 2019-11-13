@@ -1283,11 +1283,21 @@ function testDriveRequestHomeCollection(selprod_id){
 			/* profileInfoForm();
 			$.mbsmessage.close();
 			console.log(t); */
-			
 			$.facebox.close();
 			$("#frmTestDrive")[0].reset();
+			if (t.status == 1) {
+				successPopup();
+			}
 		});
 	};
 	
 })();
 
+(function() {
+	successPopup = function(){
+		fcom.ajax(fcom.makeUrl('TestDrive', 'successPopup'), '', function(t) {
+			fcom.updateFaceboxContent(t, 'faceboxWidth testDriveSuccessPopup ');
+		});
+	};
+	
+})();

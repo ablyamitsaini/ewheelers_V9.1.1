@@ -385,6 +385,10 @@ class TestDriveController extends LoggedUserController
 		$this->searchReport("export");
 	}
 
+	public function successPopup() {
+		$this->set('siteLangId', $this->siteLangId);
+		$this->_template->render(false, false);
+	}
 
     private function getStatusFrm()
     {
