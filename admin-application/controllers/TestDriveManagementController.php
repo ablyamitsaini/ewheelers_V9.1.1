@@ -71,14 +71,14 @@ class TestDriveManagementController extends AdminBaseController
             FatUtility::dieJsonError(Labels::getLabel('LBL_Invalid_Range', $this->adminLangId));
         };
 
-		$tobj = TestDriveManagement::getSearchObject();
-		$cnd = $tobj->addDirectCondition("((" . $min . " BETWEEN tdcs_min_rides  and tdcs_max_rides  OR  " . $max . " between tdcs_min_rides and tdcs_max_rides) or (tdcs_min_rides BETWEEN " . $min . " and " . $max . " OR tdcs_max_rides between " . $min . " and " . $max . ")) and tdcs_id != ". $tdcs_id ."");
-		$rs = $tobj->getResultSet();
+        $tobj = TestDriveManagement::getSearchObject();
+        $cnd = $tobj->addDirectCondition("((" . $min . " BETWEEN tdcs_min_rides  and tdcs_max_rides  OR  " . $max . " between tdcs_min_rides and tdcs_max_rides) or (tdcs_min_rides BETWEEN " . $min . " and " . $max . " OR tdcs_max_rides between " . $min . " and " . $max . ")) and tdcs_id != ". $tdcs_id ."");
+        $rs = $tobj->getResultSet();
         $row = FatApp::getDb()->fetchAll($rs);
-		
-		if(!empty($row)){
-			FatUtility::dieJsonError(Labels::getLabel('LBL_Invalid_Range', $this->adminLangId));
-		}
+
+        if (!empty($row)) {
+            FatUtility::dieJsonError(Labels::getLabel('LBL_Invalid_Range', $this->adminLangId));
+        }
 
         $obj = new TestDriveManagement($tdcs_id);
         $obj->assignValues($post);
@@ -156,10 +156,10 @@ class TestDriveManagementController extends AdminBaseController
         $frm->addRadioButtons(Labels::getLabel('LBL_Enable_Buyer_Credit_Module', $this->adminLangId), 'CONF_ENABLE_BUYER_TEST_DRIVE_CREDIT_MODULE', applicationConstants::getYesNoArr($this->adminLangId), '', array('class'=>'list-inline'));
         $fld = $frm->addIntegerField(Labels::getLabel('LBL_Buyer_Rewards', $this->adminLangId), 'CONF_BUYER_TEST_DRIVE_CREDIT_POINTS');
         $fld->requirements()->setRequired(false);
-		$fld->requirements()->setPositive();
+        $fld->requirements()->setPositive();
         $fld = $frm->addIntegerField(Labels::getLabel('LBL_Test_Drive_Rewards_Expire_Days', $this->adminLangId), 'CONF_TEST_DRIVE_REWARD_POINTS_VALIDITY');
         $fld->requirements()->setRequired(false);
-		$fld->requirements()->setPositive();
+        $fld->requirements()->setPositive();
         $frm->addSubmitButton(' ', 'btn_submit', Labels::getLabel('LBL_Submit', $this->adminLangId));
         return $frm;
     }
@@ -169,10 +169,10 @@ class TestDriveManagementController extends AdminBaseController
         $frm = new Form('frmSlabRate');
         $min = $frm->addIntegerField(Labels::getLabel('LBL_Min_Drives', $this->adminLangId), 'tdcs_min_rides');
         $min->requirements()->setRequired();
-		$min->requirements()->setPositive();
+        $min->requirements()->setPositive();
         $max = $frm->addIntegerField(Labels::getLabel('LBL_Max_Drives', $this->adminLangId), 'tdcs_max_rides');
         $max->requirements()->setRequired();
-		$max->requirements()->setPositive();
+        $max->requirements()->setPositive();
         $amount = $frm->addIntegerField(Labels::getLabel('LBL_Amount', $this->adminLangId), 'tdcs_amount');
         $amount->requirements()->setRequired();
         $amount->requirements()->setPositive();

@@ -52,8 +52,8 @@ class TestDrive extends MyAppModel
         $srch->addCondition(static::DB_TBL_PREFIX.'selprod_id', '=', $selprod_id);
         $cnd = $srch->addCondition(static::DB_TBL_PREFIX.'status', '=', Self::STATUS_PENDING);
         $cnd->attachCondition(static::DB_TBL_PREFIX.'status', '=', Self::STATUS_DELIVERED, 'OR');
-		$cnd->attachCondition(static::DB_TBL_PREFIX.'status', '=', Self::STATUS_ACCEPTED, 'OR');
-		$cnd->attachCondition(static::DB_TBL_PREFIX.'status', '=', Self::STATUS_COMPLETED, 'OR');
+        $cnd->attachCondition(static::DB_TBL_PREFIX.'status', '=', Self::STATUS_ACCEPTED, 'OR');
+        $cnd->attachCondition(static::DB_TBL_PREFIX.'status', '=', Self::STATUS_COMPLETED, 'OR');
         $cnd->attachCondition(static::DB_TBL_PREFIX.'status', '=', Self::STATUS_CONFIRMED);
 
         $rs = $srch->getResultSet();
@@ -80,7 +80,7 @@ class TestDrive extends MyAppModel
         $sellerUserId = SellerProduct::getAttributesById($selProdId, 'selprod_user_id', false);
 
         if ($loggedUserId == $sellerUserId) {
-            if ($status == static::STATUS_CANCELLED || $status == static::STATUS_PENDING || $status == static::STATUS_DELIVERED || $status == static::STATUS_ACCEPTED ) {
+            if ($status == static::STATUS_CANCELLED || $status == static::STATUS_PENDING || $status == static::STATUS_DELIVERED || $status == static::STATUS_ACCEPTED) {
                 return true;
             }
             return false;
@@ -131,8 +131,8 @@ class TestDrive extends MyAppModel
                             'ptdr_location',
                             'ptdr_comments',
                             'ptdr_date',
-							'ptdr_feedback',
-							'ptdr_request_added_on',
+                            'ptdr_feedback',
+                            'ptdr_request_added_on',
                             'u.user_name as buyername',
                             'seller.user_name as sellername',
                             );
@@ -161,7 +161,7 @@ class TestDrive extends MyAppModel
         '{requestee_name}' => $arr_listing['buyername'],
         '{requestee_location}' => $arr_listing['ptdr_location'],
         '{requestee_contact}' => $arr_listing['ptdr_contact'],
-        '{requested_date}' => FatDate::format($arr_listing['ptdr_date'],true),
+        '{requested_date}' => FatDate::format($arr_listing['ptdr_date'], true),
         );
 
         if (EmailHandler::sendMailTpl($arr_listing['credential_email'], $tpl, $langId, $vars)) {
@@ -169,8 +169,8 @@ class TestDrive extends MyAppModel
         }
         return false;
     }
-	
-	public function sendTestDriveRequestDetailEmailBuyer($testDriveId, $langId)
+
+    public function sendTestDriveRequestDetailEmailBuyer($testDriveId, $langId)
     {
         $tpl = 'test_drive_request_detail_buyer';
         $srch = TestDrive::getSearchObject();
@@ -181,16 +181,16 @@ class TestDrive extends MyAppModel
         $db = FatApp::getDb();
         $rs = $srch->getResultSet();
         $arr_listing = $db->fetch($rs);
-	
+
         $vars = array(
         '{product_name}' => $arr_listing['product_name'],
         '{requestee_name}' => $arr_listing['buyername'],
         '{requestee_location}' => $arr_listing['ptdr_location'],
         '{requestee_contact}' => $arr_listing['ptdr_contact'],
-        '{requested_date}' => FatDate::format($arr_listing['ptdr_date'],true),
-		'{buyer_name}' => $arr_listing['buyername'],
-		'{seller_name}' => $arr_listing['sellername'],
-		'{seller_contact}' => $arr_listing['seller_contact'],
+        '{requested_date}' => FatDate::format($arr_listing['ptdr_date'], true),
+        '{buyer_name}' => $arr_listing['buyername'],
+        '{seller_name}' => $arr_listing['sellername'],
+        '{seller_contact}' => $arr_listing['seller_contact'],
         );
 
         if (EmailHandler::sendMailTpl($arr_listing['credential_email'], $tpl, $langId, $vars)) {
@@ -198,28 +198,28 @@ class TestDrive extends MyAppModel
         }
         return false;
     }
-	
-	public function sendStatusChangedEmailUpdateSeller($testDriveId,$status,$langId){
 
-		switch ($status) {
-			case static::STATUS_CONFIRMED:
-				$request_status = 'Confirmed';
-				$request_changed_by = 'Buyer';
-				$tpl = 'test_drive_status_change_updates_seller';
-				break;
-			case static::STATUS_CANCELLED:
-				$request_status = 'Cancelled';
-				$request_changed_by = 'Buyer';
-				$tpl = 'test_drive_status_cancel_update_seller';
-				break;
-			case static::STATUS_COMPLETED:
-				$request_status = 'Completed';
-				$request_changed_by = 'Admin';
-				$tpl = 'test_drive_status_change_updates_seller';
-				break;
-		}
-				
-		$srch = TestDrive::getSearchObject();
+    public function sendStatusChangedEmailUpdateSeller($testDriveId, $status, $langId)
+    {
+        switch ($status) {
+            case static::STATUS_CONFIRMED:
+                $request_status = 'Confirmed';
+                $request_changed_by = 'Buyer';
+                $tpl = 'test_drive_status_change_updates_seller';
+                break;
+            case static::STATUS_CANCELLED:
+                $request_status = 'Cancelled';
+                $request_changed_by = 'Buyer';
+                $tpl = 'test_drive_status_cancel_update_seller';
+                break;
+            case static::STATUS_COMPLETED:
+                $request_status = 'Completed';
+                $request_changed_by = 'Admin';
+                $tpl = 'test_drive_status_change_updates_seller';
+                break;
+        }
+
+        $srch = TestDrive::getSearchObject();
         $srch->joinTable(User::DB_TBL_CRED, 'INNER JOIN', 'u_c.credential_user_id = selprod_user_id', 'u_c');
         $srch->addCondition('td.ptdr_id', '=', $testDriveId);
         $srch->addMultipleFields(array('u.user_name as buyername', 'ptdr_location', 'credential_email', 'ptdr_comments', 'ptdr_feedback', 'ptdr_contact', 'ptdr_date', 'product_name','seller.user_name as sellername'));
@@ -230,53 +230,52 @@ class TestDrive extends MyAppModel
         $vars = array(
         '{product_name}' => $arr_listing['product_name'],
         '{requestee_name}' => $arr_listing['buyername'],
-		'{seller_name}' => $arr_listing['sellername'],
+        '{seller_name}' => $arr_listing['sellername'],
         '{requestee_location}' => $arr_listing['ptdr_location'],
         '{requestee_contact}' => $arr_listing['ptdr_contact'],
-        '{requested_date}' => FatDate::format($arr_listing['ptdr_date'],true),
+        '{requested_date}' => FatDate::format($arr_listing['ptdr_date'], true),
         '{cancellation_comment}' => $arr_listing['ptdr_comments'],
         '{feedback}' => $arr_listing['ptdr_feedback'],
         '{request_status}' => $request_status,
-        '{receiver_user_type}' => 'Seller', 
-		'{request_changed_by}' => $request_changed_by
+        '{receiver_user_type}' => 'Seller',
+        '{request_changed_by}' => $request_changed_by
         );
 
         if (EmailHandler::sendMailTpl($arr_listing['credential_email'], $tpl, $langId, $vars)) {
             return true;
         }
         return false;
-		
-	} 
-	
- 	public function sendStatusChangedEmailUpdateBuyer($testDriveId,$status,$langId){
-		
-		switch ($status) {
-			case static::STATUS_ACCEPTED:
-				$request_status = 'Accepted';
-				$request_changed_by = 'Seller';
-				$tpl = 'test_drive_status_change_update_accepted';
-				break;
-			case static::STATUS_CANCELLED:
-				$request_status = 'Cancelled';
-				$request_changed_by = 'Seller';
-				$tpl = 'test_drive_cancel_update_to_buyer';
-				break;
-			case static::STATUS_COMPLETED:
-				$request_status = 'Completed';
-				$request_changed_by = 'Admin';
-				$tpl = 'test_drive_status_change_updates_buyer';
-				break;
-			case static::STATUS_DELIVERED:
-				$request_status = 'Delivered';
-				$request_changed_by = 'Seller';
-				$tpl = 'test_drive_status_change_updates_buyer';
-				break;
-		}
-		
-		
-		$srch = TestDrive::getSearchObject();
+    }
+
+    public function sendStatusChangedEmailUpdateBuyer($testDriveId, $status, $langId)
+    {
+        switch ($status) {
+            case static::STATUS_ACCEPTED:
+                $request_status = 'Accepted';
+                $request_changed_by = 'Seller';
+                $tpl = 'test_drive_status_change_update_accepted';
+                break;
+            case static::STATUS_CANCELLED:
+                $request_status = 'Cancelled';
+                $request_changed_by = 'Seller';
+                $tpl = 'test_drive_cancel_update_to_buyer';
+                break;
+            case static::STATUS_COMPLETED:
+                $request_status = 'Completed';
+                $request_changed_by = 'Admin';
+                $tpl = 'test_drive_status_change_updates_buyer';
+                break;
+            case static::STATUS_DELIVERED:
+                $request_status = 'Delivered';
+                $request_changed_by = 'Seller';
+                $tpl = 'test_drive_status_change_updates_buyer';
+                break;
+        }
+
+
+        $srch = TestDrive::getSearchObject();
         $srch->joinTable(User::DB_TBL_CRED, 'INNER JOIN', 'u_c.credential_user_id = ptdr_user_id', 'u_c');
-		$srch->joinTable(User::DB_TBL, 'LEFT OUTER JOIN', 'users.user_id = selprod_user_id', 'users');
+        $srch->joinTable(User::DB_TBL, 'LEFT OUTER JOIN', 'users.user_id = selprod_user_id', 'users');
         $srch->addCondition('td.ptdr_id', '=', $testDriveId);
         $srch->addMultipleFields(array('u.user_name as buyername', 'ptdr_location', 'credential_email', 'ptdr_comments', 'ptdr_feedback', 'ptdr_contact', 'ptdr_date', 'product_name','seller.user_name as sellername','users.user_phone as seller_contact'));
         $db = FatApp::getDb();
@@ -286,24 +285,22 @@ class TestDrive extends MyAppModel
         $vars = array(
         '{product_name}' => $arr_listing['product_name'],
         '{requestee_name}' => $arr_listing['buyername'],
-		'{seller_name}' => $arr_listing['sellername'],
-		'{seller_contact}' => $arr_listing['seller_contact'],
+        '{seller_name}' => $arr_listing['sellername'],
+        '{seller_contact}' => $arr_listing['seller_contact'],
         '{requestee_location}' => $arr_listing['ptdr_location'],
         '{requestee_contact}' => $arr_listing['ptdr_contact'],
-        '{requested_date}' => FatDate::format($arr_listing['ptdr_date'],true),
+        '{requested_date}' => FatDate::format($arr_listing['ptdr_date'], true),
         '{cancellation_comment}' => $arr_listing['ptdr_comments'],
         '{seller_comment}' => $arr_listing['ptdr_comments'],
         '{feedback}' => $arr_listing['ptdr_feedback'],
-		'{receiver_user_type}' => 'Buyer',
+        '{receiver_user_type}' => 'Buyer',
         '{request_status}' => $request_status,
-		'{request_changed_by}' => $request_changed_by
+        '{request_changed_by}' => $request_changed_by
         );
 
         if (EmailHandler::sendMailTpl($arr_listing['credential_email'], $tpl, $langId, $vars)) {
             return true;
         }
         return false;
-	}
-	
-	
+    }
 }

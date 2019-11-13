@@ -28,7 +28,7 @@ class TestDriveController extends LoggedUserController
     {
         $frm = $this->getForm();
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
-	
+
         if (false == $post) {
             FatUtility::dieJsonError(current($frm->getValidationErrors()));
         }
@@ -43,9 +43,9 @@ class TestDriveController extends LoggedUserController
             Message::addErrorMessage($obj->getError());
             FatUtility::dieWithError(Message::getHtml());
         }
-		
-		$date_timestamp = strtotime($post['ptdr_date']);
-		$date = date('Y-m-d H:i:s', $date_timestamp);
+
+        $date_timestamp = strtotime($post['ptdr_date']);
+        $date = date('Y-m-d H:i:s', $date_timestamp);
 
         $data = array(
                         'ptdr_selprod_id' => $selprod_id,
@@ -65,8 +65,8 @@ class TestDriveController extends LoggedUserController
         if (!$obj->sendTestDriveRequestEmail($testDriveId, $this->siteLangId)) {
             FatUtility::dieJsonError($obj->getError());
         }
-		
-		if (!$obj->sendTestDriveRequestDetailEmailBuyer($testDriveId, $this->siteLangId)) {
+
+        if (!$obj->sendTestDriveRequestDetailEmailBuyer($testDriveId, $this->siteLangId)) {
             FatUtility::dieJsonError($obj->getError());
         }
 
@@ -191,23 +191,23 @@ class TestDriveController extends LoggedUserController
         if (!$obj->sendStatusChangedEmailUpdateSeller($requestId, TestDrive::STATUS_CANCELLED, $this->siteLangId)) {
             FatUtility::dieJsonError($obj->getError());
         }
-		
-		/* if (!$obj->sendStatusChangedEmailUpdateBuyer($requestId, TestDrive::STATUS_CANCELLED, $this->siteLangId)) {
+
+        /* if (!$obj->sendStatusChangedEmailUpdateBuyer($requestId, TestDrive::STATUS_CANCELLED, $this->siteLangId)) {
             FatUtility::dieJsonError($obj->getError());
         } */
 
         $this->set('msg', Labels::getLabel('MSG_Request_has_been_cancelled_successfully', $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
     }
-	
-	public function confirm($requestId)
+
+    public function confirm($requestId)
     {
-		$frmTestDriveStatus = $this->getFeedbackFrm();
-		$fillFormData = array('ptdr_id' => $requestId,'ptdr_status' => TestDrive::STATUS_CONFIRMED);
+        $frmTestDriveStatus = $this->getFeedbackFrm();
+        $fillFormData = array('ptdr_id' => $requestId,'ptdr_status' => TestDrive::STATUS_CONFIRMED);
         $frmTestDriveStatus->fill($fillFormData);
-		$this->set("frmTestDriveStatus", $frmTestDriveStatus);
-		$this->set("siteLangId", $this->siteLangId);
-        $this->_template->render(false, false,'buyer/test-drive-confirm.php');
+        $this->set("frmTestDriveStatus", $frmTestDriveStatus);
+        $this->set("siteLangId", $this->siteLangId);
+        $this->_template->render(false, false, 'buyer/test-drive-confirm.php');
     }
 
     public function changeRequestStatus()
@@ -222,52 +222,52 @@ class TestDriveController extends LoggedUserController
         if (!$canChangeStatus) {
             FatUtility::dieJsonError(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
         }
-		
-		if($status == TestDrive::STATUS_CONFIRMED){
-			$data = array('ptdr_id' => $post['ptdr_id'],
+
+        if ($status == TestDrive::STATUS_CONFIRMED) {
+            $data = array('ptdr_id' => $post['ptdr_id'],
                       'ptdr_feedback' => $post['ptdr_feedback'],
                       );
-		}elseif($status == TestDrive::STATUS_DELIVERED){
-			$data = array('ptdr_id' => $post['ptdr_id'],                    
+        } elseif ($status == TestDrive::STATUS_DELIVERED) {
+            $data = array('ptdr_id' => $post['ptdr_id'],
                       );
-		}else{
-			$data = array('ptdr_id' => $post['ptdr_id'],
+        } else {
+            $data = array('ptdr_id' => $post['ptdr_id'],
                       'ptdr_comments' => $post['ptdr_comments'],
                       );
-		}
+        }
 
         $obj->setFldValue('ptdr_status', $post['ptdr_status'], false);
         $obj->assignValues($data);
         if (!$obj->save()) {
             FatUtility::dieJsonError($obj->getError());
         }
-		
-		//send notification to admin
-		if($status == TestDrive::STATUS_DELIVERED){
-			$notificationData = array(
-			'notification_record_type' => Notification::TEST_DRIVE_COMPLETION_REQUEST,
-			'notification_record_id' => $reqId,
-			'notification_user_id' => UserAuthentication::getLoggedUserId(),
-			'notification_label_key' => Notification::TEST_DRIVE_COMPLETION_REQUEST,
-			'notification_added_on' => date('Y-m-d H:i:s'),
-			);
-	
-			if (!Notification::saveNotifications($notificationData)) {
-				Message::addErrorMessage(Labels::getLabel("MSG_NOTIFICATION_COULD_NOT_BE_SENT", $this->siteLangId));
-				FatUtility::dieJsonError(Message::getHtml());
-			}
-		}
-		
-		if($status == TestDrive::STATUS_CONFIRMED){
-			if (!$obj->sendStatusChangedEmailUpdateSeller($reqId, $status, $this->siteLangId)) {
-				FatUtility::dieJsonError($obj->getError());
-			}
-		}else{
-			if (!$obj->sendStatusChangedEmailUpdateBuyer($reqId, $status, $this->siteLangId)) {
-				FatUtility::dieJsonError($obj->getError());
-			}
-		}
-		
+
+        //send notification to admin
+        if ($status == TestDrive::STATUS_DELIVERED) {
+            $notificationData = array(
+            'notification_record_type' => Notification::TEST_DRIVE_COMPLETION_REQUEST,
+            'notification_record_id' => $reqId,
+            'notification_user_id' => UserAuthentication::getLoggedUserId(),
+            'notification_label_key' => Notification::TEST_DRIVE_COMPLETION_REQUEST,
+            'notification_added_on' => date('Y-m-d H:i:s'),
+            );
+
+            if (!Notification::saveNotifications($notificationData)) {
+                Message::addErrorMessage(Labels::getLabel("MSG_NOTIFICATION_COULD_NOT_BE_SENT", $this->siteLangId));
+                FatUtility::dieJsonError(Message::getHtml());
+            }
+        }
+
+        if ($status == TestDrive::STATUS_CONFIRMED) {
+            if (!$obj->sendStatusChangedEmailUpdateSeller($reqId, $status, $this->siteLangId)) {
+                FatUtility::dieJsonError($obj->getError());
+            }
+        } else {
+            if (!$obj->sendStatusChangedEmailUpdateBuyer($reqId, $status, $this->siteLangId)) {
+                FatUtility::dieJsonError($obj->getError());
+            }
+        }
+
 
         $this->set('msg', Labels::getLabel('MSG_Request_Status_Changed_Successfully', $this->siteLangId));
         $this->_template->render(false, false, 'json-success.php');
@@ -278,7 +278,7 @@ class TestDriveController extends LoggedUserController
         $frm = new Form('frmTestDrive', array('id'=>'frmTestDrive'));
         $frm->addHiddenField('', 'selprod_id');
         $frm->addRequiredField(Labels::getLabel('LBL_Location', $this->siteLangId), 'ptdr_location');
-		$phoneFld = $frm->addRequiredField(Labels::getLabel('LBL_Phone', $this->siteLangId), 'ptdr_contact', '', array('class'=>'phone-js ltr-right', 'placeholder' => ValidateElement::PHONE_NO_FORMAT, 'maxlength' => ValidateElement::PHONE_NO_LENGTH));
+        $phoneFld = $frm->addRequiredField(Labels::getLabel('LBL_Phone', $this->siteLangId), 'ptdr_contact', '', array('class'=>'phone-js ltr-right', 'placeholder' => ValidateElement::PHONE_NO_FORMAT, 'maxlength' => ValidateElement::PHONE_NO_LENGTH));
         $phoneFld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
         $phoneFld->requirements()->setCustomErrorMessage(Labels::getLabel('LBL_Please_enter_valid_phone_number_format.', $this->siteLangId));
         $date = $frm->addRequiredField(Labels::getLabel('LBL_Date_Time', $this->siteLangId), 'ptdr_date', '');
@@ -288,41 +288,40 @@ class TestDriveController extends LoggedUserController
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('Lbl_Confirm_Request', $this->siteLangId));
         return $frm;
     }
-	
-	public function report(){
-		
-		if (!User::canAccessSupplierDashboard()) {
+
+    public function report()
+    {
+        if (!User::canAccessSupplierDashboard()) {
             Message::addErrorMessage(Labels::getLabel("LBL_Invalid_Access!", $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
-		
-		$frmSrch = $this->getReportSearchForm();
+
+        $frmSrch = $this->getReportSearchForm();
         $this->set('frmSrch', $frmSrch);
         $this->set('siteLangId', $this->siteLangId);
         $this->_template->render(true, true);
-		
-	}	
-	
-	public function searchReport($export=''){
-		
-		if (!User::canAccessSupplierDashboard()) {
+    }
+
+    public function searchReport($export='')
+    {
+        if (!User::canAccessSupplierDashboard()) {
             Message::addErrorMessage(Labels::getLabel("LBL_Invalid_Access!", $this->siteLangId));
             FatUtility::dieWithError(Message::getHtml());
         }
-		$userId = UserAuthentication::getLoggedUserId();
+        $userId = UserAuthentication::getLoggedUserId();
 
         $srchFrm = $this->getReportSearchForm();
         $post = $srchFrm->getFormDataFromArray(FatApp::getPostedData());
 
         $page = (empty($post['page']) || $post['page'] <= 0) ? 1 : intval($post['page']);
 
-		$pagesize = FatApp::getConfig('CONF_PAGE_SIZE');
-		
-		$srch = TestDrive::getSearchObject();
-		$srch->joinTable(Transactions::DB_TBL, 'LEFT JOIN', 'txn.utxn_test_drive_id = ptdr_id', 'txn');
-		$srch->addCondition('sp.selprod_user_id','=',$userId);
-		
-		$date_from = FatApp::getPostedData('date_from', FatUtility::VAR_DATE, '');
+        $pagesize = FatApp::getConfig('CONF_PAGE_SIZE');
+
+        $srch = TestDrive::getSearchObject();
+        $srch->joinTable(Transactions::DB_TBL, 'LEFT JOIN', 'txn.utxn_test_drive_id = ptdr_id', 'txn');
+        $srch->addCondition('sp.selprod_user_id', '=', $userId);
+
+        $date_from = FatApp::getPostedData('date_from', FatUtility::VAR_DATE, '');
         if (!empty($date_from)) {
             $srch->addCondition('td.ptdr_request_added_on', '>=', $date_from. ' 00:00:00');
         }
@@ -331,11 +330,11 @@ class TestDriveController extends LoggedUserController
         if (!empty($date_to)) {
             $srch->addCondition('td.ptdr_request_added_on', '<=', $date_to. ' 23:59:59');
         }
-		
-		$srch->addMultipleFields(array('u.user_name as buyername','seller.user_name as sellername','IFNULL(product_name, product_identifier) as product_name','ptdr_id','ptdr_date','ptdr_request_added_on','ptdr_status','utxn_id'));
-		
-		
-		if ($export == "export") {
+
+        $srch->addMultipleFields(array('u.user_name as buyername','seller.user_name as sellername','IFNULL(product_name, product_identifier) as product_name','ptdr_id','ptdr_date','ptdr_request_added_on','ptdr_status','utxn_id'));
+
+
+        if ($export == "export") {
             $srch->doNotCalculateRecords();
             $srch->doNotLimitRecords();
             $rs = $srch->getResultSet();
@@ -343,52 +342,52 @@ class TestDriveController extends LoggedUserController
             $arr = array( Labels::getLabel('LBL_Date', $this->siteLangId), Labels::getLabel('LBL_Test_Drive_Number', $this->siteLangId), Labels::getLabel('LBL_Product', $this->siteLangId), Labels::getLabel('LBL_Buyer', $this->siteLangId), Labels::getLabel('LBL_Requested_On', $this->siteLangId),Labels::getLabel('LBL_Status', $this->siteLangId),Labels::getLabel('LBL_Payment_Status', $this->siteLangId));
             array_push($sheetData, $arr);
             while ($row = FatApp::getDb()->fetch($rs)) {
-				
-				if(!empty($row['utxn_id'])){
-					$utxn_status = Labels::getLabel('LBL_Settled', $this->siteLangId); 
-				}else{ 
-					$utxn_status = 'N/A'; 
-				}
-				
-				$date = FatDate::format($row['ptdr_request_added_on'],true);
-				$requestedOn = FatDate::format($row['ptdr_date'],true);
-				$testDriveStatusArr = TestDrive::getStatusArr($this->siteLangId);
-				$status = $testDriveStatusArr[$row['ptdr_status']];
-				
+                if (!empty($row['utxn_id'])) {
+                    $utxn_status = Labels::getLabel('LBL_Settled', $this->siteLangId);
+                } else {
+                    $utxn_status = 'N/A';
+                }
+
+                $date = FatDate::format($row['ptdr_request_added_on'], true);
+                $requestedOn = FatDate::format($row['ptdr_date'], true);
+                $testDriveStatusArr = TestDrive::getStatusArr($this->siteLangId);
+                $status = $testDriveStatusArr[$row['ptdr_status']];
+
                 $arr = array( $date, $row['ptdr_id'], $row['product_name'], $row['buyername'] ,$requestedOn,$status,$utxn_status);
                 array_push($sheetData, $arr);
             }
             CommonHelper::convertToCsv($sheetData, Labels::getLabel('LBL_Test_Drive_Report', $this->siteLangId).date("Y-m-d").'.csv', ',');
             exit;
         } else {
-			$srch->setPageNumber($page);
-			$srch->setPageSize($pagesize);
-			$db = FatApp::getDb();
-			$rs = $srch->getResultSet();
-			$arr_listing = $db->fetchAll($rs);
-			$this->set("arr_listing", $arr_listing);
-			$this->set('pageCount', $srch->pages());
-			$this->set('page', $page);
-			$this->set('pageSize', $pagesize);
-			$this->set('postedData', $post);
-			$this->set('siteLangId', $this->siteLangId);
-	
-			unset($post['page']);
-			$srchFrm->fill($post);
-			$this->set("frmTestDriveReport", $srchFrm);
-			$this->_template->render(false, false);
-        }
-		
-	}
-	
-	public function exportReport(){
-		$this->searchReport("export");
-	}
+            $srch->setPageNumber($page);
+            $srch->setPageSize($pagesize);
+            $db = FatApp::getDb();
+            $rs = $srch->getResultSet();
+            $arr_listing = $db->fetchAll($rs);
+            $this->set("arr_listing", $arr_listing);
+            $this->set('pageCount', $srch->pages());
+            $this->set('page', $page);
+            $this->set('pageSize', $pagesize);
+            $this->set('postedData', $post);
+            $this->set('siteLangId', $this->siteLangId);
 
-	public function successPopup() {
-		$this->set('siteLangId', $this->siteLangId);
-		$this->_template->render(false, false);
-	}
+            unset($post['page']);
+            $srchFrm->fill($post);
+            $this->set("frmTestDriveReport", $srchFrm);
+            $this->_template->render(false, false);
+        }
+    }
+
+    public function exportReport()
+    {
+        $this->searchReport("export");
+    }
+
+    public function successPopup()
+    {
+        $this->set('siteLangId', $this->siteLangId);
+        $this->_template->render(false, false);
+    }
 
     private function getStatusFrm()
     {
@@ -420,13 +419,13 @@ class TestDriveController extends LoggedUserController
 
         return $frm;
     }
-	
-	private function getFeedbackFrm()
+
+    private function getFeedbackFrm()
     {
         $frm = new Form('frmTestDriveFeedback');
         $fld = $frm->addTextarea(Labels::getLabel('LBL_Feedback', $this->siteLangId), 'ptdr_feedback');
-		$fld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Write_Your_Feedback_Here', $this->siteLangId));
-		$fld->requirements()->setRequired();
+        $fld->setFieldTagAttribute('placeholder', Labels::getLabel('LBL_Write_Your_Feedback_Here', $this->siteLangId));
+        $fld->requirements()->setRequired();
         $frm->addHiddenField('', 'ptdr_id');
         $frm->addHiddenField('', 'ptdr_status');
         $frm->addSubmitButton('&nbsp;', 'btn_submit', Labels::getLabel('LBL_Submit', $this->siteLangId), array('class'=>'btn btn--primary'));
@@ -443,5 +442,4 @@ class TestDriveController extends LoggedUserController
         $frm->addButton("", "btn_clear", Labels::getLabel('LBL_Clear', $this->siteLangId), array('onclick'=>'clearSearch();'));
         return $frm;
     }
-	
 }

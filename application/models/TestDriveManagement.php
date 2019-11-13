@@ -18,28 +18,28 @@ class TestDriveManagement extends MyAppModel
         return $srch;
     }
 
-	public static function countSellerCompletedRides($seller_id){
-		
-		$obj = TestDrive::getSearchObject();
-		$obj->addCondition('sp.selprod_user_id', '=', $seller_id);
-		$obj->addCondition('ptdr_status', '=', TestDrive::STATUS_COMPLETED);
-		$rs = $obj->getResultSet();
+    public static function countSellerCompletedRides($seller_id)
+    {
+        $obj = TestDrive::getSearchObject();
+        $obj->addCondition('sp.selprod_user_id', '=', $seller_id);
+        $obj->addCondition('ptdr_status', '=', TestDrive::STATUS_COMPLETED);
+        $rs = $obj->getResultSet();
         $row = FatApp::getDb()->fetchAll($rs);
-		return count($row);
-	}
+        return count($row);
+    }
 
-	public static function checkSellerCreditAmount($seller_id)
-	{
-		$amount = 0;
-		$count = Self::countSellerCompletedRides($seller_id);
-		$id = Self::getRangeIndex($count);
-		if(empty($id)){
-			return $amount;
-		}
-		$array = Self::getAttributesById($id);
-		$amount = $array['tdcs_amount'];
-		return $amount;
-	}	
+    public static function checkSellerCreditAmount($seller_id)
+    {
+        $amount = 0;
+        $count = Self::countSellerCompletedRides($seller_id);
+        $id = Self::getRangeIndex($count);
+        if (empty($id)) {
+            return $amount;
+        }
+        $array = Self::getAttributesById($id);
+        $amount = $array['tdcs_amount'];
+        return $amount;
+    }
 
     public static function getRangeIndex($range)
     {
@@ -48,9 +48,9 @@ class TestDriveManagement extends MyAppModel
         $db = FatApp::getDb();
         $rs = $srch->getResultSet();
         $result = $db->fetchAll($rs);
-		if(empty($result)){
-			return '';
-		}
+        if (empty($result)) {
+            return '';
+        }
         foreach ($result as $key => $val) {
             $driveRanges[$val['tdcs_id']] = $val;
         }
@@ -62,29 +62,28 @@ class TestDriveManagement extends MyAppModel
         }
         return '';
     }
-	
-	public static function checkBuyerCreditAmount($user_id)
-	{
-		$totalRewards = 0;
-		$obj = TestDrive::getSearchObject();
-		$obj->addCondition('ptdr_user_id', '=', $user_id);
-		$obj->addMultipleFields(array('ptdr_user_reward_points'));
-		$rs = $obj->getResultSet();
+
+    public static function checkBuyerCreditAmount($user_id)
+    {
+        $totalRewards = 0;
+        $obj = TestDrive::getSearchObject();
+        $obj->addCondition('ptdr_user_id', '=', $user_id);
+        $obj->addMultipleFields(array('ptdr_user_reward_points'));
+        $rs = $obj->getResultSet();
         $row = FatApp::getDb()->fetchAll($rs);
-		
-		if(empty($row)){ 
-			return true;
-		}
-		
-		foreach ($row as $val) {
+
+        if (empty($row)) {
+            return true;
+        }
+
+        foreach ($row as $val) {
             $totalRewards += $val['ptdr_user_reward_points'];
         }
-		
-		if($totalRewards > 0){
-			return false;
-		}
-		
-		return true;
-		
-	}	
+
+        if ($totalRewards > 0) {
+            return false;
+        }
+
+        return true;
+    }
 }
