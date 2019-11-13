@@ -1283,7 +1283,7 @@ function testDriveRequestHomeCollection(selprod_id){
 			/* profileInfoForm();
 			$.mbsmessage.close();
 			console.log(t); */
-			$.facebox.close();
+			//$.facebox.close();
 			$("#frmTestDrive")[0].reset();
 			if (t.status == 1) {
 				successPopup();
