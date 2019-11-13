@@ -549,7 +549,13 @@ class ConfigurationsController extends AdminBaseController
 
                 $iframeFld = $frm->addTextarea(Labels::getLabel('LBL_Google_Map_Iframe', $this->adminLangId), 'CONF_MAP_IFRAME_CODE');
                 $iframeFld->htmlAfterField = '<small>'.Labels::getLabel("LBL_This_is_the_Gogle_Map_Iframe_Script,_used_to_display_google_map_on_contact_us_page", $this->adminLangId).'</small>';
-
+				
+				$fld4 = $frm->addRadioButtons(Labels::getLabel("LBL_Enable_Book_Now_Module", $this->adminLangId), 'CONF_ENABLE_BOOK_NOW_MODULE', applicationConstants::getYesNoArr($this->adminLangId), applicationConstants::YES, array('class'=>'list-inline'));
+                $fld4->htmlAfterField = '<small>'.Labels::getLabel("LBL_On_enabling_this_feature,_buyer_can_book_product", $this->adminLangId).'</small>';
+				
+				$fld5 = $frm->addIntegerField(Labels::getLabel("LBL_Booking_Percentage", $this->adminLangId).' ['.$this->siteDefaultCurrencyCode.']', 'CONF_BOOKING_PERCENTAGE', '',array());
+                $fld5->htmlAfterField = "<small> ".Labels::getLabel("LBL_This_is_the_booking_percentage_on_product_amount.", $this->adminLangId)."</small>"; 
+				
                 /*$ipFld = $frm->addTextarea(Labels::getLabel('LBL_Whitelisted_IP', $this->adminLangId), 'CONF_WHITELISTED_IP');
                 $ipFld->htmlAfterField = '<small>'.Labels::getLabel("LBL_Any_IP_you_want_to_add_in_whitelist_(comma_Separated)", $this->adminLangId).'</small>';*/
 

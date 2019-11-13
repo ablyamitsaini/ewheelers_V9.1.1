@@ -78,6 +78,10 @@ class applicationConstants
     const URL_TYPE_PRODUCT = 3;
     const URL_TYPE_CATEGORY = 4;
     const URL_TYPE_BRAND = 5;
+	
+	const BUY_NOW = 1;
+    const BOOK_NOW = 2;
+    const BOTH = 3;
 
     public static function getWeightUnitsArr($langId)
     {
@@ -386,6 +390,19 @@ class applicationConstants
         '10' => Labels::getLabel('LBL_October', $langId),
         '11' => Labels::getLabel('LBL_November', $langId),
         '12' => Labels::getLabel('LBL_December', $langId),
+        );
+    }
+	
+	public static function getProductBuyStatusArr($langId)
+    {
+        $langId = FatUtility::int($langId);
+        if ($langId < 1) {
+            $langId = FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG');
+        }
+        return array(
+        static::BUY_NOW        =>    Labels::getLabel('LBL_Buy_Only', $langId),
+        static::BOOK_NOW    =>    Labels::getLabel('LBL_Book_Only', $langId),
+        static::BOTH    =>    Labels::getLabel('LBL_Both', $langId),
         );
     }
 }
