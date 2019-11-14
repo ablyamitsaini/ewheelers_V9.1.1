@@ -21,6 +21,10 @@ class CartController extends MyAppController
         $loggedUserId = UserAuthentication::getLoggedUserId(true);
         $cartObj = new Cart($loggedUserId, $this->siteLangId, $this->app_user['temp_user_id']);
         $productsArr = $cartObj->getProducts($this->siteLangId);
+		/* echo "<pre>";
+		print_r($productsArr);
+		echo"</pre>";
+		die(); */
         $prodGroupIds = array();
 
         if (0 < count($productsArr) || true ===  MOBILE_APP_API_CALL) {

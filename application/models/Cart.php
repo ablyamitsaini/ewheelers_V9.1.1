@@ -271,6 +271,22 @@ class Cart extends FatModel
 
             $is_cod_enabled = true;
             foreach ($this->SYSTEM_ARR['cart'] as $key => $quantity) {
+				
+				$isForBook = 0;
+				/* check is for booking */
+				if(isset($this->SYSTEM_ARR['shopping_cart']['booking_products'])){
+					foreach($this->SYSTEM_ARR['shopping_cart']['booking_products'] as $val){
+						if($val == $key){
+							$isForBook = 1;
+							break;
+						}
+					}
+				}
+				
+				
+				/*  */
+				
+				
                 $selprod_id = 0;
                 $prodgroup_id = 0;
                 $sellerProductRow = array();
@@ -308,7 +324,8 @@ class Cart extends FatModel
                 $selProdCost = $shopId = '';
                 /* seller products[ */
                 if ($selprod_id > 0) {
-                    $sellerProductRow = $this->getSellerProductData($selprod_id, $quantity, $siteLangId, $loggedUserId);
+					
+                    $sellerProductRow = $this->getSellerProductData($selprod_id, $quantity, $siteLangId, $loggedUserId, $isForBook);
 
                     /* echo "<pre>"; var_dump($sellerProductRow); */
                     if (!$sellerProductRow) {
@@ -392,6 +409,10 @@ class Cart extends FatModel
                     $is_cod_enabled = false;
                 }
                 /* ] */
+				
+				if($isForBook == 1){
+					$this->products[$key]['is_for_booking'] = 1;					
+				}
 
                 $this->products[$key]['key'] = $key;
                 $this->products[$key]['is_batch'] = 0;
@@ -428,7 +449,7 @@ class Cart extends FatModel
         return $this->products;
     }
 
-    public function getSellerProductData($selprod_id, &$quantity, $siteLangId, $loggedUserId = 0)
+    public function getSellerProductData($selprod_id, &$quantity, $siteLangId, $loggedUserId = 0, $isForBook = 0)
     {
         $prodSrch = new ProductSearch($siteLangId);
         $prodSrch->setDefinedCriteria();
@@ -488,9 +509,24 @@ class Cart extends FatModel
         $srch->addMultipleFields(array('voldiscount_percentage'));
         $rs = $srch->getResultSet();
         $volumeDiscountRow = FatApp::getDb()->fetch($rs);
+		
+		/* is for booking */
+		$thePrice = $sellerProductRow['theprice'];
+		
+		if( $isForBook == 1){
+		 $booking_per = FatApp::getConfig("CONF_BOOKING_PERCENTAGE");
+		 $sellerProductRow['priceWithoutBooking'] = $thePrice;
+		 $thePrice = ($booking_per / 100) * $thePrice;
+		 unset($sellerProductRow['theprice']);
+		 $sellerProductRow['theprice'] = $thePrice;
+		}
+		
+		/* ] */
+		
+		
         if ($volumeDiscountRow) {
-            $volumeDiscount = $sellerProductRow['theprice'] * ($volumeDiscountRow['voldiscount_percentage'] / 100);
-            //$sellerProductRow['theprice'] = $sellerProductRow['theprice'] - $volumeDiscount;
+            $volumeDiscount = $thePrice * ($volumeDiscountRow['voldiscount_percentage'] / 100);
+            //$sellerProductRow['theprice'] = $thePrice - $volumeDiscount;
             $sellerProductRow['volume_discount_percentage'] = $volumeDiscountRow['voldiscount_percentage'];
             $sellerProductRow['volume_discount'] = $volumeDiscount;
             $sellerProductRow['volume_discount_total'] = $volumeDiscount * $quantity;
@@ -513,12 +549,12 @@ class Cart extends FatModel
         $maxConfiguredCommissionVal = FatApp::getConfig("CONF_MAX_COMMISSION");
 
         $commissionPercentage = SellerProduct::getProductCommission($selprod_id);
-        $commission = MIN(ROUND($sellerProductRow['theprice'] * $commissionPercentage/100, 2), $maxConfiguredCommissionVal);
+        $commission = MIN(ROUND($thePrice * $commissionPercentage/100, 2), $maxConfiguredCommissionVal);
         $sellerProductRow['commission_percentage'] = $commissionPercentage;
         $sellerProductRow['commission'] = ROUND($commission * $quantity, 2);
 
-        $totalPrice = $sellerProductRow['theprice'] * $quantity;
-        $taxableProdPrice = $sellerProductRow['theprice'] - $sellerProductRow['volume_discount'];
+        $totalPrice = $thePrice * $quantity;
+        $taxableProdPrice = $thePrice - $sellerProductRow['volume_discount'];
 
         $taxObj = new Tax();
         $tax = $taxObj->calculateTaxRates($sellerProductRow['product_id'], $taxableProdPrice, $sellerProductRow['selprod_user_id'], $siteLangId, $quantity);
@@ -548,19 +584,6 @@ class Cart extends FatModel
         $this->updateUserCart();
         return true;
     }
-	
-	/* public function removeBookingProductKey($key)
-	{
-		$sysArr = $this->SYSTEM_ARR['shopping_cart']['booking_products'];
-		$resultKey = array_search($key,$sysArr);
-		unset($sysArr[$resultKey]);
-		unset($this->SYSTEM_ARR['shopping_cart']['booking_products']);
-		$this->SYSTEM_ARR['shopping_cart']['booking_products'] = $sysArr;
-        $this->updateUserCart();
-		
-        return true;
-		
-	} */
 	
     public function remove($key)
     {
