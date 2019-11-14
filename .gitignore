@@ -1,5 +1,5 @@
-.*
-!/.gitignore
+#.*
+#!/.gitignore
 /robots.txt
 /public/robots.txt
 /.htaccess
@@ -18,9 +18,79 @@
 /license.txt
 /mbs-errors.log
 /restore
+/bkup
+
+
+# zip files
 /*.zip
 /*.rar
 /*.tar
 /*.gz
-/bkup
+
+# Composer
 /vendor
+composer.lock
+
+# phpenv local config
+.php-version
+
+# IDE Files
+/nbproject/
+.idea/*
+
+# Netbeans
+nbproject/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+
+# Visual Studio Code
+.vscode/
+
+## Sublime Text cache files
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+*.sublime-workspace
+*.sublime-project
+
+# Operating Specific Junk Files
+#-------------------------
+
+# OS X
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# OS X Thumbnails
+._*
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# Linux
+*~
+
+# KDE directory preferences
+.directory
+
+# Linux trash folder which might appear on any partition or disk
+.Trash-*
+
+php_errors.log
