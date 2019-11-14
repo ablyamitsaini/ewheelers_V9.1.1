@@ -313,7 +313,7 @@ class CartController extends MyAppController
 			if ($productAdd) {
 				if($isForbooking == 1){
 					$returnUserId = (true ===  MOBILE_APP_API_CALL) ? true : false;
-					$cartObj->add($productId, $quantity, 0, $isForbooking);
+					$cartObj->add($productId, $quantity, 0,'',$isForbooking);
 					if (true ===  MOBILE_APP_API_CALL) {
 						$this->set('tempUserId', $cartUserId);
 					}
@@ -387,7 +387,7 @@ class CartController extends MyAppController
                 Message::addMessage($cartObj->getError());
                 FatUtility::dieWithError(Message::getHtml());
             }
-            $cartObj->removeUsedRewardPoints();
+            $cartObj->removeUsedRewardPoints(); 
             $cartObj->removeProductShippingMethod();
             $cartObj->removeCartDiscountCoupon();
         }
