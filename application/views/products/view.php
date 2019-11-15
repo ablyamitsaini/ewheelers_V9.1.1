@@ -227,8 +227,20 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                     echo $frmBuyProduct->getFormTag();
                                     $qtyField =  $frmBuyProduct->getField('quantity');
                                     $qtyFieldName =  $qtyField->getCaption();
-                                if (strtotime($product['selprod_available_from'])<= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))) { ?>
-                                    <div class="row align-items-end <?php echo $product['selprod_test_drive_enable']?'row-flexible':'';?>">
+                                if (strtotime($product['selprod_available_from'])<= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))) { 
+								
+								if($product['selprod_book_now_enable'] == applicationConstants::BOTH && $product['selprod_test_drive_enable'] == 1){
+										$button_class = 'row-flexible4';
+ 									}elseif($product['selprod_book_now_enable'] == applicationConstants::BUY_NOW && $product['selprod_test_drive_enable'] == 1){
+										$button_class = 'row-flexible';
+									}elseif($product['selprod_book_now_enable'] == applicationConstants::BOTH){
+										$button_class = 'row-flexible';			
+									}else{
+										$button_class = '';
+									}
+								
+								?>
+                                    <div class="row align-items-end <?php echo $button_class;?>">
                                         <div class="col-xl-4 col-lg-5 col-md-5 mb-2">
                                             <div class="form__group form__group-select">
                                                 <label class="h6"><?php echo $qtyFieldName; ?></label>
