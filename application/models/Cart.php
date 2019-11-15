@@ -608,8 +608,13 @@ class Cart extends FatModel
 
 					/* remove booking product */
 					$sysArr = $this->SYSTEM_ARR['shopping_cart']['booking_products'];
-					$resultKey = array_search($cartKey,$sysArr);
-					unset($sysArr[$resultKey]);
+
+					foreach($sysArr as $arrkey => $value){
+						if($value == $cartKey ){
+							unset($sysArr[$arrkey]);
+							break;
+						}
+					}
 					unset($this->SYSTEM_ARR['shopping_cart']['booking_products']);
 					$this->SYSTEM_ARR['shopping_cart']['booking_products'] = $sysArr;
 					/* ------- */
