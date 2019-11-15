@@ -73,12 +73,25 @@ $shippingapi_idFld->developerTags['col'] = 6;
                                         <?php
                                                 }
                                             } ?>
-                                        | <?php echo Labels::getLabel('LBL_Quantity', $siteLangId) ?> <?php echo $product['quantity']; ?>
+                                        
+										| <?php echo Labels::getLabel('LBL_Quantity', $siteLangId) ?> <?php echo $product['quantity']; ?>
+										<?php if(isset($product['is_for_booking'])){
+											
+											echo '</br><div class="item__title">' . Labels::getLabel('LBL_Booking_Product', $siteLangId) .'</div>';
+										}else {
+										?>
+										
+										
                                         <?php if (($product['shop_eligible_for_free_shipping'] > 0 || ($product['shop_free_ship_upto'] > 0 && $product['shop_free_ship_upto'] > $product['totalPrice']))  && $product['psbs_user_id'] == 0 && $product['product_type'] == Product::PRODUCT_TYPE_PHYSICAL) { ?>
                                         <div class="item-yk-head-specification note-messages">
                                             <?php echo Labels::getLabel('LBL_This_product_is_not_eligible_for_free_shipping', $siteLangId);    ?>
                                         </div>
-                                        <?php } ?>
+                                        <?php } 
+										
+										}?>
+										
+										
+										
                                     </div>
                                 </div>
                             </td>

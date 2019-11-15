@@ -44,6 +44,11 @@ if ($user_is_buyer > 0 || (!UserAuthentication::isUserLogged())) { ?>
                                             echo $option['option_name'].':'; ?> <?php echo $option['optionvalue_name']; ?> <?php $count++;
                                         }
                                     } ?> | <?php echo Labels::getLabel('LBL_Quantity:', $siteLangId) ?> <?php echo $product['quantity']; ?> </div>
+									
+								<?php	if(isset($product['is_for_booking'])){	
+									echo '<b style="font-weight: bold;">' . Labels::getLabel('LBL_Booking_Product', $siteLangId) .'</b>';
+									} 
+								?>
                                 </div>
                             </td>
                             <td>

@@ -53,6 +53,10 @@
                                             echo $option['option_name'].':'; ?> <span class="text--dark"><?php echo $option['optionvalue_name']; ?> |</span>
                                         <?php }
                                     } ?>  <?php echo Labels::getLabel('LBL_Quantity', $siteLangId); ?>: <?php echo $product['quantity']; ?> </div>
+									<?php if(isset($product['is_for_booking'])){
+											
+											echo '<b>' . Labels::getLabel('LBL_Booking_Product', $siteLangId) .'</b>';
+										} ?>
                                 <div class="product_qty js-editCart" style="display:none;">
                                     <div class="qty-wrapper">
                                         <div class="quantity" data-stock="<?php echo $product['selprod_stock']; ?>">
