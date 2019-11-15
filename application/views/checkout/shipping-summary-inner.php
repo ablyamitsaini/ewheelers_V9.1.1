@@ -139,7 +139,7 @@ $shippingapi_idFld->developerTags['col'] = 6;
                             if (sizeof($shipping_options[$product['product_id']])<2) {
                                 unset($newShippingMethods[SHIPPINGMETHODS::MANUAL_SHIPPING]);
                             }
-                            if (!$product['is_physical_product'] && $product['is_digital_product']) {
+                            if ((!$product['is_physical_product'] && $product['is_digital_product']) || isset($product['is_for_booking'])) {
                                 echo $shippingOptions = CommonHelper::displayNotApplicable($siteLangId, '');
                             } else {
                                 if (sizeof($newShippingMethods)>0) {

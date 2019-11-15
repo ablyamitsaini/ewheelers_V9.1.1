@@ -608,7 +608,7 @@ class CheckoutController extends MyAppController
                 $shipping_options = Product::getProductShippingRates($cartval['product_id'], $this->siteLangId, $ua_country_id, $shipBy);
                 $free_shipping_options = Product::getProductFreeShippingAvailabilty($cartval['product_id'], $this->siteLangId, $ua_country_id, $shipBy);
                 $productKey = md5($cartval["key"]);
-                if ($cartval && $cartval['product_type'] == Product::PRODUCT_TYPE_PHYSICAL) {
+                if ($cartval && $cartval['product_type'] == Product::PRODUCT_TYPE_PHYSICAL && !isset($cartval['is_for_booking'])) {
                     /* get Product Data[ */
                     $prodSrch = clone $prodSrchObj;
                     $prodSrch->setDefinedCriteria();
