@@ -266,6 +266,7 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
 														echo $frmBuyProduct->getFieldHtml('btnBookNow');
 														
 													}elseif($product['selprod_book_now_enable'] == applicationConstants::BUY_NOW){
+														echo $frmBuyProduct->getFieldHtml('btnAddToCart');
 														echo $frmBuyProduct->getFieldHtml('btnProductBuy');
 													}elseif($product['selprod_book_now_enable'] == applicationConstants::BOOK_NOW){
 														echo $frmBuyProduct->getFieldHtml('btnBookNow');

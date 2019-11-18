@@ -749,7 +749,10 @@ class ProductsController extends MyAppController
         $sellerProduct = new SellerProduct($selprod_id);
         $criteria = array('selprod_id');
 
-        $upsellProducts = $sellerProduct->getUpsellProducts($product['selprod_id'], $this->siteLangId, $loggedUserId);
+		if($product['selprod_book_now_enable'] == applicationConstants::BUY_NOW){
+			$upsellProducts = $sellerProduct->getUpsellProducts($product['selprod_id'], $this->siteLangId, $loggedUserId);
+		}
+		
         $relatedProducts = $sellerProduct->getRelatedProducts($product['selprod_id'], $this->siteLangId, $criteria);
         $relatedProductsRs = $this->relatedProductsById(array_keys($relatedProducts));
 
