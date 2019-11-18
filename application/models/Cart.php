@@ -605,7 +605,8 @@ class Cart extends FatModel
                     unset($this->SYSTEM_ARR['cart'][$cartKey]);
                     /* to keep track of temporary hold the product stock[ */
                     $this->updateTempStockHold($product['selprod_id'], 0, 0);
-
+					
+					if(isset($this->SYSTEM_ARR['shopping_cart']['booking_products'])){
 					/* remove booking product */
 					$sysArr = $this->SYSTEM_ARR['shopping_cart']['booking_products'];
 
@@ -617,6 +618,8 @@ class Cart extends FatModel
 					}
 					unset($this->SYSTEM_ARR['shopping_cart']['booking_products']);
 					$this->SYSTEM_ARR['shopping_cart']['booking_products'] = $sysArr;
+					
+					}
 					/* ------- */
                     break;
                 }
