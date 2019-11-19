@@ -376,3 +376,8 @@ ALTER TABLE `tbl_user_transactions` ADD `utxn_test_drive_id` INT(11) NOT NULL AF
 /* ----------------------- */
 
 ALTER TABLE `tbl_order_products` ADD `op_is_booking` TINYINT NOT NULL AFTER `op_actual_shipping_charges`;
+
+/* -------------- */
+ALTER TABLE `tbl_order_products` ADD `op_booking_commission_charged` DECIMAL(10,2) NOT NULL AFTER `op_commission_percentage`, ADD `op_booking_commission_percentage` DECIMAL(10,2) NOT NULL AFTER `op_retailer_commission_charged`;
+
+INSERT INTO `tbl_configurations` (`conf_name`, `conf_val`, `conf_common`) VALUES ('CONF_BOOKING_COMMISSION_PERCENTAGE', '0', '0');

@@ -1176,9 +1176,12 @@ class CheckoutController extends MyAppController
 				
 				/* book now products */
 				$is_booking = 0;
-				
+				$booking_commission = 0;
+                $booking_commission_percentage = 0;
 				if(isset($cartProduct['is_for_booking'])){
-					$is_booking = 1;					
+					$is_booking = 1;	
+					$booking_commission_percentage = FatApp::getConfig("CONF_BOOKING_COMMISSION_PERCENTAGE");
+					$booking_commission = ROUND(($cartProduct['theprice'] * $booking_commission_percentage/100), 2);
 				}
 
 				/* ------- */
@@ -1224,7 +1227,9 @@ class CheckoutController extends MyAppController
                 /* 'op_tax_collected_by_seller'    =>    $taxCollectedBySeller, */
                 'op_free_ship_upto'    =>    $cartProduct['shop_free_ship_upto'],
                 'op_actual_shipping_charges'    =>    $cartProduct['shipping_cost'],
-                'op_is_booking'    =>    $is_booking
+                'op_is_booking'    =>    $is_booking,
+                'op_booking_commission_charged'    =>    $booking_commission,
+                'op_booking_commission_percentage'    =>    $booking_commission_percentage
                 );
 
                 $order_affiliate_user_id = isset($cartProduct['affiliate_user_id'])?$cartProduct['affiliate_user_id']:'';
