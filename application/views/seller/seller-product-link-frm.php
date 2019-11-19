@@ -21,12 +21,14 @@
                 return { label: item['name'], value: item['id'] };
                 }));
                 }); */
+				var buy = 'buy';
                 $.ajax({
                     url: fcom.makeUrl('seller', 'autoCompleteProducts'),
                     data: {
                         keyword: request,
                         fIsAjax: 1,
-                        selprod_id: selprod_id
+                        selprod_id: selprod_id,
+						buy: buy
                     },
                     dataType: 'json',
                     type: 'post',
