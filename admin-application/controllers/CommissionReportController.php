@@ -40,7 +40,7 @@ class CommissionReportController extends AdminBaseController
         $cnd->attachCondition('pmethod_code', '=','cashondelivery');
         $srch->addStatusCondition(unserialize(FatApp::getConfig('CONF_COMPLETED_ORDER_STATUS'))); */
                 
-        $attr = array('op_shop_name', 'op.op_selprod_user_id', 'o.order_id', 'op.op_id', 'count(op.op_id) as totChildOrders', 'seller.user_name as owner_name','seller_cred.credential_email as owner_email', 'sum(( op_unit_price * op_qty ) + op_other_charges - op_refund_amount) as total_sales', 'SUM(op_commission_charged - op_refund_commission) as total_commission');
+        $attr = array('op_shop_name', 'op.op_selprod_user_id', 'o.order_id', 'op.op_id', 'count(op.op_id) as totChildOrders', 'seller.user_name as owner_name','seller_cred.credential_email as owner_email', 'sum(( op_unit_price * op_qty ) + op_other_charges - op_refund_amount) as total_sales', 'SUM(op_commission_charged - op_refund_commission) as total_commission','sum((op_booking_commission_charged)) as totalBookingCommission');
         $srch = Report::salesReportObject($this->adminLangId, true, $attr);
         
         $srch->addGroupBy('op.op_shop_id');

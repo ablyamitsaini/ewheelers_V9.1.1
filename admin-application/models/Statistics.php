@@ -103,7 +103,7 @@ class Statistics extends MyAppModel
 
             foreach($last12Months as $key=>$val ){
                 $srchObj = clone $srch;
-                $srchObj->addMultipleFields(array('SUM(op_commission_charged - op_refund_commission) AS Earning'));
+                $srchObj->addMultipleFields(array('SUM(op_commission_charged - op_refund_commission) AS Earning','sum((op_booking_commission_charged)) as totalBookingCommission'));
                 $srchObj->addDirectCondition("month(`order_date_added` ) = $val[monthCount] and year(`order_date_added` )= $val[year]");
                 $rs = $srchObj->getResultSet();
                 $row = $this->db->fetch($rs);
@@ -298,7 +298,7 @@ class Statistics extends MyAppModel
             $cnd = $srch->addCondition('order_is_paid', '=', Orders::ORDER_IS_PAID);
             $cnd->attachCondition('pmethod_code', '=', 'CashOnDelivery');
             $srch->addStatusCondition(unserialize(FatApp::getConfig("CONF_COMPLETED_ORDER_STATUS")));
-            $srch->addMultipleFields(array('SUM((op_unit_price * op_qty ) + COALESCE(op_other_charges,0) - op_refund_amount) AS totalsales,SUM(op_commission_charged - op_refund_commission) totalcommission'));
+            $srch->addMultipleFields(array('SUM((op_unit_price * op_qty ) + COALESCE(op_other_charges,0) - op_refund_amount) AS totalsales,SUM(op_commission_charged - op_refund_commission) totalcommission','sum((op_booking_commission_charged)) as totalBookingCommission')));
 
             $srchObj1 = clone $srch;
             $srchObj1->addFld(array('1 AS num_days'));

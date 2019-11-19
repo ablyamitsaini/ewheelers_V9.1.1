@@ -82,6 +82,14 @@ if ($order['order_reward_point_used'] > 0) {
                                 <td><strong><?php echo Labels::getLabel('LBL_Total_Paid', $adminLangId); ?>:</strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($order, 'netamount', false, USER::USER_TYPE_SELLER), true, true);?>
                                 </td>
                             </tr>
+							<?php if($order['op_is_booking']) { ?>
+							<tr>
+                                <td><strong><?php echo Labels::getLabel('LBL_Booking_Commission_Charged', $adminLangId); ?>[<?php echo $order["op_booking_commission_percentage"]?>%]:
+                                    </strong><?php echo CommonHelper::displayMoneyFormat($order['op_booking_commission_charged'], true, true); ?> 
+								</td>
+                                
+                            </tr>
+							<?php } ?>
                         </table>
                     </div>
                 </section>

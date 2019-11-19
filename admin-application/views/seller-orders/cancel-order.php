@@ -41,13 +41,13 @@
                                 <th><?php echo Labels::getLabel('LBL_Customer/Guest', $adminLangId); ?></th>
                                 <th><?php echo Labels::getLabel('LBL_Payment_Method', $adminLangId); ?></th>
                                 <th><?php echo Labels::getLabel('LBL_Commission_Charged', $adminLangId); ?> [<?php echo $order["op_commission_percentage"]?>%]</th>
-                                <th></th>
+                                <th><?php if($order['op_is_booking']) { echo Labels::getLabel('LBL_Booking_Commission_Charged', $adminLangId); ?> [<?php echo $order["op_booking_commission_percentage"]; }?>%]</th>
                             </tr>
                             <tr>
                                 <td><?php echo $order["buyer_user_name"].' ('.$order['buyer_username'].')'; ?></td>
                                 <td><?php echo CommonHelper::displayNotApplicable($adminLangId, $order["pmethod_name"])?></td>
                                 <td><?php echo CommonHelper::displayMoneyFormat($order['op_commission_charged'], true, true); ?></td>
-                                <td></td>
+                                <td><?php if($order['op_is_booking']) { echo CommonHelper::displayMoneyFormat($order['op_booking_commission_charged'], true, true); } ?></td>
                             </tr>
                             <tr>
                                 <th><?php echo Labels::getLabel('LBL_Cart_Total', $adminLangId); ?></th>

@@ -72,7 +72,7 @@ class ShopsReportController extends AdminBaseController
         $cnd->attachCondition('pmethod_code', '=', 'cashondelivery');
         $opSrch->addStatusCondition(unserialize(FatApp::getConfig("CONF_COMPLETED_ORDER_STATUS")));
         
-        $opSrch->addMultipleFields(array('op_shop_id', 'SUM(op_qty - op_refund_qty) as totSoldQty', 'SUM( (op_unit_price) * op_qty - op_refund_amount ) as total', 'SUM(op_commission_charged - op_refund_commission) as commission' ));
+        $opSrch->addMultipleFields(array('op_shop_id', 'SUM(op_qty - op_refund_qty) as totSoldQty', 'SUM( (op_unit_price) * op_qty - op_refund_amount ) as total', 'SUM(op_commission_charged - op_refund_commission) as commission','sum((op_booking_commission_charged)) as totalBookingCommission'));
         $opSrch->addGroupBy('op_shop_id');
         /* ] */
         

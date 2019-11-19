@@ -46,7 +46,7 @@ class CatalogReportController extends AdminBaseController
         $opSrch->addStatusCondition(unserialize(FatApp::getConfig("CONF_COMPLETED_ORDER_STATUS")));
         $opSrch->addMultipleFields(
             array( 'SUBSTRING( op_selprod_code, 1, (LOCATE( "_", op_selprod_code ) - 1 ) ) as op_product_id', 'COUNT(op_order_id) as totOrders', 'SUM(op_qty - op_refund_qty) as totSoldQty', 
-            'SUM( (op_unit_price * op_qty) - (op_unit_price * op_refund_qty) ) as total', '(SUM(opship.opcharge_amount - op_refund_shipping)) as shippingTotal', '(SUM(optax.opcharge_amount - (optax.opcharge_amount/op_qty * op_refund_qty))) as taxTotal', 'SUM(op_commission_charged - op_refund_commission) as commission' )
+            'SUM( (op_unit_price * op_qty) - (op_unit_price * op_refund_qty) ) as total', '(SUM(opship.opcharge_amount - op_refund_shipping)) as shippingTotal', '(SUM(optax.opcharge_amount - (optax.opcharge_amount/op_qty * op_refund_qty))) as taxTotal', 'SUM(op_commission_charged - op_refund_commission) as commission','sum((op_booking_commission_charged)) as totalBookingCommission' )
         );
         $opSrch->addGroupBy('op_product_id');
         

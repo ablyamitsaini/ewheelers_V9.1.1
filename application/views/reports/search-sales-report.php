@@ -16,6 +16,7 @@ $arr = array(
 	'taxTotal'=>Labels::getLabel('LBL_Tax_Charged',$siteLangId),
 	'shippingTotal'=>Labels::getLabel('LBL_Shipping_Charges',$siteLangId),
 	'totalRefundedAmount'=>Labels::getLabel('LBL_Refunded_Amount',$siteLangId),
+	'totalBookingCommission'=>Labels::getLabel('LBL_Booking_Commission',$siteLangId),
 	'totalSalesEarnings'=>Labels::getLabel('LBL_Sales_Earnings',$siteLangId)
 );
 if(empty($orderDate)){
