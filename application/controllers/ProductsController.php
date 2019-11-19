@@ -938,7 +938,7 @@ class ProductsController extends MyAppController
             'selprod_id', 'selprod_user_id',  'selprod_code', 'selprod_stock', 'selprod_condition', 'selprod_price', 'COALESCE(selprod_title, product_name, product_identifier) as selprod_title',
             'special_price_found','splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type',
             'theprice', 'brand_id', 'COALESCE(brand_name, brand_identifier) as brand_name', 'brand_short_description', 'user_name',
-            'IF(selprod_stock > 0, 1, 0) AS in_stock','selprod_sold_count','selprod_return_policy'
+            'IF(selprod_stock > 0, 1, 0) AS in_stock','selprod_sold_count','selprod_return_policy','selprod_test_drive_enable'
                  )
         );
 
@@ -1071,7 +1071,7 @@ class ProductsController extends MyAppController
             array(
             'product_id', 'COALESCE(product_name, product_identifier) as product_name', 'prodcat_id', 'COALESCE(prodcat_name, prodcat_identifier) as prodcat_name', 'product_image_updated_on',
             'selprod_id', 'selprod_condition', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'theprice',
-            'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type','selprod_sold_count', 'COALESCE(selprod_title, product_name, product_identifier) as selprod_title','selprod_price')
+            'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type','selprod_sold_count', 'COALESCE(selprod_title, product_name, product_identifier) as selprod_title','selprod_price','selprod_test_drive_enable')
         );
         // echo $prodSrch->getQuery(); die;
 
@@ -1145,7 +1145,7 @@ class ProductsController extends MyAppController
             $prodSrch->addMultipleFields(
                 array(
                 'product_id', 'COALESCE(product_name, product_identifier) as product_name', 'prodcat_id', 'COALESCE(prodcat_name, prodcat_identifier) as prodcat_name', 'product_image_updated_on', 'COALESCE(selprod_title,product_name, product_identifier) as selprod_title',
-                'selprod_id', 'selprod_condition', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'theprice',
+                'selprod_id', 'selprod_condition', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'theprice','selprod_test_drive_enable',
                 'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type','selprod_sold_count','selprod_price')
             );
 
