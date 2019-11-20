@@ -581,6 +581,10 @@ class AdminBaseController extends FatController
             $fld->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_This_price_is_excluding_the_tax_rates', $this->adminLangId).'</small> <br><small class="text--small">'.Labels::getLabel('LBL_Min_Selling_price', $this->adminLangId). CommonHelper::displayMoneyFormat($productData['product_min_selling_price'], true, true).'</small>';
         }
 		
+		if (FatApp::getConfig("CONF_ENABLE_BOOK_NOW_MODULE", FatUtility::VAR_INT, 1)) {
+		  $fld = $frm->addRadioButtons(Labels::getLabel("", $this->adminLangId), 'selprod_book_now_enable', applicationConstants::getProductBuyStatusArr($this->adminLangId), '', array('class'=>'list-inline'));
+        }
+		
 		$frm->addCheckBox(Labels::getLabel('LBL_Enable_Test_Drive', $this->adminLangId), 'selprod_test_drive_enable', 1, array(), false, 0);
 
         $fld = $frm->addIntegerField(Labels::getLabel('LBL_Quantity', $this->adminLangId), 'selprod_stock');

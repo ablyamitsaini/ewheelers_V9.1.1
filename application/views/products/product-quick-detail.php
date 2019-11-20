@@ -21,9 +21,21 @@
         <?php
                 } ?>
     </div>
+	
+	<?php 
+		if($product['selprod_book_now_enable'] == applicationConstants::BOTH && $product['selprod_test_drive_enable'] == 1){
+			$button_class = 'row-flexible4';
+ 		}elseif($product['selprod_book_now_enable'] == applicationConstants::BUY_NOW && $product['selprod_test_drive_enable'] == 1){
+			$button_class = 'row-flexible';
+		}elseif($product['selprod_book_now_enable'] == applicationConstants::BOTH){
+			$button_class = 'row-flexible';			
+		}else{
+			$button_class = '';
+		}
+	?>
 
     <div class="col-lg-6 col-md-6 quick-col-2">
-        <div class="product-detail product-description product-detail-quickview <?php echo $product['selprod_test_drive_enable']?'row-flexible':'';?>">
+        <div class="product-detail product-description product-detail-quickview <?php echo $button_class;?>">
             <div>
                 <div class="product-description-inner">
                     <div class="products__title"><a title="<?php echo $product['selprod_title']; ?>" href="<?php echo !isset($product['promotion_id']) ? CommonHelper::generateUrl('Products', 'View', array($product['selprod_id'])) : CommonHelper::generateUrl('Products', 'track', array($product['promotion_record_id']))?>"><?php echo $product['selprod_title'];?></a>

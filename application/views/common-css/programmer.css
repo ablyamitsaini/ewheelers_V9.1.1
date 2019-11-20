@@ -40,4 +40,15 @@ ul.errorlist.erlist_ptdr_comments li {
 .row-flexible .buy-group .btn{    flex:0 0 32.39%;
 }
 
+.row-flexible4 [class*="col-"]:last-child {    flex: 0 0 100%;
+    max-width: 100%; }
+.row-flexible4  .buy-group{flex-wrap:wrap;}
+.row-flexible4 .buy-group .btn{    flex:0 0 50%; margin:5px 0;
+}
+.row-flexible4 .btn:nth-child(3){    color: #fff!important;
+background: var(--first-color)!important;}
+.row-flexible4 .btn:nth-child(4){    background: none !important;
+    color: var(--first-color) !important;
+    border-color: var(--first-color) !important;}
+
 .field_cover{position:relative;}
