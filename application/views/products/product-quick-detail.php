@@ -138,9 +138,24 @@
                 <div class="buy-group">
                     <?php
                     if (strtotime($product['selprod_available_from'])<= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))) {
-                        echo $frmBuyProduct->getFieldHtml('btnProductBuy');
+                        /* echo $frmBuyProduct->getFieldHtml('btnProductBuy');
 						echo $frmBuyProduct->getFieldHtml('btnAddToCart');
                         if($product['selprod_test_drive_enable']){
+							echo $frmBuyProduct->getFieldHtml('btnTestDrive');
+						} */
+						
+						if($product['selprod_book_now_enable'] == applicationConstants::BOTH){
+							echo $frmBuyProduct->getFieldHtml('btnAddToCart');
+							echo $frmBuyProduct->getFieldHtml('btnProductBuy');
+							echo $frmBuyProduct->getFieldHtml('btnBookNow');
+							
+						}elseif($product['selprod_book_now_enable'] == applicationConstants::BUY_NOW){
+							echo $frmBuyProduct->getFieldHtml('btnProductBuy');
+						}elseif($product['selprod_book_now_enable'] == applicationConstants::BOOK_NOW){
+							echo $frmBuyProduct->getFieldHtml('btnBookNow');
+						}
+						
+						if($product['selprod_test_drive_enable']){
 							echo $frmBuyProduct->getFieldHtml('btnTestDrive');
 						}
                     }

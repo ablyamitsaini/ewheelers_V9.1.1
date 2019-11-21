@@ -1249,6 +1249,7 @@ class ProductsController extends MyAppController
         $fld->requirements()->setIntPositive();
         // $frm->addSubmitButton(null, 'btnProductBuy', Labels::getLabel('LBL_Buy_Now', $formLangId ), array( 'id' => 'btnProductBuy' ) );
         //$frm->addSubmitButton(null, 'btnAddToCart', Labels::getLabel('LBL_Add_to_Cart', $formLangId), array( 'id' => 'btnAddToCart' ));
+		$frm->addHTML(null, 'btnBookNow', '<button name="btnBookNow" type="button" id="btnBookNow" class="btn btn--secondary block-on-mobile btnBookNow--js btn--primary-border"> '.Labels::getLabel('LBL_Book_Now', $formLangId).'</button>');
         $frm->addHTML(null, 'btnProductBuy', '<button name="btnProductBuy" type="submit" id="btnProductBuy" class="btn btn--primary block-on-mobile add-to-cart--js btnBuyNow"> '.Labels::getLabel('LBL_Buy_Now', $formLangId).'</button>');
         $frm->addHTML(null, 'btnAddToCart', '<button name="btnAddToCart" type="submit" id="btnAddToCart" class="btn btn--secondary block-on-mobile add-to-cart--js btn--primary-border"> '.Labels::getLabel('LBL_Add_to_Cart', $formLangId).'</button>');
 		$frm->addHTML(null, 'btnTestDrive', '<button name="btnTestDrive" onclick="testDriveRequest()" type="button" id="btnTestDrive" class="btn btn--primary request_drive_btn block-on-mobile test-drive--js btnTestDriveNow"> '.Labels::getLabel('LBL_Request_Test_Drive', $formLangId).'</button>');
