@@ -340,7 +340,29 @@ class AdminBaseController extends FatController
             $fld_model->requirements()->setRequired();
         }
         $frm->addCheckBox(Labels::getLabel('LBL_Product_Featured', $this->adminLangId), 'product_featured', 1, array(), false, 0);
+		
+		if (FatApp::getConfig("CONF_ENABLE_BOOK_NOW_MODULE", FatUtility::VAR_INT, 0)) {
+			
+		//$bookStatus = $frm->addCheckBox(Labels::getLabel('LBL_Enable_Booking', $this->adminLangId), 'product_book', 1, array(), false, 0);
 
+		$bookStatus = $frm->addSelectBox(Labels::getLabel('LBL_Enable_Booking', $this->adminLangId), 'product_book', applicationConstants::getYesNoArr($langId), '0', array(), '');		
+			
+		$frm->addFloatField(Labels::getLabel('LBL_Booking_Percentage', $this->adminLangId), 'product_book_percentage');
+		
+        $bookUnReqObj = new FormFieldRequirement('product_book_percentage', Labels::getLabel('LBL_Booking_Percentage', $this->adminLangId));
+        $bookUnReqObj->setRequired(false);
+
+        $bookReqObj = new FormFieldRequirement('product_book_percentage', Labels::getLabel('product_book_percentage', $this->adminLangId));
+		$bookReqObj->setPositive();
+		$bookReqObj->setRange('0.00001', '100');
+        $bookReqObj->setRequired(true);
+
+        
+        $bookStatus->requirements()->addOnChangerequirementUpdate(1, 'eq', 'product_book_percentage', $bookReqObj);
+		$bookStatus->requirements()->addOnChangerequirementUpdate(0, 'eq', 'product_book_percentage', $bookUnReqObj);
+		
+		}
+		
         $fld = $frm->addFloatField(Labels::getLabel('LBL_Minimum_Selling_Price', $langId).' ['.CommonHelper::getCurrencySymbol(true).']', 'product_min_selling_price', '');
         $fld->requirements()->setPositive();
         $taxCategories =  Tax::getSaleTaxCatArr($this->adminLangId);
@@ -581,9 +603,16 @@ class AdminBaseController extends FatController
             $fld->htmlAfterField='<small class="text--small">'.Labels::getLabel('LBL_This_price_is_excluding_the_tax_rates', $this->adminLangId).'</small> <br><small class="text--small">'.Labels::getLabel('LBL_Min_Selling_price', $this->adminLangId). CommonHelper::displayMoneyFormat($productData['product_min_selling_price'], true, true).'</small>';
         }
 		
-		if (FatApp::getConfig("CONF_ENABLE_BOOK_NOW_MODULE", FatUtility::VAR_INT, 1)) {
-		  $fld = $frm->addRadioButtons(Labels::getLabel("", $this->adminLangId), 'selprod_book_now_enable', applicationConstants::getProductBuyStatusArr($this->adminLangId), '', array('class'=>'list-inline'));
+		/* book now */
+		
+		$product_book = Product::getProductDataById(FatApp::getConfig('CONF_DEFAULT_SITE_LANG'), $product_id, array('product_book'));
+		
+		if (FatApp::getConfig("CONF_ENABLE_BOOK_NOW_MODULE", FatUtility::VAR_INT, 0 ) == 1 && $product_book['product_book'] == 1) {
+			$fld = $frm->addRadioButtons(Labels::getLabel("", $this->adminLangId), 'selprod_book_now_enable', applicationConstants::getProductBuyStatusArr($this->adminLangId), '', array('class'=>'list-inline'));
         }
+		
+		/* --- */
+		
 		
 		$frm->addCheckBox(Labels::getLabel('LBL_Enable_Test_Drive', $this->adminLangId), 'selprod_test_drive_enable', 1, array(), false, 0);
 

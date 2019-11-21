@@ -373,3 +373,7 @@ ALTER TABLE `tbl_test_drive_credit_slabs`
   
   /* ----------------------- */
 ALTER TABLE `tbl_user_transactions` ADD `utxn_test_drive_id` INT(11) NOT NULL AFTER `utxn_op_id`;
+
+ALTER TABLE `tbl_products` ADD `product_book` TINYINT(4) NOT NULL AFTER `product_featured`;
+
+ALTER TABLE `tbl_products` ADD `product_book_percentage` INT(11) NOT NULL AFTER `product_book`;
