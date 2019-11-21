@@ -3,6 +3,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
 $buyQuantity = $frmBuyProduct->getField('quantity');
 $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty-js');
 $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
+echo $is_booking;
 ?>
 <div id="body" class="body detail-page" role="main">
     <section class="">
