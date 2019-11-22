@@ -3845,6 +3845,12 @@ class SellerController extends SellerBaseController
                 }
             }
         }
+		
+		$product_book = Product::getProductDataById(FatApp::getConfig('CONF_DEFAULT_SITE_LANG'), $product_id, array('product_book'));
+		if (FatApp::getConfig("CONF_ENABLE_BOOK_NOW_MODULE", FatUtility::VAR_INT, 0 ) == 1 && $product_book['product_book'] == 1) {
+			$frm->addRadioButtons(Labels::getLabel("", $this->siteLangId), 'selprod_book_now_enable', applicationConstants::getProductBuyStatusArr($this->siteLangId), '', array());
+        }
+		
 		$frm->addCheckBox(Labels::getLabel('LBL_Enable_Test_Drive', $this->siteLangId), 'selprod_test_drive_enable', 1, array(), false, 0);
 
         $frm->addHiddenField('', 'selprod_product_id', $product_id);

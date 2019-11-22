@@ -345,7 +345,7 @@ class AdminBaseController extends FatController
 			
 		//$bookStatus = $frm->addCheckBox(Labels::getLabel('LBL_Enable_Booking', $this->adminLangId), 'product_book', 1, array(), false, 0);
 
-		$bookStatus = $frm->addSelectBox(Labels::getLabel('LBL_Enable_Booking', $this->adminLangId), 'product_book', applicationConstants::getYesNoArr($langId), '0', array(), '');		
+		$bookStatus = $frm->addSelectBox(Labels::getLabel('LBL_Available_For_Booking', $this->adminLangId), 'product_book', applicationConstants::getYesNoArr($langId), '0', array(), '');		
 			
 		$frm->addFloatField(Labels::getLabel('LBL_Booking_Percentage', $this->adminLangId), 'product_book_percentage');
 		
