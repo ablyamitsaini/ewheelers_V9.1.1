@@ -23,15 +23,19 @@
     </div>
 	
 	<?php 
-		if($product['selprod_book_now_enable'] == applicationConstants::BOTH && $product['selprod_test_drive_enable'] == 1){
+		if($product['selprod_book_now_enable'] == applicationConstants::BOTH && $is_booking == 1 && FatApp::getConfig('CONF_ENABLE_BOOK_NOW_MODULE') == 1 && $product['selprod_test_drive_enable'] == 1){
 			$button_class = 'row-flexible4';
  		}elseif($product['selprod_book_now_enable'] == applicationConstants::BUY_NOW && $product['selprod_test_drive_enable'] == 1){
 			$button_class = 'row-flexible';
-		}elseif($product['selprod_book_now_enable'] == applicationConstants::BOTH){
+		}elseif($product['selprod_book_now_enable'] == applicationConstants::BOTH && $is_booking == 1 && FatApp::getConfig('CONF_ENABLE_BOOK_NOW_MODULE') == 1 ){
 			$button_class = 'row-flexible';			
+		}elseif($product['selprod_test_drive_enable'] == 1 && $product['selprod_book_now_enable'] == applicationConstants::BOOK_NOW && $is_booking == 1 && FatApp::getConfig('CONF_ENABLE_BOOK_NOW_MODULE') == 1){
+			$button_class = '';
+		}elseif($product['selprod_test_drive_enable'] == 1){
+			$button_class = 'row-flexible';
 		}else{
 			$button_class = '';
-		}
+									}
 	?>
 
     <div class="col-lg-6 col-md-6 quick-col-2">
@@ -144,15 +148,19 @@
 							echo $frmBuyProduct->getFieldHtml('btnTestDrive');
 						} */
 						
-						if($product['selprod_book_now_enable'] == applicationConstants::BOTH){
+						if($product['selprod_book_now_enable'] == applicationConstants::BOTH && $is_booking == 1 && FatApp::getConfig('CONF_ENABLE_BOOK_NOW_MODULE') == 1){
 							echo $frmBuyProduct->getFieldHtml('btnAddToCart');
 							echo $frmBuyProduct->getFieldHtml('btnProductBuy');
 							echo $frmBuyProduct->getFieldHtml('btnBookNow');
 							
 						}elseif($product['selprod_book_now_enable'] == applicationConstants::BUY_NOW){
+							echo $frmBuyProduct->getFieldHtml('btnAddToCart');
 							echo $frmBuyProduct->getFieldHtml('btnProductBuy');
-						}elseif($product['selprod_book_now_enable'] == applicationConstants::BOOK_NOW){
+						}elseif($product['selprod_book_now_enable'] == applicationConstants::BOOK_NOW && $is_booking == 1 && FatApp::getConfig('CONF_ENABLE_BOOK_NOW_MODULE') == 1){
 							echo $frmBuyProduct->getFieldHtml('btnBookNow');
+						}else{
+							echo $frmBuyProduct->getFieldHtml('btnAddToCart');
+							echo $frmBuyProduct->getFieldHtml('btnProductBuy');
 						}
 						
 						if($product['selprod_test_drive_enable']){
