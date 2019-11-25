@@ -1214,7 +1214,7 @@ class CheckoutController extends MyAppController
                 'op_commission_percentage'    => $cartProduct['commission_percentage'],
                 'op_affiliate_commission_percentage' => $cartProduct['affiliate_commission_percentage'],
                 'op_affiliate_commission_charged' => $cartProduct['affiliate_commission'],
-                'op_status_id'        =>    FatApp::getConfig("CONF_DEFAULT_ORDER_STATUS"),
+                'op_status_id'        =>   (isset($cartProduct['is_for_booking'])?FatApp::getConfig("CONF_DEFAULT_BOOKING_ORDER_STATUS"):FatApp::getConfig("CONF_DEFAULT_ORDER_STATUS")),
                 // 'op_volume_discount_percentage'    =>    $cartProduct['volume_discount_percentage'],
                 'productsLangData'    =>    $productsLangData,
                 'productShippingData'    =>    $productShippingData,
