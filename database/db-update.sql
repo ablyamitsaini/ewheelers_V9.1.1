@@ -377,3 +377,7 @@ ALTER TABLE `tbl_user_transactions` ADD `utxn_test_drive_id` INT(11) NOT NULL AF
 ALTER TABLE `tbl_products` ADD `product_book` TINYINT(4) NOT NULL AFTER `product_featured`;
 
 ALTER TABLE `tbl_products` ADD `product_book_percentage` INT(11) NOT NULL AFTER `product_book`;
+
+INSERT INTO `tbl_configurations` (`conf_name`, `conf_val`, `conf_common`) VALUES ('CONF_BOOKING_ORDER_STATUS', 'a:3:{i:0;s:1:\"7\";i:1;s:1:\"8\";i:2;s:1:\"9\";}', '');
+
+INSERT INTO `tbl_configurations` (`conf_name`, `conf_val`, `conf_common`) VALUES ('CONF_DEFAULT_BOOKING_ORDER_STATUS', '1', '0');
