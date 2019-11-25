@@ -599,15 +599,32 @@ class Cart extends FatModel
                 if ($key == 'all') {
                     $found = true;
                     unset($this->SYSTEM_ARR['cart'][$cartKey]);
-                    /* to keep track of temporary hold the product stock[ */
+                    /* to keep track of temporary hold the product stock[ */				
                     $this->updateTempStockHold($product['selprod_id'], 0, 0);
+					/* remove booking product */
+					unset($this->SYSTEM_ARR['shopping_cart']['booking_products']);
                 /* ] */
                 } elseif (md5($product['key']) == $key && !$product['is_batch']) {
                     $found = true;
                     unset($this->SYSTEM_ARR['cart'][$cartKey]);
                     /* to keep track of temporary hold the product stock[ */
                     $this->updateTempStockHold($product['selprod_id'], 0, 0);
-                    /* ] */
+					
+					if(isset($this->SYSTEM_ARR['shopping_cart']['booking_products'])){
+					/* remove booking product */
+					$sysArr = $this->SYSTEM_ARR['shopping_cart']['booking_products'];
+
+					foreach($sysArr as $arrkey => $value){
+						if($value == $cartKey ){
+							unset($sysArr[$arrkey]);
+							break;
+						}
+					}
+					unset($this->SYSTEM_ARR['shopping_cart']['booking_products']);
+					$this->SYSTEM_ARR['shopping_cart']['booking_products'] = $sysArr;
+					
+					}
+					/* ------- */
                     break;
                 }
             }
@@ -859,7 +876,7 @@ class Cart extends FatModel
     {
         foreach ($this->getProducts($this->cart_lang_id) as $product) {
             if ($product['is_batch']) {
-                if ($product['has_physical_product'] && !isset($this->SYSTEM_ARR['shopping_cart']['product_shipping_methods']['group'][$product['prodgroup_id']])) {
+                if ($product['has_physical_product'] && !isset($product['is_for_booking']) && !isset($this->SYSTEM_ARR['shopping_cart']['product_shipping_methods']['group'][$product['prodgroup_id']])) {
                     return false;
                 }
                 if (isset($this->SYSTEM_ARR['shopping_cart']['product_shipping_methods']['group'][$product['prodgroup_id']]['mshipapi_id'])) {
@@ -870,7 +887,7 @@ class Cart extends FatModel
                     }
                 }
             } else {
-                if ($product['is_physical_product'] && !isset($this->SYSTEM_ARR['shopping_cart']['product_shipping_methods']['product'][$product['selprod_id']])) {
+                if ($product['is_physical_product'] && !isset($product['is_for_booking']) && !isset($this->SYSTEM_ARR['shopping_cart']['product_shipping_methods']['product'][$product['selprod_id']])) {
                     return false;
                 }
 

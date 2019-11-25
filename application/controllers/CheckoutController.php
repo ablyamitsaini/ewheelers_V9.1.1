@@ -608,7 +608,7 @@ class CheckoutController extends MyAppController
                 $shipping_options = Product::getProductShippingRates($cartval['product_id'], $this->siteLangId, $ua_country_id, $shipBy);
                 $free_shipping_options = Product::getProductFreeShippingAvailabilty($cartval['product_id'], $this->siteLangId, $ua_country_id, $shipBy);
                 $productKey = md5($cartval["key"]);
-                if ($cartval && $cartval['product_type'] == Product::PRODUCT_TYPE_PHYSICAL) {
+                if ($cartval && $cartval['product_type'] == Product::PRODUCT_TYPE_PHYSICAL && !isset($cartval['is_for_booking'])) {
                     /* get Product Data[ */
                     $prodSrch = clone $prodSrchObj;
                     $prodSrch->setDefinedCriteria();
@@ -1172,6 +1172,15 @@ class CheckoutController extends MyAppController
                 if(FatApp::getConfig('CONF_TAX_COLLECTED_BY_SELLER',FatUtility::VAR_INT,0)){
                 $taxCollectedBySeller = applicationConstants::YES;
                 } */
+				
+				/* book now products */
+				$is_booking = 0;
+				
+				if(isset($cartProduct['is_for_booking'])){
+					$is_booking = 1;	
+				}
+
+				/* ------- */
 
                 $orderData['products'][CART::CART_KEY_PREFIX_PRODUCT.$productInfo['selprod_id']] = array(
                 'op_selprod_id'        =>    $productInfo['selprod_id'],
@@ -1213,6 +1222,8 @@ class CheckoutController extends MyAppController
                 /* 'op_tax_collected_by_seller'    =>    $taxCollectedBySeller, */
                 'op_free_ship_upto'    =>    $cartProduct['shop_free_ship_upto'],
                 'op_actual_shipping_charges'    =>    $cartProduct['shipping_cost'],
+				'op_booking_product_actual_amount'  =>    $cartProduct['actualbookprice'], 
+				'op_is_booking'    =>    $is_booking,
                 );
 
                 $order_affiliate_user_id = isset($cartProduct['affiliate_user_id'])?$cartProduct['affiliate_user_id']:'';
