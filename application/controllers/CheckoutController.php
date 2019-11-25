@@ -1420,6 +1420,12 @@ class CheckoutController extends MyAppController
                 $str = str_replace('{cod}', $paymentMethod['pmethod_name'], $str);
                 FatUtility::dieWithError($str);
             }
+			
+			if ($this->cartObj->hasBookingProduct()) {
+                $str = Labels::getLabel('MSG_{COD}_is_not_available_if_your_cart_has_any_Booking_Product', $this->siteLangId);
+                $str = str_replace('{cod}', $paymentMethod['pmethod_name'], $str);
+                FatUtility::dieWithError($str);
+            }
             $cartSummary = $this->cartObj->getCartFinancialSummary($this->siteLangId);
             $user_id = UserAuthentication::getLoggedUserId();
             $userWalletBalance = User::getUserBalance($user_id, true);
