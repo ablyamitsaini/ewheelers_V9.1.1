@@ -100,8 +100,11 @@ class Cart extends FatModel
         return;
     }
 
-    public function add($selprod_id, $qty = 1, $prodgroup_id = 0, $returnUserId = false)
+    public function add($selprod_id, $qty = 1, $prodgroup_id = 0, $returnUserId = false, $isForBooking = 0)
     {
+		/* echo $isForBooking;
+		die(); */
+		
         $this->products = array();
         $selprod_id = FatUtility::int($selprod_id);
         $prodgroup_id = FatUtility::int($prodgroup_id);
@@ -111,13 +114,45 @@ class Cart extends FatModel
             if ($prodgroup_id) {
                 $key = static::CART_KEY_PREFIX_BATCH . $prodgroup_id;
             }
-
+			
             $key = base64_encode(serialize($key));
+			
+			/* check is buy and book same product */
+			
+			$check	= $this->isBothBuyBook($key,$isForBooking);
+			
+			if(!$check){
+				$message = Labels::getLabel('LBL_You_Cannot_Buy_And_Book_Same_Product', $this->cart_lang_id);
+				FatUtility::dieJsonError($message);
+			}
+			
+			
+			
             if (!isset($this->SYSTEM_ARR['cart'][$key])) {
                 $this->SYSTEM_ARR['cart'][$key] = FatUtility::int($qty);
             } else {
                 $this->SYSTEM_ARR['cart'][$key] += FatUtility::int($qty);
             }
+			
+			/* if booking */
+			if($isForBooking == 1){
+				if (!isset($this->SYSTEM_ARR['shopping_cart']['booking_products'])) {
+					$this->SYSTEM_ARR['shopping_cart']['booking_products'][] = $key;
+				} else {
+					$exist = 0;
+					foreach($this->SYSTEM_ARR['shopping_cart']['booking_products'] as $val){
+						if($val == $key){
+							$exist = 1;
+							break;
+						}
+					}
+					if($exist == 0){
+						$this->SYSTEM_ARR['shopping_cart']['booking_products'][] = $key;
+					}
+				}
+			}
+			
+			
         }
 
         if ($prodgroup_id > 0) {
@@ -1673,4 +1708,42 @@ class Cart extends FatModel
             return $selprod_id;
         }
     }
+	
+	public function isBothBuyBook($key,$isForBooking) 
+	{
+		if(empty($this->SYSTEM_ARR['cart'])){
+			return true;
+		}
+		
+		$exist = 0;
+		
+		if(isset($this->SYSTEM_ARR['shopping_cart']['booking_products'])){
+			foreach($this->SYSTEM_ARR['shopping_cart']['booking_products'] as $val){
+				if($val == $key){
+					$exist = 1;
+					break;
+				}
+			}
+		}
+			
+		if($isForBooking == 1){
+
+			if (array_key_exists($key,$this->SYSTEM_ARR['cart']) && $exist == 0)
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+			
+		}else{
+			
+			if ($exist == 1)
+			{
+				return false;
+			}
+			return true;
+		}
+	}
 }
