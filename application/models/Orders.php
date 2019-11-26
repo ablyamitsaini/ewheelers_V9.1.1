@@ -1187,7 +1187,15 @@ class Orders extends MyAppModel
 
             $subOrders = $this->getChildOrders(array("order"=>$orderId), $orderInfo['order_type']);
             foreach ($subOrders as $subkey => $subval) {
-                $this->addChildProductOrderHistory($subval["op_id"], $orderInfo['order_language_id'], FatApp::getConfig("CONF_DEFAULT_PAID_ORDER_STATUS"), '', true);
+				/* booking products */
+				
+					$default_status = FatApp::getConfig("CONF_DEFAULT_PAID_ORDER_STATUS");
+					if($subval['op_is_booking'] == 1) {
+						$default_status = FatApp::getConfig("CONF_DEFAULT_BOOKING_ORDER_STATUS");
+					}
+				
+				/* ---- */
+                $this->addChildProductOrderHistory($subval["op_id"], $orderInfo['order_language_id'], $default_status, '', true);
                 if ($subval['op_product_type'] == Product::PRODUCT_TYPE_DIGITAL) {
                     $emailObj->newDigitalOrderBuyer($orderId, $subval["op_id"], $orderInfo['order_language_id']);
                 }
