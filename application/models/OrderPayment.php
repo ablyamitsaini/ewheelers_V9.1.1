@@ -151,17 +151,17 @@ class OrderPayment extends Orders
             }
 
             $totalPaymentPaid = $this->getOrderPaymentPaid($paymentOrderId);
-            $orderBalance = ($orderDetails['order_net_amount'] - $totalPaymentPaid);
+            $orderBalance = ($orderDetails['order_actual_net_amount'] - $totalPaymentPaid);
 
             if ($orderBalance <= 0) {
 				/* --booking---- */
-				$bookingProduct = $this->checkBookingOrderProduct($paymentOrderId);
+				/* $bookingProduct = $this->checkBookingOrderProduct($paymentOrderId);
 				
 				$order_status = Orders::ORDER_IS_PAID;
 				if($bookingProduct > 0) {
 					$order_status = Orders::ORDER_IS_PENDING;
 				}
-
+ */
 				/* ----- */
                 $this->addOrderPaymentHistory($paymentOrderId, $order_status, Labels::getLabel('LBL_Received_Payment', $defaultSiteLangId), 1);
 

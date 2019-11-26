@@ -409,6 +409,13 @@ class SellerController extends SellerBaseController
         $orderDetail['shippingAddress'] = (isset($address[Orders::SHIPPING_ADDRESS_TYPE]))?$address[Orders::SHIPPING_ADDRESS_TYPE]:array();
 
         $orderDetail['comments'] = $orderObj->getOrderComments($this->siteLangId, array("op_id"=>$op_id,'seller_id'=>$userId));
+		
+		/* booking */
+		
+			if($orderDetail['op_is_booking'] == 1) {
+				$processingStatuses = unserialize(FatApp::getConfig("CONF_BOOKING_ORDER_STATUS"));
+			}
+		/* ---- */
 
         $data = array('op_id'=>$op_id , 'op_status_id' => $orderDetail['op_status_id']);
         $frm = $this->getOrderCommentsForm($orderDetail, $processingStatuses);
@@ -571,6 +578,13 @@ class SellerController extends SellerBaseController
             $processingStatuses = array_diff($processingStatuses, (array)FatApp::getConfig("CONF_DEFAULT_DEIVERED_ORDER_STATUS"));
         }
         /*]*/
+		
+		/* booking */
+		
+			if($orderDetail['op_is_booking'] == 1) {
+				$processingStatuses = unserialize(FatApp::getConfig("CONF_BOOKING_ORDER_STATUS"));
+			}
+		/* ---- */
 
         $frm =  $this->getOrderCommentsForm($orderDetail, $processingStatuses);
         $post = $frm->getFormDataFromArray($post);

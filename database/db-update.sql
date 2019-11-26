@@ -387,3 +387,4 @@ INSERT INTO `tbl_configurations` (`conf_name`, `conf_val`, `conf_common`) VALUES
 
 INSERT INTO `tbl_configurations` (`conf_name`, `conf_val`, `conf_common`) VALUES ('CONF_DEFAULT_BOOKING_ORDER_STATUS', '1', '0');
 
+ALTER TABLE `tbl_orders` ADD `order_actual_net_amount` DECIMAL(10,2) NOT NULL AFTER `order_net_amount`;

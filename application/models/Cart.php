@@ -536,6 +536,7 @@ class Cart extends FatModel
 		/* is for booking */
 		$thePrice = $sellerProductRow['theprice'];
 		$sellerProductRow['priceWithoutBooking'] = $thePrice;
+		$sellerProductRow['totalPriceWithoutBooking'] = $thePrice * $quantity; 		
 		$sellerProductRow['actualbookprice'] = 0;
 		if( $isForBook == 1){
 		 $booking_per = $sellerProductRow['product_book_percentage'];
@@ -940,7 +941,7 @@ class Cart extends FatModel
         return $cartTotal;
     }
 
-    public function getCartFinancialSummary($langId)
+    public function getCartFinancialSummary($langId,$fullAmount = 0)
     {
         $products = $this->getProducts($langId);
 
@@ -974,7 +975,11 @@ class Cart extends FatModel
                     $cartTotal += $product['prodgroup_total'];
                 } else {
                     //$cartTotalNonBatch += $product['total'];
-                    $cartTotal += !empty($product['total']) ? $product['total'] : 0;
+					if($fullAmount == 1){
+						$cartTotal += !empty($product['totalPriceWithoutBooking']) ? $product['totalPriceWithoutBooking'] : 0;
+					}else{					
+						$cartTotal += !empty($product['total']) ? $product['total'] : 0;
+					}
                 }
 
                 $cartVolumeDiscount += $product['volume_discount_total'];
