@@ -1145,7 +1145,7 @@ class ProductsController extends MyAppController
                 array(
                 'product_id', 'COALESCE(product_name, product_identifier) as product_name', 'prodcat_id', 'COALESCE(prodcat_name, prodcat_identifier) as prodcat_name', 'product_image_updated_on', 'COALESCE(selprod_title,product_name, product_identifier) as selprod_title',
                 'selprod_id', 'selprod_condition', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'theprice',
-                'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type','selprod_sold_count','selprod_price')
+                'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type','selprod_sold_count','selprod_price','selprod_test_drive_enable ')
             );
 
             $productRs = $prodSrch->getResultSet();

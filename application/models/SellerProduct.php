@@ -692,7 +692,7 @@ class SellerProduct extends MyAppModel
             $srch->addMultipleFields(array($criteria));
         } else {
             $srch->addMultipleFields(array(
-            'selprod_id', 'IFNULL(selprod_title ,product_name) as product_name','product_identifier','selprod_price','product_image_updated_on'));
+            'selprod_id', 'IFNULL(selprod_title ,product_name) as product_name','product_identifier','selprod_price','product_image_updated_on','selprod_test_drive_enable'));
         }
         $rs = $srch->getResultSet();
         $db = FatApp::getDb();
