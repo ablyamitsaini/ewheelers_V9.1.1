@@ -149,6 +149,12 @@
                         <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
                         <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat($cartSummary['orderNetAmount']); ?></td>
                     </tr>
+					<?php if($orderNetAmountWithoutBooking > $cartSummary['orderNetAmount'] ) { ?>
+					<tr>
+                        <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable_Without_Booking', $siteLangId); ?></td>
+                        <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat($orderNetAmountWithoutBooking); ?></td>
+                    </tr>
+					<?php } ?>
                 </tbody>
             </table>
         </div>

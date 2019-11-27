@@ -1986,6 +1986,7 @@ class CheckoutController extends MyAppController
     public function getFinancialSummary()
     {
         $cartSummary = $this->cartObj->getCartFinancialSummary($this->siteLangId);
+        $summaryWithoutBook = $this->cartObj->getCartFinancialSummary($this->siteLangId,1);
         $products = $this->cartObj->getProducts($this->siteLangId);
 
         $hasPhysicalProd = $this->cartObj->hasPhysicalProduct();
@@ -1997,6 +1998,7 @@ class CheckoutController extends MyAppController
 
         $address =  UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), $this->siteLangId, 0, $selected_shipping_address_id);
 
+        $this->set('orderNetAmountWithoutBooking',$summaryWithoutBook['orderNetAmount'] );
         $this->set('products', $products);
         $this->set('cartSummary', $cartSummary);
         $this->set('defaultAddress', $address);

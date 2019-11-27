@@ -161,8 +161,10 @@ class OrderPayment extends Orders
 				if($bookingProduct > 0) {
 					$order_status = Orders::ORDER_IS_PENDING;
 				}
- */
+				*/
 				/* ----- */
+				$order_status = Orders::ORDER_IS_PAID;
+				
                 $this->addOrderPaymentHistory($paymentOrderId, $order_status, Labels::getLabel('LBL_Received_Payment', $defaultSiteLangId), 1);
 
                 $notificationData = array(

@@ -1022,7 +1022,11 @@ class Orders extends MyAppModel
         }
 
         if ($orderInfo['order_type']==ORDERS::ORDER_PRODUCT) {
-            $this->addProductOrderPayment($orderId, $orderInfo, $orderPaymentStatus, $comment, $notify);
+			if($orderPaymentStatus == ORDERS::ORDER_IS_PAID) {
+				$this->addProductOrderPayment($orderId, $orderInfo, $orderPaymentStatus, $comment, $notify, 1);
+			}else{
+				$this->addProductOrderPayment($orderId, $orderInfo, $orderPaymentStatus, $comment, $notify);
+			}
         } elseif ($orderInfo['order_type']==ORDERS::ORDER_SUBSCRIPTION) {
             $this->addSubscriptionOrderPayment($orderId, $orderInfo, $orderPaymentStatus, $comment, $notify);
         }
@@ -1168,7 +1172,7 @@ class Orders extends MyAppModel
         }
     }
 
-    public function addProductOrderPayment($orderId, $orderInfo, $orderPaymentStatus, $comment = '', $notify = false)
+    public function addProductOrderPayment($orderId, $orderInfo, $orderPaymentStatus, $comment = '', $notify = false, $is_paid = 0)
     {
         /* CommonHelper::printArray($orderInfo); die; */
         $emailObj = new EmailHandler();
@@ -1190,7 +1194,7 @@ class Orders extends MyAppModel
 				/* booking products */
 				
 					$default_status = FatApp::getConfig("CONF_DEFAULT_PAID_ORDER_STATUS");
-					if($subval['op_is_booking'] == 1) {
+					if($subval['op_is_booking'] == 1 && $is_paid != 1) {
 						$default_status = FatApp::getConfig("CONF_DEFAULT_BOOKING_ORDER_STATUS");
 					}
 				
