@@ -1699,7 +1699,7 @@ trait SellerProducts
         }
 		
 		if (isset($post['buy'])) {
-            $srch->addCondition('selprod_book_now_enable', '=', applicationConstants::BUY_NOW);
+            $srch->addCondition('product_book', '=', 0);
         }
 		
         $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
