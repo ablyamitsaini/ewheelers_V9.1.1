@@ -1693,11 +1693,15 @@ trait SellerProducts
             $cnd = $cnd->attachCondition('selprod_title', 'LIKE', '%' . $post['keyword'] . '%', 'OR');
             $cnd->attachCondition('product_identifier', 'LIKE', '%'. $post['keyword'] . '%', 'OR');
         }
-
         $srch->addCondition('selprod_user_id', '=', UserAuthentication::getLoggedUserId());
         if (isset($post['selprod_id'])) {
             $srch->addCondition('selprod_id', '!=', $post['selprod_id']);
         }
+		
+		if (isset($post['buy'])) {
+            $srch->addCondition('selprod_book_now_enable', '=', applicationConstants::BUY_NOW);
+        }
+		
         $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
         $srch->addMultipleFields(
             array(
