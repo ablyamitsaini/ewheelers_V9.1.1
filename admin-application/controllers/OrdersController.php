@@ -208,7 +208,7 @@ class OrdersController extends AdminBaseController
         }        
 
         $orderPaymentObj = new OrderPayment($orderId, $this->adminLangId);
-        if(!$orderPaymentObj->addOrderPayment($post["opayment_method"], $post['opayment_gateway_txn_id'], $post["opayment_amount"], $post["opayment_comments"])) {
+        if(!$orderPaymentObj->addOrderPayment($post["opayment_method"], $post['opayment_gateway_txn_id'], $post["opayment_amount"], $post["opayment_comments"],'',false,0,1)) {
             Message::addErrorMessage($orderPaymentObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }

@@ -119,7 +119,7 @@ class OrderPayment extends Orders
         return $arrOrder;
     }
 
-    public function addOrderPayment($paymentMethodName, $txnId, $amount, $comments = '', $response = '', $isWallet = false, $opId = 0)
+    public function addOrderPayment($paymentMethodName, $txnId, $amount, $comments = '', $response = '', $isWallet = false, $opId = 0,$is_admin_request = 0)
     {
         $paymentOrderId = $this->paymentOrderId;
         $defaultSiteLangId = FatApp::getConfig('conf_default_site_lang');
@@ -152,6 +152,23 @@ class OrderPayment extends Orders
 
             $totalPaymentPaid = $this->getOrderPaymentPaid($paymentOrderId);
             $orderBalance = ($orderDetails['order_actual_net_amount'] - $totalPaymentPaid);
+			
+			$emailObj = new EmailHandler();
+			$orderObj = new Orders();
+			$subOrders = $orderObj->getChildOrders(array("order"=>$paymentOrderId), ORDERS::ORDER_PRODUCT);
+			$is_booking = 0;
+				foreach ($subOrders as $subkey => $subval) {
+					if($subval['op_is_booking'] == 1 && $orderInfo['order_is_paid'] == 0) {
+						$is_booking = 1;
+					}
+				}
+				
+				if($is_booking == 1 && $orderBalance > 0 && $is_admin_request == 0) {
+					$emailObj->newOrderVendor($orderInfo['order_id']);
+					$emailObj->newOrderBuyerAdmin($orderInfo['order_id'], $orderInfo['order_language_id']);
+					//$emailObj->newOrderBookingVendorBuyerAdmin($orderInfo['order_id'], $orderInfo['order_language_id']);
+				}
+		
 
             if ($orderBalance <= 0) {
 				/* --booking---- */
