@@ -128,6 +128,13 @@ class EmailHandler extends FatModel
             $subject = str_replace($key, $val, $subject);
             $body = str_replace($key, $val, $body);
         }
+		
+		
+		if(CONF_EMAIL_TEST_MODE == TRUE){
+			$arr = explode('@', $to);
+			$emailFirst = $arr[0];
+			$to = $emailFirst.'@dummyid.com';
+		}
 
         if (FatApp::getConfig('CONF_SEND_SMTP_EMAIL')) {
             if (!$sendEmail = static::sendSmtpEmail($to, $subject, $body, $extra_headers, $tpl, $langId, '', $smtp_arr, $bcc)) {
