@@ -1185,7 +1185,7 @@ class Orders extends MyAppModel
         }
 		
 		
-		$subOrders = $this->getChildOrders(array("order"=>$paymentOrderId), ORDERS::ORDER_PRODUCT);
+		$subOrders = $this->getChildOrders(array("order"=>$orderId), ORDERS::ORDER_PRODUCT);
 			$is_booking = 0;
 				foreach ($subOrders as $subkey => $subval) {
 					if($subval['op_is_booking'] == 1 && $orderInfo['order_is_paid'] == 0) {
@@ -1754,6 +1754,7 @@ class Orders extends MyAppModel
 
         // If order status is in buyer order statuses then send update email
         if (in_array($opStatusId, unserialize(FatApp::getConfig("CONF_BUYER_ORDER_STATUS"))) && $notify) {
+			
             $emailNotificationObj->orderStatusUpdateBuyer($commentId, $childOrderInfo['order_language_id'], $childOrderInfo['order_user_id']);
         }
         return true;
