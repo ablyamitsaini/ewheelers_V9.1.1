@@ -415,6 +415,8 @@ class SellerController extends SellerBaseController
 			if($orderDetail['op_is_booking'] == 1) {
 				$processingStatuses = unserialize(FatApp::getConfig("CONF_BOOKING_ORDER_STATUS"));
 			}
+			$is_booking = $orderDetail['op_is_booking'];
+			$paidAmount = $orderObj->getOrderPaymentPaid($orderDetail['op_order_id']);
 		/* ---- */
 
         $data = array('op_id'=>$op_id , 'op_status_id' => $orderDetail['op_status_id']);
@@ -436,6 +438,8 @@ class SellerController extends SellerBaseController
             $digitalDownloadLinks = Orders::getOrderProductDigitalDownloadLinks($op_id);
         }
 
+        $this->set('paidAmount', $paidAmount);
+        $this->set('is_booking', $is_booking);
         $this->set('orderDetail', $orderDetail);
         $this->set('orderStatuses', $orderStatuses);
         $this->set('shippedBySeller', $shippedBySeller);

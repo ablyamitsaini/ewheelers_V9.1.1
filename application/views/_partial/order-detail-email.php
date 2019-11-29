@@ -16,17 +16,20 @@ $str='<table cellspacing="0" cellpadding="0" border="0" width="100%" style="bord
 	$total = 0 ;	
 	$shippingTotal = 0 ;		
 	$netAmount = 0;
+	$netAmountWithoutBook = 0;
 	$discountTotal = 0;
 	$volumeDiscountTotal = 0;
 	$rewardPointDiscount = 0;
 	foreach( $orderProducts as $key => $val ){
 		
 		$opCustomerBuyingPrice = CommonHelper::orderProductAmount($val,'CART_TOTAL');
+		$opCustomerBuyingPriceWithoutBook = CommonHelper::orderProductAmount($val,'CART_TOTAL',false,false,1);
 		$shippingPrice = CommonHelper::orderProductAmount($val,'SHIPPING');
 		$discountedPrice = CommonHelper::orderProductAmount($val,'DISCOUNT');
 		$taxCharged = $taxCharged + CommonHelper::orderProductAmount($val,'TAX');
 		$productTaxCharged = CommonHelper::orderProductAmount($val,'TAX');
 		$netAmount = $netAmount + CommonHelper::orderProductAmount($val,'NETAMOUNT');
+		$netAmountWithoutBook = $netAmountWithoutBook + CommonHelper::orderProductAmount($val,'NETAMOUNT',false,false,1);
 		$volumeDiscount=  CommonHelper::orderProductAmount($val,'VOLUME_DISCOUNT');
 		$volumeDiscountTotal = $volumeDiscountTotal + abs(CommonHelper::orderProductAmount($val,'VOLUME_DISCOUNT'));
 		$rewardPointDiscount = $rewardPointDiscount + abs(CommonHelper::orderProductAmount($val,'REWARDPOINT'));
@@ -48,7 +51,7 @@ $str='<table cellspacing="0" cellpadding="0" border="0" width="100%" style="bord
 		
 		$str .= '<tr>
 			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;">
-			<a href="'.$prodOrBatchUrl.'" style="font-size:13px; color:#333;">'.$val["op_product_name"].'</a><br/>'.Labels::getLabel('Lbl_Brand',$siteLangId).':'.$val["op_brand_name"].'<br/>'.Labels::getLabel('Lbl_Sold_By',$siteLangId).':'.$val["op_shop_name"].'<br/>'.$options.'
+			<a href="'.$prodOrBatchUrl.'" style="font-size:13px; color:#333;">'.$val["op_product_name"].'</a><br/>'.Labels::getLabel('Lbl_Brand',$siteLangId).':'.$val["op_brand_name"].'<br/>'.Labels::getLabel('Lbl_Sold_By',$siteLangId).':'.$val["op_shop_name"].'<br/>'.$options.'<br/>'. ($val['op_is_booking'] == 1?'<b>Booking Product</b>' : '' ) .'
 			</td>
 			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;">'.$val['op_qty'].'</td>
 			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat($val["op_unit_price"]).'</td>			
@@ -101,6 +104,16 @@ $str='<table cellspacing="0" cellpadding="0" border="0" width="100%" style="bord
 	$str.= '<tr>
 	<td colspan="6" style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right"><strong>'.Labels::getLabel('LBL_ORDER_TOTAL',$siteLangId).'</strong></td>
 	<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right"><strong>'.CommonHelper::displayMoneyFormat($netAmount).'</strong></td></tr>';
+	
+	if($netAmountWithoutBook > $netAmount){
+		$str.= '<tr>
+		<td colspan="6" style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right"><strong>'.Labels::getLabel('LBL_TOTAL_AMOUNT_TO_BE_PAID',$siteLangId).'</strong></td>
+		<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right"><strong>'.CommonHelper::displayMoneyFormat($netAmountWithoutBook).'</strong></td></tr>';
+		
+		$str.= '<tr>
+		<td colspan="6" style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right"><strong>'.Labels::getLabel('LBL_AMOUNT_TO_BE_PAID_ON_DELIVERY',$siteLangId).'</strong></td>
+		<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right"><strong>'.CommonHelper::displayMoneyFormat($netAmountWithoutBook - $netAmount).'</strong></td></tr>';
+	}
 	
 	$billingInfo = $billingAddress['oua_name'].'<br>';
 	if($billingAddress['oua_address1']!=''){

@@ -194,6 +194,29 @@ class OrdersController extends AdminBaseController
             Message::addErrorMessage($this->str_invalid_request);
             FatUtility::dieJsonError(Message::getHtml());
         }
+		
+		
+		/* book now email  */
+		
+		$emailObj = new EmailHandler();
+			$orderObj = new Orders();
+			$orderData = $orderObj->getOrderById($orderId);
+			$subOrders = $orderObj->getChildOrders(array("order"=>$orderId), ORDERS::ORDER_PRODUCT);
+			$is_booking = 0;
+				foreach ($subOrders as $subkey => $subval) {
+					if($subval['op_is_booking'] == 1 && $orderData['order_is_paid'] == 0) {
+						$is_booking = 1;
+					}
+				}
+
+			$paidAmount = $orderObj->getOrderPaymentPaid($orderData['order_id']);
+
+			if($is_booking == 1 && $paidAmount == 0){
+				$emailObj->newOrderVendor($orderData['order_id']);
+				$emailObj->newOrderBuyerAdmin($orderData['order_id'], $orderData['order_language_id']);
+			}
+
+		/* ----------- */
         
         $srch = new OrderSearch($this->adminLangId);
         $srch->joinOrderPaymentMethod();

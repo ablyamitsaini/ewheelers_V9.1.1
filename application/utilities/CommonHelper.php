@@ -284,7 +284,7 @@ class CommonHelper extends FatUtility
         //return $rewardPoints = static::convertCurrencyToRewardPoint($rewardPointValues);
     }
 
-    public static function orderProductAmount($opArr = array(), $amountType = 'netamount', $pricePerItem = false, $userType = false)
+    public static function orderProductAmount($opArr = array(), $amountType = 'netamount', $pricePerItem = false, $userType = false, $calculateWithoutBook = 0)
     {
         $amount = 0;
 
@@ -293,7 +293,11 @@ class CommonHelper extends FatUtility
         }
 
         $shippingAmount = isset($opArr['charges'][OrderProduct::CHARGE_TYPE_SHIPPING]['opcharge_amount']) ? $opArr['charges'][OrderProduct::CHARGE_TYPE_SHIPPING]['opcharge_amount'] : 0;
-        $cartTotal = $opArr['op_qty'] * $opArr['op_unit_price'];
+		if($calculateWithoutBook == 0){
+			$cartTotal = $opArr['op_qty'] * $opArr['op_unit_price'];
+		}else{
+			$cartTotal = $opArr['op_qty'] * $opArr['op_product_amount_without_book'];
+		}
 
         switch (strtoupper($amountType)) {
             case 'NETAMOUNT':
