@@ -129,7 +129,6 @@ class EmailHandler extends FatModel
             $body = str_replace($key, $val, $body);
         }
 		
-		
 		if(CONF_EMAIL_TEST_MODE == TRUE){
 			$arr = explode('@', $to);
 			$emailFirst = $arr[0];

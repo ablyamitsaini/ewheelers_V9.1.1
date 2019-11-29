@@ -3,7 +3,7 @@ class ConfigurationsController extends AdminBaseController
 {
 
     /* these variables must be only those which will store array type data and will saved as serialized array [*/
-    private $serializeArrayValues =  array('CONF_VENDOR_ORDER_STATUS','CONF_BUYER_ORDER_STATUS','CONF_PROCESSING_ORDER_STATUS','CONF_COMPLETED_ORDER_STATUS','CONF_REVIEW_READY_ORDER_STATUS','CONF_ALLOW_CANCELLATION_ORDER_STATUS','CONF_DIGITAL_ALLOW_CANCELLATION_ORDER_STATUS','CONF_RETURN_EXCHANGE_READY_ORDER_STATUS','CONF_DIGITAL_RETURN_READY_ORDER_STATUS','CONF_ENABLE_DIGITAL_DOWNLOADS','CONF_PURCHASE_ORDER_STATUS','CONF_BUYING_YEAR_REWARD_ORDER_STATUS','CONF_SUBSCRIPTION_ORDER_STATUS','CONF_SELLER_SUBSCRIPTION_STATUS','CONF_BADGE_COUNT_ORDER_STATUS','CONF_PRODUCT_IS_ON_ORDER_STATUSES');
+    private $serializeArrayValues =  array('CONF_VENDOR_ORDER_STATUS','CONF_BUYER_ORDER_STATUS','CONF_PROCESSING_ORDER_STATUS','CONF_COMPLETED_ORDER_STATUS','CONF_BOOKING_ORDER_STATUS','CONF_REVIEW_READY_ORDER_STATUS','CONF_ALLOW_CANCELLATION_ORDER_STATUS','CONF_DIGITAL_ALLOW_CANCELLATION_ORDER_STATUS','CONF_RETURN_EXCHANGE_READY_ORDER_STATUS','CONF_DIGITAL_RETURN_READY_ORDER_STATUS','CONF_ENABLE_DIGITAL_DOWNLOADS','CONF_PURCHASE_ORDER_STATUS','CONF_BUYING_YEAR_REWARD_ORDER_STATUS','CONF_SUBSCRIPTION_ORDER_STATUS','CONF_SELLER_SUBSCRIPTION_STATUS','CONF_BADGE_COUNT_ORDER_STATUS','CONF_PRODUCT_IS_ON_ORDER_STATUSES');
     /* ] */
 
     public function __construct($action)
@@ -549,7 +549,9 @@ class ConfigurationsController extends AdminBaseController
 
                 $iframeFld = $frm->addTextarea(Labels::getLabel('LBL_Google_Map_Iframe', $this->adminLangId), 'CONF_MAP_IFRAME_CODE');
                 $iframeFld->htmlAfterField = '<small>'.Labels::getLabel("LBL_This_is_the_Gogle_Map_Iframe_Script,_used_to_display_google_map_on_contact_us_page", $this->adminLangId).'</small>';
-
+				
+				$fld4 = $frm->addRadioButtons(Labels::getLabel("LBL_Enable_Book_Now_Module", $this->adminLangId), 'CONF_ENABLE_BOOK_NOW_MODULE', applicationConstants::getYesNoArr($this->adminLangId), applicationConstants::YES, array('class'=>'list-inline'));
+                $fld4->htmlAfterField = '<small>'.Labels::getLabel("LBL_On_enabling_this_feature,_buyer_can_book_product", $this->adminLangId).'</small>';
                 /*$ipFld = $frm->addTextarea(Labels::getLabel('LBL_Whitelisted_IP', $this->adminLangId), 'CONF_WHITELISTED_IP');
                 $ipFld->htmlAfterField = '<small>'.Labels::getLabel("LBL_Any_IP_you_want_to_add_in_whitelist_(comma_Separated)", $this->adminLangId).'</small>';*/
 
@@ -816,6 +818,16 @@ class ConfigurationsController extends AdminBaseController
                     array(),
                     ''
                 );
+				
+				$fld =$frm->addSelectBox(
+                    Labels::getLabel("LBL_Default_Booking_Order_Status", $this->adminLangId),
+                    'CONF_DEFAULT_BOOKING_ORDER_STATUS',
+                    $orderStatusArr,
+                    false,
+                    array(),
+                    ''
+                );
+
 
                 $fld =$frm->addSelectBox(
                     Labels::getLabel("LBL_Default_Paid_Order_Status", $this->adminLangId),
@@ -891,6 +903,10 @@ class ConfigurationsController extends AdminBaseController
 
                 $completeOrderSelected = (!empty($arrValues['CONF_COMPLETED_ORDER_STATUS']))?$arrValues['CONF_COMPLETED_ORDER_STATUS']:0;
                 $fld = $frm->addCheckBoxes(Labels::getLabel("LBL_Completed_Order_Status", $this->adminLangId), 'CONF_COMPLETED_ORDER_STATUS', $orderStatusArr, $completeOrderSelected, array('class'=>'list-inline'));
+                $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Set_the_order_status_the_customer's_order_must_reach_before_they_are_considered_completed_and_payment_released_to_Sellers.", $this->adminLangId)."</small>";
+				
+				$bookingOrderSelected = (!empty($arrValues['CONF_BOOKING_ORDER_STATUS']))?$arrValues['CONF_BOOKING_ORDER_STATUS']:0;
+                $fld = $frm->addCheckBoxes(Labels::getLabel("LBL_Booking_Order_Status", $this->adminLangId), 'CONF_BOOKING_ORDER_STATUS', $orderStatusArr, $bookingOrderSelected, array('class'=>'list-inline'));
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Set_the_order_status_the_customer's_order_must_reach_before_they_are_considered_completed_and_payment_released_to_Sellers.", $this->adminLangId)."</small>";
 
                 $feedbackOrderSelected = (!empty($arrValues['CONF_REVIEW_READY_ORDER_STATUS']))?$arrValues['CONF_REVIEW_READY_ORDER_STATUS']:0;

@@ -608,7 +608,7 @@ class CheckoutController extends MyAppController
                 $shipping_options = Product::getProductShippingRates($cartval['product_id'], $this->siteLangId, $ua_country_id, $shipBy);
                 $free_shipping_options = Product::getProductFreeShippingAvailabilty($cartval['product_id'], $this->siteLangId, $ua_country_id, $shipBy);
                 $productKey = md5($cartval["key"]);
-                if ($cartval && $cartval['product_type'] == Product::PRODUCT_TYPE_PHYSICAL) {
+                if ($cartval && $cartval['product_type'] == Product::PRODUCT_TYPE_PHYSICAL && !isset($cartval['is_for_booking'])) {
                     /* get Product Data[ */
                     $prodSrch = clone $prodSrchObj;
                     $prodSrch->setDefinedCriteria();
@@ -831,6 +831,8 @@ class CheckoutController extends MyAppController
         }
 
         $cartSummary = $this->cartObj->getCartFinancialSummary($this->siteLangId);
+        $summaryWithoutBook = $this->cartObj->getCartFinancialSummary($this->siteLangId,1);
+		
         $userId = UserAuthentication::getLoggedUserId();
         $userWalletBalance = User::getUserBalance($userId, true);
         /* Payment Methods[ */
@@ -1002,6 +1004,7 @@ class CheckoutController extends MyAppController
         //$orderData['order_net_charged'] = $cartSummary["netTotalAfterDiscount"];
         //$orderData['order_actual_paid'] = $cartSummary["cartActualPaid"];
         $orderData['order_net_amount'] = $cartSummary["orderNetAmount"];
+        $orderData['order_actual_net_amount'] = $summaryWithoutBook['orderNetAmount'];
         $orderData['order_is_wallet_selected'] = $cartSummary["cartWalletSelected"];
         $orderData['order_wallet_amount_charge'] = $cartSummary["WalletAmountCharge"];
         $orderData['order_type'] = Orders::ORDER_PRODUCT;
@@ -1172,6 +1175,15 @@ class CheckoutController extends MyAppController
                 if(FatApp::getConfig('CONF_TAX_COLLECTED_BY_SELLER',FatUtility::VAR_INT,0)){
                 $taxCollectedBySeller = applicationConstants::YES;
                 } */
+				
+				/* book now products */
+				$is_booking = 0;
+				
+				if(isset($cartProduct['is_for_booking'])){
+					$is_booking = 1;	
+				}
+
+				/* ------- */
 
                 $orderData['products'][CART::CART_KEY_PREFIX_PRODUCT.$productInfo['selprod_id']] = array(
                 'op_selprod_id'        =>    $productInfo['selprod_id'],
@@ -1205,7 +1217,7 @@ class CheckoutController extends MyAppController
                 'op_commission_percentage'    => $cartProduct['commission_percentage'],
                 'op_affiliate_commission_percentage' => $cartProduct['affiliate_commission_percentage'],
                 'op_affiliate_commission_charged' => $cartProduct['affiliate_commission'],
-                'op_status_id'        =>    FatApp::getConfig("CONF_DEFAULT_ORDER_STATUS"),
+                'op_status_id'        =>   (isset($cartProduct['is_for_booking'])?FatApp::getConfig("CONF_DEFAULT_BOOKING_ORDER_STATUS"):FatApp::getConfig("CONF_DEFAULT_ORDER_STATUS")),
                 // 'op_volume_discount_percentage'    =>    $cartProduct['volume_discount_percentage'],
                 'productsLangData'    =>    $productsLangData,
                 'productShippingData'    =>    $productShippingData,
@@ -1213,6 +1225,9 @@ class CheckoutController extends MyAppController
                 /* 'op_tax_collected_by_seller'    =>    $taxCollectedBySeller, */
                 'op_free_ship_upto'    =>    $cartProduct['shop_free_ship_upto'],
                 'op_actual_shipping_charges'    =>    $cartProduct['shipping_cost'],
+				'op_booking_product_actual_amount'  =>    $cartProduct['actualbookprice'], 
+				'op_product_amount_without_book'  =>    $cartProduct['priceWithoutBooking'], 
+				'op_is_booking'    =>    $is_booking,
                 );
 
                 $order_affiliate_user_id = isset($cartProduct['affiliate_user_id'])?$cartProduct['affiliate_user_id']:'';
@@ -1406,6 +1421,12 @@ class CheckoutController extends MyAppController
         if (strtolower($paymentMethod['pmethod_code']) == "cashondelivery") {
             if ($this->cartObj->hasDigitalProduct()) {
                 $str = Labels::getLabel('MSG_{COD}_is_not_available_if_your_cart_has_any_Digital_Product', $this->siteLangId);
+                $str = str_replace('{cod}', $paymentMethod['pmethod_name'], $str);
+                FatUtility::dieWithError($str);
+            }
+			
+			if ($this->cartObj->hasBookingProduct()) {
+                $str = Labels::getLabel('MSG_{COD}_is_not_available_if_your_cart_has_any_Booking_Product', $this->siteLangId);
                 $str = str_replace('{cod}', $paymentMethod['pmethod_name'], $str);
                 FatUtility::dieWithError($str);
             }
@@ -1966,6 +1987,7 @@ class CheckoutController extends MyAppController
     public function getFinancialSummary()
     {
         $cartSummary = $this->cartObj->getCartFinancialSummary($this->siteLangId);
+        $summaryWithoutBook = $this->cartObj->getCartFinancialSummary($this->siteLangId,1);
         $products = $this->cartObj->getProducts($this->siteLangId);
 
         $hasPhysicalProd = $this->cartObj->hasPhysicalProduct();
@@ -1977,6 +1999,7 @@ class CheckoutController extends MyAppController
 
         $address =  UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), $this->siteLangId, 0, $selected_shipping_address_id);
 
+        $this->set('orderNetAmountWithoutBooking',$summaryWithoutBook['orderNetAmount'] );
         $this->set('products', $products);
         $this->set('cartSummary', $cartSummary);
         $this->set('defaultAddress', $address);

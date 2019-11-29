@@ -188,7 +188,7 @@ class SellerController extends SellerBaseController
         $srch->setPageSize($pagesize);
 
         $srch->addMultipleFields(
-            array( 'order_id', 'order_user_id','op_selprod_id','op_is_batch','selprod_product_id','order_date_added', 'order_net_amount', 'op_invoice_number','totCombinedOrders as totOrders', 'op_selprod_title', 'op_product_name', 'op_id','op_qty','op_selprod_options', 'op_brand_name', 'op_shop_name','op_other_charges','op_unit_price','op_tax_collected_by_seller','op_selprod_user_id','opshipping_by_seller_user_id', 'orderstatus_id', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name' )
+            array( 'order_id', 'order_user_id','op_selprod_id','op_is_batch','selprod_product_id','order_date_added', 'order_net_amount', 'op_invoice_number','totCombinedOrders as totOrders', 'op_selprod_title', 'op_product_name', 'op_id','op_qty','op_selprod_options', 'op_brand_name', 'op_shop_name','op_other_charges','op_unit_price','op_tax_collected_by_seller','op_selprod_user_id','opshipping_by_seller_user_id', 'orderstatus_id', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name','op_is_booking' )
         );
 
         $keyword = FatApp::getPostedData('keyword', null, '');
@@ -409,6 +409,15 @@ class SellerController extends SellerBaseController
         $orderDetail['shippingAddress'] = (isset($address[Orders::SHIPPING_ADDRESS_TYPE]))?$address[Orders::SHIPPING_ADDRESS_TYPE]:array();
 
         $orderDetail['comments'] = $orderObj->getOrderComments($this->siteLangId, array("op_id"=>$op_id,'seller_id'=>$userId));
+		
+		/* booking */
+		
+			if($orderDetail['op_is_booking'] == 1) {
+				$processingStatuses = unserialize(FatApp::getConfig("CONF_BOOKING_ORDER_STATUS"));
+			}
+			$is_booking = $orderDetail['op_is_booking'];
+			$paidAmount = $orderObj->getOrderPaymentPaid($orderDetail['op_order_id']);
+		/* ---- */
 
         $data = array('op_id'=>$op_id , 'op_status_id' => $orderDetail['op_status_id']);
         $frm = $this->getOrderCommentsForm($orderDetail, $processingStatuses);
@@ -429,6 +438,8 @@ class SellerController extends SellerBaseController
             $digitalDownloadLinks = Orders::getOrderProductDigitalDownloadLinks($op_id);
         }
 
+        $this->set('paidAmount', $paidAmount);
+        $this->set('is_booking', $is_booking);
         $this->set('orderDetail', $orderDetail);
         $this->set('orderStatuses', $orderStatuses);
         $this->set('shippedBySeller', $shippedBySeller);
@@ -571,6 +582,13 @@ class SellerController extends SellerBaseController
             $processingStatuses = array_diff($processingStatuses, (array)FatApp::getConfig("CONF_DEFAULT_DEIVERED_ORDER_STATUS"));
         }
         /*]*/
+		
+		/* booking */
+		
+			if($orderDetail['op_is_booking'] == 1) {
+				$processingStatuses = unserialize(FatApp::getConfig("CONF_BOOKING_ORDER_STATUS"));
+			}
+		/* ---- */
 
         $frm =  $this->getOrderCommentsForm($orderDetail, $processingStatuses);
         $post = $frm->getFormDataFromArray($post);
@@ -3845,6 +3863,12 @@ class SellerController extends SellerBaseController
                 }
             }
         }
+		
+		$product_book = Product::getProductDataById(FatApp::getConfig('CONF_DEFAULT_SITE_LANG'), $product_id, array('product_book'));
+		if (FatApp::getConfig("CONF_ENABLE_BOOK_NOW_MODULE", FatUtility::VAR_INT, 0 ) == 1 && $product_book['product_book'] == 1) {
+			$frm->addRadioButtons(Labels::getLabel("", $this->siteLangId), 'selprod_book_now_enable', applicationConstants::getProductBuyStatusArr($this->siteLangId), '', array());
+        }
+		
 		$frm->addCheckBox(Labels::getLabel('LBL_Enable_Test_Drive', $this->siteLangId), 'selprod_test_drive_enable', 1, array(), false, 0);
 
         $frm->addHiddenField('', 'selprod_product_id', $product_id);

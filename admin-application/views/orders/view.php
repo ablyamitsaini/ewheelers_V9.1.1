@@ -61,7 +61,13 @@ if ($order['order_reward_point_used'] > 0) {
                               <td><strong><?php echo Labels::getLabel('LBL_Reward_Point_Discount', $adminLangId);?>: </strong><?php echo CommonHelper::displayMoneyFormat($order["order_reward_point_value"], true, true); ?> </td>
                             </tr>
                             <tr>
-                              <td><strong><?php echo Labels::getLabel('LBL_Volume/Loyalty_Discount', $adminLangId);?>: </strong>-<?php echo CommonHelper::displayMoneyFormat($order['order_volume_discount_total'], true, true); ?></td>
+                              <td><strong><?php echo Labels::getLabel('LBL_Volume/Loyalty_Discount', $adminLangId);?>: </strong> <?php echo CommonHelper::displayMoneyFormat($order['order_volume_discount_total'], true, true); ?></td>
+                           
+							<?php if($order['order_actual_net_amount'] > $order['order_net_amount']) { ?>
+                              <td><strong><?php echo Labels::getLabel('LBL_Order_Net_Amount_Without_Booking', $adminLangId);?>: </strong> <?php echo CommonHelper::displayMoneyFormat($order['order_actual_net_amount'], true, true); ?></td>
+                            
+                              <td><strong><?php echo Labels::getLabel('LBL_To_Be_Paid_On_Delivery', $adminLangId);?>: </strong> <?php echo CommonHelper::displayMoneyFormat($order['order_actual_net_amount'] - $order['order_net_amount'], true, true); ?></td>
+							<?php } ?>
                             </tr>
                         </table>
                     </div>

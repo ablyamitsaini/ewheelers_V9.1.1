@@ -252,29 +252,32 @@ if (!$print) {
                     </div>
 
                     <?php if ($displayForm && !$print) { ?>
-                    <div class="section--repeated no-print">
-                        <h5><?php echo Labels::getLabel('LBL_Comments_on_order', $siteLangId);?></h5>
-                        <?php
-                      $frm->setFormTagAttribute('onsubmit', 'updateStatus(this); return(false);');
-                      $frm->setFormTagAttribute('class', 'form');
-                      $frm->developerTags['colClassPrefix'] = 'col-md-';
-                      $frm->developerTags['fld_default_col'] = 12;
-
-                      $fld = $frm->getField('op_status_id');
-                      $fld->developerTags['col'] = 6;
-
-                      $fld1 = $frm->getField('customer_notified');
-                      $fld1->developerTags['col'] = 6;
-
-                      $fldTracking = $frm->getField('tracking_number');
-                      $fldTracking->setWrapperAttribute('class', 'div_tracking_number');
-                      $fldTracking->developerTags['col'] = 6;
-
-                      $fldBtn = $fldTracking = $frm->getField('btn_submit');
-                      $fldBtn->developerTags['col'] = 6;
-                      echo $frm->getFormHtml();?>
-                    </div>
-                    <?php }?>
+						<?php if(($is_booking == 1 && $paidAmount != 0) || $is_booking == 0 ){ ?>
+						<div class="section--repeated no-print">
+							<h5><?php echo Labels::getLabel('LBL_Comments_on_order', $siteLangId);?></h5>
+							<?php
+						$frm->setFormTagAttribute('onsubmit', 'updateStatus(this); return(false);');
+						$frm->setFormTagAttribute('class', 'form');
+						$frm->developerTags['colClassPrefix'] = 'col-md-';
+						$frm->developerTags['fld_default_col'] = 12;
+	
+						$fld = $frm->getField('op_status_id');
+						$fld->developerTags['col'] = 6;
+	
+						$fld1 = $frm->getField('customer_notified');
+						$fld1->developerTags['col'] = 6;
+	
+						$fldTracking = $frm->getField('tracking_number');
+						$fldTracking->setWrapperAttribute('class', 'div_tracking_number');
+						$fldTracking->developerTags['col'] = 6;
+	
+						$fldBtn = $fldTracking = $frm->getField('btn_submit');
+						$fldBtn->developerTags['col'] = 6;
+						echo $frm->getFormHtml();?>
+						</div>
+						<?php
+						}
+					}?>
                     <span class="gap"></span>
                     <?php if (!empty($orderDetail['comments']) && !$print) {?>
                     <div class="section--repeated no-print">

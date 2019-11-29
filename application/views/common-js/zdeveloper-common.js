@@ -1301,3 +1301,36 @@ function testDriveRequestHomeCollection(selprod_id){
 	};
 	
 })();
+
+
+$(document).ready(function() {
+	 $(document).on('click', '.btnBookNow--js', function(event) {
+	 	$btn = $(this);
+        event.preventDefault();
+        var data = fcom.frmData(document.frmBuyProduct);
+        var yourArray = [];
+        var selprodId = $(this).siblings('input[name="selprod_id"]').val();
+        if( typeof mainSelprodId != 'undefined' && mainSelprodId == selprodId ){
+            $(".cart-tbl").find("input").each(function(e){
+                if (($(this).val()>0) && (!$(this).closest("td").siblings().hasClass("cancelled--js"))){
+                    data = data+'&'+$(this).attr('lang')+"="+$(this).val();
+                }
+            });
+        }
+			
+			data = data+"&type="+"book";
+			fcom.updateWithAjax(fcom.makeUrl('cart', 'add' ),data, function(ans) {
+					if (ans['redirect']) {
+						location = ans['redirect'];
+						return false;
+					}
+					
+					$('span.cartQuantity').html(ans.total);
+					/* $('html, body').animate({ scrollTop: 0 }, 'slow');
+					$('html').toggleClass("cart-is-active");
+					$('.cart').toggleClass("cart-is-active"); */
+					$('#cartSummary').load(fcom.makeUrl('cart', 'getCartSummary'));
+					});
+			return false;
+		}); 
+});

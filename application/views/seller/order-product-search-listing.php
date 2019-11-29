@@ -34,7 +34,11 @@ foreach ($orders as $sn => $order) {
             case 'product':
                 $txt = '<div class="item__description">';
                 if ($order['op_selprod_title'] != '') {
-                    $txt .= '<div class="item__title">'.$order['op_selprod_title'].'</div>';
+                    $txt .= '<div class="item__title">'.$order['op_selprod_title'];
+					if($order['op_is_booking']) {
+						$txt .= ' ( BOOKING PRODUCT )';
+					}
+					$txt .= '</div>';
                 }
                 $txt .= '<div class="item__sub_title">'.$order['op_product_name'].'</div>';
 
@@ -67,17 +71,33 @@ foreach ($orders as $sn => $order) {
                     '<i class="fa fa-eye"></i>',
                     true
                 );
-
-                if (in_array($order['orderstatus_id'], $processingStatuses)) {
-                    $li = $ul->appendElement("li");
-                    $li->appendElement(
-                        'a',
-                        array('href'=> CommonHelper::generateUrl('seller', 'cancelOrder', array($order['op_id'])), 'class'=>'',
-                        'title'=>Labels::getLabel('LBL_Cancel_Order', $siteLangId)),
-                        '<i class="fa fa-close"></i>',
-                        true
-                    );
-                }
+				
+				if($order['op_is_booking'] == 1) {
+					$processingStatuses = unserialize(FatApp::getConfig("CONF_BOOKING_ORDER_STATUS"));
+						if (in_array($order['orderstatus_id'], $processingStatuses)) {
+							if($order['orderstatus_id'] == FatApp::getConfig("CONF_DEFAULT_BOOKING_ORDER_STATUS")){
+								$li = $ul->appendElement("li");
+								$li->appendElement(
+									'a',
+									array('href'=> CommonHelper::generateUrl('seller', 'cancelOrder', array($order['op_id'])), 'class'=>'',
+									'title'=>Labels::getLabel('LBL_Cancel_Order', $siteLangId)),
+									'<i class="fa fa-close"></i>',
+									true
+								);
+							}
+						}	
+				}else{
+					if (in_array($order['orderstatus_id'], $processingStatuses)) {
+						$li = $ul->appendElement("li");
+						$li->appendElement(
+							'a',
+							array('href'=> CommonHelper::generateUrl('seller', 'cancelOrder', array($order['op_id'])), 'class'=>'',
+							'title'=>Labels::getLabel('LBL_Cancel_Order', $siteLangId)),
+							'<i class="fa fa-close"></i>',
+							true
+						);
+					}
+				}
 
                 break;
             default:

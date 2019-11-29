@@ -114,7 +114,7 @@ class OrdersController extends AdminBaseController
         $srch->joinOrderBuyerUser();
         $srch->addMultipleFields(
             array('order_id','order_user_id', 'order_date_added', 'order_is_paid','order_tax_charged', 'order_site_commission',
-            'order_reward_point_value','order_volume_discount_total','buyer.user_name as buyer_user_name', 'buyer_cred.credential_email as buyer_email','buyer.user_phone as buyer_phone', 'order_net_amount', 'order_shippingapi_name', 'order_pmethod_id', 'ifnull(pmethod_name,pmethod_identifier)as pmethod_name','order_discount_total','pmethod_code','order_is_wallet_selected','order_reward_point_used')
+            'order_reward_point_value','order_volume_discount_total','buyer.user_name as buyer_user_name', 'buyer_cred.credential_email as buyer_email','buyer.user_phone as buyer_phone', 'order_net_amount', 'order_shippingapi_name', 'order_pmethod_id', 'ifnull(pmethod_name,pmethod_identifier)as pmethod_name','order_discount_total','pmethod_code','order_is_wallet_selected','order_reward_point_used','order_actual_net_amount')
         );
         $srch->addCondition('order_id', '=', $order_id);
         $srch->addCondition('order_type', '=', Orders::ORDER_PRODUCT);
@@ -194,6 +194,29 @@ class OrdersController extends AdminBaseController
             Message::addErrorMessage($this->str_invalid_request);
             FatUtility::dieJsonError(Message::getHtml());
         }
+		
+		
+		/* book now email  */
+		
+		$emailObj = new EmailHandler();
+			$orderObj = new Orders();
+			$orderData = $orderObj->getOrderById($orderId);
+			$subOrders = $orderObj->getChildOrders(array("order"=>$orderId), ORDERS::ORDER_PRODUCT);
+			$is_booking = 0;
+				foreach ($subOrders as $subkey => $subval) {
+					if($subval['op_is_booking'] == 1 && $orderData['order_is_paid'] == 0) {
+						$is_booking = 1;
+					}
+				}
+
+			$paidAmount = $orderObj->getOrderPaymentPaid($orderData['order_id']);
+
+			if($is_booking == 1 && $paidAmount == 0){
+				$emailObj->newOrderVendor($orderData['order_id']);
+				$emailObj->newOrderBuyerAdmin($orderData['order_id'], $orderData['order_language_id']);
+			}
+
+		/* ----------- */
         
         $srch = new OrderSearch($this->adminLangId);
         $srch->joinOrderPaymentMethod();
@@ -208,7 +231,7 @@ class OrdersController extends AdminBaseController
         }        
 
         $orderPaymentObj = new OrderPayment($orderId, $this->adminLangId);
-        if(!$orderPaymentObj->addOrderPayment($post["opayment_method"], $post['opayment_gateway_txn_id'], $post["opayment_amount"], $post["opayment_comments"])) {
+        if(!$orderPaymentObj->addOrderPayment($post["opayment_method"], $post['opayment_gateway_txn_id'], $post["opayment_amount"], $post["opayment_comments"],'',false,0,1)) {
             Message::addErrorMessage($orderPaymentObj->getError());
             FatUtility::dieJsonError(Message::getHtml());
         }

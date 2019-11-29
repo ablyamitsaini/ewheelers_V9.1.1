@@ -40,6 +40,10 @@ defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
                                         echo $option['option_name'].':'; ?> <span class="text--dark"><?php echo $option['optionvalue_name']; ?></span>
                                     <?php }
                                 }
+								
+								if(isset($product['is_for_booking'])){	
+									echo '<div class="item-yk-head-title">' . Labels::getLabel('LBL_Booking_Product', $siteLangId) .'</div>';
+								} 
 
                                 $showAddToFavorite = true;
                                 if (UserAuthentication::isUserLogged() && (!User::isBuyer())) {

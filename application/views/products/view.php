@@ -227,8 +227,24 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                     echo $frmBuyProduct->getFormTag();
                                     $qtyField =  $frmBuyProduct->getField('quantity');
                                     $qtyFieldName =  $qtyField->getCaption();
-                                if (strtotime($product['selprod_available_from'])<= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))) { ?>
-                                    <div class="row align-items-end <?php echo $product['selprod_test_drive_enable']?'row-flexible':'';?>">
+                                if (strtotime($product['selprod_available_from'])<= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))) { 
+								
+								if($product['selprod_book_now_enable'] == applicationConstants::BOTH && $is_booking == 1 && FatApp::getConfig('CONF_ENABLE_BOOK_NOW_MODULE') == 1 && $product['selprod_test_drive_enable'] == 1){
+										$button_class = 'row-flexible4';
+ 									}elseif($product['selprod_book_now_enable'] == applicationConstants::BUY_NOW && $product['selprod_test_drive_enable'] == 1){
+										$button_class = 'row-flexible';
+									}elseif($product['selprod_book_now_enable'] == applicationConstants::BOTH && $is_booking == 1 && FatApp::getConfig('CONF_ENABLE_BOOK_NOW_MODULE') == 1 ){
+										$button_class = 'row-flexible';			
+									}elseif($product['selprod_test_drive_enable'] == 1 && $product['selprod_book_now_enable'] == applicationConstants::BOOK_NOW && $is_booking == 1 && FatApp::getConfig('CONF_ENABLE_BOOK_NOW_MODULE') == 1){
+										$button_class = '';
+									}elseif($product['selprod_test_drive_enable'] == 1){
+										$button_class = 'row-flexible';
+									}else{
+										$button_class = '';
+									}
+								
+								?>
+                                    <div class="row align-items-end <?php echo $button_class;?>">
                                         <div class="col-xl-4 col-lg-5 col-md-5 mb-2">
                                             <div class="form__group form__group-select">
                                                 <label class="h6"><?php echo $qtyFieldName; ?></label>
@@ -247,11 +263,31 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                             <label class="h6">&nbsp;</label>
                                             <div class="buy-group">
                                                 <?php if (strtotime($product['selprod_available_from']) <= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))) {
-													echo $frmBuyProduct->getFieldHtml('btnProductBuy');
+													
+													if($product['selprod_book_now_enable'] == applicationConstants::BOTH && $is_booking == 1 && FatApp::getConfig('CONF_ENABLE_BOOK_NOW_MODULE') == 1){
 														echo $frmBuyProduct->getFieldHtml('btnAddToCart');
+														echo $frmBuyProduct->getFieldHtml('btnProductBuy');
+														echo $frmBuyProduct->getFieldHtml('btnBookNow');
+														
+													}elseif($product['selprod_book_now_enable'] == applicationConstants::BUY_NOW){
+														echo $frmBuyProduct->getFieldHtml('btnAddToCart');
+														echo $frmBuyProduct->getFieldHtml('btnProductBuy');
+													}elseif($product['selprod_book_now_enable'] == applicationConstants::BOOK_NOW && $is_booking == 1 && FatApp::getConfig('CONF_ENABLE_BOOK_NOW_MODULE') == 1){
+														echo $frmBuyProduct->getFieldHtml('btnBookNow');
+													}else{
+														echo $frmBuyProduct->getFieldHtml('btnAddToCart');
+														echo $frmBuyProduct->getFieldHtml('btnProductBuy');
+													}
+													
 													if($product['selprod_test_drive_enable']){
 														echo $frmBuyProduct->getFieldHtml('btnTestDrive');
 													}
+													
+													/* echo $frmBuyProduct->getFieldHtml('btnProductBuy');
+														echo $frmBuyProduct->getFieldHtml('btnAddToCart');
+													if($product['selprod_test_drive_enable']){
+														echo $frmBuyProduct->getFieldHtml('btnTestDrive');
+													} */
 													
                                             /* echo $frmBuyProduct->getFieldHtml('btnProductBuy');
                                             echo $frmBuyProduct->getFieldHtml('btnAddToCart'); */

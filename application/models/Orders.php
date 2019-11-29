@@ -1022,7 +1022,11 @@ class Orders extends MyAppModel
         }
 
         if ($orderInfo['order_type']==ORDERS::ORDER_PRODUCT) {
-            $this->addProductOrderPayment($orderId, $orderInfo, $orderPaymentStatus, $comment, $notify);
+			if($orderPaymentStatus == ORDERS::ORDER_IS_PAID) {
+				$this->addProductOrderPayment($orderId, $orderInfo, $orderPaymentStatus, $comment, $notify, 1);
+			}else{
+				$this->addProductOrderPayment($orderId, $orderInfo, $orderPaymentStatus, $comment, $notify);
+			}
         } elseif ($orderInfo['order_type']==ORDERS::ORDER_SUBSCRIPTION) {
             $this->addSubscriptionOrderPayment($orderId, $orderInfo, $orderPaymentStatus, $comment, $notify);
         }
@@ -1168,7 +1172,7 @@ class Orders extends MyAppModel
         }
     }
 
-    public function addProductOrderPayment($orderId, $orderInfo, $orderPaymentStatus, $comment = '', $notify = false)
+    public function addProductOrderPayment($orderId, $orderInfo, $orderPaymentStatus, $comment = '', $notify = false, $is_paid = 0)
     {
         /* CommonHelper::printArray($orderInfo); die; */
         $emailObj = new EmailHandler();
@@ -1179,16 +1183,35 @@ class Orders extends MyAppModel
         } elseif ($orderInfo['order_pmethod_id']==PaymentSettings::CASH_ON_DELIVERY) {
             $emailNotify = $emailObj->cashOnDeliveryOrderUpdateBuyerAdmin($orderId);
         }
+		
+		
+		$subOrders = $this->getChildOrders(array("order"=>$orderId), ORDERS::ORDER_PRODUCT);
+			$is_booking = 0;
+				foreach ($subOrders as $subkey => $subval) {
+					if($subval['op_is_booking'] == 1 && $orderInfo['order_is_paid'] == 0) {
+						$is_booking = 1;
+					}
+				}
 
         // If order Payment status is 0 then becomes greater than 0 mail to Vendors and Update Child Order Status to Paid & Give Referral Reward Points
         if (!$orderInfo['order_is_paid'] && ($orderPaymentStatus > 0)) {
-            $emailObj->newOrderVendor($orderId);
-            $emailObj->newOrderBuyerAdmin($orderId, $orderInfo['order_language_id']);
+			if($is_booking == 0) {
+				$emailObj->newOrderVendor($orderId);
+				$emailObj->newOrderBuyerAdmin($orderId, $orderInfo['order_language_id']);
+			}
 
-            $subOrders = $this->getChildOrders(array("order"=>$orderId), $orderInfo['order_type']);
+            //$subOrders = $this->getChildOrders(array("order"=>$orderId), $orderInfo['order_type']);
             foreach ($subOrders as $subkey => $subval) {
-                $this->addChildProductOrderHistory($subval["op_id"], $orderInfo['order_language_id'], FatApp::getConfig("CONF_DEFAULT_PAID_ORDER_STATUS"), '', true);
-                if ($subval['op_product_type'] == Product::PRODUCT_TYPE_DIGITAL) {
+				/* booking products */
+				
+					$default_status = FatApp::getConfig("CONF_DEFAULT_PAID_ORDER_STATUS");
+					if($subval['op_is_booking'] == 1 && $is_paid != 1) {
+						$default_status = FatApp::getConfig("CONF_DEFAULT_BOOKING_ORDER_STATUS");
+					}
+				
+				/* ---- */
+                $this->addChildProductOrderHistory($subval["op_id"], $orderInfo['order_language_id'], $default_status, '', true);
+                if ($subval['op_product_type'] == Product::PRODUCT_TYPE_DIGITAL && $is_booking == 0) {
                     $emailObj->newDigitalOrderBuyer($orderId, $subval["op_id"], $orderInfo['order_language_id']);
                 }
             }
@@ -1731,6 +1754,7 @@ class Orders extends MyAppModel
 
         // If order status is in buyer order statuses then send update email
         if (in_array($opStatusId, unserialize(FatApp::getConfig("CONF_BUYER_ORDER_STATUS"))) && $notify) {
+			
             $emailNotificationObj->orderStatusUpdateBuyer($commentId, $childOrderInfo['order_language_id'], $childOrderInfo['order_user_id']);
         }
         return true;

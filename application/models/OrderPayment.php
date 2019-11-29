@@ -119,7 +119,7 @@ class OrderPayment extends Orders
         return $arrOrder;
     }
 
-    public function addOrderPayment($paymentMethodName, $txnId, $amount, $comments = '', $response = '', $isWallet = false, $opId = 0)
+    public function addOrderPayment($paymentMethodName, $txnId, $amount, $comments = '', $response = '', $isWallet = false, $opId = 0,$is_admin_request = 0)
     {
         $paymentOrderId = $this->paymentOrderId;
         $defaultSiteLangId = FatApp::getConfig('conf_default_site_lang');
@@ -151,10 +151,38 @@ class OrderPayment extends Orders
             }
 
             $totalPaymentPaid = $this->getOrderPaymentPaid($paymentOrderId);
-            $orderBalance = ($orderDetails['order_net_amount'] - $totalPaymentPaid);
+            $orderBalance = ($orderDetails['order_actual_net_amount'] - $totalPaymentPaid);
+			
+			$emailObj = new EmailHandler();
+			$orderObj = new Orders();
+			$subOrders = $orderObj->getChildOrders(array("order"=>$paymentOrderId), ORDERS::ORDER_PRODUCT);
+			$is_booking = 0;
+				foreach ($subOrders as $subkey => $subval) {
+					if($subval['op_is_booking'] == 1 && $orderInfo['order_is_paid'] == 0) {
+						$is_booking = 1;
+					}
+				}
+				
+				if($is_booking == 1 && $orderBalance > 0 && $is_admin_request == 0) {
+					$emailObj->newOrderVendor($orderInfo['order_id']);
+					$emailObj->newOrderBuyerAdmin($orderInfo['order_id'], $orderInfo['order_language_id']);
+					//$emailObj->newOrderBookingVendorBuyerAdmin($orderInfo['order_id'], $orderInfo['order_language_id']);
+				}
+		
 
             if ($orderBalance <= 0) {
-                $this->addOrderPaymentHistory($paymentOrderId, Orders::ORDER_IS_PAID, Labels::getLabel('LBL_Received_Payment', $defaultSiteLangId), 1);
+				/* --booking---- */
+				/* $bookingProduct = $this->checkBookingOrderProduct($paymentOrderId);
+				
+				$order_status = Orders::ORDER_IS_PAID;
+				if($bookingProduct > 0) {
+					$order_status = Orders::ORDER_IS_PENDING;
+				}
+				*/
+				/* ----- */
+				$order_status = Orders::ORDER_IS_PAID;
+				
+                $this->addOrderPaymentHistory($paymentOrderId, $order_status, Labels::getLabel('LBL_Received_Payment', $defaultSiteLangId), 1);
 
                 $notificationData = array(
                  'notification_record_type' => Notification::TYPE_ORDER,
@@ -400,4 +428,18 @@ class OrderPayment extends Orders
         $this->addOrderPayment(Labels::getLabel('LBL_User_Wallet', $defaultSiteLangId), 'W-'.time(), $amountToBeCharge, Labels::getLabel("LBL_Received_Payment", $defaultSiteLangId), Labels::getLabel('LBL_Payment_From_User_Wallet', $defaultSiteLangId), true);
         return true;
     }
+	
+	public function checkBookingOrderProduct($paymentOrderId)
+	{
+        $srch = new OrderProductSearch(0, true);
+        $srch->addMultipleFields(array('count(op_id) as booking_product'));
+        $srch->addCondition('op_order_id', '=', $paymentOrderId);
+		$srch->addCondition('op_is_booking', '=', 1);
+        $rs = $srch->getResultSet();
+        $result = FatApp::getDb()->fetch($rs);
+        return $result['booking_product'];
+	}
+	
+	
+	
 }
