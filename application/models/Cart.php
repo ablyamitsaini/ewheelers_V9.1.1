@@ -391,7 +391,8 @@ class Cart extends FatModel
                     /*]*/
                     //CommonHelper::printArray($sellerProductRow);exit;
                     /*[ Product Tax */
-                    $taxableProdPrice = $sellerProductRow['theprice'] - $sellerProductRow['volume_discount'];
+                    //$taxableProdPrice = $sellerProductRow['theprice'] - $sellerProductRow['volume_discount'];
+					$taxableProdPrice = $sellerProductRow['priceWithoutBooking'] - $sellerProductRow['volume_discount'];
                     $taxObj = new Tax();
                     $tax = $taxObj->calculateTaxRates($sellerProductRow['product_id'], $taxableProdPrice, $sellerProductRow['selprod_user_id'], $siteLangId, $quantity);
                     $this->products[$key]['tax'] = $tax;
