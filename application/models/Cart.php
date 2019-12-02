@@ -1830,4 +1830,37 @@ class Cart extends FatModel
 			return true;
 		}
 	}
+	
+	
+	public function validateAction($selprod_id,$isForbooking,$siteLangId){
+
+	   $prodSrch = new ProductSearch($siteLangId);
+	   $prodSrch->setDefinedCriteria();
+       $prodSrch->doNotCalculateRecords();
+       $prodSrch->doNotLimitRecords();
+       $prodSrch->addCondition('selprod_id', '=', $selprod_id);
+	   $prodSrch->addMultipleFields(array('product_book','selprod_book_now_enable'));
+	   $rs = $prodSrch->getResultSet();
+       $sellerProductRow = FatApp::getDb()->fetch($rs);
+	   $product_book = $sellerProductRow['product_book'];
+	   $selprod_book_now_enable = $sellerProductRow['selprod_book_now_enable'];
+	   $global_setting = FatApp::getConfig("CONF_ENABLE_BOOK_NOW_MODULE", FatUtility::VAR_INT, 0);
+	   
+	    if($isForbooking == 1){
+			if($product_book == 0 || $global_setting == 0 || $selprod_book_now_enable == applicationConstants::BUY_NOW ){
+				$this->error = Labels::getLabel('LBL_This_Product_Is_Not_Available_For_Booking',$siteLangId);
+				return false;
+			}
+        }
+		
+		if($isForbooking == 0){
+			if(( $global_setting == 1 && $product_book == 1 && $selprod_book_now_enable == applicationConstants::BOOK_NOW )) {
+				$this->error = Labels::getLabel('LBL_This_Product_Is_Not_Available_For_Buy',$siteLangId);
+				return false;
+			}
+        }
+		
+	   return true;
+   }
+   
 }
