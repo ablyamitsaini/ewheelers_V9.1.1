@@ -50,6 +50,15 @@
                         <span class="products__price_old"><?php echo CommonHelper::displayMoneyFormat($product['selprod_price']); ?></span> <span class="product_off"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span>
                     <?php } ?>
                     </div>
+					<?php
+					if($is_booking == 1 && FatApp::getConfig('CONF_ENABLE_BOOK_NOW_MODULE') == 1 && ($product['selprod_book_now_enable'] == applicationConstants::BOTH || $product['selprod_book_now_enable'] == applicationConstants::BOOK_NOW)){				
+					$bookPrice = ($booking_percentage / 100) * $product['theprice'];
+					?>	
+					<b><?php echo Labels::getLabel('LBL_Booking_Price', $siteLangId) . " : " . CommonHelper::displayMoneyFormat($bookPrice); ?>                   
+                    </b>
+					<?php
+					}
+					?>
                     <div class="divider"></div>
                     <div class="gap"></div>
                 </div>
