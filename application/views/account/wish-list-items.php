@@ -15,9 +15,9 @@
         <a title='<?php echo Labels::getLabel('LBL_Move_to_other_wishlist', $siteLangId); ?>' class="btn btn--primary btn--sm formActionBtn-js formActions-css" onclick="viewWishList(0,this,event, <?php echo !empty($wishListRow['uwlist_id']) ? $wishListRow['uwlist_id']: 0; ?>);" href="javascript:void(0)">
             <i class="fa fa-heart"></i>&nbsp;&nbsp;<?php echo Labels::getLabel('LBL_Move', $siteLangId); ?>
         </a>
-        <a title='<?php echo Labels::getLabel('LBL_Move_to_cart', $siteLangId); ?>' class="btn btn--primary btn--sm formActionBtn-js formActions-css" onClick="addSelectedToCart(event);" href="javascript:void(0)">
+        <!--<a title='<?php echo Labels::getLabel('LBL_Move_to_cart', $siteLangId); ?>' class="btn btn--primary btn--sm formActionBtn-js formActions-css" onClick="addSelectedToCart(event);" href="javascript:void(0)">
             <i class="fa fa-shopping-cart"></i>&nbsp;&nbsp;<?php echo Labels::getLabel('LBL_Cart', $siteLangId); ?>
-        </a>
+        </a>-->
         <a title='<?php echo Labels::getLabel('LBL_Move_to_trash', $siteLangId); ?>' class="btn btn--primary btn--sm formActionBtn-js formActions-css" onClick="removeSelectedFromWishlist( <?php echo $wishListRow['uwlist_id']; ?>, event );" href="javascript:void(0)">
             <i class="fa fa-trash"></i>&nbsp;&nbsp;<?php echo Labels::getLabel('LBL_Delete', $siteLangId); ?>
         </a>

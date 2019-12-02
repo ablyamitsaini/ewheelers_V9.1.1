@@ -129,6 +129,16 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                         <span class="product_off"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span>
                                         <?php } ?>
                                     </div>
+									
+									<?php
+										if($is_booking == 1 && FatApp::getConfig('CONF_ENABLE_BOOK_NOW_MODULE') == 1 && ($product['selprod_book_now_enable'] == applicationConstants::BOTH || $product['selprod_book_now_enable'] == applicationConstants::BOOK_NOW)){				
+										$bookPrice = ($booking_percentage / 100) * $product['theprice'];
+										?>	
+										<b><?php echo Labels::getLabel('LBL_Booking_Price', $siteLangId) . " : " . CommonHelper::displayMoneyFormat($bookPrice); ?>                   
+										</b>
+										<?php
+										}
+									?>
 
                                     <!--<div class="detail-grouping">
                                         <div class="products__category"><a href="<?php echo CommonHelper::generateUrl('Category', 'View', array($product['prodcat_id']));?>"><?php echo $product['prodcat_name'];?> </a></div>
