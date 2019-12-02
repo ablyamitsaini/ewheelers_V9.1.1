@@ -106,6 +106,15 @@ class CartController extends MyAppController
 			$isForbooking = 1;
 		}
 		
+		/* check request for book and buy */
+		$selprod_id = FatApp::getPostedData('selprod_id', FatUtility::VAR_INT, 0);
+		
+		 if(false === $cartObj->validateAction($selprod_id,$isForbooking,$this->siteLangId)){
+           FatUtility::dieJsonError($cartObj->getError());
+		}
+		
+		/* --- */
+
         if (empty($post)) {
             $message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
@@ -131,7 +140,7 @@ class CartController extends MyAppController
         }
 
         $json = array();
-        $selprod_id = FatApp::getPostedData('selprod_id', FatUtility::VAR_INT, 0);
+        //$selprod_id = FatApp::getPostedData('selprod_id', FatUtility::VAR_INT, 0);
         $quantity = FatApp::getPostedData('quantity', FatUtility::VAR_INT, 1);
 
         if (true ===  MOBILE_APP_API_CALL) {
