@@ -39,6 +39,11 @@ $priceToFld->setWrapperAttribute('class', 'col-lg-2');
 $priceToFld->developerTags['col'] = 2;
 $priceToFld->developerTags['noCaptionTag'] = true;
 
+$statusFld = $frmOrderSrch->getField('order_type');
+$statusFld->setWrapperAttribute('class', 'col-lg-4');
+$statusFld->developerTags['col'] = 4;
+$statusFld->developerTags['noCaptionTag'] = true;
+
 $submitBtnFld = $frmOrderSrch->getField('btn_submit');
 $submitBtnFld->setFieldTagAttribute('class', 'btn--block btn btn--primary');
 $submitBtnFld->setWrapperAttribute('class', 'col-lg-2');

@@ -416,6 +416,7 @@ class ReportsController extends LoggedUserController
         if (!User::canAccessSupplierDashboard()) {
             FatApp::redirectUser(CommonHelper::generateUrl('Account', 'supplierApprovalForm'));
         }
+		
         $frmSrch = $this->getSalesReportSearchForm($orderDate);
         $this->set('frmSrch', $frmSrch);
         $this->set('orderDate', $orderDate);

@@ -9,14 +9,17 @@
 
     $submitBtnFld = $frmSrch->getField('date_to');
     $submitBtnFld->developerTags['noCaptionTag'] = true;
+	
+	
+	if (empty($orderDate)) {
+		$submitBtnFld = $frmSrch->getField('btn_submit');
+		$submitBtnFld->setFieldTagAttribute('class', 'btn--block');
+		$submitBtnFld->developerTags['noCaptionTag'] = true;
 
-    $submitBtnFld = $frmSrch->getField('btn_submit');
-    $submitBtnFld->setFieldTagAttribute('class', 'btn--block');
-    $submitBtnFld->developerTags['noCaptionTag'] = true;
-
-    $cancelBtnFld = $frmSrch->getField('btn_clear');
-    $cancelBtnFld->setFieldTagAttribute('class', 'btn--block');
-    $cancelBtnFld->developerTags['noCaptionTag'] = true;
+		$cancelBtnFld = $frmSrch->getField('btn_clear');
+		$cancelBtnFld->setFieldTagAttribute('class', 'btn--block');
+		$cancelBtnFld->developerTags['noCaptionTag'] = true;
+	}
 ?>
 <?php $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
 <main id="main-area" class="main" role="main">

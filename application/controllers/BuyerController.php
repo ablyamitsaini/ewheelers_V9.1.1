@@ -426,7 +426,7 @@ class BuyerController extends BuyerBaseController
         $srch->addMultipleFields(
             array('order_id', 'order_user_id', 'order_date_added', 'order_net_amount', 'op_invoice_number',
             'totCombinedOrders as totOrders', 'op_selprod_id', 'op_selprod_title', 'op_product_name', 'op_id','op_other_charges','op_unit_price',
-            'op_qty', 'op_selprod_options', 'op_brand_name', 'op_shop_name', 'op_status_id', 'op_product_type', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name','order_pmethod_id','order_status','pmethod_name', 'IFNULL(orrequest_id, 0) as return_request', 'IFNULL(ocrequest_id, 0) as cancel_request', 'orderstatus_color_code')
+            'op_qty', 'op_selprod_options', 'op_brand_name', 'op_shop_name', 'op_status_id', 'op_product_type', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name','order_pmethod_id','order_status','pmethod_name', 'IFNULL(orrequest_id, 0) as return_request', 'IFNULL(ocrequest_id, 0) as cancel_request', 'orderstatus_color_code','op_is_booking ')
         );
 
         $keyword = FatApp::getPostedData('keyword', null, '');
@@ -441,6 +441,15 @@ class BuyerController extends BuyerBaseController
         } else {
             $srch->addStatusCondition(unserialize(FatApp::getConfig("CONF_BUYER_ORDER_STATUS")));
         }
+		
+		$op_order_type = FatApp::getPostedData('order_type', null, '0');
+        if($op_order_type == applicationConstants::BOOK_NOW ){
+			$srch->addCondition('op_is_booking','=',1);
+		}
+		
+		if($op_order_type == applicationConstants::BUY_NOW ){
+			$srch->addCondition('op_is_booking','=',0);
+		}
 
         $dateFrom = FatApp::getPostedData('date_from', null, '');
         if (!empty($dateFrom)) {
@@ -2316,6 +2325,7 @@ class BuyerController extends BuyerBaseController
         $frm->addDateField('', 'date_to', '', array('placeholder' => Labels::getLabel('LBL_Date_To', $langId),'readonly'=>'readonly' ));
         $frm->addTextBox('', 'price_from', '', array('placeholder' => Labels::getLabel('LBL_Price_Min', $langId).' ['.$currencySymbol.']' ));
         $frm->addTextBox('', 'price_to', '', array('placeholder' => Labels::getLabel('LBL_Price_Max', $langId).' ['.$currencySymbol.']' ));
+		$frm->addSelectBox('', 'order_type', applicationConstants::getProductBuyBookStatusArr($langId), '', array(), Labels::getLabel('LBL_Order_Type', $langId));
         $fldSubmit = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Search', $langId));
         $fldCancel = $frm->addButton("", "btn_clear", Labels::getLabel("LBL_Clear", $langId), array('onclick'=>'clearSearch();'));
         $frm->addHiddenField('', 'page');

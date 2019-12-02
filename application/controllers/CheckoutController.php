@@ -1225,7 +1225,7 @@ class CheckoutController extends MyAppController
                 /* 'op_tax_collected_by_seller'    =>    $taxCollectedBySeller, */
                 'op_free_ship_upto'    =>    $cartProduct['shop_free_ship_upto'],
                 'op_actual_shipping_charges'    =>    $cartProduct['shipping_cost'],
-				'op_booking_product_actual_amount'  =>    $cartProduct['actualbookprice'], 
+				/* 'op_booking_product_actual_amount'  =>    $cartProduct['actualbookprice'],  */
 				'op_product_amount_without_book'  =>    $cartProduct['priceWithoutBooking'], 
 				'op_is_booking'    =>    $is_booking,
                 );

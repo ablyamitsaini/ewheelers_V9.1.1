@@ -32,7 +32,7 @@ if (!$print) {
         <div class="content-body">
             <div class="cards">
                 <div class="cards-header p-4">
-                    <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Order_Details', $siteLangId);?></h5>
+                    <h5 class="cards-title"><?php echo ($orderDetail['op_is_booking'] == 1)?Labels::getLabel('LBL_Booking_Order_Details', $siteLangId):Labels::getLabel('LBL_Order_Details', $siteLangId);?></h5>
                     <?php if (!$print) { ?>
                     <div class="">
                         <iframe src="<?php echo Fatutility::generateUrl('seller', 'viewOrder', $urlParts) . '/print'; ?>" name="frame" style="display:none"></iframe>
@@ -86,7 +86,16 @@ if (!$print) {
                                 <?php }  */?>
                                 <p><strong><?php echo Labels::getLabel('LBL_Order_Total', $siteLangId);?>: </strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($orderDetail, 'netamount', false, USER::USER_TYPE_SELLER));?>
                                 </p>
-
+								<?php 
+								if($orderDetail['op_is_booking'] == 1){ 
+								$netAmount = CommonHelper::orderProductAmount($orderDetail,'netamount',false,USER::USER_TYPE_SELLER);
+								$netAmountWithoutBook = CommonHelper::orderProductAmount($orderDetail,'netamount',false,USER::USER_TYPE_SELLER,1);
+								?>
+									<p><strong><?php echo Labels::getLabel('LBL_Order_Total_Without_Booking', $siteLangId);?>: </strong><?php echo CommonHelper::displayMoneyFormat($netAmountWithoutBook);?>
+									</p>
+									<p><strong><?php echo Labels::getLabel('LBL_To_Be_Paid_On_Delivery', $siteLangId);?>: </strong><?php echo CommonHelper::displayMoneyFormat($netAmountWithoutBook - $netAmount);?>
+									</p>
+								<?php } ?>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 mb-4">

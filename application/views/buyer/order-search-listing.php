@@ -48,7 +48,11 @@ foreach ($orders as $sn => $order) {
             case 'product':
                 $txt = '<div class="item__description">';
                 if ($order['op_selprod_title'] != '') {
-                    $txt .= '<div class="item__title">' . $order['op_selprod_title'] . '</div>';
+                    $txt .= '<div class="item__title">'.$order['op_selprod_title'];
+					if($order['op_is_booking']) {
+						$txt .= ' <b>( ' . Labels::getLabel('LBL_Booking', $siteLangId) .' )</b>';
+					}
+					$txt .= '</div>';
                 }
                 $txt .= '<div class="item__sub_title">' . $order['op_product_name'] . ' (' . Labels::getLabel('LBL_Qty', $siteLangId) . ': ' . $order['op_qty'] . ')</div>';
                 $txt .= '<div class="item__brand">' . Labels::getLabel('LBL_Brand', $siteLangId) . ': ' . $order['op_brand_name'];
