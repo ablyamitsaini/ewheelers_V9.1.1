@@ -7,8 +7,12 @@
 					<div class="row">
 						<div class="col--first col-lg-6">
 							<span class="page__icon"><i class="ion-android-star"></i></span>
-							<h5><?php echo Labels::getLabel('LBL_Sales_Report',$adminLangId); ?></h5>
-							<?php $this->includeTemplate('_partial/header/header-breadcrumb.php'); ?>
+							<h5><?php echo $reportLabel; ?></h5>
+							
+							<ul class="breadcrumb ">
+								<li><a href="<?php echo CommonHelper::generateUrl('') ?>"><?php echo labels::getLabel('LBL_Home',$adminLangId);?></a></li>
+								<li><?php echo $reportLabel;?></li>
+							</ul>	
 						</div>
 					</div>
 				</div>
@@ -30,7 +34,7 @@
 		<?php  }else{ echo  $frmSearch->getFormHtml(); } ?>
 			<section class="section">
 				<div class="sectionhead">
-					<h4><?php echo Labels::getLabel('LBL_Sales_Report',$adminLangId); ?> </h4>
+					<h4><?php echo $reportLabel; ?> </h4>
 					<?php
 
 

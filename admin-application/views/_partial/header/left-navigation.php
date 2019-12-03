@@ -433,6 +433,8 @@
             <?php } ?>
 
             <?php if ($objPrivilege->canViewSalesReport(AdminAuthentication::getLoggedAdminId(), true) ||
+            $objPrivilege->canViewBookingReport(AdminAuthentication::getLoggedAdminId(), true) ||
+            $objPrivilege->canViewTestDriveReport(AdminAuthentication::getLoggedAdminId(), true) ||
             $objPrivilege->canViewUsersReport(AdminAuthentication::getLoggedAdminId(), true) ||
             $objPrivilege->canViewProductsReport(AdminAuthentication::getLoggedAdminId(), true) ||
             $objPrivilege->canViewCatalogReport(AdminAuthentication::getLoggedAdminId(), true) ||
@@ -447,6 +449,12 @@
                 <ul>
                     <?php if ($objPrivilege->canViewSalesReport(AdminAuthentication::getLoggedAdminId(), true)) { ?>
                     <li><a href="<?php echo CommonHelper::generateUrl('SalesReport'); ?>"><?php echo Labels::getLabel('LBL_Sales', $adminLangId);?></a></li>
+                    <?php } ?>
+					<?php if ($objPrivilege->canViewBookingReport(AdminAuthentication::getLoggedAdminId(), true)) { ?>
+                    <li><a href="<?php echo CommonHelper::generateUrl('SalesReport','index',array(Report::BOOKING_REPORT)); ?>"><?php echo Labels::getLabel('LBL_Booking', $adminLangId);?></a></li>
+                    <?php } ?>
+					<?php if ($objPrivilege->canViewTestDriveReport(AdminAuthentication::getLoggedAdminId(), true)) { ?>
+                    <li><a href="<?php echo CommonHelper::generateUrl('TestDriveReport'); ?>"><?php echo Labels::getLabel('LBL_Test_Drive_Reports', $adminLangId);?></a></li>
                     <?php } ?>
                     <?php if ($objPrivilege->canViewUsersReport(AdminAuthentication::getLoggedAdminId(), true)) { ?>
                     <li><a href="<?php echo CommonHelper::generateUrl('UsersReport'); ?>"><?php echo Labels::getLabel('LBL_Buyers/Sellers', $adminLangId);?></a></li>

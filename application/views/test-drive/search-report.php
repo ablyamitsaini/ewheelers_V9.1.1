@@ -5,7 +5,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
 $arr_flds = array(
     'listserial'=>'Sr.',
     'ptdr_request_added_on' => Labels::getLabel('LBL_Date', $siteLangId),
-	'ptdr_id' => Labels::getLabel('LBL_Test_Drive_Number', $siteLangId),
+	//'ptdr_id' => Labels::getLabel('LBL_Test_Drive_Id', $siteLangId),
 	'product_name' => Labels::getLabel('LBL_Product', $siteLangId),
 	//'sellername' => Labels::getLabel('LBL_Dealer', $siteLangId),
 	'buyername' => Labels::getLabel('LBL_Buyer', $siteLangId),

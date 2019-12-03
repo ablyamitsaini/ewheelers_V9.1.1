@@ -14,13 +14,19 @@ class SalesReportController extends AdminBaseController
         $this->set("canEdit", $this->canEdit);
     }
 
-    public function index($orderDate = '')
+    public function index($reportType = 1 , $orderDate = '')
     {
         $this->objPrivilege->canViewSalesReport();
 
-        $frmSearch = $this->getSearchForm($orderDate);
+        $frmSearch = $this->getSearchForm($reportType,$orderDate);
         //$frmSearch->fill(array('orderDate'=>$orderDate));
-
+		if($reportType == Report::BOOKING_REPORT){
+			$reportLabel = Labels::getLabel('LBL_Booking_Report', $this->adminLangId);
+		}else{
+			$reportLabel = Labels::getLabel('LBL_Sales_Report', $this->adminLangId);
+		}
+		
+        $this->set('reportLabel', $reportLabel);
         $this->set('frmSearch', $frmSearch);
         $this->set('orderDate', $orderDate);
         $this->_template->render();
@@ -31,8 +37,9 @@ class SalesReportController extends AdminBaseController
         $this->objPrivilege->canViewSalesReport();
         $db = FatApp::getDb();
         $orderDate = FatApp::getPostedData('orderDate');
+        $reportType = FatApp::getPostedData('reportType');
 
-        $srchFrm = $this->getSearchForm($orderDate);
+        $srchFrm = $this->getSearchForm($reportType,$orderDate);
 
         $post = $srchFrm->getFormDataFromArray(FatApp::getPostedData());
         $page = (empty($post['page']) || $post['page'] <= 0) ? 1 : intval($post['page']);
@@ -54,7 +61,16 @@ class SalesReportController extends AdminBaseController
         $cnd = $srch->addCondition('o.order_is_paid', '=',Orders::ORDER_IS_PAID);
         $cnd->attachCondition('pmethod_code', '=','cashondelivery');
         $srch->addStatusCondition(unserialize(FatApp::getConfig('CONF_COMPLETED_ORDER_STATUS'))); */
-        $srch = Report::salesReportObject();
+        //$srch = Report::salesReportObject();
+		
+		if($reportType == Report::BOOKING_REPORT) {
+			$srch = Report::salesReportObject(0,false,array(),1);
+			$this->set('reportType', $reportType);
+		} else {
+			$srch = Report::salesReportObject();	
+			$this->set('reportType', $reportType);
+		}
+		
         if (empty($orderDate)) {
             $date_from = FatApp::getPostedData('date_from', FatUtility::VAR_DATE, '');
             if (!empty($date_from)) {
@@ -97,14 +113,24 @@ class SalesReportController extends AdminBaseController
         $this->objPrivilege->canViewSalesReport();
         $db = FatApp::getDb();
         $orderDate = FatApp::getPostedData('orderDate', FatUtility::VAR_DATE, '');
+        $reportType = FatApp::getPostedData('reportType', FatUtility::VAR_INT, '');
 
-        $srchFrm = $this->getSearchForm($orderDate);
+        $srchFrm = $this->getSearchForm($reportType,$orderDate);
 
         $post = $srchFrm->getFormDataFromArray(FatApp::getPostedData());
         /* $page = (empty($post['page']) || $post['page'] <= 0) ? 1 : intval($post['page']);
         $pagesize = FatApp::getConfig('CONF_ADMIN_PAGESIZE', FatUtility::VAR_INT, 10); */
 
-        $srch = Report::salesReportObject();
+        //$srch = Report::salesReportObject();
+		
+		if($reportType == Report::BOOKING_REPORT) {
+			$srch = Report::salesReportObject(0,false,array(),1);
+			$this->set('reportType', $reportType);
+		} else {
+			$srch = Report::salesReportObject();	
+			$this->set('reportType', $reportType);
+		}
+		
         if (empty($orderDate)) {
             $date_from = FatApp::getPostedData('date_from', FatUtility::VAR_DATE, '');
             if (!empty($date_from)) {
@@ -161,11 +187,12 @@ class SalesReportController extends AdminBaseController
         exit;
     }
 
-    private function getSearchForm($orderDate = '')
+    private function getSearchForm($reportType = 1,$orderDate = '')
     {
         $frm = new Form('frmSalesReportSearch');
         $frm->addHiddenField('', 'page');
         $frm->addHiddenField('', 'orderDate', $orderDate);
+        $frm->addHiddenField('', 'reportType', $reportType);
         if (empty($orderDate)) {
             $frm->addDateField(Labels::getLabel('LBL_Date_From', $this->adminLangId), 'date_from', '', array('readonly' => 'readonly','class' => 'small dateTimeFld field--calender' ));
             $frm->addDateField(Labels::getLabel('LBL_Date_To', $this->adminLangId), 'date_to', '', array('readonly' => 'readonly','class' => 'small dateTimeFld field--calender'));

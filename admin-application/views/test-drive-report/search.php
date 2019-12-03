@@ -5,7 +5,7 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
 $arr_flds = array(
     'listserial'=>'Sr.',
     'ptdr_request_added_on' => Labels::getLabel('LBL_Date', $adminLangId),
-	'ptdr_id' => Labels::getLabel('LBL_Test_Drive_Number', $adminLangId),
+	//'ptdr_id' => Labels::getLabel('LBL_Test_Drive_Number', $adminLangId),
 	'product_name' => Labels::getLabel('LBL_Product', $adminLangId),
 	'sellername' => Labels::getLabel('LBL_Dealer', $adminLangId),
 	'buyername' => Labels::getLabel('LBL_Buyer', $adminLangId),
@@ -54,7 +54,7 @@ foreach ($arr_listing as $sn => $row) {
 				if(!empty($row['utxn_id'])){
 					$td->appendElement('plaintext', array(),Labels::getLabel('LBL_Settled', $adminLangId), true); 
 				}else{ 
-					$td->appendElement('plaintext', array(),Labels::getLabel('LBL_Payment_Label', $adminLangId), true), true); 
+					$td->appendElement('plaintext', array(),Labels::getLabel('LBL_Unsettled', $adminLangId), true); 
 				}
                 
                 break;
