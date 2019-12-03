@@ -405,4 +405,16 @@ class applicationConstants
         static::BOTH    =>    Labels::getLabel('LBL_Both', $langId),
         );
     }
+	
+	public static function getProductBuyBookStatusArr($langId)
+    {
+        $langId = FatUtility::int($langId);
+        if ($langId < 1) {
+            $langId = FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG');
+        }
+        return array(
+        static::BUY_NOW        =>    Labels::getLabel('LBL_Buy', $langId),
+        static::BOOK_NOW    =>    Labels::getLabel('LBL_Book', $langId),
+        );
+    }
 }

@@ -204,6 +204,15 @@ class SellerController extends SellerBaseController
         } else {
             $srch->addStatusCondition(unserialize(FatApp::getConfig("CONF_VENDOR_ORDER_STATUS")));
         }
+		
+		$op_order_type = FatApp::getPostedData('order_type', null, '0');
+        if($op_order_type == applicationConstants::BOOK_NOW ){
+			$srch->addCondition('op_is_booking','=',1);
+		}
+		
+		if($op_order_type == applicationConstants::BUY_NOW ){
+			$srch->addCondition('op_is_booking','=',0);
+		}
 
         $dateFrom = FatApp::getPostedData('date_from', null, '');
         if (!empty($dateFrom)) {
@@ -254,6 +263,7 @@ class SellerController extends SellerBaseController
         $frm->addTextBox('', 'price_to', '', array('placeholder' => Labels::getLabel('LBL_Price_Max', $langId).' ['.$currencySymbol.']' ));
         $frm->addDateField('', 'date_from', '', array('placeholder' => Labels::getLabel('LBL_Date_From', $langId) ,'readonly'=>'readonly' ));
         $frm->addDateField('', 'date_to', '', array('placeholder' => Labels::getLabel('LBL_Date_To', $langId)  ,'readonly'=>'readonly'));
+		$frm->addSelectBox('', 'order_type', applicationConstants::getProductBuyBookStatusArr($langId), '', array(), Labels::getLabel('LBL_Order_Type', $langId));
         $fldSubmit = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Search', $langId));
         $fldCancel = $frm->addButton("", "btn_clear", Labels::getLabel("LBL_Clear", $langId), array('onclick'=>'clearSearch();'));
         $frm->addHiddenField('', 'page');

@@ -50,7 +50,7 @@ foreach ($arr_listing as $sn=>$row){
 				$td->appendElement('plaintext', array(), '<a href="'.CommonHelper::generateUrl('SalesReport','index',array($row[$key])).'">'.FatDate::format($row[$key]).'</a>',true);
 			break;
 			case 'order_net_amount':
-				$amt = CommonHelper::orderProductAmount($row);
+				$amt = CommonHelper::orderProductAmount($row,'netamount',false,false,1);
 				$td->appendElement('plaintext', array(), CommonHelper::displayMoneyFormat($amt, true, true) );
 			break;
 			case 'totalSalesEarnings':

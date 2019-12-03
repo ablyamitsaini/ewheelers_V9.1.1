@@ -59,7 +59,7 @@ if (true == $primaryOrder) {
         <div class="content-body">
             <div class="cards">
                 <div class="cards-header p-4">
-                    <h5 class="cards-title"> <?php echo Labels::getLabel('LBL_Order_Details', $siteLangId);?> </h5>
+                    <h5 class="cards-title"><?php echo ($childOrderDetail['op_is_booking'] == 1)?Labels::getLabel('LBL_Booking_Order_Details', $siteLangId):Labels::getLabel('LBL_Order_Details', $siteLangId);?></h5>
                     <?php if (!$print) { ?>
                     <div class="action">
                         <div class="">
@@ -99,6 +99,16 @@ if (true == $primaryOrder) {
                         if ($rewardPointDiscount != 0) {
                             ?> <p><strong><?php echo Labels::getLabel('LBL_Reward_Point_Discount', $siteLangId); ?>:</strong> <?php echo CommonHelper::displayMoneyFormat($rewardPointDiscount); ?></p> <?php
                         } ?> <p><strong><?php echo Labels::getLabel('LBL_Order_Total', $siteLangId); ?>: </strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrderDetail)); ?></p>
+						<?php 
+								if($childOrderDetail['op_is_booking'] == 1){ 
+								$netAmount = CommonHelper::orderProductAmount($childOrderDetail);
+								$netAmountWithoutBook = CommonHelper::orderProductAmount($childOrderDetail,'netamount',false,false,1);
+								?>
+									<p><strong><?php echo Labels::getLabel('LBL_Order_Total_Without_Booking', $siteLangId);?>: </strong><?php echo CommonHelper::displayMoneyFormat($netAmountWithoutBook);?>
+									</p>
+									<p><strong><?php echo Labels::getLabel('LBL_To_Be_Paid_On_Delivery', $siteLangId);?>: </strong><?php echo CommonHelper::displayMoneyFormat($netAmountWithoutBook - $netAmount);?>
+									</p>
+								<?php } ?>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 mb-4">

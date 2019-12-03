@@ -36,7 +36,7 @@ foreach ($orders as $sn => $order) {
                 if ($order['op_selprod_title'] != '') {
                     $txt .= '<div class="item__title">'.$order['op_selprod_title'];
 					if($order['op_is_booking']) {
-						$txt .= ' ( BOOKING PRODUCT )';
+						$txt .= ' <b>( ' . Labels::getLabel('LBL_Booking', $siteLangId) .' )</b>';
 					}
 					$txt .= '</div>';
                 }

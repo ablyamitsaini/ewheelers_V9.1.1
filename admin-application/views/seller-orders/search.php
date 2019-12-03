@@ -6,6 +6,7 @@ $arr_flds = array(
 	'buyer_name'=>Labels::getLabel('LBL_Customer',$adminLangId),
 	'order_date_added'=>Labels::getLabel('LBL_Date',$adminLangId),
 	'order_net_amount'=>Labels::getLabel('LBL_Amount',$adminLangId),
+	'order_type'=>Labels::getLabel('LBL_Order_Type',$adminLangId),
 	'op_status_id'=>Labels::getLabel('LBL_Status',$adminLangId),
 	'action' => Labels::getLabel('LBL_Action',$adminLangId),
 );
@@ -53,6 +54,13 @@ foreach ($vendorOrdersList as $sn=>$row){  /* CommonHelper::printArray($row); */
 			case 'order_net_amount':
 				$amt = CommonHelper::orderProductAmount($row,'netamount',false,USER::USER_TYPE_SELLER);
 				$td->appendElement('plaintext', array(), CommonHelper::displayMoneyFormat($amt, true, true) );
+			break;
+			case 'order_type':
+				if($row['op_is_booking'] == 1){
+					$td->appendElement('plaintext', array(),Labels::getLabel('LBL_Booking',$adminLangId) , true);
+				}else{
+					$td->appendElement('plaintext', array(),Labels::getLabel('LBL_Buy',$adminLangId), true);
+				}
 			break;
 			case 'op_status_id':
 				$td->appendElement('plaintext', array(), $row['orderstatus_name'], true);

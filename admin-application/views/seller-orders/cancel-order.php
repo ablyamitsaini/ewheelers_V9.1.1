@@ -29,13 +29,13 @@
                                 <th><?php echo Labels::getLabel('LBL_Invoice_Id', $adminLangId); ?></th>
                                 <th><?php echo Labels::getLabel('LBL_Order_Date', $adminLangId); ?> </th>
                                 <th><?php echo Labels::getLabel('LBL_Status', $adminLangId); ?> </th>
-                                <th><?php /* if ($order["opr_refund_qty"]>0):?>Refund for Qty. [<?php echo $order["opr_refund_qty"]?>] <?php endif; */ ?></th>
+                                <th><?php echo Labels::getLabel('LBL_Order_Type', $adminLangId);  ?></th>
                             </tr>
                             <tr>
                                 <td><?php echo $order["op_invoice_number"]?></td>
                                 <td><?php echo FatDate::format($order["order_date_added"], true)?></td>
                                 <td><?php echo $order["orderstatus_name"]?></td>
-                                <td><?php /* if ($order["opr_refund_qty"]>0): echo $currencyObj->format($order["opr_total_refund_amount"],$order['order_currency_code'],$row['order_currency_value']); endif; */ ?></td>
+                                <td><?php echo ($order["op_is_booking"] == 1)? Labels::getLabel('LBL_Booking', $adminLangId) : Labels::getLabel('LBL_Buy', $adminLangId);  ?></td>
                             </tr>
                             <tr>
                                 <th><?php echo Labels::getLabel('LBL_Customer/Guest', $adminLangId); ?></th>

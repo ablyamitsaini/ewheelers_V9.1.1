@@ -26,15 +26,20 @@ $priceToFld->developerTags['noCaptionTag'] = true;
 
 $dateFromFld = $frmOrderSrch->getField('date_from');
 $dateFromFld->setFieldTagAttribute('class', 'field--calender');
-$dateFromFld->setWrapperAttribute('class', 'col-lg-3');
+$dateFromFld->setWrapperAttribute('class', 'col-lg-2');
 $dateFromFld->developerTags['col'] = 3;
 $dateFromFld->developerTags['noCaptionTag'] = true;
 
 $dateToFld = $frmOrderSrch->getField('date_to');
 $dateToFld->setFieldTagAttribute('class', 'field--calender');
-$dateToFld->setWrapperAttribute('class', 'col-lg-3');
+$dateToFld->setWrapperAttribute('class', 'col-lg-2');
 $dateToFld->developerTags['col'] = 3;
 $dateToFld->developerTags['noCaptionTag'] = true;
+
+$statusFld = $frmOrderSrch->getField('order_type');
+$statusFld->setWrapperAttribute('class', 'col-lg-4');
+$statusFld->developerTags['col'] = 2;
+$statusFld->developerTags['noCaptionTag'] = true;
 
 $submitBtnFld = $frmOrderSrch->getField('btn_submit');
 $submitBtnFld->setFieldTagAttribute('class', 'btn--block');

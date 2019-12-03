@@ -82,6 +82,17 @@ if ($order['order_reward_point_used'] > 0) {
                                 <td><strong><?php echo Labels::getLabel('LBL_Total_Paid', $adminLangId); ?>:</strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($order, 'netamount', false, USER::USER_TYPE_SELLER), true, true);?>
                                 </td>
                             </tr>
+							<?php if($order['op_is_booking']) { 
+							$netAmount = CommonHelper::orderProductAmount($order,'netamount',false,USER::USER_TYPE_SELLER);
+							$netAmountWithoutBook = CommonHelper::orderProductAmount($order,'netamount',false,USER::USER_TYPE_SELLER,1);
+							?>
+							<tr>
+                                <td><strong><?php echo Labels::getLabel('LBL_Order_Total_Without_Booking', $adminLangId); ?> : </strong><?php echo CommonHelper::displayMoneyFormat($netAmountWithoutBook);?> </td>
+                                <td><strong><?php echo Labels::getLabel('LBL_To_Be_Paid_On_Delivery', $adminLangId); ?> : </strong><?php echo CommonHelper::displayMoneyFormat($netAmountWithoutBook - $netAmount);?></td>
+                                <td>
+                                </td>
+                            </tr>
+							<?php } ?>
                         </table>
                     </div>
                 </section>
