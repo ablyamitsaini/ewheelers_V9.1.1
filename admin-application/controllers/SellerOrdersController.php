@@ -52,7 +52,7 @@ class SellerOrdersController extends AdminBaseController
         $srch->setPageSize($pageSize);
         $srch->addOrder('op_id', 'DESC');
 
-        $srch->addMultipleFields(array('op_id', 'order_id', 'op_order_id', 'op_invoice_number', 'order_net_amount', 'order_date_added', 'ou.user_id', 'ou.user_name as buyer_name', 'ouc.credential_username as buyer_username', 'ouc.credential_email as buyer_email', 'ou.user_phone as buyer_phone', 'op.op_shop_owner_name', 'op.op_shop_owner_username', 'op.op_shop_owner_email', 'op.op_shop_owner_phone', 'op_shop_name','op_other_charges','op.op_qty','op.op_unit_price', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name','op_tax_collected_by_seller','op_selprod_user_id','opshipping_by_seller_user_id'));
+        $srch->addMultipleFields(array('op_id', 'order_id', 'op_order_id', 'op_invoice_number', 'order_net_amount', 'order_date_added', 'ou.user_id', 'ou.user_name as buyer_name', 'ouc.credential_username as buyer_username', 'ouc.credential_email as buyer_email', 'ou.user_phone as buyer_phone', 'op.op_shop_owner_name', 'op.op_shop_owner_username', 'op.op_shop_owner_email', 'op.op_shop_owner_phone', 'op_shop_name','op_other_charges','op.op_qty','op.op_unit_price', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name','op_tax_collected_by_seller','op_selprod_user_id','opshipping_by_seller_user_id','op_is_booking','op_product_amount_without_book '));
         if(isset($post['order_id']) && $post['order_id'] != '' ) {
             $srch->addCondition('op_order_id', '=', $post['order_id']);
         }
@@ -66,6 +66,15 @@ class SellerOrdersController extends AdminBaseController
             $cnd->attachCondition('op.op_shop_owner_username', 'like', '%' . $keyword . '%', 'OR');
             $cnd->attachCondition('op.op_shop_owner_email', 'like', '%' . $keyword . '%', 'OR');
         }
+		
+		$op_order_type = FatApp::getPostedData('order_type', null, '0');
+        if($op_order_type == applicationConstants::BOOK_NOW ){
+			$srch->addCondition('op_is_booking','=',1);
+		}
+		
+		if($op_order_type == applicationConstants::BUY_NOW ){
+			$srch->addCondition('op_is_booking','=',0);
+		}
 
         $user_id = FatApp::getPostedData('user_id', '', -1);
         if($user_id > 0) {
@@ -156,7 +165,7 @@ class SellerOrdersController extends AdminBaseController
         $srch->addMultipleFields(
             array( 'order_id', 'order_pmethod_id','order_tax_charged', 'order_date_added', 'op_id', 'op_qty', 'op_unit_price','op_selprod_user_id','op_invoice_number', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name', 'ou.user_name as buyer_user_name', 'ouc.credential_username as buyer_username','pmethod_code', 'IFNULL(pmethod_name, IFNULL(pmethod_identifier, "Wallet")) as pmethod_name', 'op_commission_charged', 'op_qty', 'op_commission_percentage', 'ou.user_name as buyer_name', 'ouc.credential_username as buyer_username', 'ouc.credential_email as buyer_email', 'ou.user_phone as buyer_phone', 'op.op_shop_owner_name', 'op.op_shop_owner_username', 'op_l.op_shop_name', 'op.op_shop_owner_email', 'op.op_shop_owner_phone',
             'op_selprod_title', 'op_product_name', 'op_brand_name', 'op_selprod_options', 'op_selprod_sku', 'op_product_model', 'op_product_type',
-            'op_shipping_duration_name', 'op_shipping_durations','op_status_id', 'op_refund_qty', 'op_refund_amount', 'op_refund_commission','op_other_charges','optosu.optsu_user_id','ops.opshipping_by_seller_user_id','op_tax_collected_by_seller','order_is_wallet_selected','order_reward_point_used','op_is_booking')
+            'op_shipping_duration_name', 'op_shipping_durations','op_status_id', 'op_refund_qty', 'op_refund_amount', 'op_refund_commission','op_other_charges','optosu.optsu_user_id','ops.opshipping_by_seller_user_id','op_tax_collected_by_seller','order_is_wallet_selected','order_reward_point_used','op_is_booking','op_product_amount_without_book ')
         );
         $srch->addCondition('op_id', '=', $op_id);
 
@@ -658,6 +667,7 @@ class SellerOrdersController extends AdminBaseController
         $frm->addSelectBox(Labels::getLabel('LBL_Status', $this->adminLangId), 'op_status_id', Orders::getOrderProductStatusArr($langId), '', array(), Labels::getLabel('LBL_All', $this->adminLangId));
         $frm->addTextBox(Labels::getLabel('LBL_Seller_Shop', $this->adminLangId), 'shop_name');
         /* $frm->addTextBox(Labels::getLabel('LBL_Customer',$this->adminLangId),'customer_name'); */
+		$frm->addSelectBox('', 'order_type', applicationConstants::getProductBuyBookStatusArr($langId), '', array(), Labels::getLabel('LBL_Order_Type', $langId));
 
         $frm->addDateField('', 'date_from', '', array('placeholder' => Labels::getLabel('LBL_Date_From', $this->adminLangId), 'readonly' => 'readonly' ));
         $frm->addDateField('', 'date_to', '', array('placeholder' => Labels::getLabel('LBL_Date_To', $this->adminLangId), 'readonly' => 'readonly' ));

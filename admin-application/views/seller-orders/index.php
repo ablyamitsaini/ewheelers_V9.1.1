@@ -37,8 +37,11 @@
 								$statusFld->developerTags['col'] = 4;
 								
 								$shopFld = $frmSearch->getField('shop_name');
-								$shopFld->developerTags['col'] = 6;
+								$shopFld->developerTags['col'] = 4;
 								$shopFld->htmlAfterField = '<small>'.Labels::getLabel('LBL_Search_in_Shop_Name,_Seller_Name,_Seller_UserName_and_Seller_EmailId,_Seller_Phone',$adminLangId).'</small>';
+								
+								$statusFld = $frmSearch->getField('order_type');
+								$statusFld->developerTags['col'] = 4;
 								
 								$customerFld = $frmSearch->getField('customer_name');
 								$customerFld->developerTags['col'] = 6;
