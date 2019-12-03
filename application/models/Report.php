@@ -1,7 +1,10 @@
 <?php
 class Report extends MyAppModel
 {
-    public static function salesReportObject($langId = 0, $joinSeller = false, $attr = array())
+	const COMBINED_REPORT = 1;
+    const BOOKING_REPORT = 2; 
+	
+    public static function salesReportObject($langId = 0, $joinSeller = false, $attr = array(),$booking_report = 0)
     {
         $ocSrch = new SearchBase(OrderProduct::DB_TBL_CHARGES, 'opc');
         $ocSrch->doNotCalculateRecords();
@@ -22,7 +25,11 @@ class Report extends MyAppModel
         $srch->joinOrderProductCharges(OrderProduct::CHARGE_TYPE_SHIPPING, 'opship');
 
         $cnd = $srch->addCondition('o.order_is_paid', '=', Orders::ORDER_IS_PAID);
-        $cnd->attachCondition('pmethod_code', '=', 'cashondelivery');
+		if($booking_report == 1){
+			$srch->addCondition('op.op_is_booking', '=', 1);
+		}else{
+			$cnd->attachCondition('pmethod_code', '=', 'cashondelivery');
+		}
         $srch->addStatusCondition(unserialize(FatApp::getConfig('CONF_COMPLETED_ORDER_STATUS')));
 
         if (empty($attr)) {
