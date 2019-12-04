@@ -52,6 +52,7 @@ class Notification extends MyAppModel
     const RETURN_REQUEST_STATUS_CHANGE_NOTIFICATION = 13;
     const NOTIFICATION_ABUSIVE_WORD = 15;
 	const TEST_DRIVE_COMPLETION_REQUEST = 16;
+	const BOOKING_STATUS_CHANGE_NOTIFICATION = 17;
 
 
     public function __construct($notificationId = 0)
@@ -106,6 +107,7 @@ class Notification extends MyAppModel
         Notification::BLOG_COMMENT_NOTIFICATION=>array(Labels::getLabel('user_blog_comment_notification', $langId),'blog-comments'),
         Notification::BLOG_CONTRIBUTION_NOTIFICATION=>array(Labels::getLabel('user_blog_contibution_notification', $langId),'blog-contributions'),
 		Notification::TEST_DRIVE_COMPLETION_REQUEST=>array(Labels::getLabel('admin_test_drive_delivered_notification', $langId),'test-drive'),
+		Notification::BOOKING_STATUS_CHANGE_NOTIFICATION=>array(Labels::getLabel('admin_booking_delivered_by_seller_notification', $langId),'seller-orders'),
         );
 
         return $labelArr;

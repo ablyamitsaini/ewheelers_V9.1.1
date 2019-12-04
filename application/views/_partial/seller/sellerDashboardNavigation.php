@@ -211,6 +211,13 @@ $action = strtolower($action);
                                 </svg>
                             </i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Sales_Report', $siteLangId); ?></span></a></div>
                 </li>
+				<li class="menu__item <?php echo ($controller == 'reports' && $action == 'bookingreport') ? 'is-active' : ''; ?>">
+                    <div class="menu__item__inner"><a title="<?php echo Labels::getLabel('LBL_Booking_Report', $siteLangId);?>" href="<?php echo CommonHelper::generateUrl('Reports', 'BookingReport'); ?>"> 
+                            <i class="icn shop"><svg class="svg">
+                                    <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-sales-report" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-sales-report"></use>
+                                </svg>
+                            </i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Booking_Report', $siteLangId); ?></span></a></div>
+                </li>
 				<li class="menu__item <?php echo ($controller == 'testdrive' && $action == 'report') ? 'is-active' : ''; ?>">
                     <div class="menu__item__inner"><a title="<?php echo Labels::getLabel('LBL_Test_Drive_Report', $siteLangId);?>" href="<?php echo CommonHelper::generateUrl('TestDrive', 'Report'); ?>"> 
                             <i class="icn shop"><svg class="svg">

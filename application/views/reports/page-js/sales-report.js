@@ -29,9 +29,28 @@ $(document).ready(function(){
 	};
 	
 	exportSalesReport = function(){
+	   var newForm = $('<form>', {'method': 'POST', 'action': fcom.makeUrl('Reports','exportSalesReport'), 'target': '_top'});
+       var srchFrm = fcom.frmData(document.frmSalesReportSrchPaging);
+       var srchFrmData = srchFrm.split('&');
+
+       for (var i = 0; i < srchFrmData.length; i++) {
+           var field = srchFrmData[i].split('=');
+           newForm.append($('<input>', {'name': decodeURI(field[0]), 'value': field[1], 'type': 'hidden'}));
+       }
+
+      
+       newForm.appendTo('body');
+       newForm.submit();
+       newForm.remove();
+		
+		
+		
+	};
+	
+	/* exportSalesReport = function(){
 		document.frmSalesReportSrchPaging.action = fcom.makeUrl('Reports','exportSalesReport');
 		document.frmSalesReportSrchPaging.submit();
-	};
+	}; */
 	
 	/* redirectBack=function(redirecrt){
 	var url=	SITE_ROOT_URL +''+redirecrt;

@@ -154,6 +154,11 @@
                         <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable_Without_Booking', $siteLangId); ?></td>
                         <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat($orderNetAmountWithoutBooking); ?></td>
                     </tr>
+					
+					<tr>
+                        <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_To_Pay_on_Delivery', $siteLangId); ?></td>
+                        <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat($orderNetAmountWithoutBooking - $cartSummary['orderNetAmount']); ?></td>
+                    </tr>
 					<?php } ?>
                 </tbody>
             </table>

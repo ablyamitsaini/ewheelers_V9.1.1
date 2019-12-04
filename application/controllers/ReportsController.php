@@ -411,15 +411,17 @@ class ReportsController extends LoggedUserController
     }
 
 
-    public function salesReport($orderDate = '')
+    public function salesReport($reportType = 1,$orderDate = '')
     {
         if (!User::canAccessSupplierDashboard()) {
             FatApp::redirectUser(CommonHelper::generateUrl('Account', 'supplierApprovalForm'));
         }
 		
-        $frmSrch = $this->getSalesReportSearchForm($orderDate);
+        $frmSrch = $this->getSalesReportSearchForm($reportType,$orderDate);
+		$this->set('reportLabel',Labels::getLabel('LBL_Sales_Report', $this->siteLangId));
         $this->set('frmSrch', $frmSrch);
         $this->set('orderDate', $orderDate);
+        $this->set('reportType', $reportType);
         $this->_template->render(true, true);
     }
 
@@ -431,17 +433,25 @@ class ReportsController extends LoggedUserController
         }
 
         $orderDate = FatApp::getPostedData('orderDate', FatUtility::VAR_STRING, '');
-        $srchFrm = $this->getSalesReportSearchForm($orderDate);
+		$reportType = FatApp::getPostedData('reportType', FatUtility::VAR_INT, 1);
+        $srchFrm = $this->getSalesReportSearchForm($reportType,$orderDate);
         $post = $srchFrm->getFormDataFromArray(FatApp::getPostedData());
-
+		
         $pageSize = FatApp::getConfig('CONF_PAGE_SIZE');
         $page = FatApp::getPostedData('page', FatUtility::VAR_INT, 0);
         if ($page < 2) {
             $page = 1;
         }
         $loggedUserId = UserAuthentication::getLoggedUserId();
-
-        $srch = Report::salesReportObject();
+		
+		if($reportType == Report::BOOKING_REPORT) {
+			$srch = Report::salesReportObject(0,false,array(),1);
+			$this->set('reportType', $reportType);
+		} else {
+			$srch = Report::salesReportObject();	
+			$this->set('reportType', $reportType);
+		}
+		
         if (empty($orderDate)) {
             $date_from = FatApp::getPostedData('date_from', FatUtility::VAR_DATE, '');
             if (!empty($date_from)) {
@@ -463,7 +473,7 @@ class ReportsController extends LoggedUserController
         $srch->addCondition('op_selprod_user_id', '=', $loggedUserId);
 
         $srch->addOrder('order_date', 'desc');
-
+	
         if ($export == "export") {
             $srch->doNotCalculateRecords();
             $srch->doNotLimitRecords();
@@ -510,12 +520,27 @@ class ReportsController extends LoggedUserController
     {
         $this->searchSalesReport("export");
     }
+	
+	public function bookingReport($reportType = 2,$orderDate = '')
+    {
+        if (!User::canAccessSupplierDashboard()) {
+            FatApp::redirectUser(CommonHelper::generateUrl('Account', 'supplierApprovalForm'));
+        }
+		
+        $frmSrch = $this->getSalesReportSearchForm($reportType,$orderDate);
+		//$frmSrch->fill(array('reportType' => Report::BOOKING_REPORT));
+		$this->set('reportLabel',Labels::getLabel('LBL_Booking_Report', $this->siteLangId));
+        $this->set('frmSrch', $frmSrch);
+        $this->set('orderDate', $orderDate);
+        $this->_template->render(true, true, 'reports/sales-report.php');
+    }
 
-    private function getSalesReportSearchForm($orderDate = '')
+    private function getSalesReportSearchForm($reportType = 1,$orderDate = '')
     {
         $frm = new Form('frmSalesReportSrch');
         $frm->addHiddenField('', 'page');
         $frm->addHiddenField('', 'orderDate', $orderDate);
+        $frm->addHiddenField('', 'reportType', $reportType);
         if (empty($orderDate)) {
             $frm->addDateField('', 'date_from', '', array('placeholder' => Labels::getLabel('LBL_Date_From', $this->siteLangId), 'readonly' => 'readonly', 'class' => 'small dateTimeFld field--calender' ));
             $frm->addDateField('', 'date_to', '', array('placeholder' => Labels::getLabel('LBL_Date_To', $this->siteLangId), 'readonly' => 'readonly', 'class' => 'small dateTimeFld field--calender'));

@@ -1086,6 +1086,11 @@ class AdminPrivilege
     {
         return $this->checkPermission($adminId, static::SECTION_SALES_REPORT, static::PRIVILEGE_READ, $returnResult);
     }
+	
+	public function canViewBookingReport($adminId = 0, $returnResult = false)
+    {
+        return $this->checkPermission($adminId, static::SECTION_SALES_REPORT, static::PRIVILEGE_READ, $returnResult);
+    }
 
     public function canEditUsersReport($adminId = 0, $returnResult = false)
     {

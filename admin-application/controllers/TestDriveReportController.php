@@ -49,7 +49,7 @@ class TestDriveReportController extends AdminBaseController
             $srch->doNotLimitRecords();
             $rs = $srch->getResultSet();
             $sheetData = array();
-            $arr = array( Labels::getLabel('LBL_Date', $this->adminLangId), Labels::getLabel('LBL_Test_Drive_Number', $this->adminLangId), Labels::getLabel('LBL_Product', $this->adminLangId), Labels::getLabel('LBL_Dealer', $this->adminLangId), Labels::getLabel('LBL_Buyer', $this->adminLangId), Labels::getLabel('LBL_Requested_On', $this->adminLangId),Labels::getLabel('LBL_Status', $this->adminLangId),Labels::getLabel('LBL_Payment_Status', $this->adminLangId));
+            $arr = array( Labels::getLabel('LBL_Date', $this->adminLangId), Labels::getLabel('LBL_Product', $this->adminLangId), Labels::getLabel('LBL_Dealer', $this->adminLangId), Labels::getLabel('LBL_Buyer', $this->adminLangId), Labels::getLabel('LBL_Requested_On', $this->adminLangId),Labels::getLabel('LBL_Status', $this->adminLangId),Labels::getLabel('LBL_Payment_Status', $this->adminLangId));
             array_push($sheetData, $arr);
             while ($row = FatApp::getDb()->fetch($rs)) {
                 if (!empty($row['utxn_id'])) {
@@ -63,7 +63,7 @@ class TestDriveReportController extends AdminBaseController
                 $testDriveStatusArr = TestDrive::getStatusArr($this->adminLangId);
                 $status = $testDriveStatusArr[$row['ptdr_status']];
 
-                $arr = array( $date, $row['ptdr_id'], $row['product_name'], $row['sellername'], $row['buyername'] ,$requestedOn,$status,$utxn_status);
+                $arr = array( $date, $row['product_name'], $row['sellername'], $row['buyername'] ,$requestedOn,$status,$utxn_status);
                 array_push($sheetData, $arr);
             }
             CommonHelper::convertToCsv($sheetData, Labels::getLabel('LBL_Test_Drive_Report', $this->adminLangId).date("Y-m-d").'.csv', ',');

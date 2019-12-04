@@ -43,8 +43,13 @@ foreach ($arrListing as $sn => $row){
 			break;
 
 			case 'order_date':
+			if($reportType == Report::BOOKING_REPORT){
 				$td->appendElement('plaintext', array(), '<a href="'.CommonHelper::generateUrl('Reports',
-						'salesReport',array($row[$key])).'">'.FatDate::format($row[$key]).'</a>',true);
+						'bookingReport',array($reportType,$row[$key])).'">'.FatDate::format($row[$key]).'</a>',true);
+			}else{
+				$td->appendElement('plaintext', array(), '<a href="'.CommonHelper::generateUrl('Reports',
+						'salesReport',array($reportType,$row[$key])).'">'.FatDate::format($row[$key]).'</a>',true);
+			}
 			break;
 
 			case 'totalSalesEarnings':

@@ -158,7 +158,12 @@ $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
                                                 <!-- <div class="item__brand"><span><?php /*echo Labels::getLabel('Lbl_Brand', $siteLangId)?>:</span> <?php echo CommonHelper::displayNotApplicable($siteLangId, $row['op_brand_name']);*/ ?></div> -->
                                                 <?php if ($row['op_selprod_options'] != '') { ?> <div class="item__specification"><?php echo $row['op_selprod_options'];?></div> <?php } ?> <?php if ($row['totOrders'] > 1) {
                                                     echo Labels::getLabel('LBL_Part_combined_order', $siteLangId).' <a title="'.Labels::getLabel('LBL_View_Order_Detail', $siteLangId).'" href="'.CommonHelper::generateUrl('Buyer', 'viewOrder', array($row['order_id'])).'">'.$row['order_id'].'</a>';
-                                                } ?>
+                                                } 
+												
+												
+												if ($row['op_is_booking'] == 1) { ?>
+                                                    <b><?php echo '( ' . Labels::getLabel('Lbl_Booking', $siteLangId) . ' )'; ?></b>
+                                                <?php } ?>
                                             </div>
                                         </td>
                                         <td>

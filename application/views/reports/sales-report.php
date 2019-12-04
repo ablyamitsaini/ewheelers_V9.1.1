@@ -27,7 +27,7 @@
         <div class="content-header row justify-content-between mb-3">
             <div class="col-md-auto">
                 <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-                <h2 class="content-header-title"><?php echo Labels::getLabel('LBL_Sales_Report', $siteLangId);?></h2>
+                <h2 class="content-header-title"><?php echo $reportLabel;?></h2>
             </div>
         </div>
         <div class="content-body">
@@ -35,7 +35,7 @@
                 <div class="col-lg-12">
                     <div class="cards">
                         <div class="cards-header p-4">
-                            <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Sales_Report', $siteLangId);?></h5>
+                            <h5 class="cards-title"><?php echo $reportLabel;?></h5>
                             <div class="action"><?php echo '<a href="javascript:void(0)" onClick="exportSalesReport()" class="btn btn--secondary btn--block btn--sm">'.Labels::getLabel('LBL_Export', $siteLangId).'</a>'; ?></div>
                         </div>
                         <div class="cards-content pl-4 pr-4 pb-0">

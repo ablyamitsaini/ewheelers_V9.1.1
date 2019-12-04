@@ -41,7 +41,7 @@ class SellerController extends SellerBaseController
         $srch->setPageSize(2);
 
         $srch->addMultipleFields(
-            array('order_id', 'order_user_id','op_selprod_id','op_is_batch','selprod_product_id', 'order_date_added', 'order_net_amount', 'op_invoice_number','totCombinedOrders as totOrders', 'op_selprod_title', 'op_product_name', 'op_id','op_qty','op_selprod_options','op_status_id', 'op_brand_name', 'op_shop_name','op_other_charges','op_unit_price', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name','op_tax_collected_by_seller','op_selprod_user_id','opshipping_by_seller_user_id')
+            array('order_id', 'order_user_id','op_selprod_id','op_is_batch','selprod_product_id', 'order_date_added', 'order_net_amount', 'op_invoice_number','totCombinedOrders as totOrders', 'op_selprod_title', 'op_product_name', 'op_id','op_qty','op_selprod_options','op_status_id', 'op_brand_name', 'op_shop_name','op_other_charges','op_unit_price', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name','op_tax_collected_by_seller','op_selprod_user_id','opshipping_by_seller_user_id','op_is_booking')
         );
 
         $rs = $srch->getResultSet();
@@ -615,6 +615,21 @@ class SellerController extends SellerBaseController
             }
         } else {
             Message::addErrorMessage(Labels::getLabel('M_ERROR_INVALID_REQUEST', $this->siteLangId));
+            FatUtility::dieJsonError(Message::getHtml());
+        }
+		
+		
+		$notificationData = array(
+        'notification_record_type' => Notification::TYPE_ORDER_PRODUCT,
+        'notification_record_id' => $post['op_id'],
+        'notification_user_id' => UserAuthentication::getLoggedUserId(),
+        'notification_label_key' => Notification::BOOKING_STATUS_CHANGE_NOTIFICATION,
+        'notification_added_on' => date('Y-m-d H:i:s'),
+        );
+
+        if (!Notification::saveNotifications($notificationData)) {
+            $db->rollbackTransaction();
+            Message::addErrorMessage(Labels::getLabel("MSG_NOTIFICATION_COULD_NOT_BE_SENT", $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
 
