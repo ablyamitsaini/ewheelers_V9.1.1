@@ -617,6 +617,21 @@ class SellerController extends SellerBaseController
             Message::addErrorMessage(Labels::getLabel('M_ERROR_INVALID_REQUEST', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
+		
+		
+		$notificationData = array(
+        'notification_record_type' => Notification::TYPE_ORDER_PRODUCT,
+        'notification_record_id' => $post['op_id'],
+        'notification_user_id' => UserAuthentication::getLoggedUserId(),
+        'notification_label_key' => Notification::BOOKING_STATUS_CHANGE_NOTIFICATION,
+        'notification_added_on' => date('Y-m-d H:i:s'),
+        );
+
+        if (!Notification::saveNotifications($notificationData)) {
+            $db->rollbackTransaction();
+            Message::addErrorMessage(Labels::getLabel("MSG_NOTIFICATION_COULD_NOT_BE_SENT", $this->siteLangId));
+            FatUtility::dieJsonError(Message::getHtml());
+        }
 
         $this->set('op_id', $op_id);
         $this->set('msg', Labels::getLabel('MSG_Updated_Successfully', $this->siteLangId));
