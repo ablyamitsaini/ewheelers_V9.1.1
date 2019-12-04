@@ -162,7 +162,7 @@ $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?>
 												
 												
 												if ($row['op_is_booking'] == 1) { ?>
-                                                    <b><?php echo Labels::getLabel('Lbl_Booking_Product', $siteLangId); ?></b>
+                                                    <b><?php echo '( ' . Labels::getLabel('Lbl_Booking', $siteLangId) . ' )'; ?></b>
                                                 <?php } ?>
                                             </div>
                                         </td>

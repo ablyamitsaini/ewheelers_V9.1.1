@@ -284,7 +284,7 @@ $this->includeTemplate('_partial/seller/sellerDashboardNavigation.php'); ?>
                                                 <?php } ?>
                                                 <div class="item__specification"> <?php echo Labels::getLabel('Lbl_Payment_Status', $siteLangId)?>: <?php echo $row['orderstatus_name']; ?></div>
 												<?php if ($row['op_is_booking'] == 1) { ?>
-                                                    <b><?php echo Labels::getLabel('Lbl_Booking_Product', $siteLangId); ?></b>
+                                                    <b><?php echo '( ' . Labels::getLabel('Lbl_Booking', $siteLangId) . ' )'; ?></b>
                                                 <?php } ?>
                                             </div>
                                         </td>
