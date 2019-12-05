@@ -390,3 +390,5 @@ INSERT INTO `tbl_configurations` (`conf_name`, `conf_val`, `conf_common`) VALUES
 ALTER TABLE `tbl_orders` ADD `order_actual_net_amount` DECIMAL(10,2) NOT NULL AFTER `order_net_amount`;
 
 ALTER TABLE `tbl_order_products` ADD `op_product_amount_without_book` DECIMAL(10,2) NOT NULL AFTER `op_booking_product_actual_amount`;
+
+ALTER TABLE `tbl_orders` ADD `order_have_booking` TINYINT(1) NOT NULL AFTER `order_actual_net_amount`;

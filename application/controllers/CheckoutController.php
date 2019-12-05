@@ -833,6 +833,18 @@ class CheckoutController extends MyAppController
         $cartSummary = $this->cartObj->getCartFinancialSummary($this->siteLangId);
         $summaryWithoutBook = $this->cartObj->getCartFinancialSummary($this->siteLangId,1);
 		
+		/* ------is order contain booking product-------- */
+		
+			$cartProducts = $this->cartObj->getProducts($this->siteLangId);
+			$order_have_booking = 0;
+			foreach($cartProducts as $cProduct){
+				if(isset($cProduct['is_for_booking'])) {
+					$order_have_booking = 1;
+				}
+			}
+		
+		/* --------------- */
+		
         $userId = UserAuthentication::getLoggedUserId();
         $userWalletBalance = User::getUserBalance($userId, true);
         /* Payment Methods[ */
@@ -1005,6 +1017,7 @@ class CheckoutController extends MyAppController
         //$orderData['order_actual_paid'] = $cartSummary["cartActualPaid"];
         $orderData['order_net_amount'] = $cartSummary["orderNetAmount"];
         $orderData['order_actual_net_amount'] = $summaryWithoutBook['orderNetAmount'];
+        $orderData['order_have_booking'] = $order_have_booking;
         $orderData['order_is_wallet_selected'] = $cartSummary["cartWalletSelected"];
         $orderData['order_wallet_amount_charge'] = $cartSummary["WalletAmountCharge"];
         $orderData['order_type'] = Orders::ORDER_PRODUCT;
@@ -1073,8 +1086,7 @@ class CheckoutController extends MyAppController
         $orderData['orderLangData'] = $orderLangData;
 
         /* order products[ */
-        $cartProducts = $this->cartObj->getProducts($this->siteLangId);
-
+        
         $orderData['products'] = array();
         $orderData['prodCharges'] = array();
 

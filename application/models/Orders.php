@@ -2299,6 +2299,15 @@ class Orders extends MyAppModel
 
         return true;
     }
+	
+	
+	public function checkNonBookAmountPaid($order_id,$order_amount_with_booking) {
+		$totalPaymentPaid = $this->getOrderPaymentPaid($order_id);
+		if($totalPaymentPaid == $order_amount_with_booking){
+			return true;
+		}
+		return false;
+	}
 
     public static function canSubmitFeedback($userId, $op_order_id, $selprod_id){
         if (!FatApp::getConfig('CONF_ALLOW_REVIEWS', FatUtility::VAR_INT, 0)) {
