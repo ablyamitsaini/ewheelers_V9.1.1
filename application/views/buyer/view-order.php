@@ -59,7 +59,7 @@ if (true == $primaryOrder) {
         <div class="content-body">
             <div class="cards">
                 <div class="cards-header p-4">
-                    <h5 class="cards-title"><?php echo ($childOrderDetail['op_is_booking'] == 1)?Labels::getLabel('LBL_Booking_Order_Details', $siteLangId):Labels::getLabel('LBL_Order_Details', $siteLangId);?></h5>
+                    <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Order_Details', $siteLangId);?></h5>
                     <?php if (!$print) { ?>
                     <div class="action">
                         <div class="">
@@ -84,11 +84,11 @@ if (true == $primaryOrder) {
                                     $paymentMethodName .= Labels::getLabel("LBL_Wallet", $siteLangId);
                                 } ?> <p><strong><?php echo Labels::getLabel('LBL_Payment_Method', $siteLangId); ?>: </strong><?php echo $paymentMethodName; ?></p>
                                 <p><strong><?php echo Labels::getLabel('LBL_Payment_Status', $siteLangId); ?>: </strong>
-                                <?php echo Orders::getOrderPaymentStatusArr($siteLangId)[$childOrderDetail['order_is_paid']];
+                                <?php /* echo Orders::getOrderPaymentStatusArr($siteLangId)[$childOrderDetail['order_is_paid']];
                                 if ('' != $childOrderDetail['pmethod_name'] && 'CashOnDelivery' == $childOrderDetail['pmethod_code']) {
                                     echo ' ('.$childOrderDetail['pmethod_name'].' )';
-                                } ?>
-                                <?php /*echo $orderStatuses[$childOrderDetail['op_status_id']];*/ ?></p>
+                                } */ ?>
+                                <?php echo $orderStatuses[$childOrderDetail['op_status_id']]; ?></p>
                                 <p><strong><?php echo Labels::getLabel('LBL_Cart_Total', $siteLangId); ?>: </strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrderDetail, 'CART_TOTAL')); ?></p>
                                 <p><strong><?php echo Labels::getLabel('LBL_Delivery', $siteLangId); ?>: </strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrderDetail, 'SHIPPING')); ?></p>
                                 <p><strong><?php echo Labels::getLabel('LBL_Tax', $siteLangId); ?>:</strong> <?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrderDetail, 'TAX')); ?></p>
@@ -194,6 +194,10 @@ if (true == $primaryOrder) {
                                             <div class="item__sold_by"><?php echo Labels::getLabel('LBL_Sold_By', $siteLangId).': '.$childOrder['op_shop_name']; ?></div>
                                             <?php if ($childOrder['op_shipping_duration_name'] != '') { ?>
                                                 <div class="item__shipping"><?php echo Labels::getLabel('LBL_Shipping_Method', $siteLangId); ?>: <?php echo $childOrder['op_shipping_durations'].'-'. $childOrder['op_shipping_duration_name']; ?></div>
+                                            <?php } ?>
+											
+											<?php if ($childOrder['op_is_booking'] == 1) { ?>
+                                                <b>( <?php echo Labels::getLabel('Lbl_Booking', $siteLangId)?> )</b>
                                             <?php } ?>
                                         </div>
                                     </td>
