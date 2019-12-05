@@ -376,7 +376,7 @@ ALTER TABLE `tbl_user_transactions` ADD `utxn_test_drive_id` INT(11) NOT NULL AF
 
 ALTER TABLE `tbl_products` ADD `product_book` TINYINT(4) NOT NULL AFTER `product_featured`;
 
-ALTER TABLE `tbl_products` ADD `product_book_percentage` INT(11) NOT NULL AFTER `product_book`;
+ALTER TABLE `tbl_products` ADD `product_book_percentage` DECIMAL(10,2) NOT NULL AFTER `product_book`;
 
 
 ALTER TABLE `tbl_order_products` ADD `op_booking_product_actual_amount` INT(255) NOT NULL AFTER `op_unit_cost`, ADD `op_is_booking` TINYINT NOT NULL AFTER `op_booking_product_actual_amount`;
