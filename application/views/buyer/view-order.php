@@ -84,11 +84,11 @@ if (true == $primaryOrder) {
                                     $paymentMethodName .= Labels::getLabel("LBL_Wallet", $siteLangId);
                                 } ?> <p><strong><?php echo Labels::getLabel('LBL_Payment_Method', $siteLangId); ?>: </strong><?php echo $paymentMethodName; ?></p>
                                 <p><strong><?php echo Labels::getLabel('LBL_Payment_Status', $siteLangId); ?>: </strong>
-                                <?php echo Orders::getOrderPaymentStatusArr($siteLangId)[$childOrderDetail['order_is_paid']];
+                                <?php /* echo Orders::getOrderPaymentStatusArr($siteLangId)[$childOrderDetail['order_is_paid']];
                                 if ('' != $childOrderDetail['pmethod_name'] && 'CashOnDelivery' == $childOrderDetail['pmethod_code']) {
                                     echo ' ('.$childOrderDetail['pmethod_name'].' )';
-                                } ?>
-                                <?php /*echo $orderStatuses[$childOrderDetail['op_status_id']];*/ ?></p>
+                                } */ ?>
+                                <?php echo $orderStatuses[$childOrderDetail['op_status_id']]; ?></p>
                                 <p><strong><?php echo Labels::getLabel('LBL_Cart_Total', $siteLangId); ?>: </strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrderDetail, 'CART_TOTAL')); ?></p>
                                 <p><strong><?php echo Labels::getLabel('LBL_Delivery', $siteLangId); ?>: </strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrderDetail, 'SHIPPING')); ?></p>
                                 <p><strong><?php echo Labels::getLabel('LBL_Tax', $siteLangId); ?>:</strong> <?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrderDetail, 'TAX')); ?></p>
