@@ -241,6 +241,17 @@ if (true == $primaryOrder) {
                                     <td><?php echo CommonHelper::displayMoneyFormat($orderDetail['order_net_amount']); ?></td>
                                 </tr>
                             <?php } ?>
+							
+							<?php if ($orderDetail['order_have_booking'] == 1) { ?>
+								<tr>
+                                    <td colspan="8"><?php echo Labels::getLabel('LBL_Amount_without_booking', $siteLangId)?></td>
+                                    <td><?php echo CommonHelper::displayMoneyFormat($orderDetail['order_actual_net_amount']); ?></td>
+                                </tr>
+								<tr>
+                                    <td colspan="8"><?php echo Labels::getLabel('LBL_Amount_to_be_paid_on_delivery', $siteLangId)?></td>
+                                    <td><?php echo CommonHelper::displayMoneyFormat($orderDetail['order_actual_net_amount'] - $orderDetail['order_net_amount']); ?></td>
+                                </tr>
+							<?php }?>
                         </tbody>
                     </table>
                     <div class="divider">
