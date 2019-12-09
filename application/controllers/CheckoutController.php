@@ -831,7 +831,7 @@ class CheckoutController extends MyAppController
         }
 
         $cartSummary = $this->cartObj->getCartFinancialSummary($this->siteLangId);
-        $summaryWithoutBook = $this->cartObj->getCartFinancialSummary($this->siteLangId,1);
+        //$summaryWithoutBook = $this->cartObj->getCartFinancialSummary($this->siteLangId,1);
 		
 		/* ------is order contain booking product-------- */
 		
@@ -1015,8 +1015,8 @@ class CheckoutController extends MyAppController
         //$orderData['order_sub_total'] = $cartSummary["netTotalWithoutDiscount"];
         //$orderData['order_net_charged'] = $cartSummary["netTotalAfterDiscount"];
         //$orderData['order_actual_paid'] = $cartSummary["cartActualPaid"];
-        $orderData['order_net_amount'] = $cartSummary["orderNetAmount"];
-        $orderData['order_actual_net_amount'] = $summaryWithoutBook['orderNetAmount'];
+        $orderData['order_net_amount'] = ($cartSummary["orderNetAmount"] - $cartSummary['bookingProductTaxTotal']);
+        $orderData['order_actual_net_amount'] = $cartSummary['orderNetAmountWithoutBook'];
         $orderData['order_have_booking'] = $order_have_booking;
         $orderData['order_is_wallet_selected'] = $cartSummary["cartWalletSelected"];
         $orderData['order_wallet_amount_charge'] = $cartSummary["WalletAmountCharge"];
@@ -1999,7 +1999,7 @@ class CheckoutController extends MyAppController
     public function getFinancialSummary()
     {
         $cartSummary = $this->cartObj->getCartFinancialSummary($this->siteLangId);
-        $summaryWithoutBook = $this->cartObj->getCartFinancialSummary($this->siteLangId,1);
+        //$summaryWithoutBook = $this->cartObj->getCartFinancialSummary($this->siteLangId,1);
         $products = $this->cartObj->getProducts($this->siteLangId);
 
         $hasPhysicalProd = $this->cartObj->hasPhysicalProduct();
@@ -2011,7 +2011,7 @@ class CheckoutController extends MyAppController
 
         $address =  UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), $this->siteLangId, 0, $selected_shipping_address_id);
 
-        $this->set('orderNetAmountWithoutBooking',$summaryWithoutBook['orderNetAmount'] );
+        $this->set('orderNetAmountWithoutBooking',$cartSummary['orderNetAmountWithoutBook'] );
         $this->set('products', $products);
         $this->set('cartSummary', $cartSummary);
         $this->set('defaultAddress', $address);

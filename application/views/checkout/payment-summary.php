@@ -5,7 +5,10 @@
         <h2><?php echo Labels::getLabel('LBL_Payment_Summary', $siteLangId); ?></h2>
     </div>
 </div>
-<?php $rewardPoints = UserRewardBreakup::rewardPointBalance(UserAuthentication::getLoggedUserId()); ?>
+<?php $rewardPoints = UserRewardBreakup::rewardPointBalance(UserAuthentication::getLoggedUserId()); 
+
+$orderNetAmount = $cartSummary['orderNetAmount'] - $cartSummary['bookingProductTaxTotal'];
+?>
 <div class="box box--white box--radius p-4">
     <section id="payment" class="section-checkout">
         <div class="row align-items-center mb-4">
@@ -43,7 +46,7 @@
             </div>
             <?php } ?>
             <div class="col-md-6 mb-3">
-                <?php if ($userWalletBalance > 0 && $cartSummary['orderNetAmount'] > 0) { ?>
+                <?php if ($userWalletBalance > 0 && $orderNetAmount > 0) { ?>
                     <label class="checkbox brand" id="brand_95">
                         <input onChange="walletSelection(this)" type="checkbox" <?php echo ($cartSummary["cartWalletSelected"]) ? 'checked="checked"' : ''; ?> name="pay_from_wallet" id="pay_from_wallet" />
                         <i class="input-helper"></i>
@@ -57,7 +60,7 @@
             </div>
         </div>
         <div class="align-items-center mb-4">
-            <?php if ($userWalletBalance > 0 && $cartSummary['orderNetAmount'] > 0) { ?>
+            <?php if ($userWalletBalance > 0 && $orderNetAmount > 0) { ?>
                 <div>
                     <div id="wallet" class="wallet">
                         <?php if ($cartSummary["cartWalletSelected"]) { ?>
@@ -66,7 +69,7 @@
                                     <li>
                                         <div class="boxwhite">
                                             <p><?php echo Labels::getLabel('LBL_Payment_to_be_made', $siteLangId); ?></p>
-                                            <h5><?php echo CommonHelper::displayMoneyFormat($cartSummary['orderNetAmount']); ?></h5>
+                                            <h5><?php echo CommonHelper::displayMoneyFormat($orderNetAmount); ?></h5>
                                         </div>
                                     </li>
                                     <li>
@@ -77,19 +80,19 @@
                                         <p class="note">
                                             <i>
                                                 <?php echo Labels::getLabel('LBL_Remaining_wallet_balance', $siteLangId);
-                                                $remainingWalletBalance = ($userWalletBalance - $cartSummary['orderNetAmount']);
+                                                $remainingWalletBalance = ($userWalletBalance - $orderNetAmount);
                                                 $remainingWalletBalance = ($remainingWalletBalance < 0) ? 0 : $remainingWalletBalance;
                                                 echo CommonHelper::displayMoneyFormat($remainingWalletBalance); ?>
                                             </i>
                                         </p>
                                     </li>
-                                    <?php /* if( $userWalletBalance < $cartSummary['orderNetAmount'] ){ ?> <li>
+                                    <?php /* if( $userWalletBalance < $orderNetAmount ){ ?> <li>
                                         <div class="boxwhite">
                                             <p>Select an Option to pay balance</p>
                                             <h5><?php echo CommonHelper::displayMoneyFormat($cartSummary['orderPaymentGatewayCharges']); ?></h5>
                                         </div>
                                     </li> <?php } */ ?>
-                                    <?php if ($userWalletBalance >= $cartSummary['orderNetAmount']) { ?>
+                                    <?php if ($userWalletBalance >= $orderNetAmount) { ?>
                                         <li>
                                             <?php $btnSubmitFld = $WalletPaymentForm->getField('btn_submit');
                                             $btnSubmitFld->addFieldTagAttribute('class', 'btn btn--primary-border');
@@ -114,10 +117,10 @@
                     </div>
                 </div>
             <?php } ?>
-            <?php if ($cartSummary['orderNetAmount'] <= 0) { ?>
+            <?php if ($orderNetAmount <= 0) { ?>
                 <div class="gap"></div>
                 <div id="wallet">
-                    <h6><?php echo Labels::getLabel('LBL_Payment_to_be_made', $siteLangId); ?> <strong><?php echo CommonHelper::displayMoneyFormat($cartSummary['orderNetAmount']); ?></strong></h6> <?php
+                    <h6><?php echo Labels::getLabel('LBL_Payment_to_be_made', $siteLangId); ?> <strong><?php echo CommonHelper::displayMoneyFormat($orderNetAmount); ?></strong></h6> <?php
                     $btnSubmitFld = $confirmForm->getField('btn_submit');
                     $btnSubmitFld->addFieldTagAttribute('class', 'btn btn--primary btn--sm');
 
