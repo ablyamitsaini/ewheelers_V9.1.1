@@ -98,10 +98,17 @@ if (true == $primaryOrder) {
                         } ?> <?php $rewardPointDiscount = CommonHelper::orderProductAmount($childOrderDetail, 'REWARDPOINT');
                         if ($rewardPointDiscount != 0) {
                             ?> <p><strong><?php echo Labels::getLabel('LBL_Reward_Point_Discount', $siteLangId); ?>:</strong> <?php echo CommonHelper::displayMoneyFormat($rewardPointDiscount); ?></p> <?php
-                        } ?> <p><strong><?php echo Labels::getLabel('LBL_Order_Total', $siteLangId); ?>: </strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrderDetail)); ?></p>
+                        } ?> <p><strong>
+						<?php if($childOrderDetail['op_is_booking'] == 1){
+								echo Labels::getLabel('LBL_Order_Total', $siteLangId); ?>: </strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrderDetail) - CommonHelper::orderProductAmount($childOrderDetail, 'TAX')); 
+							}else{
+								echo Labels::getLabel('LBL_Order_Total', $siteLangId); ?>: </strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrderDetail)); 
+							}
+						
+						?></p>
 						<?php 
 								if($childOrderDetail['op_is_booking'] == 1){ 
-								$netAmount = CommonHelper::orderProductAmount($childOrderDetail);
+								$netAmount = CommonHelper::orderProductAmount($childOrderDetail) - CommonHelper::orderProductAmount($childOrderDetail, 'tax');
 								$netAmountWithoutBook = CommonHelper::orderProductAmount($childOrderDetail,'netamount',false,false,1);
 								?>
 									<p><strong><?php echo Labels::getLabel('LBL_Order_Total_Without_Booking', $siteLangId);?>: </strong><?php echo CommonHelper::displayMoneyFormat($netAmountWithoutBook);?>
@@ -206,9 +213,9 @@ if (true == $primaryOrder) {
                                     <td><?php echo CommonHelper::displayMoneyFormat($childOrder['op_unit_price']); ?></td>
                                     <td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrder, 'shipping')); ?></td>
                                     <td><?php echo CommonHelper::displayMoneyFormat($volumeDiscount); ?></td>
-                                    <td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrder, 'tax')); ?></td>
+                                    <td><?php if($childOrder['op_is_booking'] == 1){ echo "0.00"; }else{ echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrder, 'tax')); }; ?></td>
                                     <td><?php echo CommonHelper::displayMoneyFormat($rewardPointDiscount); ?></td>
-                                    <td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrder)); ?></td>
+                                    <td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($childOrder) - CommonHelper::orderProductAmount($childOrder, 'tax')); ?></td>
                                 </tr>
                             <?php }
                             if (!$primaryOrder) { ?>
@@ -240,9 +247,7 @@ if (true == $primaryOrder) {
                                     <td colspan="8"><?php echo Labels::getLabel('LBL_Total', $siteLangId)?></td>
                                     <td><?php echo CommonHelper::displayMoneyFormat($orderDetail['order_net_amount']); ?></td>
                                 </tr>
-                            <?php } ?>
-							
-							<?php if ($orderDetail['order_have_booking'] == 1) { ?>
+								<?php if ($orderDetail['order_have_booking'] == 1) { ?>
 								<tr>
                                     <td colspan="8"><?php echo Labels::getLabel('LBL_Amount_without_booking', $siteLangId)?></td>
                                     <td><?php echo CommonHelper::displayMoneyFormat($orderDetail['order_actual_net_amount']); ?></td>
@@ -252,6 +257,7 @@ if (true == $primaryOrder) {
                                     <td><?php echo CommonHelper::displayMoneyFormat($orderDetail['order_actual_net_amount'] - $orderDetail['order_net_amount']); ?></td>
                                 </tr>
 							<?php }?>
+                            <?php } ?>
                         </tbody>
                     </table>
                     <div class="divider">
