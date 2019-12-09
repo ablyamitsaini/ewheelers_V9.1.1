@@ -5,7 +5,7 @@ $arr_flds = array(
 	'order_id'=>Labels::getLabel('LBL_Order_ID',$adminLangId),
 	'buyer_user_name'=>Labels::getLabel('LBL_Customer_Name',$adminLangId),
 	'order_date_added'=>Labels::getLabel('LBL_Order_Date',$adminLangId),
-	'order_net_amount'=>Labels::getLabel('LBL_Total',$adminLangId),
+	'order_actual_net_amount'=>Labels::getLabel('LBL_Total',$adminLangId),
 	'order_is_paid'=>Labels::getLabel('LBL_Payment_Status',$adminLangId),
 	'action' => Labels::getLabel('LBL_Action',$adminLangId),
 );
@@ -36,8 +36,8 @@ foreach ($ordersList as $sn=>$row){
 				}
 				$td->appendElement('plaintext', array(), '<br/>'.$row['buyer_email'], true);
 			break;
-			case 'order_net_amount':
-				$td->appendElement('plaintext', array(), CommonHelper::displayMoneyFormat($row['order_net_amount'], true, true) );
+			case 'order_actual_net_amount':
+				$td->appendElement('plaintext', array(), CommonHelper::displayMoneyFormat($row['order_actual_net_amount'], true, true) );
 			break;
 			case 'order_date_added':
 				$td->appendElement('plaintext',array(),FatDate::format($row[$key],true,true,

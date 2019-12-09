@@ -947,6 +947,7 @@ class Cart extends FatModel
         $products = $this->getProducts($langId);
 
         $cartTotal = 0;
+		$cartTotalWithoutBook = 0;
         $cartTotalNonBatch = 0;
         $cartTotalBatch = 0;
         $shippingTotal = 0;
@@ -954,10 +955,12 @@ class Cart extends FatModel
         $cartTotalAfterBatch = 0;
         $orderPaymentGatewayCharges = 0;
         $cartTaxTotal = 0;
+        $bookingProductTaxTotal = 0;
         $cartDiscounts = self::getCouponDiscounts();
         
         $totalSiteCommission = 0;
         $orderNetAmount = 0;
+        $orderNetAmountWithoutBook = 0;
         $cartRewardPoints = self::getCartRewardPoint();
         $cartVolumeDiscount = 0;
 
@@ -976,11 +979,9 @@ class Cart extends FatModel
                     $cartTotal += $product['prodgroup_total'];
                 } else {
                     //$cartTotalNonBatch += $product['total'];
-					if($fullAmount == 1){
-						$cartTotal += !empty($product['totalPriceWithoutBooking']) ? $product['totalPriceWithoutBooking'] : 0;
-					}else{					
+						$cartTotalWithoutBook += !empty($product['totalPriceWithoutBooking']) ? $product['totalPriceWithoutBooking'] : 0;
 						$cartTotal += !empty($product['total']) ? $product['total'] : 0;
-					}
+					
                 }
 
                 $cartVolumeDiscount += $product['volume_discount_total'];
@@ -990,6 +991,10 @@ class Cart extends FatModel
                 $tax = $taxObj->calculateTaxRates($product['product_id'], $taxableProdPrice, $product['selprod_user_id'], $langId, $product['quantity']);
                 $cartTaxTotal += $tax; */
                 $cartTaxTotal +=  $product['tax'];
+	
+				if(isset($product['is_for_booking'])) {
+					$bookingProductTaxTotal += $product['tax'];
+				}
                 
                 $originalShipping += $product['shipping_cost'];
                 $totalSiteCommission += $product['commission'];
@@ -1007,9 +1012,12 @@ class Cart extends FatModel
         //$orderPaymentGatewayCharges = $netTotalAfterDiscount - $orderCreditsCharge;
 
         $totalDiscountAmount = (isset($cartDiscounts['coupon_discount_total'])) ? $cartDiscounts['coupon_discount_total'] : 0;
-        $orderNetAmount = (max($cartTotal - $cartVolumeDiscount - $totalDiscountAmount, 0)  + $shippingTotal  + $cartTaxTotal) ;
-
-        $orderNetAmount = $orderNetAmount - CommonHelper::rewardPointDiscount($orderNetAmount, $cartRewardPoints);
+        $orderNetAmount = (max($cartTotal - $cartVolumeDiscount - $totalDiscountAmount, 0)  + $shippingTotal  + $cartTaxTotal) ; 
+		$orderNetAmount = $orderNetAmount - CommonHelper::rewardPointDiscount($orderNetAmount, $cartRewardPoints);
+		
+        $orderNetAmountWithoutBook = (max($cartTotalWithoutBook - $cartVolumeDiscount - $totalDiscountAmount, 0)  + $shippingTotal  + $cartTaxTotal) ; 
+		$orderNetAmountWithoutBook  = $orderNetAmountWithoutBook - CommonHelper::rewardPointDiscount($orderNetAmount, $cartRewardPoints);
+		
         $WalletAmountCharge = ($this->isCartUserWalletSelected()) ? min($orderNetAmount, $userWalletBalance) : 0;
         $orderPaymentGatewayCharges = $orderNetAmount - $WalletAmountCharge;
 
@@ -1029,16 +1037,18 @@ class Cart extends FatModel
             'shippingTotal' => $shippingTotal,
             'originalShipping' => $originalShipping,
             'cartTaxTotal' => $cartTaxTotal,
+            'bookingProductTaxTotal' => $bookingProductTaxTotal,
             'cartDiscounts' => $cartDiscounts,
             'cartVolumeDiscount'=> $cartVolumeDiscount,
             'cartRewardPoints' => $cartRewardPoints,
             'cartWalletSelected'=> $this->isCartUserWalletSelected(),
             'siteCommission' => $totalSiteCommission,
             'orderNetAmount' => $orderNetAmount,
+            'orderNetAmountWithoutBook' => $orderNetAmountWithoutBook,
             'WalletAmountCharge'=> $WalletAmountCharge,
             'isCodEnabled' => $isCodEnabled,
             'isCodValidForNetAmt' => $isCodValidForNetAmt,
-            'orderPaymentGatewayCharges' => $orderPaymentGatewayCharges,
+            'orderPaymentGatewayCharges' => ($orderPaymentGatewayCharges - $bookingProductTaxTotal ),
             'netChargeAmount' => $netChargeAmt,
         );
 

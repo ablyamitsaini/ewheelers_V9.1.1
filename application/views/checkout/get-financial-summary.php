@@ -145,21 +145,28 @@
                         <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($appliedRewardPointsDiscount); ?></td>
                     </tr>
                     <?php } ?>
-                    <tr>
+                    <!--<tr>
                         <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
                         <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat($cartSummary['orderNetAmount']); ?></td>
-                    </tr>
-					<?php if($orderNetAmountWithoutBooking > $cartSummary['orderNetAmount'] ) { ?>
+                    </tr>-->
+					<?php
+					$orderNetAmount = $cartSummary['orderNetAmount'] - $cartSummary['bookingProductTaxTotal'];
+					if($orderNetAmountWithoutBooking > $cartSummary['orderNetAmount'] ) { ?>
 					<tr>
-                        <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable_Without_Booking', $siteLangId); ?></td>
+                        <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
                         <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat($orderNetAmountWithoutBooking); ?></td>
                     </tr>
 					
 					<tr>
                         <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_To_Pay_on_Delivery', $siteLangId); ?></td>
-                        <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat($orderNetAmountWithoutBooking - $cartSummary['orderNetAmount']); ?></td>
+                        <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat($orderNetAmountWithoutBooking - $orderNetAmount); ?></td>
                     </tr>
 					<?php } ?>
+					<tr>
+                        <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
+                        <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat($orderNetAmount); ?></td>
+                    </tr>
+					
                 </tbody>
             </table>
         </div>

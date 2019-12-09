@@ -1,5 +1,16 @@
 <?php
-defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
+defined('SYSTEM_INIT') or die('Invalid Usage.');
+
+$is_for_booking = 0;
+if (count($products)) {
+	foreach($products as $product){
+		if(isset($product['is_for_booking'])){
+			$is_for_booking = 1;
+			break;
+		}
+	}
+}
+ ?>
 <div class="row">
     <div class="col-xl-9 col-lg-8">
         <div class="box box--white box--radius box--space">
@@ -9,8 +20,15 @@ defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
                         <th colspan="2"><?php echo Labels::getLabel('LBL_Item(s)_in_cart', $siteLangId).'
     '.count($products); ?></th>
                         <th><?php echo Labels::getLabel('LBL_Quantity', $siteLangId); ?></th>
+						
+						<?php if($is_for_booking == 1){ ?>
+							<th width="10%"><?php echo Labels::getLabel('LBL_Book_Price', $siteLangId); ?></th>
+							<th width="10%"><?php echo Labels::getLabel('LBL_Pending_Amount', $siteLangId); ?></th>
+						<?php } ?>
                         <th width="12%"><?php echo Labels::getLabel('LBL_Price', $siteLangId); ?></th>
                         <th width="10%"><?php echo Labels::getLabel('LBL_SubTotal', $siteLangId); ?></th>
+						
+						
                         <th></th>
                     </tr>
                 </thead>
@@ -90,8 +108,27 @@ defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
                 ?>
             </div>
         </td>
+		<?php if($is_for_booking == 1){ ?>
+			<td width="10%">
+				<?php if(isset($product['is_for_booking'])){ ?>
+					<span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?></span>
+				<?php
+				}else{
+					echo "-";
+				}
+				?>
+			
+			</td>
+			<td width="10%"><?php if(isset($product['is_for_booking'])){ ?>
+					<span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['priceWithoutBooking'] - $product['theprice']); ?></span>
+				<?php
+				}else{
+					echo "-";
+				}
+				?></td>
+		<?php } ?>
         <td>
-            <span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?></span>
+            <span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['priceWithoutBooking']); ?></span>
         </td>
         <td> <span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['total']); ?> </span>
         </td>
@@ -152,16 +189,37 @@ defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
                     <?php }?>
                     <?php $netChargeAmt = $cartSummary['cartTotal'] + $cartSummary['cartTaxTotal'] - ((0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0);?>
                     <?php $netChargeAmt = $netChargeAmt - ((0 < $cartSummary['cartDiscounts']['coupon_discount_total'])?$cartSummary['cartDiscounts']['coupon_discount_total']:0);?>
+					
+					<?php $netChargeAmtWithoutBook = $cartSummary['orderNetAmountWithoutBook'] - ((0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0);?>
+                    <?php $netChargeAmtWithoutBook = $netChargeAmtWithoutBook - ((0 < $cartSummary['cartDiscounts']['coupon_discount_total'])?$cartSummary['cartDiscounts']['coupon_discount_total']:0);
+					$netPayableNow = $netChargeAmt - $cartSummary['bookingProductTaxTotal'];
+					?>
+					
+					
                     <?php if ($cartSummary['cartTaxTotal']) { ?>
                     <tr>
                         <td class="text-left"><?php echo Labels::getLabel('LBL_Tax', $siteLangId); ?></td>
                         <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTaxTotal']); ?></td>
                     </tr>
                     <?php } ?>
-                    <tr>
+                    <!--<tr>
                         <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
                         <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat($netChargeAmt); ?></td>
-                    </tr>
+                    </tr>-->
+					<?php if($cartSummary['orderNetAmount'] != $cartSummary['orderNetAmountWithoutBook']) { ?>
+						<tr>
+							<td class=""><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
+							<td class=""><?php echo CommonHelper::displayMoneyFormat($netChargeAmtWithoutBook); ?></td>
+						</tr>
+						<tr>
+							<td class=""><?php echo Labels::getLabel('LBL_Pending_Amount', $siteLangId); ?></td>
+							<td class=""><?php echo CommonHelper::displayMoneyFormat($netChargeAmtWithoutBook - $netPayableNow); ?></td>
+						</tr>
+				<?php } ?>
+				<tr>
+                    <td class="hightlighted"><?php echo Labels::getLabel('LBL_Payable_Now', $siteLangId); ?></td>
+                    <td class="hightlighted"><?php echo CommonHelper::displayMoneyFormat($netPayableNow); ?></td>
+                </tr>
                     <tr>
                         <td colspan="2">
 

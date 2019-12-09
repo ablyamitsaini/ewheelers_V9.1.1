@@ -64,9 +64,9 @@ if ($order['order_reward_point_used'] > 0) {
                               <td><strong><?php echo Labels::getLabel('LBL_Volume/Loyalty_Discount', $adminLangId);?>: </strong> <?php echo CommonHelper::displayMoneyFormat($order['order_volume_discount_total'], true, true); ?></td>
                            
 							<?php if($order['order_actual_net_amount'] > $order['order_net_amount']) { ?>
-                              <td><strong><?php echo Labels::getLabel('LBL_Order_Net_Amount_Without_Booking', $adminLangId);?>: </strong> <?php echo CommonHelper::displayMoneyFormat($order['order_actual_net_amount'], true, true); ?></td>
+                              <td><strong><?php echo Labels::getLabel('LBL_Order_Total_Amount', $adminLangId);?>: </strong> <?php echo CommonHelper::displayMoneyFormat($order['order_actual_net_amount'], true, true); ?></td>
                             
-                              <td><strong><?php echo Labels::getLabel('LBL_To_Be_Paid_On_Delivery', $adminLangId);?>: </strong> <?php echo CommonHelper::displayMoneyFormat($order['order_actual_net_amount'] - $order['order_net_amount'], true, true); ?></td>
+                              <td><strong><?php echo Labels::getLabel('LBL_Pending_Amount', $adminLangId);?>: </strong> <?php echo CommonHelper::displayMoneyFormat($order['order_actual_net_amount'] - $order['order_net_amount'], true, true); ?></td>
 							<?php } ?>
                             </tr>
                         </table>
@@ -85,6 +85,9 @@ if ($order['order_reward_point_used'] > 0) {
                                 <th><?php echo Labels::getLabel('LBL_Product/Shop/Seller_Details', $adminLangId); ?></th>
                                 <th><?php echo Labels::getLabel('LBL_Shipping_Detail', $adminLangId); ?></th>
                                 <th><?php echo Labels::getLabel('LBL_Unit_Price', $adminLangId); ?></th>
+								<?php if($order['order_have_booking']) { ?>
+									<th><?php echo Labels::getLabel('LBL_Booking_Price', $adminLangId); ?></th>
+								<?php } ?>
                                 <th><?php echo Labels::getLabel('LBL_Qty', $adminLangId); ?></th>
                                 <th class="text-right"><?php echo Labels::getLabel('LBL_Shipping', $adminLangId); ?></th>
                                 <th><?php echo Labels::getLabel('LBL_Volume/Loyalty_Discount', $adminLangId);?></th>
@@ -97,9 +100,9 @@ if ($order['order_reward_point_used'] > 0) {
                             foreach ($order["products"] as $op) {
                                 $shippingCost = CommonHelper::orderProductAmount($op, 'SHIPPING');
                                 $volumeDiscount = CommonHelper::orderProductAmount($op, 'VOLUME_DISCOUNT');
-                                $total = CommonHelper::orderProductAmount($op, 'cart_total') + $shippingCost+$volumeDiscount;
-                                $cartTotal = $cartTotal + CommonHelper::orderProductAmount($op, 'cart_total');
-                                $shippingTotal = $shippingTotal + CommonHelper::orderProductAmount($op, 'shipping'); ?>
+                                $total = CommonHelper::orderProductAmount($op, 'cart_total',false,false,1) + $shippingCost+$volumeDiscount;
+                                $cartTotal = $cartTotal + CommonHelper::orderProductAmount($op, 'cart_total',false,false,1);
+                                $shippingTotal = $shippingTotal + CommonHelper::orderProductAmount($op, 'shipping',false,false,1); ?>
                             <tr>
                                 <td><?php echo $k; ?></td>
                                 <td><?php echo $op['op_invoice_number']; ?></td>
@@ -129,7 +132,12 @@ if ($order['order_reward_point_used'] > 0) {
                                 <td><strong><?php echo Labels::getLabel('LBL_Shipping_Class', $adminLangId); ?>: </strong><?php echo CommonHelper::displayNotApplicable($adminLangId, $op["op_shipping_duration_name"]); ?><br/>
                                 <strong><?php echo Labels::getLabel('LBL_Duration:', $adminLangId); ?> </strong><?php echo CommonHelper::displayNotApplicable($adminLangId, $op["op_shipping_durations"]); ?></td>
 
-                                <td><?php echo CommonHelper::displayMoneyFormat($op["op_unit_price"], true, true); ?></td>
+                                <td><?php echo CommonHelper::displayMoneyFormat($op["op_product_amount_without_book"], true, true); ?></td>
+								<?php if($op['op_is_booking'] == 1) { ?>
+									<td><?php echo CommonHelper::displayMoneyFormat($op["op_unit_price"], true, true); ?></td>
+								<?php }else{ ?>
+									<td><?php echo "-"; ?></td>
+								<?php }?>
                                 <td><?php echo $op['op_qty']; ?></td>
                                 <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($shippingCost, true, true); ?></td>
 
@@ -142,38 +150,38 @@ if ($order['order_reward_point_used'] > 0) {
                                 $k++;
                             } ?>
                             <tr>
-                                <td colspan="8" class="text-right"><?php echo Labels::getLabel('LBL_Cart_Total', $adminLangId); ?></td>
+                                <td colspan="9" class="text-right"><?php echo Labels::getLabel('LBL_Cart_Total', $adminLangId); ?></td>
                                 <td class="text-right" colspan="2"><?php echo CommonHelper::displayMoneyFormat($cartTotal, true, true); ?></th>
                             </tr>
                             <tr>
-                                <td colspan="8" class="text-right"><?php echo Labels::getLabel('LBL_Delivery/Shipping', $adminLangId); ?></td>
+                                <td colspan="9" class="text-right"><?php echo Labels::getLabel('LBL_Delivery/Shipping', $adminLangId); ?></td>
                                 <td class="text-right" colspan="2">+<?php echo CommonHelper::displayMoneyFormat($shippingTotal, true, true); ?></td>
                             </tr>
                             <tr>
-                                <td colspan="8" class="text-right"><?php echo Labels::getLabel('LBL_Tax', $adminLangId); ?></td>
+                                <td colspan="9" class="text-right"><?php echo Labels::getLabel('LBL_Tax', $adminLangId); ?></td>
                                 <td class="text-right" colspan="2">+<?php echo CommonHelper::displayMoneyFormat($order['order_tax_charged'], true, true); ?></td>
                             </tr>
                             <?php if ($order['order_discount_total'] > 0) {?>
                             <tr>
-                                <td colspan="8" class="text-right"><?php echo Labels::getLabel('LBL_Discount', $adminLangId); ?></td>
+                                <td colspan="9" class="text-right"><?php echo Labels::getLabel('LBL_Discount', $adminLangId); ?></td>
                                 <td class="text-right" colspan="2">-<?php echo CommonHelper::displayMoneyFormat($order['order_discount_total'], true, true); ?></td>
                             </tr>
                             <?php }?>
                             <?php if ($order['order_reward_point_value'] > 0) {?>
                             <tr>
-                                <td colspan="8" class="text-right"><?php echo Labels::getLabel('LBL_Reward_Point_Discount', $adminLangId);?></td>
+                                <td colspan="9" class="text-right"><?php echo Labels::getLabel('LBL_Reward_Point_Discount', $adminLangId);?></td>
                                 <td class="text-right" colspan="2">-<?php echo CommonHelper::displayMoneyFormat($order['order_reward_point_value'], true, true); ?></td>
                             </tr>
                             <?php }?>
                             <?php if ($order['order_volume_discount_total'] > 0) {?>
                             <tr>
-                                <td colspan="8" class="text-right"><?php echo Labels::getLabel('LBL_Volume/Loyalty_Discount', $adminLangId);?></td>
+                                <td colspan="9" class="text-right"><?php echo Labels::getLabel('LBL_Volume/Loyalty_Discount', $adminLangId);?></td>
                                 <td class="text-right" colspan="2">-<?php echo CommonHelper::displayMoneyFormat($order['order_volume_discount_total'], true, true); ?></td>
                             </tr>
                             <?php }?>
                             <tr>
-                                <td colspan="8" class="text-right"><strong><?php echo Labels::getLabel('LBL_Order_Total', $adminLangId); ?></strong></td>
-                                <td class="text-right" colspan="2"><strong><?php echo CommonHelper::displayMoneyFormat($order['order_net_amount'], true, true); ?></strong></td>
+                                <td colspan="9" class="text-right"><strong><?php echo Labels::getLabel('LBL_Order_Total', $adminLangId); ?></strong></td>
+                                <td class="text-right" colspan="2"><strong><?php echo CommonHelper::displayMoneyFormat($order['order_actual_net_amount'], true, true); ?></strong></td>
                             </tr>
                         </table>
                     </div>

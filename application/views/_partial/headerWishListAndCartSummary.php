@@ -75,6 +75,9 @@ if ($user_is_buyer > 0 || (!UserAuthentication::isUserLogged())) { ?>
                 </table>
             </div>
         </div>
+		<?php /* echo "<pre>";
+		print_r($cartSummary);
+		echo"</pre>"; */?>
         <div class="cartdetail__footer">
             <table class="table--justify">
                 <tr>
@@ -91,10 +94,23 @@ if ($user_is_buyer > 0 || (!UserAuthentication::isUserLogged())) { ?>
                         <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartVolumeDiscount']); ?></td>
                     </tr>
                 <?php }
-                $netChargeAmt = $cartSummary['cartTotal']+$cartSummary['cartTaxTotal'] - ((0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0); ?>
+                $netChargeAmt = $cartSummary['cartTotal']+$cartSummary['cartTaxTotal'] - ((0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0); 
+                $netChargeAmtWithoutBook = $cartSummary['orderNetAmountWithoutBook'] - ((0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0); 
+				$netPayableNow = $netChargeAmt - $cartSummary['bookingProductTaxTotal'];
+				?>
+				<?php if($cartSummary['orderNetAmount'] != $cartSummary['orderNetAmountWithoutBook']) { ?>
                 <tr>
-                    <td class="hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
-                    <td class="hightlighted"><?php echo CommonHelper::displayMoneyFormat($netChargeAmt); ?></td>
+                    <td class=""><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
+                    <td class=""><?php echo CommonHelper::displayMoneyFormat($netChargeAmtWithoutBook); ?></td>
+                </tr>
+				<tr>
+                    <td class=""><?php echo Labels::getLabel('LBL_Pending_Amount', $siteLangId); ?></td>
+                    <td class=""><?php echo CommonHelper::displayMoneyFormat($netChargeAmtWithoutBook - $netPayableNow); ?></td>
+                </tr>
+				<?php } ?>
+				<tr>
+                    <td class="hightlighted"><?php echo Labels::getLabel('LBL_Payable_Now', $siteLangId); ?></td>
+                    <td class="hightlighted"><?php echo CommonHelper::displayMoneyFormat($netPayableNow); ?></td>
                 </tr>
                 <tr>
                     <td class=""><a href="<?php echo CommonHelper::generateUrl('cart'); ?>" class="btn btn--primary ripplelink"><?php echo Labels::getLabel('LBL_View_Bag', $siteLangId); ?> </a></td>

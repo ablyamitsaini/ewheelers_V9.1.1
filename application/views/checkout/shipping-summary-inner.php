@@ -153,7 +153,7 @@ $shippingapi_idFld->developerTags['col'] = 6;
                                 unset($newShippingMethods[SHIPPINGMETHODS::MANUAL_SHIPPING]);
                             }
                             if ((!$product['is_physical_product'] && $product['is_digital_product']) || isset($product['is_for_booking'])) {
-                                echo $shippingOptions = CommonHelper::displayNotApplicable($siteLangId, '');
+                                echo Labels::getLabel('LBL_NOT_Applicable', $siteLangId);
                             } else {
                                 if (sizeof($newShippingMethods)>0) {
                                     echo '<li>'. CommonHelper::createDropDownFromArray('data[' . md5($product['key']) . ']['."shipping_type".']', $newShippingMethods, $selectedShippingType, 'class="shipping_method"  data-product-key="' . md5($product['key']) . '" ', Labels::getLabel('LBL_Select_Shipping_Method', $siteLangId)) .'</li>';
