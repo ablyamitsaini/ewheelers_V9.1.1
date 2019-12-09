@@ -42,6 +42,16 @@ if ($order['order_reward_point_used'] > 0) {
                             echo $ul->getHtml();
                         } ?>
                     </div>
+					<?php 
+						$netAmount = CommonHelper::orderProductAmount($order,'netamount',false,USER::USER_TYPE_SELLER);
+						$tax = CommonHelper::orderProductAmount($order, 'TAX');
+						
+						if($order['op_is_booking']) { 
+							$netAmount = $netAmount - $tax;
+						}
+						
+						$netAmountWithoutBook = CommonHelper::orderProductAmount($order,'netamount',false,USER::USER_TYPE_SELLER,1);
+					?>
                     <div class="sectionbody">
                         <table class="table table--details">
                             <tr>
@@ -79,16 +89,14 @@ if ($order['order_reward_point_used'] > 0) {
                                     }?>
                                 </td>
                                 <td><strong><?php echo Labels::getLabel('LBL_Volume_Discount', $adminLangId); ?></strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($order, 'VOLUME_DISCOUNT'), true, true);?> </td>
-                                <td><strong><?php echo Labels::getLabel('LBL_Total_Paid', $adminLangId); ?>:</strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($order, 'netamount', false, USER::USER_TYPE_SELLER), true, true);?>
+                                <td><strong><?php echo Labels::getLabel('LBL_Total_Paid', $adminLangId); ?>:</strong><?php echo CommonHelper::displayMoneyFormat($netAmount, true, true);?>
                                 </td>
                             </tr>
 							<?php if($order['op_is_booking']) { 
-							$netAmount = CommonHelper::orderProductAmount($order,'netamount',false,USER::USER_TYPE_SELLER);
-							$netAmountWithoutBook = CommonHelper::orderProductAmount($order,'netamount',false,USER::USER_TYPE_SELLER,1);
 							?>
 							<tr>
-                                <td><strong><?php echo Labels::getLabel('LBL_Order_Total_Without_Booking', $adminLangId); ?> : </strong><?php echo CommonHelper::displayMoneyFormat($netAmountWithoutBook);?> </td>
-                                <td><strong><?php echo Labels::getLabel('LBL_To_Be_Paid_On_Delivery', $adminLangId); ?> : </strong><?php echo CommonHelper::displayMoneyFormat($netAmountWithoutBook - $netAmount);?></td>
+                                <td><strong><?php echo Labels::getLabel('LBL_Order_Total_Amount', $adminLangId); ?> : </strong><?php echo CommonHelper::displayMoneyFormat($netAmountWithoutBook);?> </td>
+                                <td><strong><?php echo Labels::getLabel('LBL_Pending_Amount', $adminLangId); ?> : </strong><?php echo CommonHelper::displayMoneyFormat($netAmountWithoutBook - $netAmount);?></td>
                                 <td>
                                 </td>
                             </tr>
@@ -205,6 +213,9 @@ if ($order['order_reward_point_used'] > 0) {
                                 <th><?php echo Labels::getLabel('LBL_Product_Name', $adminLangId); ?></th>
                                 <th><?php echo Labels::getLabel('LBL_Shipping', $adminLangId); ?></th>
                                 <th><?php echo Labels::getLabel('LBL_Unit_Price', $adminLangId); ?></th>
+								<?php if($order['op_is_booking']) { ?>
+									<th><?php echo Labels::getLabel('LBL_Booking_Price', $adminLangId); ?></th>
+								<?php } ?>
                                 <th><?php echo Labels::getLabel('LBL_Qty', $adminLangId); ?></th>
                                 <?php if ($shippingHanldedBySeller) { ?>
                                     <th><?php echo Labels::getLabel('LBL_Shipping', $adminLangId); ?></th>
@@ -237,7 +248,10 @@ if ($order['order_reward_point_used'] > 0) {
                                 ?></td>
                                 <td><strong><?php echo Labels::getLabel('LBL_Shipping_Class', $adminLangId); ?>: </strong><?php echo CommonHelper::displayNotApplicable($adminLangId, $order["op_shipping_duration_name"]); ?><br />
                                     <strong><?php echo Labels::getLabel('LBL_Duration', $adminLangId); ?>: </strong><?php echo CommonHelper::displayNotApplicable($adminLangId, $order["op_shipping_durations"]); ?></td>
-                                <td><?php echo CommonHelper::displayMoneyFormat($order["op_unit_price"], true, true); ?></td>
+                                <td><?php echo CommonHelper::displayMoneyFormat($order["op_product_amount_without_book"], true, true); ?></td>
+								<?php if($order['op_is_booking']) { ?>
+									<td><?php echo CommonHelper::displayMoneyFormat($order["op_unit_price"], true, true); ?></td>
+								<?php } ?>
                                 <td><?php echo $order["op_qty"]?></td>
                                 <?php if ($shippingHanldedBySeller) {
                                     ?> <td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($order, 'SHIPPING'), true, true); ?></td>
@@ -246,7 +260,7 @@ if ($order['order_reward_point_used'] > 0) {
                                     ?> <td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($order, 'TAX'), true, true); ?></td> <?php
                                 }?> <td>
                                     <?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($order, 'VOLUME_DISCOUNT'), true, true);?></td>
-                                <td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($order, 'netamount', false, USER::USER_TYPE_SELLER), true, true);?></td>
+                                <td><?php echo CommonHelper::displayMoneyFormat($netAmountWithoutBook);?></td>
                             </tr>
                         </table>
                     </div>

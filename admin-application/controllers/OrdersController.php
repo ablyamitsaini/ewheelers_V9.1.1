@@ -50,7 +50,7 @@ class OrdersController extends AdminBaseController
         $srch->setPageNumber($page);
         $srch->setPageSize($pageSize);
 
-        $srch->addMultipleFields(array('order_id','order_date_added', 'order_is_paid', 'order_status', 'buyer.user_id', 'buyer.user_name as buyer_user_name', 'buyer_cred.credential_email as buyer_email', 'order_net_amount', 'order_wallet_amount_charge', 'order_pmethod_id', 'IFNULL(pmethod_name, pmethod_identifier) as pmethod_name','pmethod_code', 'order_is_wallet_selected'));
+        $srch->addMultipleFields(array('order_id','order_date_added', 'order_is_paid', 'order_status', 'buyer.user_id', 'buyer.user_name as buyer_user_name', 'buyer_cred.credential_email as buyer_email', 'order_net_amount', 'order_wallet_amount_charge', 'order_pmethod_id', 'IFNULL(pmethod_name, pmethod_identifier) as pmethod_name','pmethod_code', 'order_is_wallet_selected','order_actual_net_amount'));
 
         $keyword = FatApp::getPostedData('keyword', null, '');
         if(!empty($keyword) ) {
@@ -113,7 +113,7 @@ class OrdersController extends AdminBaseController
         $srch->doNotLimitRecords();
         $srch->joinOrderBuyerUser();
         $srch->addMultipleFields(
-            array('order_id','order_user_id', 'order_date_added', 'order_is_paid','order_tax_charged', 'order_site_commission',
+            array('order_id','order_user_id', 'order_date_added', 'order_is_paid','order_tax_charged', 'order_site_commission','order_have_booking',
             'order_reward_point_value','order_volume_discount_total','buyer.user_name as buyer_user_name', 'buyer_cred.credential_email as buyer_email','buyer.user_phone as buyer_phone', 'order_net_amount', 'order_shippingapi_name', 'order_pmethod_id', 'ifnull(pmethod_name,pmethod_identifier)as pmethod_name','order_discount_total','pmethod_code','order_is_wallet_selected','order_reward_point_used','order_actual_net_amount')
         );
         $srch->addCondition('order_id', '=', $order_id);
@@ -137,7 +137,7 @@ class OrdersController extends AdminBaseController
             array('op_id', 'op_invoice_number', 'op_selprod_title', 'op_product_name',
             'op_qty', 'op_brand_name', 'op_selprod_options', 'op_selprod_sku', 'op_product_model',
             'op_shop_name', 'op_shop_owner_name', 'op_shop_owner_email', 'op_shop_owner_phone', 'op_unit_price',
-            'totCombinedOrders as totOrders', 'op_shipping_duration_name', 'op_shipping_durations',  'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name','op_other_charges')
+            'totCombinedOrders as totOrders', 'op_shipping_duration_name', 'op_shipping_durations',  'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name','op_other_charges','op_is_booking','op_product_amount_without_book')
         );
 
         $opRs = $opSrch->getResultSet();
