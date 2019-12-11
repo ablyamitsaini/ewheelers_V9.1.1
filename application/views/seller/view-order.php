@@ -204,7 +204,7 @@ if (!$print) {
 								
                                 <?php if($orderDetail['op_is_booking'] == 1) { ?>
 
-                                <td><?php echo $netAmount;?></td>
+                                <td><?php echo CommonHelper::displayMoneyFormat($netAmount);?></td>
 								<?php } else { ?>
 								<td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($orderDetail, 'netamount', false, USER::USER_TYPE_SELLER));?></td>
 								<?php } ?>

@@ -1,4 +1,10 @@
 <?php defined('SYSTEM_INIT') or die('Invalid Usage.');
+
+$shop_address = Shop::getShopAddress($orderProducts['op_shop_id'], true, $siteLangId);
+$seller_phone = $shop_address['shop_phone'];
+$seller_address = $shop_address['shop_address_line_1'] . ' ' . $shop_address['shop_address_line_2'] . ' ' . $shop_address['shop_city'] . ' ' . $shop_address['state_identifier'];
+$payToLabel = Labels::getLabel('LBL_Pending_Amount_to_be_paid', $siteLangId);
+
 $str='<table cellspacing="0" cellpadding="0" border="0" width="100%" style="border:1px solid #ddd; border-collapse:collapse;">
 	<tr>
 	<td width="40%" style="padding:10px;background:#eee;font-size:13px;border:1px solid #ddd; color:#333; font-weight:bold;">'.Labels::getLabel('LBL_Product', $siteLangId).'</td>
@@ -41,7 +47,7 @@ $str='<table cellspacing="0" cellpadding="0" border="0" width="100%" style="bord
 	
 	$str .= '<tr>
 			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;">
-			<a href="'.$prodOrBatchUrl.'" style="font-size:13px; color:#333;">'.$orderProducts["op_product_name"].'</a><br/>'.Labels::getLabel('Lbl_Brand',$siteLangId).':'.$orderProducts["op_brand_name"].'<br/>'.Labels::getLabel('Lbl_Sold_By',$siteLangId).':'.$orderProducts["op_shop_name"].'<br/>'.$options.'<br/>'. ($orderProducts['op_is_booking'] == 1?'<b>Booking Product</b>' : '' ) .'
+			<a href="'.$prodOrBatchUrl.'" style="font-size:13px; color:#333;">'.$orderProducts["op_product_name"].'</a><br/>'.Labels::getLabel('Lbl_Brand',$siteLangId).':'.$orderProducts["op_brand_name"].'<br/>'.Labels::getLabel('Lbl_Sold_By',$siteLangId).':'.$orderProducts["op_shop_name"].'<br/>'.$options.'<br/>'. ($orderProducts['op_is_booking'] == 1?'<b>Booking Product</b><b>'.$payToLabel.'</b><b>'.$seller_address.'</b><b>'.$seller_phone.'</b>' : '' ) .'
 			</td>
 			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;">'.$orderProducts['op_qty'].'</td>
 			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat($orderProducts["op_product_amount_without_book"]).'</td>';

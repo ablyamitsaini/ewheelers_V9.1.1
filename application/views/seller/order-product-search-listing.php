@@ -53,7 +53,12 @@ foreach ($orders as $sn => $order) {
             case 'total':
                 $txt = '';
                 // $txt .= CommonHelper::displayMoneyFormat($order['order_net_amount']);
-                $txt .= CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($order, 'netamount', false, USER::USER_TYPE_SELLER));
+				if($order['op_is_booking']) {
+						$txt .= CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($order, 'CART_TOTAL', false, USER::USER_TYPE_SELLER));
+					}else{
+						$txt .= CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($order, 'netamount', false, USER::USER_TYPE_SELLER));
+					}
+                
                 $td->appendElement('plaintext', array(), $txt, true);
                 break;
             case 'status':
