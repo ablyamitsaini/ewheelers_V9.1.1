@@ -4,8 +4,13 @@ $str='<table cellspacing="0" cellpadding="0" border="0" width="100%" style="bord
 	<tr>
 	<td width="40%" style="padding:10px;background:#eee;font-size:13px;border:1px solid #ddd; color:#333; font-weight:bold;">'.Labels::getLabel('LBL_Product', $siteLangId).'</td>
 	<td width="10%" style="padding:10px;background:#eee;font-size:13px; border:1px solid #ddd;color:#333; font-weight:bold;">'.Labels::getLabel('L_Qty', $siteLangId).'</td>
-	<td width="15%" style="padding:10px;background:#eee;font-size:13px; border:1px solid #ddd;color:#333; font-weight:bold;" align="right">'.Labels::getLabel('LBL_Price',$siteLangId).'</td>
-	<td width="15%" style="padding:10px;background:#eee;font-size:13px; border:1px solid #ddd;color:#333; font-weight:bold;" align="right">'.Labels::getLabel('LBL_Shipping',$siteLangId).'</td>
+	<td width="15%" style="padding:10px;background:#eee;font-size:13px; border:1px solid #ddd;color:#333; font-weight:bold;" align="right">'.Labels::getLabel('LBL_Price',$siteLangId).'</td>';
+	
+	if($orderInfo['order_have_booking'] ==  1) {
+		$str .='<td width="15%" style="padding:10px;background:#eee;font-size:13px; border:1px solid #ddd;color:#333; font-weight:bold;" align="right">'.Labels::getLabel('LBL_Booking_Price',$siteLangId).'</td>';
+	}
+	
+	$str .='<td width="15%" style="padding:10px;background:#eee;font-size:13px; border:1px solid #ddd;color:#333; font-weight:bold;" align="right">'.Labels::getLabel('LBL_Shipping',$siteLangId).'</td>
 	<td width="15%" style="padding:10px;background:#eee;font-size:13px; border:1px solid #ddd;color:#333; font-weight:bold;" align="right">'.Labels::getLabel('LBL_Volume/Loyalty_Discount',$siteLangId).'</td>
 	<td width="15%" style="padding:10px;background:#eee;font-size:13px; border:1px solid #ddd;color:#333; font-weight:bold;" align="right">'.Labels::getLabel('LBL_Tax_Charges',$siteLangId).'</td>
 	<td width="20%" style="padding:10px;background:#eee;font-size:13px; border:1px solid #ddd;color:#333; font-weight:bold;" align="right">'.Labels::getLabel('LBL_Total',$siteLangId).'</td>
@@ -28,7 +33,11 @@ $str='<table cellspacing="0" cellpadding="0" border="0" width="100%" style="bord
 		$discountedPrice = CommonHelper::orderProductAmount($val,'DISCOUNT');
 		$taxCharged = $taxCharged + CommonHelper::orderProductAmount($val,'TAX');
 		$productTaxCharged = CommonHelper::orderProductAmount($val,'TAX');
-		$netAmount = $netAmount + CommonHelper::orderProductAmount($val,'NETAMOUNT');
+		if($val['op_is_booking'] == 1){
+			$netAmount = $netAmount + CommonHelper::orderProductAmount($val,'NETAMOUNT') - $productTaxCharged;
+		}else{
+			$netAmount = $netAmount + CommonHelper::orderProductAmount($val,'NETAMOUNT');
+		}
 		$netAmountWithoutBook = $netAmountWithoutBook + CommonHelper::orderProductAmount($val,'NETAMOUNT',false,false,1);
 		$volumeDiscount=  CommonHelper::orderProductAmount($val,'VOLUME_DISCOUNT');
 		$volumeDiscountTotal = $volumeDiscountTotal + abs(CommonHelper::orderProductAmount($val,'VOLUME_DISCOUNT'));
@@ -36,6 +45,7 @@ $str='<table cellspacing="0" cellpadding="0" border="0" width="100%" style="bord
 	
 		$skuCodes = $val["op_selprod_sku"];
 		$options = $val['op_selprod_options'];
+		
 		
 		$cartTotal = $cartTotal + $opCustomerBuyingPrice;
 		$shippingTotal = $shippingTotal + $shippingPrice;
@@ -54,66 +64,83 @@ $str='<table cellspacing="0" cellpadding="0" border="0" width="100%" style="bord
 			<a href="'.$prodOrBatchUrl.'" style="font-size:13px; color:#333;">'.$val["op_product_name"].'</a><br/>'.Labels::getLabel('Lbl_Brand',$siteLangId).':'.$val["op_brand_name"].'<br/>'.Labels::getLabel('Lbl_Sold_By',$siteLangId).':'.$val["op_shop_name"].'<br/>'.$options.'<br/>'. ($val['op_is_booking'] == 1?'<b>Booking Product</b>' : '' ) .'
 			</td>
 			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;">'.$val['op_qty'].'</td>
-			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat($val["op_unit_price"]).'</td>			
+			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat($val["op_product_amount_without_book"]).'</td>	';
+		if($orderInfo['order_have_booking'] ==  1) {
+			if($val['op_is_booking'] == 1){
+				$str .=	'<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat($val['op_unit_price']).'</td>';
+			}else{
+				$str .=	'<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right"> - </td>';
+			}
+		}
+			
+		$str .=	'		
 			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat($shippingPrice).'</td>
 			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat($volumeDiscount).'</td>	
-			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat($productTaxCharged).'</td>
-					
-			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat($opCustomerBuyingPrice + $shippingPrice +$productTaxCharged - abs($volumeDiscount)).'</td>
-		</tr>';	
+			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat($productTaxCharged).'</td>';
+		
+		if($orderInfo['order_have_booking'] ==  1) {
+			if($val['op_is_booking'] == 1){
+				$str .=	'<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat(		$opCustomerBuyingPrice + $shippingPrice - abs($volumeDiscount)).'</td></tr>';	
+			}else{
+				$str .=	'<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat(		$opCustomerBuyingPrice + $shippingPrice +$productTaxCharged - abs($volumeDiscount)).'</td></tr>';	
+			}
+		}			
+
 	}
 	
 	/* $str .= '<tr><td colspan="4" style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.Labels::getLabel('L_TOTAL', $siteLangId).'</td><td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat($total).'</td></tr>'; */
 	
-	$str .= '<tr><td colspan="6" style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.Labels::getLabel('L_CART_TOTAL_(_QTY_*_Product_price_)', $siteLangId).'</td><td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat($cartTotal).'</td></tr>';
+	$str .= '<tr><td colspan="7" style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.Labels::getLabel('L_CART_TOTAL_(_QTY_*_Product_price_)', $siteLangId).'</td><td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat($cartTotal).'</td></tr>';
 	
 	if ( $shippingTotal > 0 ){
 	$str.='<tr>
-		<td colspan="6" style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.Labels::getLabel('LBL_SHIPPING',$siteLangId).'</td>
+		<td colspan="7" style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.Labels::getLabel('LBL_SHIPPING',$siteLangId).'</td>
 		<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat($shippingTotal).'</td>
 		</tr>';
 	}
 	  
 	if ( $taxCharged > 0 ){
 	$str.='<tr>
-		<td colspan="6" style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.Labels::getLabel('LBL_Tax',$siteLangId).'</td>
+		<td colspan="7" style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.Labels::getLabel('LBL_Tax',$siteLangId).'</td>
 		<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat($taxCharged).'</td>
 		</tr>';
 	}
 	
 	if ( $discountTotal != 0 ){
 	$str.='<tr>
-		<td colspan="6" style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.Labels::getLabel('LBL_Discount',$siteLangId).'</td>
+		<td colspan="7" style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.Labels::getLabel('LBL_Discount',$siteLangId).'</td>
 		<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">-'.CommonHelper::displayMoneyFormat($discountTotal).'</td>
 		</tr>';
 	}
 	if ( $volumeDiscountTotal != 0 ){
 	$str.='<tr>
-		<td colspan="6" style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.Labels::getLabel('LBL_Volume/Loyalty_Discount',$siteLangId).'</td>
+		<td colspan="7" style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.Labels::getLabel('LBL_Volume/Loyalty_Discount',$siteLangId).'</td>
 		<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">-'.CommonHelper::displayMoneyFormat($volumeDiscountTotal).'</td>
 		</tr>';
 	}
 	
 	if ( $rewardPointDiscount != 0 ){
 	$str.='<tr>
-		<td colspan="6" style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.Labels::getLabel('LBL_Reward_Point_Discount',$siteLangId).'</td>
+		<td colspan="7" style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.Labels::getLabel('LBL_Reward_Point_Discount',$siteLangId).'</td>
 		<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">-'.CommonHelper::displayMoneyFormat($rewardPointDiscount).'</td>
 		</tr>';
 	}
 	
-	$str.= '<tr>
-	<td colspan="6" style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right"><strong>'.Labels::getLabel('LBL_ORDER_TOTAL',$siteLangId).'</strong></td>
-	<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right"><strong>'.CommonHelper::displayMoneyFormat($netAmount).'</strong></td></tr>';
-	
 	if($netAmountWithoutBook > $netAmount){
 		$str.= '<tr>
-		<td colspan="6" style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right"><strong>'.Labels::getLabel('LBL_TOTAL_AMOUNT_TO_BE_PAID',$siteLangId).'</strong></td>
-		<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right"><strong>'.CommonHelper::displayMoneyFormat($netAmountWithoutBook).'</strong></td></tr>';
+		<td colspan="7" style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.Labels::getLabel('LBL_Order_Total_Amount',$siteLangId).'</td>
+		<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat($netAmountWithoutBook).'</td></tr>';
 		
 		$str.= '<tr>
-		<td colspan="6" style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right"><strong>'.Labels::getLabel('LBL_AMOUNT_TO_BE_PAID_ON_DELIVERY',$siteLangId).'</strong></td>
-		<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right"><strong>'.CommonHelper::displayMoneyFormat($netAmountWithoutBook - $netAmount).'</strong></td></tr>';
+		<td colspan="7" style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.Labels::getLabel('LBL_Pending_Amount',$siteLangId).'</td>
+		<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat($netAmountWithoutBook - $netAmount).'</td></tr>';
 	}
+	
+	$str.= '<tr>
+	<td colspan="7" style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right"><strong>'.Labels::getLabel('LBL_ORDER_TOTAL',$siteLangId).'</strong></td>
+	<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right"><strong>'.CommonHelper::displayMoneyFormat($netAmount).'</strong></td></tr>';
+	
+	
 	
 	$billingInfo = $billingAddress['oua_name'].'<br>';
 	if($billingAddress['oua_address1']!=''){

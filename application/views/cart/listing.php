@@ -10,6 +10,7 @@ if (count($products)) {
 		}
 	}
 }
+
  ?>
 <div class="row">
     <div class="col-xl-9 col-lg-8">
@@ -60,13 +61,26 @@ if (count($products)) {
                                 }
 								
 								if(isset($product['is_for_booking'])){	
-									echo '<div class="item-yk-head-title">' . Labels::getLabel('LBL_Booking_Product', $siteLangId) .'</div>';
+									echo '<div class="item-yk-head-title"> ( ' . Labels::getLabel('LBL_Booking_Product', $siteLangId) .' )</div>';
 								} 
 
                                 $showAddToFavorite = true;
                                 if (UserAuthentication::isUserLogged() && (!User::isBuyer())) {
                                     $showAddToFavorite = false;
                                 }
+								
+								
+								if(isset($product['is_for_booking'])){
+									$payToLabel = Labels::getLabel('LBL_Pending_Amount_to_be_paid', $siteLangId);
+									$seller_phone = $product['seller_address']['shop_phone'];
+									//$product['seller_address']['shop_phone'];
+									$seller_address = $product['seller_address']['shop_address_line_1'] . ' ' . $product['seller_address']['shop_address_line_2'] . ' ' . $product['seller_address']['shop_city'] . ' ' . $product['seller_address']['state_identifier'];
+								?>
+									<div><b><?php echo $payToLabel . ':-'; ?></b></div>
+									<div><b><?php echo $seller_address; ?></b></div>
+									<div><b><?php echo $seller_phone; ?></b></div>
+								<?php 	
+								}
 
                                 if ($showAddToFavorite) { ?>
                                     <br>
@@ -114,7 +128,7 @@ if (count($products)) {
 					<span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?></span>
 				<?php
 				}else{
-					echo "-";
+					echo "<div style='text-align:center'>-</div>";
 				}
 				?>
 			
@@ -123,7 +137,7 @@ if (count($products)) {
 					<span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['priceWithoutBooking'] - $product['theprice']); ?></span>
 				<?php
 				}else{
-					echo "-";
+					echo "<div style='text-align:center'>-</div>";
 				}
 				?></td>
 		<?php } ?>
