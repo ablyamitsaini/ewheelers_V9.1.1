@@ -216,8 +216,19 @@ if(!isset($orderDetail)){
                                                 <div class="item__shipping"><?php echo Labels::getLabel('LBL_Shipping_Method', $siteLangId); ?>: <?php echo $childOrder['op_shipping_durations'].'-'. $childOrder['op_shipping_duration_name']; ?></div>
                                             <?php } ?>
 											
-											<?php if ($childOrder['op_is_booking'] == 1) { ?>
-                                                <b>( <?php echo Labels::getLabel('Lbl_Booking', $siteLangId)?> )</b>
+											<?php if ($childOrder['op_is_booking'] == 1) { 
+											
+												$shop_address = Shop::getShopAddress($childOrder['op_shop_id'], true, $siteLangId);
+												$seller_phone = $shop_address['shop_phone'];
+												
+												$seller_address = $shop_address['shop_address_line_1'] . ' ' . $shop_address['shop_address_line_2'] . ' ' . $shop_address['shop_city'] . ' ' . $shop_address['state_identifier'];
+												$payToLabel = Labels::getLabel('LBL_Pending_Amount_to_be_paid', $siteLangId);
+											?>
+                                                <b>( <?php echo Labels::getLabel('Lbl_Booking_Product', $siteLangId)?> )</b>
+												<div style="font-weight: bold;"><?php echo $payToLabel . ':-'; ?></div>
+												<div style="font-weight: bold;"><?php echo $seller_address; ?></div>
+												<div style="font-weight: bold;"><?php echo $seller_phone; ?></div>
+										
                                             <?php } ?>
                                         </div>
                                     </td>
