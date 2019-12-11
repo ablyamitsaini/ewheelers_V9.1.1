@@ -1,6 +1,6 @@
-Release Number: TV-1.4.0.20191204
+Release Number: TV-1.4.1.20191211
 
-Release Date: 2019/12/04
+Release Date: 2019/12/11
 
 New Features :
 
@@ -34,6 +34,11 @@ New Features :
 	.  The users shall get the proper notification wherever it is required in the form of emails, system alerts, etc 
 	
 Updates:
+
+    . Updated taxes functionality for booking products ( tax will be paid with pending amount not on booking )
+	. Updated cart , checkout , payments gateway payment , wallet payments according to updated tax flow
+	. Updated orders details on seller , buyer and admin acc to new taxes flow
+	. Updated Emails acc to new taxes flow
 	
 Fixes:
 
