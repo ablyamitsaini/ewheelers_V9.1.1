@@ -26,6 +26,10 @@ $str='<table cellspacing="0" cellpadding="0" border="0" width="100%" style="bord
 	$volumeDiscountTotal = 0;
 	$rewardPointDiscount = 0;
 	foreach( $orderProducts as $key => $val ){
+		$shop_address = Shop::getShopAddress($val['op_shop_id'], true, $siteLangId);
+		$seller_phone = $shop_address['shop_phone'];
+		$seller_address = $shop_address['shop_address_line_1'] . ' ' . $shop_address['shop_address_line_2'] . ' ' . $shop_address['shop_city'] . ' ' . $shop_address['state_identifier'];
+		$payToLabel = Labels::getLabel('LBL_Pending_Amount_to_be_paid', $siteLangId);
 		
 		$opCustomerBuyingPrice = CommonHelper::orderProductAmount($val,'CART_TOTAL');
 		$opCustomerBuyingPriceWithoutBook = CommonHelper::orderProductAmount($val,'CART_TOTAL',false,false,1);
@@ -61,7 +65,7 @@ $str='<table cellspacing="0" cellpadding="0" border="0" width="100%" style="bord
 		
 		$str .= '<tr>
 			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;">
-			<a href="'.$prodOrBatchUrl.'" style="font-size:13px; color:#333;">'.$val["op_product_name"].'</a><br/>'.Labels::getLabel('Lbl_Brand',$siteLangId).':'.$val["op_brand_name"].'<br/>'.Labels::getLabel('Lbl_Sold_By',$siteLangId).':'.$val["op_shop_name"].'<br/>'.$options.'<br/>'. ($val['op_is_booking'] == 1?'<b>Booking Product</b>' : '' ) .'
+			<a href="'.$prodOrBatchUrl.'" style="font-size:13px; color:#333;">'.$val["op_product_name"].'</a><br/>'.Labels::getLabel('Lbl_Brand',$siteLangId).':'.$val["op_brand_name"].'<br/>'.Labels::getLabel('Lbl_Sold_By',$siteLangId).':'.$val["op_shop_name"].'<br/>'.$options.'<br/>'. ($val['op_is_booking'] == 1?'<b>( Booking Product )</b><br/><b>'.$payToLabel.'</b><br/><b>'.$seller_address.'</b><br/><b>'.$seller_phone.'</b>' : '' ) .'
 			</td>
 			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;">'.$val['op_qty'].'</td>
 			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat($val["op_product_amount_without_book"]).'</td>	';

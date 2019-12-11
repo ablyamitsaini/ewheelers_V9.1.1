@@ -47,7 +47,7 @@ $str='<table cellspacing="0" cellpadding="0" border="0" width="100%" style="bord
 	
 	$str .= '<tr>
 			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;">
-			<a href="'.$prodOrBatchUrl.'" style="font-size:13px; color:#333;">'.$orderProducts["op_product_name"].'</a><br/>'.Labels::getLabel('Lbl_Brand',$siteLangId).':'.$orderProducts["op_brand_name"].'<br/>'.Labels::getLabel('Lbl_Sold_By',$siteLangId).':'.$orderProducts["op_shop_name"].'<br/>'.$options.'<br/>'. ($orderProducts['op_is_booking'] == 1?'<b>Booking Product</b><b>'.$payToLabel.'</b><b>'.$seller_address.'</b><b>'.$seller_phone.'</b>' : '' ) .'
+			<a href="'.$prodOrBatchUrl.'" style="font-size:13px; color:#333;">'.$orderProducts["op_product_name"].'</a><br/>'.Labels::getLabel('Lbl_Brand',$siteLangId).':'.$orderProducts["op_brand_name"].'<br/>'.Labels::getLabel('Lbl_Sold_By',$siteLangId).':'.$orderProducts["op_shop_name"].'<br/>'.$options.'<br/>'. ($orderProducts['op_is_booking'] == 1?'<b>( Booking Product )</b><br/><b>'.$payToLabel.'</b><br/><b>'.$seller_address.'</b><br/><b>'.$seller_phone.'</b>' : '' ) .'
 			</td>
 			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;">'.$orderProducts['op_qty'].'</td>
 			<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right">'.CommonHelper::displayMoneyFormat($orderProducts["op_product_amount_without_book"]).'</td>';
