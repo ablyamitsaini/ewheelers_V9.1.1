@@ -114,7 +114,7 @@ if (count($products)) {
 					<span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?></span>
 				<?php
 				}else{
-					echo "-";
+					echo "<div style='text-align:center'>-</div>";
 				}
 				?>
 			
@@ -123,7 +123,7 @@ if (count($products)) {
 					<span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['priceWithoutBooking'] - $product['theprice']); ?></span>
 				<?php
 				}else{
-					echo "-";
+					echo "<div style='text-align:center'>-</div>";
 				}
 				?></td>
 		<?php } ?>

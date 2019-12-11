@@ -23,6 +23,16 @@
                         $innerLi->appendElement('a', array('href'=>CommonHelper::generateUrl('SellerOrders'),'class'=>'button small green redirect--js','title'=>Labels::getLabel('LBL_Back_to_Orders', $adminLangId)), Labels::getLabel('LBL_Back_to_Orders', $adminLangId), true);
                         echo $ul->getHtml(); ?>
                     </div>
+					<?php 
+						$netAmount = CommonHelper::orderProductAmount($order,'netamount');
+						$tax = CommonHelper::orderProductAmount($order, 'TAX');
+						
+						if($order['op_is_booking']) { 
+							$netAmount = $netAmount - $tax;
+						}
+						
+						$netAmountWithoutBook = CommonHelper::orderProductAmount($order,'netamount',false,false,1);
+					?>
                     <div class="sectionbody">
                         <table class="table ordertable">
                             <tr>
@@ -60,8 +70,24 @@
                                 <td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($order, 'CART_TOTAL'), true, true);?></td>
                                 <td>+<?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($order, 'SHIPPING'), true, true);?></td>
                                 <td>+<?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($order, 'TAX'), true, true);?></td>
-                                <td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($order), true, true);?></td>
+                                <td><?php echo CommonHelper::displayMoneyFormat($netAmount, true, true);?></td>
                             </tr>
+							
+							<?php if($order['op_is_booking']) { 
+							?>
+							<tr>
+                                <th><?php echo Labels::getLabel('LBL_Order_Total_Amount', $adminLangId); ?> </th>
+                                <th><?php echo Labels::getLabel('LBL_Pending_Amount', $adminLangId); ?></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+							<tr>
+                                <td><?php echo CommonHelper::displayMoneyFormat($netAmountWithoutBook);?></td>
+                                <td><?php echo CommonHelper::displayMoneyFormat($netAmountWithoutBook - $netAmount);?></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+							<?php } ?>
                         </table>
                     </div>
                 </section>
@@ -177,6 +203,9 @@
                                 <th><?php echo Labels::getLabel('LBL_Product_Name', $adminLangId); ?></th>
                                 <th><?php echo Labels::getLabel('LBL_Shipping', $adminLangId); ?></th>
                                 <th><?php echo Labels::getLabel('LBL_Unit Price', $adminLangId); ?> </th>
+								<?php if($order['op_is_booking']) { ?>
+									<th><?php echo Labels::getLabel('LBL_Booking_Price', $adminLangId); ?></th>
+								<?php } ?>
                                 <th><?php echo Labels::getLabel('LBL_Qty', $adminLangId); ?></th>
                                 <th><?php echo Labels::getLabel('LBL_Shipping', $adminLangId); ?></th>
                                 <th><?php echo Labels::getLabel('LBL_Tax', $adminLangId); ?></th>
@@ -204,11 +233,14 @@
                             ?></td>
                                 <td><strong><?php echo Labels::getLabel('LBL_Shipping_Class', $adminLangId); ?>: </strong><?php echo CommonHelper::displayNotApplicable($adminLangId, $order["op_shipping_duration_name"]); ?><br />
                                     <strong><?php echo Labels::getLabel('LBL_Duration', $adminLangId); ?>: </strong><?php echo CommonHelper::displayNotApplicable($adminLangId, $order["op_shipping_durations"]); ?></td>
-                                <td><?php echo CommonHelper::displayMoneyFormat($order["op_unit_price"], true, true); ?></td>
+                                <td><?php echo CommonHelper::displayMoneyFormat($order["op_product_amount_without_book"], true, true); ?></td>
+								<?php if($order['op_is_booking']) { ?>
+									<td><?php echo CommonHelper::displayMoneyFormat($order["op_unit_price"], true, true); ?></td>
+								<?php } ?>
                                 <td><?php echo $order["op_qty"]?></td>
                                 <td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($order, 'shipping'), true, true);?></td>
                                 <td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($order, 'TAX'), true, true);?></td>
-                                <td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($order), true, true);?></td>
+                                <td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($order,'netamount',false,false,1), true, true);?></td>
                             </tr>
                         </table>
                     </div>
