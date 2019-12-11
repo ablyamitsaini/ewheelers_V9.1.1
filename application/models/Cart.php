@@ -1031,6 +1031,10 @@ class Cart extends FatModel
         }
 
         $netChargeAmt = $cartTotal + $cartTaxTotal - ((0 < $cartVolumeDiscount) ? $cartVolumeDiscount: 0);
+		
+		$orderPaymentGatewayCharges = $orderPaymentGatewayCharges - $bookingProductTaxTotal;
+		
+		
 
         $cartSummary = array(
             'cartTotal' => $cartTotal,
@@ -1048,7 +1052,7 @@ class Cart extends FatModel
             'WalletAmountCharge'=> $WalletAmountCharge,
             'isCodEnabled' => $isCodEnabled,
             'isCodValidForNetAmt' => $isCodValidForNetAmt,
-            'orderPaymentGatewayCharges' => ($orderPaymentGatewayCharges - $bookingProductTaxTotal ),
+            'orderPaymentGatewayCharges' => $orderPaymentGatewayCharges > 0 ? $orderPaymentGatewayCharges : 0 ,
             'netChargeAmount' => $netChargeAmt,
         );
 
