@@ -3,12 +3,12 @@ class BadProductsReportController extends AdminBaseController
 {
     private $canView;
     private $canEdit;
-    
+
     const REPORT_TYPE_TODAY = 1;
     const REPORT_TYPE_WEEKLY = 2;
     const REPORT_TYPE_MONTHLY = 3;
     const REPORT_TYPE_YEARLY = 4;
-    
+
     public function __construct($action)
     {
         parent::__construct($action);
@@ -18,25 +18,25 @@ class BadProductsReportController extends AdminBaseController
         $this->set("canView", $this->canView);
         $this->set("canEdit", $this->canEdit);
     }
-    
+
     private function getReportTypeArr()
     {
         return array( self::REPORT_TYPE_TODAY => 'Today',  self::REPORT_TYPE_WEEKLY => 'Weekly', self::REPORT_TYPE_MONTHLY => 'Monthly', self::REPORT_TYPE_YEARLY=> 'Yearly');
     }
-    
-    public function index() 
+
+    public function index()
     {
-        $this->objPrivilege->canViewPerformanceReport();    
+        $this->objPrivilege->canViewPerformanceReport();
         $frmSearch = $this->getSearchForm();
-        $this->set('frmSearch', $frmSearch);    
+        $this->set('frmSearch', $frmSearch);
         $this->_template->render();
     }
-    
+
     public function export()
     {
         $this->search('export');
     }
-    
+
     private function getSearchForm()
     {
         $frm = new Form('frmBadProductsReportSearch');
@@ -50,4 +50,3 @@ class BadProductsReportController extends AdminBaseController
         return $frm;
     }
 }
-?>

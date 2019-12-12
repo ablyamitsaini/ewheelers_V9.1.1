@@ -128,12 +128,12 @@ class EmailHandler extends FatModel
             $subject = str_replace($key, $val, $subject);
             $body = str_replace($key, $val, $body);
         }
-		
-		if(CONF_EMAIL_TEST_MODE == TRUE){
-			$arr = explode('@', $to);
-			$emailFirst = $arr[0];
-			$to = $emailFirst.'@dummyid.com';
-		}
+
+        if (CONF_EMAIL_TEST_MODE == true) {
+            $arr = explode('@', $to);
+            $emailFirst = $arr[0];
+            $to = $emailFirst.'@dummyid.com';
+        }
 
         if (FatApp::getConfig('CONF_SEND_SMTP_EMAIL')) {
             if (!$sendEmail = static::sendSmtpEmail($to, $subject, $body, $extra_headers, $tpl, $langId, '', $smtp_arr, $bcc)) {
@@ -846,46 +846,46 @@ class EmailHandler extends FatModel
             $orderVendors = $orderObj->getChildOrders(array("order"=>$orderId), $orderDetail['order_type'], $orderDetail['order_language_id']);
             foreach ($orderVendors as $key => $val) :
                 $shippingHanldedBySeller =     CommonHelper::canAvailShippingChargesBySeller($val['op_selprod_user_id'], $val['opshipping_by_seller_user_id']);
-                $tpl = new FatTemplate('', '');
-                //$tpl->set('orderInfo', $orderDetail);
-                $tpl->set('orderProducts', $val);
-                $tpl->set('siteLangId', $langId);
-                $tpl->set('userType', User::USER_TYPE_SELLER);
-                $tpl->set('shippingHanldedBySeller', $shippingHanldedBySeller);
-                $orderItemsTableFormatHtml = $tpl->render(false, false, '_partial/child-order-detail-email-seller.php', true);
-                $userObj = new User($orderDetail["order_user_id"]);
-                $userInfo = $userObj->getUserInfo(array('user_name','credential_email','user_phone'));
-                $arrReplacements = array(
+            $tpl = new FatTemplate('', '');
+            //$tpl->set('orderInfo', $orderDetail);
+            $tpl->set('orderProducts', $val);
+            $tpl->set('siteLangId', $langId);
+            $tpl->set('userType', User::USER_TYPE_SELLER);
+            $tpl->set('shippingHanldedBySeller', $shippingHanldedBySeller);
+            $orderItemsTableFormatHtml = $tpl->render(false, false, '_partial/child-order-detail-email-seller.php', true);
+            $userObj = new User($orderDetail["order_user_id"]);
+            $userInfo = $userObj->getUserInfo(array('user_name','credential_email','user_phone'));
+            $arrReplacements = array(
                         '{vendor_name}' => trim($val['op_shop_owner_name']),
                         '{order_items_table_format}' => $orderItemsTableFormatHtml,
                         '{order_shipping_information}' => '',
                         '{order_user_email}' => $userInfo['credential_email'],
                         );
 
-                if ($val['op_product_type'] == Product::PRODUCT_TYPE_DIGITAL) {
-                    self::sendMailTpl($val["op_shop_owner_email"], "vendor_digital_order_email", $langId, $arrReplacements);
-                } else {
-                    self::sendMailTpl($val["op_shop_owner_email"], "vendor_order_email", $langId, $arrReplacements);
-                }
+            if ($val['op_product_type'] == Product::PRODUCT_TYPE_DIGITAL) {
+                self::sendMailTpl($val["op_shop_owner_email"], "vendor_digital_order_email", $langId, $arrReplacements);
+            } else {
+                self::sendMailTpl($val["op_shop_owner_email"], "vendor_order_email", $langId, $arrReplacements);
+            }
 
-                $notiArrReplacements = array(
+            $notiArrReplacements = array(
                     '{PRODUCT}' => $val["op_product_name"],
                     '{ORDERID}' => $orderDetail['order_id']
                 );
 
-                $appNotification = CommonHelper::replaceStringData(Labels::getLabel('SAPP_{PRODUCT}_ORDER_{ORDERID}_HAS_BEEN_PLACED', $langId), $notiArrReplacements);
+            $appNotification = CommonHelper::replaceStringData(Labels::getLabel('SAPP_{PRODUCT}_ORDER_{ORDERID}_HAS_BEEN_PLACED', $langId), $notiArrReplacements);
 
-                $notificationObj = new Notifications();
-                $notificationDataArr = array(
+            $notificationObj = new Notifications();
+            $notificationDataArr = array(
                         'unotification_user_id'    =>$val["op_selprod_user_id"],
                         'unotification_body'=>$appNotification,
                         'unotification_type'=>'SELLER_ORDER',
                         'unotification_data'=>json_encode(array('orderId' => $orderDetail['order_id'], 'productName' => $val["op_product_name"])),
                         );
-                if (!$notificationObj->addNotification($notificationDataArr)) {
-                    $this->error = $notificationObj->getError();
-                    return false;
-                }
+            if (!$notificationObj->addNotification($notificationDataArr)) {
+                $this->error = $notificationObj->getError();
+                return false;
+            }
             endforeach;
         }
         return true;

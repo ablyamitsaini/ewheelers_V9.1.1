@@ -103,8 +103,8 @@ class AdminPrivilege
     const SECTION_IMPORT_INSTRUCTIONS = 99;
     const SECTION_UPLOAD_BULK_IMAGES = 100;
     const SECTION_SITEMAP = 101;
-	const SECTION_TEST_DRIVE_REQUEST = 102;		   
-    const SECTION_TEST_DRIVE_MANAGEMENT = 103;		
+    const SECTION_TEST_DRIVE_REQUEST = 102;
+    const SECTION_TEST_DRIVE_MANAGEMENT = 103;
     const SECTION_TEST_DRIVE_REPORT = 104;
 
     const PRIVILEGE_NONE = 0;
@@ -240,8 +240,8 @@ class AdminPrivilege
         static::SECTION_PRODUCT_TEMP_IMAGES => Labels::getLabel('MSG_Products_Temp_Images', CommonHelper::getLangId()),
         static::SECTION_IMPORT_INSTRUCTIONS => Labels::getLabel('MSG_Import_Instructions', CommonHelper::getLangId()),
         static::SECTION_UPLOAD_BULK_IMAGES => Labels::getLabel('MSG_Bulk_Upload', CommonHelper::getLangId()),
-		static::SECTION_TEST_DRIVE_REQUEST => Labels::getLabel('MSG_Test_Drive_Request', CommonHelper::getLangId()),		
-        static::SECTION_TEST_DRIVE_MANAGEMENT => Labels::getLabel('MSG_Test_Drive_Management', CommonHelper::getLangId()),		
+        static::SECTION_TEST_DRIVE_REQUEST => Labels::getLabel('MSG_Test_Drive_Request', CommonHelper::getLangId()),
+        static::SECTION_TEST_DRIVE_MANAGEMENT => Labels::getLabel('MSG_Test_Drive_Management', CommonHelper::getLangId()),
         static::SECTION_TEST_DRIVE_REPORT => Labels::getLabel('MSG_Test_Drive_Report', CommonHelper::getLangId()),
 
         /* static::SECTION_Languages => Labels::getLabel('MSG_Languages',CommonHelper::getLangId()),
@@ -1086,8 +1086,8 @@ class AdminPrivilege
     {
         return $this->checkPermission($adminId, static::SECTION_SALES_REPORT, static::PRIVILEGE_READ, $returnResult);
     }
-	
-	public function canViewBookingReport($adminId = 0, $returnResult = false)
+
+    public function canViewBookingReport($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_SALES_REPORT, static::PRIVILEGE_READ, $returnResult);
     }
@@ -1388,25 +1388,24 @@ class AdminPrivilege
     {
         return $this->checkPermission($adminId, static::SECTION_SITEMAP, static::PRIVILEGE_WRITE, $returnResult);
     }
-	public function canViewTestDriveRequests($adminId = 0, $returnResult = false)
+    public function canViewTestDriveRequests($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_TEST_DRIVE_REQUEST, static::PRIVILEGE_READ, $returnResult);
     }
-	public function canEditTestDriveRequests($adminId = 0, $returnResult = false)
+    public function canEditTestDriveRequests($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_TEST_DRIVE_REQUEST, static::PRIVILEGE_WRITE, $returnResult);
     }
-	public function canViewTestDriveManagement($adminId = 0, $returnResult = false)
+    public function canViewTestDriveManagement($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_TEST_DRIVE_MANAGEMENT, static::PRIVILEGE_READ, $returnResult);
     }
-	public function canEditTestDriveManagement($adminId = 0, $returnResult = false)
+    public function canEditTestDriveManagement($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_TEST_DRIVE_MANAGEMENT, static::PRIVILEGE_WRITE, $returnResult);
     }
-	public function canViewTestDriveReport($adminId = 0, $returnResult = false)
+    public function canViewTestDriveReport($adminId = 0, $returnResult = false)
     {
         return $this->checkPermission($adminId, static::SECTION_TEST_DRIVE_REPORT, static::PRIVILEGE_READ, $returnResult);
     }
-
 }

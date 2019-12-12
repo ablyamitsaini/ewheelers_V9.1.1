@@ -204,15 +204,15 @@ class SellerController extends SellerBaseController
         } else {
             $srch->addStatusCondition(unserialize(FatApp::getConfig("CONF_VENDOR_ORDER_STATUS")));
         }
-		
-		$op_order_type = FatApp::getPostedData('order_type', null, '0');
-        if($op_order_type == applicationConstants::BOOK_NOW ){
-			$srch->addCondition('op_is_booking','=',1);
-		}
-		
-		if($op_order_type == applicationConstants::BUY_NOW ){
-			$srch->addCondition('op_is_booking','=',0);
-		}
+
+        $op_order_type = FatApp::getPostedData('order_type', null, '0');
+        if ($op_order_type == applicationConstants::BOOK_NOW) {
+            $srch->addCondition('op_is_booking', '=', 1);
+        }
+
+        if ($op_order_type == applicationConstants::BUY_NOW) {
+            $srch->addCondition('op_is_booking', '=', 0);
+        }
 
         $dateFrom = FatApp::getPostedData('date_from', null, '');
         if (!empty($dateFrom)) {
@@ -263,7 +263,7 @@ class SellerController extends SellerBaseController
         $frm->addTextBox('', 'price_to', '', array('placeholder' => Labels::getLabel('LBL_Price_Max', $langId).' ['.$currencySymbol.']' ));
         $frm->addDateField('', 'date_from', '', array('placeholder' => Labels::getLabel('LBL_Date_From', $langId) ,'readonly'=>'readonly' ));
         $frm->addDateField('', 'date_to', '', array('placeholder' => Labels::getLabel('LBL_Date_To', $langId)  ,'readonly'=>'readonly'));
-		$frm->addSelectBox('', 'order_type', applicationConstants::getProductBuyBookStatusArr($langId), '', array(), Labels::getLabel('LBL_Order_Type', $langId));
+        $frm->addSelectBox('', 'order_type', applicationConstants::getProductBuyBookStatusArr($langId), '', array(), Labels::getLabel('LBL_Order_Type', $langId));
         $fldSubmit = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Search', $langId));
         $fldCancel = $frm->addButton("", "btn_clear", Labels::getLabel("LBL_Clear", $langId), array('onclick'=>'clearSearch();'));
         $frm->addHiddenField('', 'page');
@@ -419,30 +419,29 @@ class SellerController extends SellerBaseController
         $orderDetail['shippingAddress'] = (isset($address[Orders::SHIPPING_ADDRESS_TYPE]))?$address[Orders::SHIPPING_ADDRESS_TYPE]:array();
 
         $orderDetail['comments'] = $orderObj->getOrderComments($this->siteLangId, array("op_id"=>$op_id,'seller_id'=>$userId));
-		
-		
-		/* ------is order contain booking product-------- */
-	
-			$orderInfo = $orderObj->getOrderById($orderDetail['op_order_id']);
-			if ($orderInfo['order_have_booking'] == 1 && $orderDetail['op_is_booking'] == 0) {
-				$response = $orderObj->checkNonBookAmountPaid($orderDetail['op_order_id'],$orderDetail['order_net_amount']); 
-				
-				if($response === true){
-					$processingStatuses = unserialize(FatApp::getConfig("CONF_PROCESSING_ORDER_STATUS"));
-					
-				}
-			}
 
-		/* --------------- */
-		
-		/* booking */
-		
-			if($orderDetail['op_is_booking'] == 1) {
-				$processingStatuses = unserialize(FatApp::getConfig("CONF_BOOKING_ORDER_STATUS"));
-			}
-			$is_booking = $orderDetail['op_is_booking'];
-			$paidAmount = $orderObj->getOrderPaymentPaid($orderDetail['op_order_id']);
-		/* ---- */
+
+        /* ------is order contain booking product-------- */
+
+        $orderInfo = $orderObj->getOrderById($orderDetail['op_order_id']);
+        if ($orderInfo['order_have_booking'] == 1 && $orderDetail['op_is_booking'] == 0) {
+            $response = $orderObj->checkNonBookAmountPaid($orderDetail['op_order_id'], $orderDetail['order_net_amount']);
+
+            if ($response === true) {
+                $processingStatuses = unserialize(FatApp::getConfig("CONF_PROCESSING_ORDER_STATUS"));
+            }
+        }
+
+        /* --------------- */
+
+        /* booking */
+
+        if ($orderDetail['op_is_booking'] == 1) {
+            $processingStatuses = unserialize(FatApp::getConfig("CONF_BOOKING_ORDER_STATUS"));
+        }
+        $is_booking = $orderDetail['op_is_booking'];
+        $paidAmount = $orderObj->getOrderPaymentPaid($orderDetail['op_order_id']);
+        /* ---- */
 
         $data = array('op_id'=>$op_id , 'op_status_id' => $orderDetail['op_status_id']);
         $frm = $this->getOrderCommentsForm($orderDetail, $processingStatuses);
@@ -607,29 +606,28 @@ class SellerController extends SellerBaseController
             $processingStatuses = array_diff($processingStatuses, (array)FatApp::getConfig("CONF_DEFAULT_DEIVERED_ORDER_STATUS"));
         }
         /*]*/
-		
-		
-		/* ------is order contain booking product-------- */
-	
-			$orderInfo = $orderObj->getOrderById($orderDetail['op_order_id']);
-			if ($orderInfo['order_have_booking'] == 1 && $orderDetail['op_is_booking'] == 0) {
-				$response = $orderObj->checkNonBookAmountPaid($orderDetail['op_order_id'],$orderDetail['order_net_amount']); 
-				
-				if($response === true){
-					$processingStatuses = unserialize(FatApp::getConfig("CONF_PROCESSING_ORDER_STATUS"));
-					
-				}
-			}
 
-		/* --------------- */
-		
-		
-		/* booking */
-		
-			if($orderDetail['op_is_booking'] == 1) {
-				$processingStatuses = unserialize(FatApp::getConfig("CONF_BOOKING_ORDER_STATUS"));
-			}
-		/* ---- */
+
+        /* ------is order contain booking product-------- */
+
+        $orderInfo = $orderObj->getOrderById($orderDetail['op_order_id']);
+        if ($orderInfo['order_have_booking'] == 1 && $orderDetail['op_is_booking'] == 0) {
+            $response = $orderObj->checkNonBookAmountPaid($orderDetail['op_order_id'], $orderDetail['order_net_amount']);
+
+            if ($response === true) {
+                $processingStatuses = unserialize(FatApp::getConfig("CONF_PROCESSING_ORDER_STATUS"));
+            }
+        }
+
+        /* --------------- */
+
+
+        /* booking */
+
+        if ($orderDetail['op_is_booking'] == 1) {
+            $processingStatuses = unserialize(FatApp::getConfig("CONF_BOOKING_ORDER_STATUS"));
+        }
+        /* ---- */
 
         $frm =  $this->getOrderCommentsForm($orderDetail, $processingStatuses);
         $post = $frm->getFormDataFromArray($post);
@@ -648,9 +646,9 @@ class SellerController extends SellerBaseController
             Message::addErrorMessage(Labels::getLabel('M_ERROR_INVALID_REQUEST', $this->siteLangId));
             FatUtility::dieJsonError(Message::getHtml());
         }
-		
-		
-		$notificationData = array(
+
+
+        $notificationData = array(
         'notification_record_type' => Notification::TYPE_ORDER_PRODUCT,
         'notification_record_id' => $post['op_id'],
         'notification_user_id' => UserAuthentication::getLoggedUserId(),
@@ -3919,13 +3917,13 @@ class SellerController extends SellerBaseController
                 }
             }
         }
-		
-		$product_book = Product::getProductDataById(FatApp::getConfig('CONF_DEFAULT_SITE_LANG'), $product_id, array('product_book'));
-		if (FatApp::getConfig("CONF_ENABLE_BOOK_NOW_MODULE", FatUtility::VAR_INT, 0 ) == 1 && $product_book['product_book'] == 1) {
-			$frm->addRadioButtons(Labels::getLabel("", $this->siteLangId), 'selprod_book_now_enable', applicationConstants::getProductBuyStatusArr($this->siteLangId), '', array());
+
+        $product_book = Product::getProductDataById(FatApp::getConfig('CONF_DEFAULT_SITE_LANG'), $product_id, array('product_book'));
+        if (FatApp::getConfig("CONF_ENABLE_BOOK_NOW_MODULE", FatUtility::VAR_INT, 0) == 1 && $product_book['product_book'] == 1) {
+            $frm->addRadioButtons(Labels::getLabel("", $this->siteLangId), 'selprod_book_now_enable', applicationConstants::getProductBuyStatusArr($this->siteLangId), '', array());
         }
-		
-		$frm->addCheckBox(Labels::getLabel('LBL_Enable_Test_Drive', $this->siteLangId), 'selprod_test_drive_enable', 1, array(), false, 0);
+
+        $frm->addCheckBox(Labels::getLabel('LBL_Enable_Test_Drive', $this->siteLangId), 'selprod_test_drive_enable', 1, array(), false, 0);
 
         $frm->addHiddenField('', 'selprod_product_id', $product_id);
         $frm->addHiddenField('', 'selprod_urlrewrite_id');

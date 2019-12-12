@@ -14,18 +14,18 @@ class SalesReportController extends AdminBaseController
         $this->set("canEdit", $this->canEdit);
     }
 
-    public function index($reportType = 1 , $orderDate = '')
+    public function index($reportType = 1, $orderDate = '')
     {
         $this->objPrivilege->canViewSalesReport();
 
-        $frmSearch = $this->getSearchForm($reportType,$orderDate);
+        $frmSearch = $this->getSearchForm($reportType, $orderDate);
         //$frmSearch->fill(array('orderDate'=>$orderDate));
-		if($reportType == Report::BOOKING_REPORT){
-			$reportLabel = Labels::getLabel('LBL_Booking_Report', $this->adminLangId);
-		}else{
-			$reportLabel = Labels::getLabel('LBL_Sales_Report', $this->adminLangId);
-		}
-		
+        if ($reportType == Report::BOOKING_REPORT) {
+            $reportLabel = Labels::getLabel('LBL_Booking_Report', $this->adminLangId);
+        } else {
+            $reportLabel = Labels::getLabel('LBL_Sales_Report', $this->adminLangId);
+        }
+
         $this->set('reportLabel', $reportLabel);
         $this->set('frmSearch', $frmSearch);
         $this->set('orderDate', $orderDate);
@@ -39,7 +39,7 @@ class SalesReportController extends AdminBaseController
         $orderDate = FatApp::getPostedData('orderDate');
         $reportType = FatApp::getPostedData('reportType');
 
-        $srchFrm = $this->getSearchForm($reportType,$orderDate);
+        $srchFrm = $this->getSearchForm($reportType, $orderDate);
 
         $post = $srchFrm->getFormDataFromArray(FatApp::getPostedData());
         $page = (empty($post['page']) || $post['page'] <= 0) ? 1 : intval($post['page']);
@@ -62,15 +62,15 @@ class SalesReportController extends AdminBaseController
         $cnd->attachCondition('pmethod_code', '=','cashondelivery');
         $srch->addStatusCondition(unserialize(FatApp::getConfig('CONF_COMPLETED_ORDER_STATUS'))); */
         //$srch = Report::salesReportObject();
-		
-		if($reportType == Report::BOOKING_REPORT) {
-			$srch = Report::salesReportObject(0,false,array(),1);
-			$this->set('reportType', $reportType);
-		} else {
-			$srch = Report::salesReportObject();	
-			$this->set('reportType', $reportType);
-		}
-		
+
+        if ($reportType == Report::BOOKING_REPORT) {
+            $srch = Report::salesReportObject(0, false, array(), 1);
+            $this->set('reportType', $reportType);
+        } else {
+            $srch = Report::salesReportObject();
+            $this->set('reportType', $reportType);
+        }
+
         if (empty($orderDate)) {
             $date_from = FatApp::getPostedData('date_from', FatUtility::VAR_DATE, '');
             if (!empty($date_from)) {
@@ -115,22 +115,22 @@ class SalesReportController extends AdminBaseController
         $orderDate = FatApp::getPostedData('orderDate', FatUtility::VAR_DATE, '');
         $reportType = FatApp::getPostedData('reportType', FatUtility::VAR_INT, '');
 
-        $srchFrm = $this->getSearchForm($reportType,$orderDate);
+        $srchFrm = $this->getSearchForm($reportType, $orderDate);
 
         $post = $srchFrm->getFormDataFromArray(FatApp::getPostedData());
         /* $page = (empty($post['page']) || $post['page'] <= 0) ? 1 : intval($post['page']);
         $pagesize = FatApp::getConfig('CONF_ADMIN_PAGESIZE', FatUtility::VAR_INT, 10); */
 
         //$srch = Report::salesReportObject();
-		
-		if($reportType == Report::BOOKING_REPORT) {
-			$srch = Report::salesReportObject(0,false,array(),1);
-			$this->set('reportType', $reportType);
-		} else {
-			$srch = Report::salesReportObject();	
-			$this->set('reportType', $reportType);
-		}
-		
+
+        if ($reportType == Report::BOOKING_REPORT) {
+            $srch = Report::salesReportObject(0, false, array(), 1);
+            $this->set('reportType', $reportType);
+        } else {
+            $srch = Report::salesReportObject();
+            $this->set('reportType', $reportType);
+        }
+
         if (empty($orderDate)) {
             $date_from = FatApp::getPostedData('date_from', FatUtility::VAR_DATE, '');
             if (!empty($date_from)) {
@@ -187,7 +187,7 @@ class SalesReportController extends AdminBaseController
         exit;
     }
 
-    private function getSearchForm($reportType = 1,$orderDate = '')
+    private function getSearchForm($reportType = 1, $orderDate = '')
     {
         $frm = new Form('frmSalesReportSearch');
         $frm->addHiddenField('', 'page');

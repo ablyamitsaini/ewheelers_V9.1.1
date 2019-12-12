@@ -832,19 +832,19 @@ class CheckoutController extends MyAppController
 
         $cartSummary = $this->cartObj->getCartFinancialSummary($this->siteLangId);
         //$summaryWithoutBook = $this->cartObj->getCartFinancialSummary($this->siteLangId,1);
-		
-		/* ------is order contain booking product-------- */
-		
-			$cartProducts = $this->cartObj->getProducts($this->siteLangId);
-			$order_have_booking = 0;
-			foreach($cartProducts as $cProduct){
-				if(isset($cProduct['is_for_booking'])) {
-					$order_have_booking = 1;
-				}
-			}
-		
-		/* --------------- */
-		
+
+        /* ------is order contain booking product-------- */
+
+        $cartProducts = $this->cartObj->getProducts($this->siteLangId);
+        $order_have_booking = 0;
+        foreach ($cartProducts as $cProduct) {
+            if (isset($cProduct['is_for_booking'])) {
+                $order_have_booking = 1;
+            }
+        }
+
+        /* --------------- */
+
         $userId = UserAuthentication::getLoggedUserId();
         $userWalletBalance = User::getUserBalance($userId, true);
         /* Payment Methods[ */
@@ -852,7 +852,7 @@ class CheckoutController extends MyAppController
         $pmSrch->doNotCalculateRecords();
         $pmSrch->doNotLimitRecords();
         $pmSrch->addMultipleFields(array('pmethod_id', 'IFNULL(pmethod_name, pmethod_identifier) as pmethod_name', 'pmethod_code', 'pmethod_description'));
-        
+
         if (!$cartSummary["isCodEnabled"] || ($cartSummary['cartWalletSelected'] && $userWalletBalance < $cartSummary['orderNetAmount'])) {
             $pmSrch->addCondition('pmethod_code', '!=', 'CashOnDelivery');
         }
@@ -1086,7 +1086,7 @@ class CheckoutController extends MyAppController
         $orderData['orderLangData'] = $orderLangData;
 
         /* order products[ */
-        
+
         $orderData['products'] = array();
         $orderData['prodCharges'] = array();
 
@@ -1187,15 +1187,15 @@ class CheckoutController extends MyAppController
                 if(FatApp::getConfig('CONF_TAX_COLLECTED_BY_SELLER',FatUtility::VAR_INT,0)){
                 $taxCollectedBySeller = applicationConstants::YES;
                 } */
-				
-				/* book now products */
-				$is_booking = 0;
-				
-				if(isset($cartProduct['is_for_booking'])){
-					$is_booking = 1;	
-				}
 
-				/* ------- */
+                /* book now products */
+                $is_booking = 0;
+
+                if (isset($cartProduct['is_for_booking'])) {
+                    $is_booking = 1;
+                }
+
+                /* ------- */
 
                 $orderData['products'][CART::CART_KEY_PREFIX_PRODUCT.$productInfo['selprod_id']] = array(
                 'op_selprod_id'        =>    $productInfo['selprod_id'],
@@ -1237,9 +1237,9 @@ class CheckoutController extends MyAppController
                 /* 'op_tax_collected_by_seller'    =>    $taxCollectedBySeller, */
                 'op_free_ship_upto'    =>    $cartProduct['shop_free_ship_upto'],
                 'op_actual_shipping_charges'    =>    $cartProduct['shipping_cost'],
-				/* 'op_booking_product_actual_amount'  =>    $cartProduct['actualbookprice'],  */
-				'op_product_amount_without_book'  =>    $cartProduct['priceWithoutBooking'], 
-				'op_is_booking'    =>    $is_booking,
+                /* 'op_booking_product_actual_amount'  =>    $cartProduct['actualbookprice'],  */
+                'op_product_amount_without_book'  =>    $cartProduct['priceWithoutBooking'],
+                'op_is_booking'    =>    $is_booking,
                 );
 
                 $order_affiliate_user_id = isset($cartProduct['affiliate_user_id'])?$cartProduct['affiliate_user_id']:'';
@@ -1436,8 +1436,8 @@ class CheckoutController extends MyAppController
                 $str = str_replace('{cod}', $paymentMethod['pmethod_name'], $str);
                 FatUtility::dieWithError($str);
             }
-			
-			if ($this->cartObj->hasBookingProduct()) {
+
+            if ($this->cartObj->hasBookingProduct()) {
                 $str = Labels::getLabel('MSG_{COD}_is_not_available_if_your_cart_has_any_Booking_Product', $this->siteLangId);
                 $str = str_replace('{cod}', $paymentMethod['pmethod_name'], $str);
                 FatUtility::dieWithError($str);
@@ -2011,7 +2011,7 @@ class CheckoutController extends MyAppController
 
         $address =  UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), $this->siteLangId, 0, $selected_shipping_address_id);
 
-        $this->set('orderNetAmountWithoutBooking',$cartSummary['orderNetAmountWithoutBook'] );
+        $this->set('orderNetAmountWithoutBooking', $cartSummary['orderNetAmountWithoutBook']);
         $this->set('products', $products);
         $this->set('cartSummary', $cartSummary);
         $this->set('defaultAddress', $address);

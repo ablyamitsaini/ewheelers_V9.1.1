@@ -24,20 +24,20 @@ class AccountController extends LoggedUserController
         if (UserAuthentication::isGuestUserLogged()) {
             FatApp::redirectUser(CommonHelper::generateUrl('home'));
         }
-        
+
         switch ($_SESSION[UserAuthentication::SESSION_ELEMENT_NAME]['activeTab']) {
             case 'B':
                 FatApp::redirectUser(CommonHelper::generateUrl('buyer'));
-                break;            
+                break;
             case 'S':
                 FatApp::redirectUser(CommonHelper::generateUrl('seller'));
-                break;            
+                break;
             case 'Ad':
                 FatApp::redirectUser(CommonHelper::generateUrl('advertiser'));
-                break;            
+                break;
             case 'AFFILIATE':
                 FatApp::redirectUser(CommonHelper::generateUrl('affiliate'));
-                break;                        
+                break;
             default:
                 FatApp::redirectUser(CommonHelper::generateUrl(''));
                 break;
@@ -1356,7 +1356,7 @@ class AccountController extends LoggedUserController
                 $msg = Labels::getLabel('LBL_Error_while_assigning_product_under_selected_list.');
 
                 if (true ===  MOBILE_APP_API_CALL) {
-                   LibHelper::dieJsonError($msg);
+                    LibHelper::dieJsonError($msg);
                 }
                 Message::addErrorMessage($msg);
                 FatUtility::dieWithError(Message::getHtml());

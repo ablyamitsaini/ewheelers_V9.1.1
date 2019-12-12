@@ -102,9 +102,9 @@ class Cart extends FatModel
 
     public function add($selprod_id, $qty = 1, $prodgroup_id = 0, $returnUserId = false, $isForBooking = 0)
     {
-		/* echo $isForBooking;
-		die(); */
-		
+        /* echo $isForBooking;
+        die(); */
+
         $this->products = array();
         $selprod_id = FatUtility::int($selprod_id);
         $prodgroup_id = FatUtility::int($prodgroup_id);
@@ -114,45 +114,43 @@ class Cart extends FatModel
             if ($prodgroup_id) {
                 $key = static::CART_KEY_PREFIX_BATCH . $prodgroup_id;
             }
-			
+
             $key = base64_encode(serialize($key));
-			
-			/* check is buy and book same product */
-			
-			$check	= $this->isBothBuyBook($key,$isForBooking);
-			
-			if(!$check){
-				$message = Labels::getLabel('LBL_You_Cannot_Buy_And_Book_Same_Product', $this->cart_lang_id);
-				FatUtility::dieJsonError($message);
-			}
-			
-			
-			
+
+            /* check is buy and book same product */
+
+            $check	= $this->isBothBuyBook($key, $isForBooking);
+
+            if (!$check) {
+                $message = Labels::getLabel('LBL_You_Cannot_Buy_And_Book_Same_Product', $this->cart_lang_id);
+                FatUtility::dieJsonError($message);
+            }
+
+
+
             if (!isset($this->SYSTEM_ARR['cart'][$key])) {
                 $this->SYSTEM_ARR['cart'][$key] = FatUtility::int($qty);
             } else {
                 $this->SYSTEM_ARR['cart'][$key] += FatUtility::int($qty);
             }
-			
-			/* if booking */
-			if($isForBooking == 1){
-				if (!isset($this->SYSTEM_ARR['shopping_cart']['booking_products'])) {
-					$this->SYSTEM_ARR['shopping_cart']['booking_products'][] = $key;
-				} else {
-					$exist = 0;
-					foreach($this->SYSTEM_ARR['shopping_cart']['booking_products'] as $val){
-						if($val == $key){
-							$exist = 1;
-							break;
-						}
-					}
-					if($exist == 0){
-						$this->SYSTEM_ARR['shopping_cart']['booking_products'][] = $key;
-					}
-				}
-			}
-			
-			
+
+            /* if booking */
+            if ($isForBooking == 1) {
+                if (!isset($this->SYSTEM_ARR['shopping_cart']['booking_products'])) {
+                    $this->SYSTEM_ARR['shopping_cart']['booking_products'][] = $key;
+                } else {
+                    $exist = 0;
+                    foreach ($this->SYSTEM_ARR['shopping_cart']['booking_products'] as $val) {
+                        if ($val == $key) {
+                            $exist = 1;
+                            break;
+                        }
+                    }
+                    if ($exist == 0) {
+                        $this->SYSTEM_ARR['shopping_cart']['booking_products'][] = $key;
+                    }
+                }
+            }
         }
 
         if ($prodgroup_id > 0) {
@@ -221,8 +219,8 @@ class Cart extends FatModel
         $this->products = array();
         return $isDigital;
     }
-	
-	public function hasBookingProduct()
+
+    public function hasBookingProduct()
     {
         $isBooking = false;
         foreach ($this->getProducts($this->cart_lang_id) as $product) {
@@ -293,22 +291,21 @@ class Cart extends FatModel
 
             $is_cod_enabled = true;
             foreach ($this->SYSTEM_ARR['cart'] as $key => $quantity) {
-				
-				$isForBook = 0;
-				/* check is for booking */
-				if(isset($this->SYSTEM_ARR['shopping_cart']['booking_products'])){
-					foreach($this->SYSTEM_ARR['shopping_cart']['booking_products'] as $val){
-						if($val == $key){
-							$isForBook = 1;
-							break;
-						}
-					}
-				}
-				
-				
-				/*  */
-				
-				
+                $isForBook = 0;
+                /* check is for booking */
+                if (isset($this->SYSTEM_ARR['shopping_cart']['booking_products'])) {
+                    foreach ($this->SYSTEM_ARR['shopping_cart']['booking_products'] as $val) {
+                        if ($val == $key) {
+                            $isForBook = 1;
+                            break;
+                        }
+                    }
+                }
+
+
+                /*  */
+
+
                 $selprod_id = 0;
                 $prodgroup_id = 0;
                 $sellerProductRow = array();
@@ -392,7 +389,7 @@ class Cart extends FatModel
                     //CommonHelper::printArray($sellerProductRow);exit;
                     /*[ Product Tax */
                     //$taxableProdPrice = $sellerProductRow['theprice'] - $sellerProductRow['volume_discount'];
-					$taxableProdPrice = $sellerProductRow['priceWithoutBooking'] - $sellerProductRow['volume_discount'];
+                    $taxableProdPrice = $sellerProductRow['priceWithoutBooking'] - $sellerProductRow['volume_discount'];
                     $taxObj = new Tax();
                     $tax = $taxObj->calculateTaxRates($sellerProductRow['product_id'], $taxableProdPrice, $sellerProductRow['selprod_user_id'], $siteLangId, $quantity);
                     $this->products[$key]['tax'] = $tax;
@@ -401,7 +398,7 @@ class Cart extends FatModel
                     /*[ Product Commission */
                     $commissionPercentage = SellerProduct::getProductCommission($sellerProductRow['selprod_id']);
                     //$commissionCostValue = $sellerProductRow['theprice'];
-					$commissionCostValue = $sellerProductRow['priceWithoutBooking'];
+                    $commissionCostValue = $sellerProductRow['priceWithoutBooking'];
 
                     if (FatApp::getConfig('CONF_COMMISSION_INCLUDING_TAX', FatUtility::VAR_INT, 0) && $tax) {
                         $commissionCostValue = $commissionCostValue + ($tax / $quantity);
@@ -432,10 +429,10 @@ class Cart extends FatModel
                     $is_cod_enabled = false;
                 }
                 /* ] */
-				
-				if($isForBook == 1){
-					$this->products[$key]['is_for_booking'] = 1;					
-				}
+
+                if ($isForBook == 1) {
+                    $this->products[$key]['is_for_booking'] = 1;
+                }
 
                 $this->products[$key]['key'] = $key;
                 $this->products[$key]['is_batch'] = 0;
@@ -532,25 +529,25 @@ class Cart extends FatModel
         $srch->addMultipleFields(array('voldiscount_percentage'));
         $rs = $srch->getResultSet();
         $volumeDiscountRow = FatApp::getDb()->fetch($rs);
-		
-		
-		/* is for booking */
-		$thePrice = $sellerProductRow['theprice'];
-		$sellerProductRow['priceWithoutBooking'] = $thePrice;
-		$sellerProductRow['totalPriceWithoutBooking'] = $thePrice * $quantity; 		
-		$sellerProductRow['actualbookprice'] = 0;
-		if( $isForBook == 1){
-		 $booking_per = $sellerProductRow['product_book_percentage'];
-		 $thePrice = ($booking_per / 100) * $thePrice;
-		 unset($sellerProductRow['theprice']);
-		 $sellerProductRow['theprice'] = $thePrice;
-		 
-		 $sellerProductRow['actualbookprice'] = $thePrice;
-		}
-		
-		/* ] */
-		
-		
+
+
+        /* is for booking */
+        $thePrice = $sellerProductRow['theprice'];
+        $sellerProductRow['priceWithoutBooking'] = $thePrice;
+        $sellerProductRow['totalPriceWithoutBooking'] = $thePrice * $quantity;
+        $sellerProductRow['actualbookprice'] = 0;
+        if ($isForBook == 1) {
+            $booking_per = $sellerProductRow['product_book_percentage'];
+            $thePrice = ($booking_per / 100) * $thePrice;
+            unset($sellerProductRow['theprice']);
+            $sellerProductRow['theprice'] = $thePrice;
+
+            $sellerProductRow['actualbookprice'] = $thePrice;
+        }
+
+        /* ] */
+
+
         if ($volumeDiscountRow) {
             $volumeDiscount = $sellerProductRow['theprice'] * ($volumeDiscountRow['voldiscount_percentage'] / 100);
             //$sellerProductRow['theprice'] = $sellerProductRow['theprice'] - $volumeDiscount;
@@ -623,32 +620,31 @@ class Cart extends FatModel
                 if ($key == 'all') {
                     $found = true;
                     unset($this->SYSTEM_ARR['cart'][$cartKey]);
-                    /* to keep track of temporary hold the product stock[ */				
+                    /* to keep track of temporary hold the product stock[ */
                     $this->updateTempStockHold($product['selprod_id'], 0, 0);
-					/* remove booking product */
-					unset($this->SYSTEM_ARR['shopping_cart']['booking_products']);
+                    /* remove booking product */
+                    unset($this->SYSTEM_ARR['shopping_cart']['booking_products']);
                 /* ] */
                 } elseif (md5($product['key']) == $key && !$product['is_batch']) {
                     $found = true;
                     unset($this->SYSTEM_ARR['cart'][$cartKey]);
                     /* to keep track of temporary hold the product stock[ */
                     $this->updateTempStockHold($product['selprod_id'], 0, 0);
-					
-					if(isset($this->SYSTEM_ARR['shopping_cart']['booking_products'])){
-					/* remove booking product */
-					$sysArr = $this->SYSTEM_ARR['shopping_cart']['booking_products'];
 
-					foreach($sysArr as $arrkey => $value){
-						if($value == $cartKey ){
-							unset($sysArr[$arrkey]);
-							break;
-						}
-					}
-					unset($this->SYSTEM_ARR['shopping_cart']['booking_products']);
-					$this->SYSTEM_ARR['shopping_cart']['booking_products'] = $sysArr;
-					
-					}
-					/* ------- */
+                    if (isset($this->SYSTEM_ARR['shopping_cart']['booking_products'])) {
+                        /* remove booking product */
+                        $sysArr = $this->SYSTEM_ARR['shopping_cart']['booking_products'];
+
+                        foreach ($sysArr as $arrkey => $value) {
+                            if ($value == $cartKey) {
+                                unset($sysArr[$arrkey]);
+                                break;
+                            }
+                        }
+                        unset($this->SYSTEM_ARR['shopping_cart']['booking_products']);
+                        $this->SYSTEM_ARR['shopping_cart']['booking_products'] = $sysArr;
+                    }
+                    /* ------- */
                     break;
                 }
             }
@@ -942,12 +938,12 @@ class Cart extends FatModel
         return $cartTotal;
     }
 
-    public function getCartFinancialSummary($langId,$fullAmount = 0)
+    public function getCartFinancialSummary($langId, $fullAmount = 0)
     {
         $products = $this->getProducts($langId);
 
         $cartTotal = 0;
-		$cartTotalWithoutBook = 0;
+        $cartTotalWithoutBook = 0;
         $cartTotalNonBatch = 0;
         $cartTotalBatch = 0;
         $shippingTotal = 0;
@@ -957,7 +953,7 @@ class Cart extends FatModel
         $cartTaxTotal = 0;
         $bookingProductTaxTotal = 0;
         $cartDiscounts = self::getCouponDiscounts();
-        
+
         $totalSiteCommission = 0;
         $orderNetAmount = 0;
         $orderNetAmountWithoutBook = 0;
@@ -979,23 +975,22 @@ class Cart extends FatModel
                     $cartTotal += $product['prodgroup_total'];
                 } else {
                     //$cartTotalNonBatch += $product['total'];
-						$cartTotalWithoutBook += !empty($product['totalPriceWithoutBooking']) ? $product['totalPriceWithoutBooking'] : 0;
-						$cartTotal += !empty($product['total']) ? $product['total'] : 0;
-					
+                    $cartTotalWithoutBook += !empty($product['totalPriceWithoutBooking']) ? $product['totalPriceWithoutBooking'] : 0;
+                    $cartTotal += !empty($product['total']) ? $product['total'] : 0;
                 }
 
                 $cartVolumeDiscount += $product['volume_discount_total'];
-                
+
                 /* $taxableProdPrice = $product['theprice'] - $product['volume_discount'] - ($cartDiscounts['discountedSelProdIds'][$product['selprod_id']])/$product['quantity'];
                 $taxObj = new Tax();
                 $tax = $taxObj->calculateTaxRates($product['product_id'], $taxableProdPrice, $product['selprod_user_id'], $langId, $product['quantity']);
                 $cartTaxTotal += $tax; */
                 $cartTaxTotal +=  $product['tax'];
-	
-				if(isset($product['is_for_booking'])) {
-					$bookingProductTaxTotal += $product['tax'];
-				}
-                
+
+                if (isset($product['is_for_booking'])) {
+                    $bookingProductTaxTotal += $product['tax'];
+                }
+
                 $originalShipping += $product['shipping_cost'];
                 $totalSiteCommission += $product['commission'];
 
@@ -1012,12 +1007,12 @@ class Cart extends FatModel
         //$orderPaymentGatewayCharges = $netTotalAfterDiscount - $orderCreditsCharge;
 
         $totalDiscountAmount = (isset($cartDiscounts['coupon_discount_total'])) ? $cartDiscounts['coupon_discount_total'] : 0;
-        $orderNetAmount = (max($cartTotal - $cartVolumeDiscount - $totalDiscountAmount, 0)  + $shippingTotal  + $cartTaxTotal) ; 
-		$orderNetAmount = $orderNetAmount - CommonHelper::rewardPointDiscount($orderNetAmount, $cartRewardPoints);
-		
-        $orderNetAmountWithoutBook = (max($cartTotalWithoutBook - $cartVolumeDiscount - $totalDiscountAmount, 0)  + $shippingTotal  + $cartTaxTotal) ; 
-		$orderNetAmountWithoutBook  = $orderNetAmountWithoutBook - CommonHelper::rewardPointDiscount($orderNetAmount, $cartRewardPoints);
-		
+        $orderNetAmount = (max($cartTotal - $cartVolumeDiscount - $totalDiscountAmount, 0)  + $shippingTotal  + $cartTaxTotal) ;
+        $orderNetAmount = $orderNetAmount - CommonHelper::rewardPointDiscount($orderNetAmount, $cartRewardPoints);
+
+        $orderNetAmountWithoutBook = (max($cartTotalWithoutBook - $cartVolumeDiscount - $totalDiscountAmount, 0)  + $shippingTotal  + $cartTaxTotal) ;
+        $orderNetAmountWithoutBook  = $orderNetAmountWithoutBook - CommonHelper::rewardPointDiscount($orderNetAmount, $cartRewardPoints);
+
         $WalletAmountCharge = ($this->isCartUserWalletSelected()) ? min($orderNetAmount, $userWalletBalance) : 0;
         $orderPaymentGatewayCharges = $orderNetAmount - $WalletAmountCharge;
 
@@ -1031,10 +1026,10 @@ class Cart extends FatModel
         }
 
         $netChargeAmt = $cartTotal + $cartTaxTotal - ((0 < $cartVolumeDiscount) ? $cartVolumeDiscount: 0);
-		
-		$orderPaymentGatewayCharges = $orderPaymentGatewayCharges - $bookingProductTaxTotal;
-		
-		
+
+        $orderPaymentGatewayCharges = $orderPaymentGatewayCharges - $bookingProductTaxTotal;
+
+
 
         $cartSummary = array(
             'cartTotal' => $cartTotal,
@@ -1807,75 +1802,67 @@ class Cart extends FatModel
             return $selprod_id;
         }
     }
-	
-	public function isBothBuyBook($key,$isForBooking) 
-	{
-		if(empty($this->SYSTEM_ARR['cart'])){
-			return true;
-		}
-		
-		$exist = 0;
-		
-		if(isset($this->SYSTEM_ARR['shopping_cart']['booking_products'])){
-			foreach($this->SYSTEM_ARR['shopping_cart']['booking_products'] as $val){
-				if($val == $key){
-					$exist = 1;
-					break;
-				}
-			}
-		}
-			
-		if($isForBooking == 1){
 
-			if (array_key_exists($key,$this->SYSTEM_ARR['cart']) && $exist == 0)
-			{
-				return false;
-			}
-			else
-			{
-				return true;
-			}
-			
-		}else{
-			
-			if ($exist == 1)
-			{
-				return false;
-			}
-			return true;
-		}
-	}
-	
-	
-	public function validateAction($selprod_id,$isForbooking,$siteLangId){
+    public function isBothBuyBook($key, $isForBooking)
+    {
+        if (empty($this->SYSTEM_ARR['cart'])) {
+            return true;
+        }
 
-	   $prodSrch = new ProductSearch($siteLangId);
-	   $prodSrch->setDefinedCriteria();
-       $prodSrch->doNotCalculateRecords();
-       $prodSrch->doNotLimitRecords();
-       $prodSrch->addCondition('selprod_id', '=', $selprod_id);
-	   $prodSrch->addMultipleFields(array('product_book','selprod_book_now_enable'));
-	   $rs = $prodSrch->getResultSet();
-       $sellerProductRow = FatApp::getDb()->fetch($rs);
-	   $product_book = $sellerProductRow['product_book'];
-	   $selprod_book_now_enable = $sellerProductRow['selprod_book_now_enable'];
-	   $global_setting = FatApp::getConfig("CONF_ENABLE_BOOK_NOW_MODULE", FatUtility::VAR_INT, 0);
-	   
-	    if($isForbooking == 1){
-			if($product_book == 0 || $global_setting == 0 || $selprod_book_now_enable == applicationConstants::BUY_NOW ){
-				$this->error = Labels::getLabel('LBL_This_Product_Is_Not_Available_For_Booking',$siteLangId);
-				return false;
-			}
+        $exist = 0;
+
+        if (isset($this->SYSTEM_ARR['shopping_cart']['booking_products'])) {
+            foreach ($this->SYSTEM_ARR['shopping_cart']['booking_products'] as $val) {
+                if ($val == $key) {
+                    $exist = 1;
+                    break;
+                }
+            }
         }
-		
-		if($isForbooking == 0){
-			if(( $global_setting == 1 && $product_book == 1 && $selprod_book_now_enable == applicationConstants::BOOK_NOW )) {
-				$this->error = Labels::getLabel('LBL_This_Product_Is_Not_Available_For_Buy',$siteLangId);
-				return false;
-			}
+
+        if ($isForBooking == 1) {
+            if (array_key_exists($key, $this->SYSTEM_ARR['cart']) && $exist == 0) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            if ($exist == 1) {
+                return false;
+            }
+            return true;
         }
-		
-	   return true;
-   }
-   
+    }
+
+
+    public function validateAction($selprod_id, $isForbooking, $siteLangId)
+    {
+        $prodSrch = new ProductSearch($siteLangId);
+        $prodSrch->setDefinedCriteria();
+        $prodSrch->doNotCalculateRecords();
+        $prodSrch->doNotLimitRecords();
+        $prodSrch->addCondition('selprod_id', '=', $selprod_id);
+        $prodSrch->addMultipleFields(array('product_book','selprod_book_now_enable'));
+        $rs = $prodSrch->getResultSet();
+        $sellerProductRow = FatApp::getDb()->fetch($rs);
+        $product_book = $sellerProductRow['product_book'];
+        $selprod_book_now_enable = $sellerProductRow['selprod_book_now_enable'];
+        $global_setting = FatApp::getConfig("CONF_ENABLE_BOOK_NOW_MODULE", FatUtility::VAR_INT, 0);
+
+        if ($isForbooking == 1) {
+            if ($product_book == 0 || $global_setting == 0 || $selprod_book_now_enable == applicationConstants::BUY_NOW) {
+                $this->error = Labels::getLabel('LBL_This_Product_Is_Not_Available_For_Booking', $siteLangId);
+                return false;
+            }
+        }
+
+        if ($isForbooking == 0) {
+            if (($global_setting == 1 && $product_book == 1 && $selprod_book_now_enable == applicationConstants::BOOK_NOW)) {
+                $this->error = Labels::getLabel('LBL_This_Product_Is_Not_Available_For_Buy', $siteLangId);
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

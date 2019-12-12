@@ -174,28 +174,27 @@ class TestDriveController extends AdminBaseController
         $db->startTransaction();
 
         if (FatApp::getConfig("CONF_ENABLE_BUYER_TEST_DRIVE_CREDIT_MODULE", FatUtility::VAR_INT)) {
-			
-			if(TestDriveManagement::checkBuyerCreditAmount($user_id)){
-				$urpId = $this->addRewards($user_id);
-				if (false == $urpId) {
-					$db->rollbackTransaction();           
-				}
-				
-				$dataToSaveArr = array('ptdr_user_reward_points' => FatApp::getConfig("CONF_BUYER_TEST_DRIVE_CREDIT_POINTS", FatUtility::VAR_INT, 0));
-				$where = array('smt' => 'ptdr_id = ?', 'vals' => array( $requestId ) );
-				$row = $db->updateFromArray(TestDrive::DB_TBL, $dataToSaveArr, $where);
-				if(!$row) {
-					Message::addErrorMessage($db->getError());
-					FatUtility::dieJsonError(Message::getHtml());
-					$db->rollbackTransaction();
-				}
-			}
+            if (TestDriveManagement::checkBuyerCreditAmount($user_id)) {
+                $urpId = $this->addRewards($user_id);
+                if (false == $urpId) {
+                    $db->rollbackTransaction();
+                }
+
+                $dataToSaveArr = array('ptdr_user_reward_points' => FatApp::getConfig("CONF_BUYER_TEST_DRIVE_CREDIT_POINTS", FatUtility::VAR_INT, 0));
+                $where = array('smt' => 'ptdr_id = ?', 'vals' => array( $requestId ) );
+                $row = $db->updateFromArray(TestDrive::DB_TBL, $dataToSaveArr, $where);
+                if (!$row) {
+                    Message::addErrorMessage($db->getError());
+                    FatUtility::dieJsonError(Message::getHtml());
+                    $db->rollbackTransaction();
+                }
+            }
         }
 
         if (FatApp::getConfig("CONF_ENABLE_SELLER_TEST_DRIVE_CREDIT_MODULE", FatUtility::VAR_INT)) {
-            $txnId = $this->addTransaction($seller_id,$requestId);
+            $txnId = $this->addTransaction($seller_id, $requestId);
             if (false === $txnId) {
-                $db->rollbackTransaction();               
+                $db->rollbackTransaction();
             }
         }
 
@@ -221,11 +220,11 @@ class TestDriveController extends AdminBaseController
             }
         }
 
-        if (!$obj->sendStatusChangedEmailUpdateSeller($requestId,TestDrive::STATUS_COMPLETED, $this->adminLangId)) {
+        if (!$obj->sendStatusChangedEmailUpdateSeller($requestId, TestDrive::STATUS_COMPLETED, $this->adminLangId)) {
             FatUtility::dieJsonError($obj->getError());
         }
 
-        if (!$obj->sendStatusChangedEmailUpdateBuyer($requestId,TestDrive::STATUS_COMPLETED, $this->adminLangId)) {
+        if (!$obj->sendStatusChangedEmailUpdateBuyer($requestId, TestDrive::STATUS_COMPLETED, $this->adminLangId)) {
             FatUtility::dieJsonError($obj->getError());
         }
 
@@ -234,12 +233,12 @@ class TestDriveController extends AdminBaseController
     }
 
 
-    private function addTransaction($seller_id,$requestId)
+    private function addTransaction($seller_id, $requestId)
     {
         $creditAmount = TestDriveManagement::checkSellerCreditAmount($seller_id);
-		if($creditAmount == 0){
-			return $creditAmount;
-		}
+        if ($creditAmount == 0) {
+            return $creditAmount;
+        }
         $comments = Labels::getLabel("LBL_Test_Drive_Credits", CommonHelper::getLangId());
         $txnObj = new Transactions();
         $txnDataArr = array(
@@ -250,7 +249,7 @@ class TestDriveController extends AdminBaseController
          'utxn_debit'=> 0,
          'utxn_type'=> Transactions::TYPE_TEST_DRIVE_CREDITS,
          'utxn_test_drive_id'=> $requestId,
-		 'utxn_date' => date("Y-m-d h:i:sa")
+         'utxn_date' => date("Y-m-d h:i:sa")
         );
         if (!$txnObj->addTransaction($txnDataArr)) {
             FatUtility::dieJsonError($txnObj->getError());
@@ -270,11 +269,11 @@ class TestDriveController extends AdminBaseController
 
         $robj = new UserRewards();
         $urpComments = Labels::getLabel("LBL_Test_Drive_Reward_Points", CommonHelper::getLangId());
-		$reward_points = FatApp::getConfig("CONF_BUYER_TEST_DRIVE_CREDIT_POINTS", FatUtility::VAR_INT, 0);
-		if($reward_points == 0){
-			FatUtility::dieJsonError(Labels::getLabel('LBL_Please_set_valid_reward_points', $this->adminLangId));
-		}
-		
+        $reward_points = FatApp::getConfig("CONF_BUYER_TEST_DRIVE_CREDIT_POINTS", FatUtility::VAR_INT, 0);
+        if ($reward_points == 0) {
+            FatUtility::dieJsonError(Labels::getLabel('LBL_Please_set_valid_reward_points', $this->adminLangId));
+        }
+
         $robj->assignValues(
             array(
             'urp_user_id'            => $user_id,
@@ -286,7 +285,7 @@ class TestDriveController extends AdminBaseController
             )
         );
         if (!$robj->save()) {
-			FatUtility::dieJsonError($robj->getError());
+            FatUtility::dieJsonError($robj->getError());
             return false;
         }
 

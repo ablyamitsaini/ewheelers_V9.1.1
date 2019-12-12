@@ -1,7 +1,7 @@
 <?php
 class HomeController extends AdminBaseController
 {
-    function __construct($action)
+    public function __construct($action)
     {
         parent::__construct($action);
         $this->admin_id = AdminAuthentication::getLoggedAdminId();
@@ -33,36 +33,36 @@ class HomeController extends AdminBaseController
         $dashboardInfo = $cache->get("dashboardInfo".$this->adminLangId);
 
         $dashboardInfo = array();
-        if($dashboardInfo == null) {
-
+        if ($dashboardInfo == null) {
             include_once CONF_INSTALLATION_PATH . 'library/analytics/analyticsapi.php';
-            try{
+            try {
                 $analytics = new Ykart_analytics($analyticArr);
                 $token = $analytics->getRefreshToken(FatApp::getConfig("CONF_ANALYTICS_ACCESS_TOKEN"));
 
                 $analytics->setAccessToken((isset($token['accessToken']))?$token['accessToken']:'');
 
                 $accountId = $analytics->setAccountId(FatApp::getConfig("CONF_ANALYTICS_ID"));
-                if(!$accountId) {
+                if (!$accountId) {
                     Message::addErrorMessage(Labels::getLabel('LBL_Analytic_Id_does_not_exist_with_Configured_Account', $this->adminLangId));
-                }else{
+                } else {
                     $this->set('configuredAnalytics', true);
                 }
-            }catch(exception $e){
+            } catch (exception $e) {
                 /* Message::addErrorMessage(Labels::getLabel('LBL_Analytic_Id_does_not_exist_with_Configured_Account',$this->adminLangId)); */
                 //Message::addErrorMessage($e->getMessage());
             }
 
             $statsObj = new Statistics();
 
-            if($accountId) {
+            if ($accountId) {
                 $statsInfo = $analytics->getVisitsByDate();
 
                 $chatStats=array();
-                if(!empty($statsInfo['stats'])) {
+                if (!empty($statsInfo['stats'])) {
                     $chatStats = "[['".Labels::getLabel('LBL_Year', $this->adminLangId)."', '".Labels::getLabel('LBL_Today', $this->adminLangId)."','".Labels::getLabel('LBL_Weekly', $this->adminLangId)."','".Labels::getLabel('LBL_Last_Month', $this->adminLangId)."','".Labels::getLabel('LBL_Last_3_Month', $this->adminLangId)."'],";
-                    foreach($statsInfo['stats'] as $key => $val){
-                        if($key == '') { continue;
+                    foreach ($statsInfo['stats'] as $key => $val) {
+                        if ($key == '') {
+                            continue;
                         }
 
                         $chatStats.="['".FatDate::format($key)."',";
@@ -79,16 +79,15 @@ class HomeController extends AdminBaseController
                 $chatStats = rtrim($chatStats, ',');
                 $visits_chart_data = $chatStats.="]";
                 $visitCount = $statsInfo['result'];
-                foreach($statsInfo['result'] as $key=>$val){
+                foreach ($statsInfo['result'] as $key=>$val) {
                     $visitCount[$key] = $val['totalsForAllResults'];
                 }
                 $socialVisits = $analytics->getSocialVisits();
-
             }
 
             $conversionStats = $statsObj->getConversionStats();
             $conversionChatData = "['Type','user',{ role: 'style' }],";
-            foreach($conversionStats as $key=>$val ){
+            foreach ($conversionStats as $key=>$val) {
                 $key = Labels::getLabel('LBL_'.ucwords($key), $this->adminLangId);
                 $conversionChatData.="['".$key."', ".$val["count"].",'#AEC785'],";
             }
@@ -97,31 +96,31 @@ class HomeController extends AdminBaseController
 
             $salesData = $statsObj->getDashboardLast12MonthsSummary($this->adminLangId, 'sales', array(), 6);
             $salesChartData = array();
-            foreach($salesData as $key => $val ){
+            foreach ($salesData as $key => $val) {
                 $salesChartData[$val["duration"]] = $val["value"];
             }
 
 
             $salesEarningsData = $statsObj->getDashboardLast12MonthsSummary($this->adminLangId, 'earnings', array(), 6);
             $salesEarningsChartData = [];
-            foreach($salesEarningsData as $key => $val ){
+            foreach ($salesEarningsData as $key => $val) {
                 $salesEarningsChartData[$val["duration"]] = $val["value"];
             }
 
             $signupsData = $statsObj->getDashboardLast12MonthsSummary($this->adminLangId, 'signups', array('user_is_buyer' => 1, 'user_is_supplier' => 1), 6);
             $signupsChartData = [];
-            foreach($signupsData as $key => $val ){
+            foreach ($signupsData as $key => $val) {
                 $signupsChartData[$val["duration"]] = $val["value"];
             }
 
             $affiliateSignupsData = $statsObj->getDashboardLast12MonthsSummary($this->adminLangId, 'signups', array( 'user_is_affiliate' => 1 ), 6);
             $affiliateSignupsChartData = array();
-            foreach($affiliateSignupsData as $key => $val ){
+            foreach ($affiliateSignupsData as $key => $val) {
                 $affiliateSignupsChartData[$val["duration"]] = $val["value"];
             }
             $productsData = $statsObj->getDashboardLast12MonthsSummary($this->adminLangId, 'products', array(), 6);
             $productsChartData = [];
-            foreach($productsData as $key => $val ){
+            foreach ($productsData as $key => $val) {
                 $productsChartData[$val["duration"]] = $val["value"];
             }
             //CommonHelper::printArray($affiliateSignupsChartData);
@@ -138,20 +137,18 @@ class HomeController extends AdminBaseController
             $dashboardInfo["stats"]["totalSales"] = $statsObj->getStats('total_sales');
 
 
-            if($this->layoutDirection!='rtl') {
-
+            if ($this->layoutDirection!='rtl') {
                 $dashboardInfo['productsChartData'] = array_reverse($productsChartData);
                 $dashboardInfo['salesChartData'] =  array_reverse($salesChartData);
                 $dashboardInfo['salesEarningsChartData']= array_reverse($salesEarningsChartData);
                 $dashboardInfo['signupsChartData'] =  array_reverse($signupsChartData);
                 $dashboardInfo['affiliateSignupsChartData'] =  array_reverse($affiliateSignupsChartData);
-            }else{
+            } else {
                 $dashboardInfo['productsChartData'] = $productsChartData;
                 $dashboardInfo['salesChartData'] =   $salesChartData;
                 $dashboardInfo['salesEarningsChartData']= $salesEarningsChartData;
                 $dashboardInfo['signupsChartData'] =  $signupsChartData;
                 $dashboardInfo['affiliateSignupsChartData'] =  $affiliateSignupsChartData;
-
             }
 
             $dashboardInfo['topProducts'] = $statsObj->getTopProducts('YEARLY', $this->adminLangId, 10);
@@ -183,7 +180,7 @@ class HomeController extends AdminBaseController
         $statsObj = new Statistics();
         $dashboardInfo = array();
 
-        switch(strtolower($type)){
+        switch (strtolower($type)) {
             case 'statistics':
                 $dashboardInfo["stats"]["totalUsers"] = $statsObj->getStats('total_members');
                 $dashboardInfo["stats"]["totalSellerProducts"] = $statsObj->getStats('total_seller_products');
@@ -315,19 +312,19 @@ class HomeController extends AdminBaseController
         $cache = phpFastCache();
 
         $result = $cache->get("dashboardInfo_".$type.'_'.$interval.'_'.$this->adminLangId);
-        if($result == null) {
-            if(strtoupper($type) == 'TOP_PRODUCTS') {
+        if ($result == null) {
+            if (strtoupper($type) == 'TOP_PRODUCTS') {
                 $statsObj = new Statistics();
                 $result = $statsObj->getTopProducts($interval, $this->adminLangId, 10);
-            }else{
-                try{
+            } else {
+                try {
                     $analytics = new Ykart_analytics($analyticArr);
                     $token = $analytics->getRefreshToken(FatApp::getConfig("CONF_ANALYTICS_ACCESS_TOKEN"));
-                    if(isset($token['accessToken'])) {
+                    if (isset($token['accessToken'])) {
                         $analytics->setAccessToken($token['accessToken']);
                     }
                     $accountId = $analytics->setAccountId(FatApp::getConfig("CONF_ANALYTICS_ID"));
-                    switch(strtoupper($type)){
+                    switch (strtoupper($type)) {
                     case 'TOP_COUNTRIES':
                         $result = $analytics->getTopCountries($interval, 9);
 
@@ -351,7 +348,7 @@ class HomeController extends AdminBaseController
                         $result = $statsObj->getTopProducts($interval, $this->adminLangId, 10);
                         break;
                     }
-                }catch(exception $e){
+                } catch (exception $e) {
                     echo $e->getMessage();
                 }
             }
@@ -363,12 +360,12 @@ class HomeController extends AdminBaseController
         $this->_template->render(false, false);
     }
 
-    function clear()
+    public function clear()
     {
         CommonHelper::recursiveDelete(CONF_UPLOADS_PATH."caching");
         FatCache::clearAll();
         Message::addMessage(Labels::getLabel('LBL_Cache_has_been_cleared', $this->adminLangId));
-        if(Labels::isAPCUcacheAvailable()) {
+        if (Labels::isAPCUcacheAvailable()) {
             apcu_clear_cache();
         }
         Product::updateMinPrices();
@@ -376,11 +373,10 @@ class HomeController extends AdminBaseController
     }
     public function setLanguage($langId = 0)
     {
-
         $langId =  FatUtility::int($langId);
-        if(0 < $langId ) {
+        if (0 < $langId) {
             $languages = Language::getAllNames();
-            if(array_key_exists($langId, $languages)) {
+            if (array_key_exists($langId, $languages)) {
                 setcookie('defaultAdminSiteLang', $langId, time()+3600*24*10, CONF_WEBROOT_FRONT_URL);
             }
             $this->set('msg', Labels::getLabel('Msg_Please_Wait_We_are_redirecting_you...', $this->adminLangId));

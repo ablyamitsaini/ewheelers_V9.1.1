@@ -835,7 +835,7 @@ class BannersController extends AdminBaseController
     }
 
     public function getBannerLocationDimensions($bannerLocationId, $deviceType)
-    {            
+    {
         $bannerDimensions = BannerLocation::getDimensions($bannerLocationId, $deviceType);
         $this->set('bannerWidth', $bannerDimensions['blocation_banner_width']);
         $this->set('bannerHeight', $bannerDimensions['blocation_banner_height']);
