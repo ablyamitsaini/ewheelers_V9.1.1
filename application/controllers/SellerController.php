@@ -1244,6 +1244,7 @@ class SellerController extends SellerBaseController
             'product_type',
             'product_active',
             'product_approved',
+			'product_book'
             )
         );
         $srch->addOrder('product_active', 'DESC');

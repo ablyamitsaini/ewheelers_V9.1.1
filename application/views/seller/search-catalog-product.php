@@ -6,6 +6,7 @@ $arr_flds = array(
     'product_identifier' => Labels::getLabel('LBL_Product', $siteLangId),
     //'attrgrp_name' => Labels::getLabel('LBL_Attribute_Group', $siteLangId),
     'product_model' => Labels::getLabel('LBL_Model', $siteLangId),
+    'product_book' => Labels::getLabel('LBL_Booking_Available', $siteLangId),
     'product_active' => Labels::getLabel('LBL_Status', $siteLangId),
     'product_approved' => Labels::getLabel('LBL_Admin_Approval', $siteLangId),
     'product_shipped_by' => Labels::getLabel('LBL_Shipped_by_me', $siteLangId),
@@ -34,6 +35,10 @@ foreach ($arr_listing as $sn => $row) {
                 break;
             case 'attrgrp_name':
                 $td->appendElement('plaintext', array(), CommonHelper::displayNotApplicable($siteLangId, $row[$key]), true);
+                break;
+			case 'product_book':
+                $bookArr = applicationConstants::getProductBuyStatusArr($siteLangId);
+                $td->appendElement('plaintext', array(), ( $row[$key] == 1 )?'Yes':'No', true);
                 break;
             case 'product_approved':
                 $approveUnApproveArr = Product::getApproveUnApproveArr($siteLangId);
