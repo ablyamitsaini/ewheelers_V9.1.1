@@ -378,6 +378,7 @@ if ($order['order_reward_point_used'] > 0) {
                         </div>
                     </section>
                 <?php }
+				if($order['op_is_booking'] == 0){
                 if ($displayShippingUserForm) { ?>
                     <section class="section">
                         <div class="sectionhead">
@@ -393,7 +394,8 @@ if ($order['order_reward_point_used'] > 0) {
                             ?>
                         </div>
                     </section>
-                <?php } if ($displayForm && !$print) { ?>
+                <?php} 
+				} if ($displayForm && !$print) { ?>
                     <section class="section no-print">
                         <div class="sectionhead">
                             <h4><?php echo Labels::getLabel('LBL_Comments_on_order', $adminLangId); ?></h4>
