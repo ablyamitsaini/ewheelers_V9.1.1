@@ -49,10 +49,11 @@ if ($user_is_buyer > 0 || (!UserAuthentication::isUserLogged())) { ?>
 									echo '<b style="font-weight: bold;">( ' . Labels::getLabel('LBL_Booking_Product', $siteLangId) .' )</b>';
 									} 
 									if(isset($product['is_for_booking'])){
+									$shop_address = Shop::getShopAddress($product['shop_id'], true, $siteLangId);
 									$payToLabel = Labels::getLabel('LBL_Pending_Amount_to_be_paid', $siteLangId);
-									$seller_phone = $product['seller_address']['shop_phone'];
+									$seller_phone = $shop_address['shop_phone'];
 									//$product['seller_address']['shop_phone'];
-									$seller_address = $product['seller_address']['shop_address_line_1'] . ' ' . $product['seller_address']['shop_address_line_2'] . ' ' . $product['seller_address']['shop_city'] . ' ' . $product['seller_address']['state_identifier'];
+									$seller_address = $shop_address['shop_address_line_1'] . ' ' . $shop_address['shop_address_line_2'] . ' ' . $shop_address['shop_city'] . ' ' . $shop_address['state_identifier'];
 								?>
 									<div style="font-weight: bold;"><?php echo $payToLabel . ':-'; ?></div>
 									<div style="font-weight: bold;"><?php echo $seller_address; ?></div>

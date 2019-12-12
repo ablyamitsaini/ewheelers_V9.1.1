@@ -71,10 +71,11 @@ if (count($products)) {
 								
 								
 								if(isset($product['is_for_booking'])){
+									$shop_address = Shop::getShopAddress($product['shop_id'], true, $siteLangId);
 									$payToLabel = Labels::getLabel('LBL_Pending_Amount_to_be_paid', $siteLangId);
-									$seller_phone = $product['seller_address']['shop_phone'];
+									$seller_phone = $shop_address['shop_phone'];
 									//$product['seller_address']['shop_phone'];
-									$seller_address = $product['seller_address']['shop_address_line_1'] . ' ' . $product['seller_address']['shop_address_line_2'] . ' ' . $product['seller_address']['shop_city'] . ' ' . $product['seller_address']['state_identifier'];
+									$seller_address = $shop_address['shop_address_line_1'] . ' ' . $shop_address['shop_address_line_2'] . ' ' . $shop_address['shop_city'] . ' ' . $shop_address['state_identifier'];
 								?>
 									<div><b><?php echo $payToLabel . ':-'; ?></b></div>
 									<div><b><?php echo $seller_address; ?></b></div>
