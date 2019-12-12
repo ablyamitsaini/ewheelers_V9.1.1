@@ -394,7 +394,7 @@ if ($order['order_reward_point_used'] > 0) {
                             ?>
                         </div>
                     </section>
-                <?php} 
+                <?php } 
 				} if ($displayForm && !$print) { ?>
                     <section class="section no-print">
                         <div class="sectionhead">
