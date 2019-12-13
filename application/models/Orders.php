@@ -2303,7 +2303,7 @@ class Orders extends MyAppModel
 	
 	public function checkNonBookAmountPaid($order_id,$order_amount_with_booking) {
 		$totalPaymentPaid = $this->getOrderPaymentPaid($order_id);
-		if($totalPaymentPaid == $order_amount_with_booking){
+		if($totalPaymentPaid >= $order_amount_with_booking){
 			return true;
 		}
 		return false;
