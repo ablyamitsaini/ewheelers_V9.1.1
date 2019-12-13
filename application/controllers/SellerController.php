@@ -425,12 +425,7 @@ class SellerController extends SellerBaseController
 	
 			$orderInfo = $orderObj->getOrderById($orderDetail['op_order_id']);
 			if ($orderInfo['order_have_booking'] == 1 && $orderDetail['op_is_booking'] == 0) {
-				$response = $orderObj->checkNonBookAmountPaid($orderDetail['op_order_id'],$orderDetail['order_net_amount']); 
-				
-				if($response === true){
 					$processingStatuses = unserialize(FatApp::getConfig("CONF_PROCESSING_ORDER_STATUS"));
-					
-				}
 			}
 
 		/* --------------- */
@@ -613,12 +608,7 @@ class SellerController extends SellerBaseController
 	
 			$orderInfo = $orderObj->getOrderById($orderDetail['op_order_id']);
 			if ($orderInfo['order_have_booking'] == 1 && $orderDetail['op_is_booking'] == 0) {
-				$response = $orderObj->checkNonBookAmountPaid($orderDetail['op_order_id'],$orderDetail['order_net_amount']); 
-				
-				if($response === true){
 					$processingStatuses = unserialize(FatApp::getConfig("CONF_PROCESSING_ORDER_STATUS"));
-					
-				}
 			}
 
 		/* --------------- */
