@@ -192,13 +192,6 @@ class SellerOrdersController extends AdminBaseController
             $processingStatuses = $orderObj->getAdminAllowedUpdateOrderStatuses(false, $opRow['op_product_type']);
         }
 		
-		/* booking */
-		
-			if($opRow['op_is_booking'] == 1) {
-				$processingStatuses = array(); 
-			}
-		/* ---- */
-
         $data = array('op_id'=>$op_id , 'op_status_id' => $opRow['op_status_id'] );
         $frm = $this->getOrderCommentsForm($opRow, $processingStatuses);
         $frm->fill($data);
