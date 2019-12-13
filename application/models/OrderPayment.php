@@ -164,8 +164,21 @@ class OrderPayment extends Orders
 				}
 				
 				if($is_booking == 1 && $orderBalance > 0 && $is_admin_request == 0) {
+					
+					foreach ($subOrders as $subkey => $subval) {
+						if($subval['op_is_booking'] == 0) {
+							
+							if (!FatApp::getDb()->updateFromArray('tbl_order_products', array('op_status_id' => FatApp::getConfig('CONF_DEFAULT_PAID_ORDER_STATUS', FatUtility::VAR_INT, 0)), array('smt' => 'op_id = ? ', 'vals' => array($subval['op_id'])))) {
+								$this->error = FatApp::getDb()->getError();
+								return false;
+							}
+						}
+					}
+					
+					$emailObj = new EmailHandler();
 					$emailObj->newOrderVendor($orderInfo['order_id']);
 					$emailObj->newOrderBuyerAdmin($orderInfo['order_id'], $orderInfo['order_language_id']);
+					
 					//$emailObj->newOrderBookingVendorBuyerAdmin($orderInfo['order_id'], $orderInfo['order_language_id']);
 				}
 		
