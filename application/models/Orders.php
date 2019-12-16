@@ -1404,7 +1404,7 @@ class Orders extends MyAppModel
         /* ] */
 
         /* If current order status is not cancelled but new status is cancelled then commence cancelling the order [ */
-        if (($childOrderInfo['op_status_id'] != FatApp::getConfig("CONF_DEFAULT_CANCEL_ORDER_STATUS")) && ($opStatusId == FatApp::getConfig("CONF_DEFAULT_CANCEL_ORDER_STATUS")) && ($childOrderInfo["order_is_paid"] == Orders::ORDER_IS_PAID)) {
+        if (($childOrderInfo['op_status_id'] != FatApp::getConfig("CONF_DEFAULT_CANCEL_ORDER_STATUS")) && ($opStatusId == FatApp::getConfig("CONF_DEFAULT_CANCEL_ORDER_STATUS")) && ($childOrderInfo["order_is_paid"] == Orders::ORDER_IS_PAID || $childOrderInfo['order_have_booking'] == 1)) {
             if ($moveRefundToWallet) {
                 /* CommonHelper::printArray($childOrderInfo); die; */
                 $formattedRequestValue = "#".$childOrderInfo["op_invoice_number"];
@@ -1494,7 +1494,7 @@ class Orders extends MyAppModel
         /* ] */
 
         /* If current order status is not return request approved but new status is return request approved then commence the order operation [ */
-        if (!in_array($childOrderInfo['op_status_id'], (array)FatApp::getConfig("CONF_RETURN_REQUEST_APPROVED_ORDER_STATUS")) && in_array($opStatusId, (array)FatApp::getConfig("CONF_RETURN_REQUEST_APPROVED_ORDER_STATUS")) && ($childOrderInfo["order_is_paid"] == Orders::ORDER_IS_PAID || strtolower($childOrderInfo['pmethod_code']) == "cashondelivery")) {
+        if (!in_array($childOrderInfo['op_status_id'], (array)FatApp::getConfig("CONF_RETURN_REQUEST_APPROVED_ORDER_STATUS")) && in_array($opStatusId, (array)FatApp::getConfig("CONF_RETURN_REQUEST_APPROVED_ORDER_STATUS")) && ($childOrderInfo["order_is_paid"] == Orders::ORDER_IS_PAID || strtolower($childOrderInfo['pmethod_code']) == "cashondelivery" || $childOrderInfo['order_have_booking'] == 1)) {
             if ($moveRefundToWallet) {
                 $formattedRequestValue = "#".$childOrderInfo["op_invoice_number"];
                 $comments = sprintf(Labels::getLabel('LBL_Return_Request_Approved', $langId), $formattedRequestValue);
@@ -1895,7 +1895,7 @@ class Orders extends MyAppModel
         $srch->joinTable(OrderProduct::DB_TBL_CHARGES, 'LEFT OUTER JOIN', 'opc.'.OrderProduct::DB_TBL_CHARGES_PREFIX.'op_id = op.op_id', 'opc');
         $srch->joinTable(Orders::DB_TBL_ORDER_PRODUCTS_SHIPPING, 'LEFT OUTER JOIN', 'ops.opshipping_op_id = op.op_id', 'ops');
 
-        $srch->addMultipleFields(array('op.*','opst.*','op_l.*','o.order_id','o.order_is_paid','o.order_language_id','o.order_user_id','sum('.OrderProduct::DB_TBL_CHARGES_PREFIX.'amount) as op_other_charges', 'o.order_affiliate_user_id','pmethod_code','optsu_user_id','ops.opshipping_by_seller_user_id'));
+        $srch->addMultipleFields(array('op.*','opst.*','op_l.*','o.order_id','o.order_is_paid','o.order_have_booking','o.order_language_id','o.order_user_id','sum('.OrderProduct::DB_TBL_CHARGES_PREFIX.'amount) as op_other_charges', 'o.order_affiliate_user_id','pmethod_code','optsu_user_id','ops.opshipping_by_seller_user_id'));
         $srch->addCondition('op_id', '=', $op_id);
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
