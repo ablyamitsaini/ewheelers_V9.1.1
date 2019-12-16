@@ -106,7 +106,7 @@ foreach ($orders as $sn => $order) {
                     true
                 );
 
-                if ($canCancelOrder && false === OrderCancelRequest::getCancelRequestById($order['op_id'])) {
+                if ($canCancelOrder && false === OrderCancelRequest::getCancelRequestById($order['op_id']) && $order['op_is_booking'] != 1) {
                     $li = $ul->appendElement("li");
                     $li->appendElement(
                         'a',
@@ -129,7 +129,7 @@ foreach ($orders as $sn => $order) {
                     );
                 }
 
-                if ($canReturnRefund && ($order['return_request'] == 0 && $order['cancel_request'] == 0)) {
+                if ($canReturnRefund && $order['op_is_booking'] != 1 && ($order['return_request'] == 0 && $order['cancel_request'] == 0)) {
                     $opRefundRequestUrl = CommonHelper::generateUrl('Buyer', 'orderReturnRequest', array($order['op_id']));
                     $li = $ul->appendElement("li");
                     $li->appendElement(

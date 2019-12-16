@@ -1714,9 +1714,14 @@ class BuyerController extends BuyerBaseController
         $srch->addCondition('order_user_id', '=', $user_id);
         $srch->addCondition('op_id', '=', $op_id);
         $srch->addOrder("op_id", "DESC");
-        $srch->addMultipleFields(array('order_language_id', 'op_status_id', 'op_id', 'op_qty', 'op_product_type','op_unit_price','opcharge_amount'));
+        $srch->addMultipleFields(array('order_language_id', 'op_status_id', 'op_id', 'op_qty', 'op_product_type','op_unit_price','opcharge_amount','op_is_booking'));
         $rs = $srch->getResultSet();
         $opDetail = FatApp::getDb()->fetch($rs);
+		
+		if( $opDetail['op_is_booking'] == 1 ){
+			$message = Labels::getLabel('MSG_ERROR_INVALID_ACCESS', $this->siteLangId);
+            LibHelper::dieJsonError($message);
+		}
 
         if (!$opDetail || CommonHelper::isMultidimArray($opDetail)) {
             $message = Labels::getLabel('MSG_ERROR_INVALID_ACCESS', $this->siteLangId);
