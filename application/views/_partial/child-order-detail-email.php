@@ -106,7 +106,7 @@ $str='<table cellspacing="0" cellpadding="0" border="0" width="100%" style="bord
 		
 		$str.= '<tr>
 		<td colspan="'.$colCount.'" style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right"><strong>'.Labels::getLabel('LBL_Pending_Amount',$siteLangId).'</strong></td>
-		<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right"><strong>'.CommonHelper::displayMoneyFormat($netAmountWithoutBook - $netAmount ).'</strong></td></tr>';
+		<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;" align="right"><strong>'.CommonHelper::displayMoneyFormat($netAmountWithoutBook - $opCustomerBuyingPrice ).'</strong></td></tr>';
 		
 	}
 	  
