@@ -635,7 +635,8 @@ class BuyerController extends BuyerBaseController
                 FatApp::redirectUser(CommonHelper::generateUrl('Buyer', 'orderCancellationRequests'));
             }
         } else {
-            if (!in_array($opDetail["op_status_id"], (array)Orders::getBuyerAllowedOrderCancellationStatuses())) {
+            $buyerAllowCancelStatuses = unserialize(FatApp::getConfig("CONF_ALLOW_CANCELLATION_ORDER_STATUS"));
+            if (!in_array($opDetail["op_status_id"], (array)$buyerAllowCancelStatuses)) {
                 Message::addErrorMessage(Labels::getLabel('MSG_Order_Cancellation_cannot_placed', $this->siteLangId));
                 // CommonHelper::redirectUserReferer();
                 FatApp::redirectUser(CommonHelper::generateUrl('Buyer', 'orderCancellationRequests'));
@@ -736,7 +737,8 @@ class BuyerController extends BuyerBaseController
                 FatUtility::dieWithError(Message::getHtml());
             }
         } else {
-            if (!in_array($opDetail["op_status_id"], (array)Orders::getBuyerAllowedOrderCancellationStatuses())) {
+			$buyerAllowCancelStatuses = unserialize(FatApp::getConfig("CONF_ALLOW_CANCELLATION_ORDER_STATUS"));
+            if (!in_array($opDetail["op_status_id"], (array)$buyerAllowCancelStatuses)) {
                 $message = Labels::getLabel('MSG_Order_Cancellation_cannot_placed', $this->siteLangId);
                 if (true ===  MOBILE_APP_API_CALL) {
                     LibHelper::dieJsonError($message);
@@ -746,7 +748,8 @@ class BuyerController extends BuyerBaseController
             }
         }
 
-        if (!in_array($opDetail["op_status_id"], (array)Orders::getBuyerAllowedOrderCancellationStatuses())) {
+        $buyerAllowCancelStatuses = unserialize(FatApp::getConfig("CONF_ALLOW_CANCELLATION_ORDER_STATUS"));
+        if (!in_array($opDetail["op_status_id"], (array)$buyerAllowCancelStatuses)) {
             $message = Labels::getLabel('MSG_Order_Cancellation_cannot_placed', $this->siteLangId);
             if (true ===  MOBILE_APP_API_CALL) {
                 LibHelper::dieJsonError($message);
