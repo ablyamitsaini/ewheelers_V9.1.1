@@ -178,7 +178,6 @@ class OrderCancellationRequestsController extends AdminBaseController
         switch ( $post['ocrequest_status'] ){
         case OrderCancelRequest::CANCELLATION_REQUEST_STATUS_APPROVED:
             $notAllowedStatusChangeArr = array_merge(
-                unserialize(FatApp::getConfig("CONF_PROCESSING_ORDER_STATUS")),
                 unserialize(FatApp::getConfig("CONF_COMPLETED_ORDER_STATUS")),
                 (array)FatApp::getConfig("CONF_DEFAULT_CANCEL_ORDER_STATUS")
             );
