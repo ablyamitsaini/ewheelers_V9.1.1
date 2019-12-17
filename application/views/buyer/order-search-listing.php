@@ -17,6 +17,7 @@ $sr_no = 0;
 $canCancelOrder = true;
 $canReturnRefund = true;
 foreach ($orders as $sn => $order) {
+	$buyerAllowCancelStatuses = unserialize(FatApp::getConfig("CONF_ALLOW_CANCELLATION_ORDER_STATUS"));
     $sr_no++;
     $tr = $tbl->appendElement('tr', array( 'class' => '' ));
     $orderDetailUrl = CommonHelper::generateUrl('Buyer', 'viewOrder', array($order['order_id'],$order['op_id']));
@@ -25,7 +26,8 @@ foreach ($orders as $sn => $order) {
         $canCancelOrder = (in_array($order["op_status_id"], (array)Orders::getBuyerAllowedOrderCancellationStatuses(true)));
         $canReturnRefund = (in_array($order["op_status_id"], (array)Orders::getBuyerAllowedOrderReturnStatuses(true)));
     } else {
-        $canCancelOrder = (in_array($order["op_status_id"], (array)Orders::getBuyerAllowedOrderCancellationStatuses()));
+		$canCancelOrder = (in_array($order["op_status_id"], (array)$buyerAllowCancelStatuses));
+        //$canCancelOrder = (in_array($order["op_status_id"], (array)Orders::getBuyerAllowedOrderCancellationStatuses()));
         $canReturnRefund = (in_array($order["op_status_id"], (array)Orders::getBuyerAllowedOrderReturnStatuses()));
     }
     $isValidForReview = false;

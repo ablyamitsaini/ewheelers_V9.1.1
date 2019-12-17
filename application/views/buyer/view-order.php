@@ -52,12 +52,16 @@ if(!isset($orderDetail)){
                                     class="fa fa-star"></i></a>
                         </li> <?php
                             }
-                            if ($canReturnRefund) { ?>
+                            if ($canReturnRefund) { 
+							if($childOrderDetail['op_is_booking'] != 1){
+							?>
                         <li>
                             <a href="<?php echo CommonHelper::generateUrl('Buyer', 'orderReturnRequest', array($childOrderDetail['op_id'])); ?>" class="icn-highlighted" title="<?php echo Labels::getLabel('LBL_Refund', $siteLangId); ?>"><i
                                     class="fa fa-dollar"></i></a>
                         </li>
-                        <?php } ?>
+                        <?php 
+							}
+						} ?>
                     </ul>
                     <?php } ?>
                 </div>
