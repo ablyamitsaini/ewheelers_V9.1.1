@@ -1415,8 +1415,14 @@ class Orders extends MyAppModel
                 } else {
                     $comments = sprintf(Labels::getLabel('LBL_Order_has_been_Cancelled', $langId), $formattedRequestValue);
                 }
+				
+				if($childOrderInfo['order_have_booking'] == 1) {			
+					$txnAmount = (($childOrderInfo["op_product_amount_without_book"] * $childOrderInfo["op_qty"]) + $childOrderInfo["op_other_charges"]);
+				}else{
+					$txnAmount = (($childOrderInfo["op_unit_price"] * $childOrderInfo["op_qty"]) + $childOrderInfo["op_other_charges"]);
+				}
 
-                $txnAmount = (($childOrderInfo["op_unit_price"] * $childOrderInfo["op_qty"]) + $childOrderInfo["op_other_charges"]);
+                
 
                 /*Refund to Buyer[*/
                 if ($txnAmount > 0) {
@@ -1675,8 +1681,12 @@ class Orders extends MyAppModel
             } else {
                 $shipCharges = 0;
             }
-
-            $txnAmount = ($availQty * $childOrderInfo['op_unit_price']) - $deductVolumeDiscount + $shipCharges;
+			
+			if($childOrderInfo['order_have_booking'] == 1) {
+				$txnAmount = ($availQty * $childOrderInfo['op_product_amount_without_book']) - $deductVolumeDiscount + $shipCharges;
+			}else{
+				$txnAmount = ($availQty * $childOrderInfo['op_unit_price']) - $deductVolumeDiscount + $shipCharges;
+			}
 
             if ($childOrderInfo['op_tax_collected_by_seller']) {
                 $unitTaxCharges = round(($taxCharges / $childOrderInfo['op_qty']), 2);
