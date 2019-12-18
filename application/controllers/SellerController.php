@@ -684,6 +684,7 @@ class SellerController extends SellerBaseController
         $srch->joinSellerProducts();
         $srch->joinOrderUser();
         $srch->addOrderProductCharges();
+		$srch->joinShippingCharges();
         $srch->addCondition('op_selprod_user_id', '=', $userId);
         $srch->addCondition('op_id', '=', $op_id);
         $rs = $srch->getResultSet();
