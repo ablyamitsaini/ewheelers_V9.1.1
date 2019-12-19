@@ -239,7 +239,10 @@ class SupplierController extends MyAppController
 			$msg = Labels::getLabel("MSG_SUCCESS_USER_SIGNUP", $this->siteLangId);
             $this->set('msg', $msg);
         }
-		FatUtility::dieJsonSuccess($msg);
+		if (true ===  MOBILE_APP_API_CALL) {
+			FatUtility::dieJsonSuccess($msg);
+		}
+		
         $_SESSION['registered_supplier']['id'] = $userObj->getMainTableRecordId();
         $this->set('userId', $userObj->getMainTableRecordId());
         $this->_template->render(false, false, 'json-success.php');
@@ -297,21 +300,18 @@ class SupplierController extends MyAppController
         $userId = $this->getRegisteredSupplierId();
 
         if (!$this->isRegisteredSupplierId($userId)) {
-            Message::addErrorMessage(Labels::getLabel("MSG_INVALID_ACCESS", $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
+            FatUtility::dieJsonError(Labels::getLabel("MSG_INVALID_ACCESS", $this->siteLangId));
         }
 
         if (UserAuthentication::isUserLogged()) {
-            Message::addErrorMessage(Labels::getLabel('MSG_User_Already_Logged_in', $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
+            FatUtility::dieJsonError(Labels::getLabel('MSG_User_Already_Logged_in', $this->siteLangId));
         }
 
         $frm = $this->getSupplierForm();
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
 
         if (false === $post) {
-            Message::addErrorMessage(current($frm->getValidationErrors()));
-            FatUtility::dieJsonError(Message::getHtml());
+            FatUtility::dieJsonError(current($frm->getValidationErrors()));
         }
 
         $userObj = new User($userId);
@@ -325,8 +325,7 @@ class SupplierController extends MyAppController
         }
 
         if (!empty($error_messages)) {
-            Message::addErrorMessage($error_messages);
-            FatUtility::dieJsonError(Message::getHtml());
+            FatUtility::dieJsonError($error_messages);
         }
 
         $reference_number = $userId.'-'.time();
@@ -344,8 +343,7 @@ class SupplierController extends MyAppController
 
         if (!$userObj->addSupplierRequestData($data, $this->siteLangId)) {
             $db->rollbackTransaction();
-            Message::addErrorMessage(Labels::getLabel('MSG_details_not_saved', $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
+            FatUtility::dieJsonError(Labels::getLabel('MSG_details_not_saved', $this->siteLangId));
         }
 
         if (FatApp::getConfig("CONF_ADMIN_APPROVAL_SUPPLIER_REGISTRATION", FatUtility::VAR_INT, 1)) {
@@ -358,8 +356,7 @@ class SupplierController extends MyAppController
 
         if (!$userObj->notifyAdminSupplierApproval($userObj, $data, $approval_request, $this->siteLangId)) {
             $db->rollbackTransaction();
-            Message::addErrorMessage(Labels::getLabel("MSG_SELLER_APPROVAL_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
+            FatUtility::dieJsonError(Labels::getLabel("MSG_SELLER_APPROVAL_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId));
         }
 
         //send notification to admin
@@ -373,11 +370,13 @@ class SupplierController extends MyAppController
 
         if (!Notification::saveNotifications($notificationData)) {
             $db->rollbackTransaction();
-            Message::addErrorMessage(Labels::getLabel("MSG_SELLER_APPROVAL_NOTIFICATION_COULD_NOT_BE_SENT", $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
+            FatUtility::dieJsonError(Labels::getLabel("MSG_SELLER_APPROVAL_NOTIFICATION_COULD_NOT_BE_SENT", $this->siteLangId));
         }
 
         $db->commitTransaction();
+		if(true ===  MOBILE_APP_API_CALL){
+			FatUtility::dieJsonSuccess($msg);
+		}
         $this->set('userId', $userId);
         $this->set('msg', $msg);
         $this->_template->render(false, false, 'json-success.php');
