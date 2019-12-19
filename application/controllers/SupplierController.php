@@ -240,7 +240,7 @@ class SupplierController extends MyAppController
             $this->set('msg', $msg);
         }
 		if (true ===  MOBILE_APP_API_CALL) {
-			FatUtility::dieJsonSuccess($msg);
+			CommonHelper::dieWithJsonData(applicationConstants::YES, ['user_id' => $userObj->getMainTableRecordId(), 'msg' => $msg]);
 		}
 		
         $_SESSION['registered_supplier']['id'] = $userObj->getMainTableRecordId();
@@ -296,8 +296,13 @@ class SupplierController extends MyAppController
     }
 
     public function setupSupplierApproval()
-    {
-        $userId = $this->getRegisteredSupplierId();
+    {	
+		if (MOBILE_APP_API_CALL === true) {
+			$userId = FatApp::getPostedData('id');
+		}
+			
+		$userId = empty($userId) ? $this->getRegisteredSupplierId() : $userId;
+		
 
         if (!$this->isRegisteredSupplierId($userId)) {
             FatUtility::dieJsonError(Labels::getLabel("MSG_INVALID_ACCESS", $this->siteLangId));
@@ -578,6 +583,13 @@ class SupplierController extends MyAppController
 
     private function isRegisteredSupplierId($userId)
     {
+		if (MOBILE_APP_API_CALL === true) {
+			if (empty(User::getAttributesById($userId))) {
+				return false;
+			}
+			return true;
+		}
+		
         if (!isset($_SESSION['registered_supplier'])) {
             return false;
         }

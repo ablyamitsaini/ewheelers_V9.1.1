@@ -7,6 +7,16 @@ class CustomRouter
         if ('mobile-app-api' == $controller) {
             define('MOBILE_APP_API_CALL', true);
             define('MOBILE_APP_API_VERSION', '1.0');
+			
+			if ($action == 'supplier_register'){
+               $controller = 'supplier';
+               $action = 'register';
+           }
+           if ($action == 'supplier_approval'){
+               $controller = 'supplier';
+               $action = 'setup-supplier-approval';
+           }
+			
         } elseif ('app-api' == $controller) {
             define('MOBILE_APP_API_CALL', true);
             define('MOBILE_APP_API_VERSION', str_replace('v', '', $action));

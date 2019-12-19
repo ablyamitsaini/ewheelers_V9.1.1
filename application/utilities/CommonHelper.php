@@ -1983,4 +1983,36 @@ class CommonHelper extends FatUtility
             'urlType'=> $urlType
         );
     }
+	
+	/*
+    * Function For APIs | function to replace null values with blank string to avoid errors
+    */
+
+   public static function replaceNullWithEmptyString(&$item, $key, $convertToString)
+   {
+       if ($convertToString == true) {
+           if (is_array($item)) {
+               array_walk_recursive($item, "self::replaceNullWithEmptyString", $convertToString);
+           }
+           $item = FatUtility::convertToType($item, FatUtility::VAR_STRING);
+       } else {
+           $item = $item = null === $item ? '' : $item;
+       }
+   }
+
+   /*
+    * Function For APIs | function to remove null values and convert data into json form
+    */
+
+   public static function dieWithJsonData($status, $data, $convertToString = false)
+   {
+       if ($status === 1) {
+           $data['status'] = "1";
+       }else {
+           $data['status'] = "0";
+       }
+
+       array_walk_recursive($data, "static::replaceNullWithEmptyString", $convertToString);
+       die(FatUtility::convertToJson($data, 0));
+   }
 }
