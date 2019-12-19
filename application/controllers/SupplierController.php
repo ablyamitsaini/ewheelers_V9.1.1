@@ -111,21 +111,18 @@ class SupplierController extends MyAppController
     public function register()
     {
         if (UserAuthentication::isUserLogged()) {
-            Message::addErrorMessage(Labels::getLabel('MSG_User_Already_Logged_in', $this->siteLangId));
-            FatUtility::dieJsonError(Message::getHtml());
+           FatUtility::dieJsonError(Labels::getLabel('MSG_User_Already_Logged_in', $this->siteLangId));
         }
 
         $frm = $this->getSellerRegistrationForm();
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
         if ($post == false) {
-            Message::addErrorMessage(current($frm->getValidationErrors()));
-            FatUtility::dieJsonError(Message::getHtml());
+            FatUtility::dieJsonError(current($frm->getValidationErrors()));
         }
 
         if (!ValidateElement::username($post['user_username'])) {
-            Message::addErrorMessage(Labels::getLabel('MSG_USERNAME_MUST_BE_THREE_CHARACTERS_LONG_AND_ALPHANUMERIC', $this->siteLangId));
             if (FatUtility::isAjaxCall()) {
-                FatUtility::dieWithError(Message::getHtml());
+                FatUtility::dieWithError(Labels::getLabel('MSG_USERNAME_MUST_BE_THREE_CHARACTERS_LONG_AND_ALPHANUMERIC', $this->siteLangId));
             } else {
                 $this->registrationForm();
                 return;
@@ -133,9 +130,8 @@ class SupplierController extends MyAppController
         }
 
         if (!ValidateElement::password($post['user_password'])) {
-            Message::addErrorMessage(Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC', $this->siteLangId));
             if (FatUtility::isAjaxCall()) {
-                FatUtility::dieWithError(Message::getHtml());
+                FatUtility::dieWithError(Labels::getLabel('MSG_PASSWORD_MUST_BE_EIGHT_CHARACTERS_LONG_AND_ALPHANUMERIC', $this->siteLangId));
             } else {
                 $this->registrationForm();
                 return;
@@ -156,22 +152,24 @@ class SupplierController extends MyAppController
             $post['user_is_buyer'] = 0;
             $post['user_preferred_dashboard'] = User::USER_SELLER_DASHBOARD;
         }
-
+		$phone  = FatUtility::convertToType(FatApp::getPostedData('user_phone'), FatUtility::VAR_STRING, '');
+		if(!empty($phone)){
+			$post['user_phone'] = $phone;
+		}
+			
         $userObj->assignValues($post);
 
         if (!$userObj->save()) {
-            Message::addErrorMessage(Labels::getLabel("MSG_USER_COULD_NOT_BE_SET", $this->siteLangId) . $userObj->getError());
             $db->rollbackTransaction();
-            FatUtility::dieJsonError(Message::getHtml());
+            FatUtility::dieJsonError(Labels::getLabel("MSG_USER_COULD_NOT_BE_SET", $this->siteLangId) . $userObj->getError());
         }
 
         $active = FatApp::getConfig('CONF_ADMIN_APPROVAL_REGISTRATION', FatUtility::VAR_INT, 1)?0:1;
         $verify = FatApp::getConfig('CONF_EMAIL_VERIFICATION_REGISTRATION', FatUtility::VAR_INT, 1)?0:1;
 
         if (!$userObj->setLoginCredentials($post['user_username'], $post['user_email'], $post['user_password'], $active, $verify)) {
-            Message::addErrorMessage(Labels::getLabel("MSG_LOGIN_CREDENTIALS_COULD_NOT_BE_SET", $this->siteLangId) . $userObj->getError());
             $db->rollbackTransaction();
-            FatUtility::dieJsonError(Message::getHtml());
+            FatUtility::dieJsonError(Labels::getLabel("MSG_LOGIN_CREDENTIALS_COULD_NOT_BE_SET", $this->siteLangId) . $userObj->getError());
         }
 
         $userObj->setUpRewardEntry($userObj->getMainTableRecordId(), $this->siteLangId);
@@ -181,8 +179,7 @@ class SupplierController extends MyAppController
             $api_key = FatApp::getConfig("CONF_MAILCHIMP_KEY");
             $list_id = FatApp::getConfig("CONF_MAILCHIMP_LIST_ID");
             if ($api_key == '' || $list_id == '') {
-                Message::addErrorMessage(Labels::getLabel("LBL_Newsletter_is_not_configured_yet,_Please_contact_admin", $this->siteLangId));
-                FatUtility::dieWithError(Message::getHtml());
+                FatUtility::dieJsonError(Labels::getLabel("LBL_Newsletter_is_not_configured_yet,_Please_contact_admin", $this->siteLangId));
             }
 
             $MailchimpObj = new Mailchimp($api_key);
@@ -201,9 +198,8 @@ class SupplierController extends MyAppController
 
         if (FatApp::getConfig('CONF_NOTIFY_ADMIN_REGISTRATION', FatUtility::VAR_INT, 1)) {
             if (!$userObj->notifyAdminRegistration($post, $this->siteLangId)) {
-                Message::addErrorMessage(Labels::getLabel("MSG_NOTIFICATION_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId));
                 $db->rollbackTransaction();
-                FatUtility::dieJsonError(Message::getHtml());
+                FatUtility::dieJsonError(Labels::getLabel("MSG_NOTIFICATION_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId));
             }
         }
 
@@ -217,34 +213,33 @@ class SupplierController extends MyAppController
         );
 
         if (!Notification::saveNotifications($notificationData)) {
-            Message::addErrorMessage(Labels::getLabel("MSG_NOTIFICATION_COULD_NOT_BE_SENT", $this->siteLangId));
             $db->rollbackTransaction();
-            FatUtility::dieJsonError(Message::getHtml());
+            FatUtility::dieJsonError(Labels::getLabel("MSG_NOTIFICATION_COULD_NOT_BE_SENT", $this->siteLangId));
         }
 
         if (FatApp::getConfig('CONF_EMAIL_VERIFICATION_REGISTRATION', FatUtility::VAR_INT, 1)) {
             if (!$userObj->userEmailVerification($userObj, $post, $this->siteLangId)) {
-                Message::addErrorMessage(Labels::getLabel("MSG_VERIFICATION_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId));
                 $db->rollbackTransaction();
-                FatUtility::dieJsonError(Message::getHtml());
+                FatUtility::dieJsonError(Labels::getLabel("MSG_VERIFICATION_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId));
             }
         } else {
             if (FatApp::getConfig('CONF_WELCOME_EMAIL_REGISTRATION', FatUtility::VAR_INT, 1)) {
                 if (!$userObj->userWelcomeEmailRegistration($userObj, $post, $this->siteLangId)) {
-                    Message::addErrorMessage(Labels::getLabel("MSG_WELCOME_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId));
                     $db->rollbackTransaction();
-                    FatUtility::dieJsonError(Message::getHtml());
+                    FatUtility::dieJsonError(Labels::getLabel("MSG_WELCOME_EMAIL_COULD_NOT_BE_SENT", $this->siteLangId));
                 }
             }
         }
 
         $db->commitTransaction();
         if ($verify) {
-            $this->set('msg', Labels::getLabel("MSG_SUCCESS_USER_SIGNUP_VERIFIED", $this->siteLangId));
+			$msg = Labels::getLabel("MSG_SUCCESS_USER_SIGNUP_VERIFIED", $this->siteLangId);
+            $this->set('msg', $msg);
         } else {
-            $this->set('msg', Labels::getLabel("MSG_SUCCESS_USER_SIGNUP", $this->siteLangId));
+			$msg = Labels::getLabel("MSG_SUCCESS_USER_SIGNUP", $this->siteLangId);
+            $this->set('msg', $msg);
         }
-
+		FatUtility::dieJsonSuccess($msg);
         $_SESSION['registered_supplier']['id'] = $userObj->getMainTableRecordId();
         $this->set('userId', $userObj->getMainTableRecordId());
         $this->_template->render(false, false, 'json-success.php');
