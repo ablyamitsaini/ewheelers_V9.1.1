@@ -82,8 +82,8 @@
                     <?php 
                     $replacements = array(
                         '{YEAR}'=> '&copy; '.date("Y"),
-                        '{PRODUCT}'=>'<a target="_blank" href="https://yo-kart.com">Yo!Kart</a>',
-                        '{OWNER}'=> '<a target="_blank" href="https://www.fatbit.com">FATbit Technologies</a>',
+                        '{PRODUCT}'=>'',
+                        '{OWNER}'=> '<a target="_blank" href="https://www.ewheelers.in">eWheelers Mobility Solutions Pvt. Ltd.</a>',
                     );
                     echo CommonHelper::replaceStringData(Labels::getLabel('LBL_COPYRIGHT_TEXT', $siteLangId), $replacements);   
                 ?>
