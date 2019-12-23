@@ -582,6 +582,25 @@ class ImportexportCommon extends FatModel
             if (!$userId) {
                 $arr['selprod_sold_count'] = Labels::getLabel('LBL_Sold_Count', $langId);
             }
+			
+			/* [ Export Product Rental Data */
+			if (ALLOW_SALE > 0) {
+				$arr['sprodata_is_for_sell'] = Labels::getLabel('LBL_For_Sale', $langId);
+			}
+			
+			if (ALLOW_RENT > 0) {
+				$arr['sprodata_is_for_rent'] = Labels::getLabel('LBL_For_Rent', $langId);
+				$arr['sprodata_rental_price'] = Labels::getLabel('LBL_Rental_Price', $langId);
+				$arr['sprodata_rental_security'] = Labels::getLabel('LBL_Rental_Security', $langId);
+				$arr['sprodata_rental_type'] = Labels::getLabel('LBL_Rental_Type', $langId);
+				$arr['sprodata_rental_is_pickup'] = Labels::getLabel('LBL_Is_Rental_Self_Pickup', $langId);
+				$arr['sprodata_rental_terms'] = Labels::getLabel('LBL_Rental_Terms', $langId);
+				$arr['sprodata_rental_stock'] = Labels::getLabel('LBL_Rental_Stock_Quantity', $langId);
+				$arr['sprodata_rental_buffer_days'] = Labels::getLabel('LBL_Rental_Buffer_Days', $langId);
+				$arr['sprodata_minimum_rental_duration'] = Labels::getLabel('LBL_Rental_Minimum_Duration', $langId);
+			}
+			/* Export Product Rental Data ] */
+			
         }
         return $arr;
     }
@@ -662,6 +681,26 @@ class ImportexportCommon extends FatModel
         $arr['voldiscount_percentage'] = Labels::getLabel('LBL_discount_percentage', $langId);
         return $arr;
     }
+	
+	public function getSelProdDurationDiscountColoumArr($langId)
+    {
+        $arr = array();
+        $arr['selprod_id'] = Labels::getLabel('LBL_seller_product_id', $langId);
+        $arr['produr_rental_duration'] = Labels::getLabel('LBL_Min_Duration', $langId);
+        $arr['produr_discount_percent'] = Labels::getLabel('LBL_discount_percentage', $langId);
+        return $arr;
+    }
+	
+	public function getSelProdUnavialableDatesColoumArr($langId)
+    {
+        $arr = array();
+        $arr['selprod_id'] = Labels::getLabel('LBL_seller_product_id', $langId);
+        $arr['pu_start_date'] = Labels::getLabel('LBL_Start_date', $langId);
+        $arr['pu_end_date'] = Labels::getLabel('LBL_End_date', $langId);
+        $arr['pu_quantity'] = Labels::getLabel('LBL_Quantity', $langId);
+        return $arr;
+    }
+	
 
     public function getSelProdBuyTogetherColoumArr($langId)
     {
@@ -851,6 +890,33 @@ class ImportexportCommon extends FatModel
         }
         return $arr;
     }
+    
+    public function getCitiesColoumArr($langId, $userId = 0)
+    {
+		$arr = array();
+        
+        if($this->settings['CONF_USE_COUNTRY_ID']) {
+			$arr['country_id'] = Labels::getLabel('LBL_Country_Id', $langId);
+		} else {
+			$arr['country_code'] = Labels::getLabel('LBL_Country_code', $langId);
+		}
+        
+        if($this->settings['CONF_USE_STATE_ID']) {
+			$arr['state_id'] = Labels::getLabel('LBL_State_Id', $langId);
+		} else {
+			$arr['state_code'] = Labels::getLabel('LBL_State_code', $langId);
+		}
+        
+        $arr['city_identifier'] = Labels::getLabel('LBL_City_Identifier', $langId);
+		$arr['city_name'] = Labels::getLabel('LBL_City_Name', $langId);
+
+		if($this->isDefaultSheetData($langId)){
+			if(!$userId){
+				$arr['city_active'] = Labels::getLabel('LBL_Active', $langId);
+			}
+		} 
+		return $arr;
+	}
 
     public function getPolicyPointsColoumArr($langId, $userId = 0)
     {
@@ -948,6 +1014,8 @@ class ImportexportCommon extends FatModel
         'CONF_USE_SHIPPING_COMPANY_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_SHIPPING_COMPANY_ID', FatUtility::VAR_INT, 0):false,
         'CONF_USE_SHIPPING_DURATION_ID'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_SHIPPING_DURATION_ID', FatUtility::VAR_INT, 0):false,
         'CONF_USE_O_OR_1'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_O_OR_1', FatUtility::VAR_INT, 0):false,
+		'CONF_USE_1_OR_2_FOR_RENTAL_TYPE'=>($siteConfiguration)?FatApp::getConfig('CONF_USE_1_OR_2_FOR_RENTAL_TYPE', FatUtility::VAR_INT, 0):false,
+		
         );
     }
 
@@ -1166,6 +1234,69 @@ class ImportexportCommon extends FatModel
         $rs = $srch->getResultSet();
         return $row = $this->db->fetchAllAssoc($rs);
     }
+    
+    public function getStatesArr($byId = true, $countryId = '', $stateIdOrCode = false)
+    {
+        $srch = States::getSearchObject(false,false);
+		$srch->doNotCalculateRecords();
+
+		if($stateIdOrCode){
+			$srch->setPageSize(1);
+		}else{
+			$srch->doNotLimitRecords();
+		}
+
+		if($byId){
+			$srch->addMultipleFields(array('state_id','state_code'));
+            if($stateIdOrCode){
+                $srch->addCondition('state_id','=',$stateIdOrCode);
+            }
+		}else{
+			$srch->addMultipleFields(array('state_code','state_id'));
+            if($stateIdOrCode){
+                $srch->addCondition('state_code','=',$stateIdOrCode);
+            }
+		}
+        if($countryId){
+            $srch->addCondition('state_country_id','=',$countryId);
+        }
+        
+		$rs = $srch->getResultSet();
+		$row = $this->db->fetchAllAssoc($rs);
+        return $row;
+	}
+	
+	public function getStatesArrWithCountryID($byId = true, $countryId = '', $stateIdOrCode = false)
+    {
+        $srch = States::getSearchObject(false,false);
+		$srch->doNotCalculateRecords();
+
+		if($stateIdOrCode){
+			$srch->setPageSize(1);
+		}else{
+			$srch->doNotLimitRecords();
+		}
+
+		if($byId){
+			$srch->addMultipleFields(array('state_id','CONCAT(state_code,"_CID_", state_country_id)'));
+            if($stateIdOrCode){
+                $srch->addCondition('state_id','=',$stateIdOrCode);
+            }
+		}else{
+			$srch->addMultipleFields(array('state_code','state_id'));
+            if($stateIdOrCode){
+                $srch->addCondition('state_code','=',$stateIdOrCode);
+            }
+		}
+        if($countryId){
+            $srch->addCondition('state_country_id','=',$countryId);
+        }
+        
+		$rs = $srch->getResultSet();
+		$row = $this->db->fetchAllAssoc($rs);
+        return $row;
+	}
+	
 
     public function getProductCategoriesByProductId($productId, $byId = true)
     {

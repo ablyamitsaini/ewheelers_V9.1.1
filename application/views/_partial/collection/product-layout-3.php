@@ -18,7 +18,9 @@ if( isset( $collections ) && count($collections) ){
 			<?php }  ?>
 		</div>
 		<div class="js-collection-corner collection-corner product-listing" dir="<?php echo CommonHelper::getLayoutDirection();?>">
-			<?php foreach( $row['products'] as $product ){ ?>
+			<?php 
+			$rentalTypeArr = applicationConstants::rentalTypeArr($siteLangId);
+			foreach( $row['products'] as $product ){ ?>
 				<?php include('product-layout-1-list.php'); ?>
 			<?php } ?>
 		</div>

@@ -380,8 +380,129 @@ $(document).on('change','.selprodoption_optionvalue_id',function(){
 			$("#special-price-discounted-string").html( res );
 		});
 	}
+	
+	/* [ Rental Functionality */
+	productRental = function (selprod_id) {
+		$(dv).html(fcom.getLoader());
+		getProductRentalDetailsForm(selprod_id);
+	};
+	
+	getProductRentalDetailsForm = function (selprod_id) {
+		fcom.ajax(fcom.makeUrl('Seller', 'productRentalDetailsForm'), 'selprod_id='+selprod_id, function(t) {
+			$(dv).html(t);
+		});
+	}
+	
+	setupProductRentalDetails = function (frm){
+		if (!$(frm).validate()) return;
+		var data = fcom.frmData(frm);
+		fcom.updateWithAjax(fcom.makeUrl('seller', 'setupProdRentalData'), data, function(t) {
+			$.mbsmessage.close();
+			//editProductMetaTagLangForm(t.metaId, t.langId, t.metaType);
+		});
+	}
+	
+	sellerProductDurationDiscounts = function(selprod_id) {
+		$(dv).html(fcom.getLoader());
+		fcom.ajax(fcom.makeUrl('Seller', 'sellerProductDurationDiscounts', [selprod_id]), '', function(t) {
+			$(dv).html(t);
+			$(document).trigger('close.facebox');
+		});
+	};
+	
+	sellerProductDurationDiscountForm = function( selprod_id, durdiscount_id ){
+		if( typeof durdiscount_id == undefined || durdiscount_id == null ){
+			durdiscount_id = 0;
+		}
+		$.facebox(function() {
+			fcom.ajax(fcom.makeUrl('Seller', 'sellerProductDurationDiscountForm', [selprod_id, durdiscount_id]), '', function(t) {
+				$.facebox(t,'faceboxWidth');
+			});
+		});
+	};
+	
+	setUpSellerProductDurationDiscount = function( frm ){
+		if (!$(frm).validate()) return;
+		var data = fcom.frmData(frm);
+		fcom.updateWithAjax(fcom.makeUrl('Seller', 'setUpSellerProductDurationDiscount'), data, function(t) {
+			sellerProductDurationDiscounts( $(frm.produr_selprod_id).val() );
+			$.systemMessage.close();
+			$(document).trigger('close.facebox');
+		});
+	};
+	
+	deleteSellerProductDurationDiscount = function(produr_id) {
+		var agree = confirm(langLbl.confirmDelete);
+		if( !agree ){
+			return false;
+		}
+		fcom.updateWithAjax(fcom.makeUrl('Seller', 'deleteSellerProductDurationDiscount'), 'produr_id=' + produr_id, function(t) {
+			sellerProductDurationDiscounts( t.selprod_id );
+			$(document).trigger('close.facebox');
+		});
+	}
 
+	productRentalUnavailableDates = function(selprod_id) {
+		$(dv).html(fcom.getLoader());
+		fcom.ajax(fcom.makeUrl('Seller', 'productRentalUnavailableDates', [selprod_id]), '', function(t) {
+			$(dv).html(t);
+			$(document).trigger('close.facebox');
+		});
+	};
+	
+	productRentalUnavailableDatesForm = function(selprod_id, pu_id){
+		if( typeof pu_id == undefined || pu_id == null ){
+			pu_id = 0;
+		}
+		$.facebox(function() {
+			fcom.ajax(fcom.makeUrl('Seller', 'productRentalUnavailableDatesForm', [selprod_id, pu_id]), '', function(t) {
+				$.facebox(t,'faceboxWidth');
+			});
+		});
+	};
+	
+	setUpRentalUnavailableDates = function(frm) {
+		if (!$(frm).validate()) return;
+		var data = fcom.frmData(frm);
+		fcom.updateWithAjax(fcom.makeUrl('Seller', 'setUpRentalUnavailableDates'), data, function(t) {
+			productRentalUnavailableDates($(frm.pu_selprod_id).val());
+			$.systemMessage.close();
+			$(document).trigger('close.facebox');
+		});
+	};
+	
+	deleteRentalUnavailableDates = function(pu_id) {
+		var agree = confirm(langLbl.confirmDelete);
+		if (!agree) {
+			return false;
+		}
+		fcom.updateWithAjax(fcom.makeUrl('Seller', 'deleteRentalUnavailableDates'), 'pu_id=' + pu_id, function(t) {
+			productRentalUnavailableDates(t.selprod_id);
+			$(document).trigger('close.facebox');
+		});
+	}
+	
+	/* ] */
+	
 })();
+
+$(document).on('click', 'input[name="sprodata_is_for_rent"]', function() {
+	//alert('working');
+	if($(this).prop('checked') == true) {
+		$('.tabsForRentJs').removeClass('productRentTabs');
+	} else {
+		$('.tabsForRentJs').addClass('productRentTabs');
+	}
+})
+
+$(document).on('click', 'input[name="sprodata_is_for_sell"]', function() {
+	//alert('working');
+	if($(this).prop('checked') == true) {
+		$('.tabsForSaleJs').removeClass('productSaleTabs');
+	} else {
+		$('.tabsForSaleJs').addClass('productSaleTabs');
+	}
+})
 
 /* $(document).on('click','.digitalFile-Js',function(){
 	var node = this;

@@ -5,9 +5,11 @@ if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) {
     ob_start();
 }
 
+
 ini_set('display_errors', (CONF_DEVELOPMENT_MODE)?1:0);
 
-error_reporting((CONF_DEVELOPMENT_MODE)?E_ALL:E_ALL & ~E_NOTICE & ~E_WARNING);
+//error_reporting((CONF_DEVELOPMENT_MODE)?E_ALL:E_ALL & ~E_NOTICE & ~E_WARNING);
+error_reporting((CONF_DEVELOPMENT_MODE)?E_ALL & ~E_NOTICE & ~E_WARNING:E_ALL);
 
 require_once CONF_INSTALLATION_PATH . 'library/autoloader.php';
 
@@ -50,6 +52,9 @@ if ((!isset($_SERVER['HTTP_X_FORWARDED_PROTO']) || $_SERVER['HTTP_X_FORWARDED_PR
 /* --- Redirect SSL --- */
 $_SESSION['WYSIWYGFileManagerRequirements'] = CONF_INSTALLATION_PATH . 'public/WYSIWYGFileManagerRequirements.php';
 
-
 define('SYSTEM_INIT', true);
-define('CONF_WEB_APP_VERSION', 'RV-9.1.1');
+define('CONF_YOKART_VERSION', 'RV-9.1.1');
+define('CONF_WEB_APP_VERSION', 'RV-1.0');
+
+define('ALLOW_RENT', FatApp::getConfig('CONF_ALLOW_RENT'));
+define('ALLOW_SALE', FatApp::getConfig('CONF_ALLOW_SALE'));

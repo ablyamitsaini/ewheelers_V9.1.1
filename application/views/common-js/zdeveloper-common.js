@@ -124,10 +124,35 @@ function initialize() {
 	geocoder = new google.maps.Geocoder();
 }
 
-function getCountryStates(countryId, stateId, dv) {
+function getCountryStates(countryId, stateId, dv, stateCode, state, city) {
 	fcom.ajax(fcom.makeUrl('GuestUser', 'getStates', [countryId, stateId]), '', function (res) {
+		$('#ua_city_id').empty();
 		$(dv).empty();
 		$(dv).append(res);
+		if (city != undefined) {
+            getCountryStatesCities('#shop_country_id', stateId, 0, '#shop_city_id', city);
+        }
+    });
+};
+
+function getCountryStatesCities(countrySelector, stateId, cityId, dv, city) {
+	var countryId = $(countrySelector).val();
+	fcom.ajax(fcom.makeUrl('GuestUser', 'getCities', [countryId, stateId, cityId]), '', function (res) {
+		$(dv).empty();
+		$(dv).append(res);
+        
+        if (city != undefined) {
+            $(dv+" option").each(function () {
+                if ($(this).text() == city) {
+                    $(this).attr('selected', 'selected');
+                }
+            });
+        }
+		if ($(dv).val() < 0) {
+			$('.user-cityname--js').show();
+		} else {
+			$('.user-cityname--js').hide();
+		}
 	});
 };
 
@@ -488,6 +513,7 @@ function getSlickSliderSettings(slidesToShow, slidesToScroll, layoutDirection, a
 
 function codeLatLng(lat, lng) {
 	var latlng = new google.maps.LatLng(lat, lng);
+    var geocoder = new google.maps.Geocoder();
 	geocoder.geocode({
 		'latLng': latlng
 	}, function (results, status) {
@@ -496,8 +522,10 @@ function codeLatLng(lat, lng) {
 			if (results[1]) {
 				//formatted address
 				for (var i = 0; i < results[0].address_components.length; i++) {
+                    console.log(results[0].address_components[i]);
 					if (results[0].address_components[i].types[0] == "country") {
-						var country = results[0].address_components[i].short_name;
+						var country = results[0].address_components[i].long_name;
+						var country_code = results[0].address_components[i].short_name;
 					}
 
 					if (results[0].address_components[i].types[0] == "administrative_area_level_1") {
@@ -510,17 +538,19 @@ function codeLatLng(lat, lng) {
 					}
 				}
 
-				var data = "country=" + country + "&state=" + state + "&state_code=" + state_code + "&city=" + city;
+				var data = "country=" + country + "&state=" + state + "&state_code=" + state_code + "&city=" + city+ "&latitude=" + lat+ "&longitude=" + lng+ "&country_code=" + country_code;
 				fcom.updateWithAjax(fcom.makeUrl('Home', 'setCurrentLocation'), data, function (ans) {
 					window.location.reload();
 				});
 			} else {
-				Console.log("Geocoder No results found");
+				console.log("Geocoder No results found");
 			}
 		} else {
-			Console.log("Geocoder failed due to: " + status);
+			console.log("Geocoder failed due to: " + status);
+            
 		}
 	});
+    
 }
 
 function defaultSetUpLogin(frm, v) {
@@ -843,6 +873,7 @@ $(document).ready(function () {
 			return false;
 		}
 		$(this).parent().parent('div').find('input').val(val);
+		$(this).parent().parent('div').find('input').trigger('change');
 		if (page == 'product-view') {
 			return false;
 		}
@@ -889,6 +920,7 @@ $(document).ready(function () {
 			return false;
 		}
 		$(this).parent().parent('div').find('input').val(val);
+		$(this).parent().parent('div').find('input').trigger('change');
 		if (page == 'product-view') {
 			return false;
 		}
@@ -1156,16 +1188,21 @@ $("document").ready(function () {
 	$(document).on('click', '.add-to-cart--js', function (event) {
 		/* $(document).delegate('.add-to-cart--js' ,'click' , function(event){ */
 		$btn = $(this);
+		var product_for = $('input[name="product_for"]').val();
 		event.preventDefault();
 		var data = fcom.frmData(document.frmBuyProduct);
+		var frm = document.frmBuyProduct;
+		if (!$(frm).validate()) return;
 		var yourArray = [];
 		var selprodId = $(this).siblings('input[name="selprod_id"]').val();
 		if (typeof mainSelprodId != 'undefined' && mainSelprodId == selprodId) {
-			$(".cart-tbl").find("input").each(function (e) {
-				if (($(this).val() > 0) && (!$(this).closest("td").siblings().hasClass("cancelled--js"))) {
-					data = data + '&' + $(this).attr('lang') + "=" + $(this).val();
-				}
-			});
+			if(product_for != 2){
+				$(".cart-tbl").find("input").each(function (e) {
+					if (($(this).val() > 0) && (!$(this).closest("td").siblings().hasClass("cancelled--js"))) {
+						data = data + '&' + $(this).attr('lang') + "=" + $(this).val();
+					}
+				});
+			}
 		}
 
 		fcom.updateWithAjax(fcom.makeUrl('cart', 'add'), data, function (ans) {
@@ -1225,4 +1262,63 @@ $(document).ajaxComplete(function() {
         });
     }
 });
- 
+
+$(document).ready(function () {
+$('body').on('change', '#ua_city_id', function(e){
+	if ($('#ua_city_id').val() < 0) {
+		$('.user-cityname--js').show();
+	} else {
+		$('.user-cityname--js').hide();
+	}
+});
+});
+
+
+
+/* Product Purchase Type Tab */
+$(document).on('click', '.product-type-tabs--js', function(){
+	$('.product-type-tabs').removeClass('active');
+	$(this).addClass('active');
+	var productfor = $(this).data('productfor');
+	$('input[name="product_for"]').val(productfor);
+	$('input[name="product_for"]').trigger('change');
+	
+	if (parseInt(productfor) == 2) {
+		$('.rental-fields--js').show();
+		$('.sale-products--js').addClass('hide-sell-section ');
+	} else {
+		$('.rental-fields--js').hide();
+		$('.sale-products--js').removeClass('hide-sell-section ');
+	}
+})
+
+function getRentalDetails() {
+	var rental_start_date = $('#frmBuyProduct input[name="rental_start_date"]').val();
+    var rental_end_date = $('#frmBuyProduct input[name="rental_end_date"]').val();
+    var selprod_id = $('#frmBuyProduct input[name="selprod_id"]').val();
+    var quantity = $('#frmBuyProduct input[name="quantity"]').val();
+	
+    var data = 'selprod_id=' + selprod_id + '&quantity=' + quantity + '&rental_start_date=' + rental_start_date + '&rental_end_date=' + rental_end_date;
+	
+    if (rental_start_date != '' && rental_start_date != undefined && rental_end_date != '' && rental_end_date != undefined && quantity != '' && quantity > 0) {
+		fcom.ajax(fcom.makeUrl('Products', 'getRentalDetails'), data, function (t) {
+			t = $.parseJSON(t);
+			if(t.status == 0) {
+				$.mbsmessage(t.msg, true, 'alert--danger');
+				$('.rental-price--js').html('NA');
+				$('.rental-security--js').html('NA');
+				$('.rental-stock--js').html('NA');
+				$('.total-amount--js').html('NA');
+			} else {
+				$('.rental-price--js').html(t.rentalPrice);
+				$('.rental-security--js').html(t.rentalSecurity);
+				$('.rental-stock--js').html(t.availableQuantity);
+				$('.total-amount--js').html(t.totalPayableAmount);
+			}
+		});
+	}
+}
+
+$(document).on('change', '#frmBuyProduct input[name="quantity"]', function(){
+	getRentalDetails();
+})

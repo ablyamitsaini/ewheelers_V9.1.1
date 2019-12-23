@@ -24,6 +24,11 @@ class AddressesController extends LoggedUserController
         }
 
         $ua_state_id = FatUtility::int($post['ua_state_id']);
+        $ua_city_id = FatUtility::int($post['ua_city_id']);
+		if ($ua_city_id > -1) {
+			$post['ua_city'] = '';
+		}
+		
         $post = $frm->getFormDataFromArray($post);
         if (false === $post) {
             if (true ===  MOBILE_APP_API_CALL) {
@@ -33,6 +38,7 @@ class AddressesController extends LoggedUserController
             FatUtility::dieWithError(Message::getHtml());
         }
         $post['ua_state_id'] = $ua_state_id;
+        $post['ua_city_id'] = $ua_city_id;
 
         $ua_id = FatUtility::int($post['ua_id']);
         unset($post['ua_id']);

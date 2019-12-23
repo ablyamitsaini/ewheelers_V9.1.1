@@ -8,6 +8,7 @@ $additionalAttributes = (CommonHelper::getLayoutDirection() == 'rtl') ? 'directi
 	<meta name="description" content="">
 	<meta name="author" content="">
 	<!--<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">-->
+    
 	<?php
 	if( isset($includeEditor) && $includeEditor == true ){
 	$extendEditorJs	= 'true';
@@ -34,3 +35,4 @@ $additionalAttributes = (CommonHelper::getLayoutDirection() == 'rtl') ? 'directi
 	<?php } ?>
 
 	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,500i,700,700i,900,900i" rel="stylesheet">
+

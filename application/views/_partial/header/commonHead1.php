@@ -13,13 +13,15 @@ $additionalAttributes = (CommonHelper::getLayoutDirection() == 'rtl') ? 'directi
 <!DOCTYPE html>
 <html prefix="og: http://ogp.me/ns#" <?php echo $additionalAttributes;?> class="<?php echo $htmlClass;?> <?php if (FatApp::getConfig('CONF_AUTO_RESTORE_ON', FatUtility::VAR_INT, 1) && CommonHelper::demoUrl()) { echo "sticky-demo-header"; } ?>">
 
-<head>
+<head id="headtag">
     <!-- Yo!Kart -->
     <meta charset="utf-8">
     <meta name="author" content="">
     <!-- Mobile Specific Metas ===================== -->
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
+    <?php if (CommonHelper::demoUrl() && $controllerName != 'Home') {?>
+    <meta name="robots" content="noindex" />
+    <?php }?>
     <!-- favicon ================================================== -->
 
     <!--<link rel="shortcut icon" href="">-->
@@ -37,7 +39,7 @@ $additionalAttributes = (CommonHelper::getLayoutDirection() == 'rtl') ? 'directi
         $canonicalUrl = CommonHelper::generateFullUrl($controllerName, FatApp::getAction(), !empty(FatApp::getParameters())?FatApp::getParameters():array());
     }
     ?>
-    <link rel="canonical" href="<?php echo $canonicalUrl;?>" />
+    <link rel="canonical" href="<?php echo $canonicalUrl;?>" />    
     <style>
         :root {
             --first-color: #<?php echo $themeDetail['tcolor_first_color']; ?>;

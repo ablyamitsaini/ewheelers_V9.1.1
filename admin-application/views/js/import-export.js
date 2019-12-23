@@ -78,7 +78,7 @@
                     try {
                         var ans = $.parseJSON(t);                        
                         if (ans.status == 1) {
-                            reloadList();
+                            //reloadList();
                             $(document).trigger('close.facebox');
                             $(document).trigger('close.mbsmessage');
                             fcom.displaySuccessMessage(ans.msg);

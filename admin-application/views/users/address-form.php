@@ -13,6 +13,18 @@ $countryFld->setFieldTagAttribute('onChange','getCountryStates(this.value,'.$sta
 
 $stateFld = $addressFrm->getField('ua_state_id');
 $stateFld->setFieldTagAttribute('id','ua_state_id');
+$stateFld->setFieldTagAttribute('onChange', 'getCountryStatesCities(\'#ua_country_id\', this.value, '. $cityId.' ,\'#ua_city_id\')');
+
+$cityIdFld = $addressFrm->getField('ua_city_id');
+$cityIdFld->setFieldTagAttribute('id', 'ua_city_id');
+
+$cityNameFld = $addressFrm->getField('ua_city');
+$cityNameFld->setFieldTagAttribute('id', 'ua_city');
+$cityNameFld->setWrapperAttribute('class', 'user-cityname--js');
+
+if($cityId > 0) {
+	$cityNameFld->setWrapperAttribute('style','display:none;');
+}
 
 ?>
 
@@ -39,5 +51,6 @@ $stateFld->setFieldTagAttribute('id','ua_state_id');
 <script language="javascript">
 $(document).ready(function(){
 	getCountryStates($( "#ua_country_id" ).val(),<?php echo $stateId ;?>,'#ua_state_id');
+	getCountryStatesCities("#ua_country_id", <?php echo $stateId ;?>, <?php echo $cityId ;?>, '#ua_city_id');
 });	
 </script>

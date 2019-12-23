@@ -11,6 +11,10 @@ $countryFld->setFieldTagAttribute('onChange', 'getCountryStates(this.value,'.$st
 
 $stateFld = $frmShop->getField('shop_state');
 $stateFld->setFieldTagAttribute('id', 'shop_state');
+$stateFld->setFieldTagAttribute('onChange','getCountryStatesCities(\'#shop_country_id\', this.value, '. $cityId.' ,\'#ua_city_id\')');
+
+$cityFld = $frmShop->getField('shop_city_id');
+$cityFld->setFieldTagAttribute('id','ua_city_id');
 
 $fld = $frmShop->getField('shop_featured');
 $fld->htmlAfterField = '<small><br>'.Labels::getLabel('LBL_Featured_Shops_will_be_listed_on_Featured_Shops_Page._Featured_Shops_will_get_priority,', $adminLangId).'</small>';
@@ -63,5 +67,6 @@ $urlFld->setFieldTagAttribute('onkeyup', "getSlugUrl(this,this.value,'')");
     <script language="javascript">
         $(document).ready(function() {
             getCountryStates($("#shop_country_id").val(), <?php echo $stateId ;?>, '#shop_state');
+			getCountryStatesCities("#shop_country_id", <?php echo $stateId ;?>, <?php echo $cityId ;?>, '#ua_city_id');
         });
     </script>

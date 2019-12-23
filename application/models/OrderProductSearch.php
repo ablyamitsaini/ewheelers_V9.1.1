@@ -23,6 +23,8 @@ class OrderProductSearch extends SearchBase
                 'op_l'
             );
         }
+		/* Join for order product data table */
+		$this->joinTable(OrderProductData::DB_TBL, 'LEFT OUTER JOIN ', 'op.op_id = opd_op_id', 'opd');
 
         if ($joinOrders) {
             $this->joinOrders();

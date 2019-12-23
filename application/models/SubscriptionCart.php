@@ -468,9 +468,8 @@ class SubscriptionCart extends FatModel
             }
 
 
-            $cartObj->add($spplan_id);
-
-            $db->deleteRecords('tbl_user_cart', array('smt'=>'`usercart_user_id`=? and usercart_type=?', 'vals'=>array(session_id(),CART::TYPE_SUBSCRIPTION)));
+			$cartObj->add($spplan_id);
+			$db->deleteRecords('tbl_user_cart', array('smt'=>'`usercart_user_id`=? and usercart_type=?', 'vals'=>array(session_id(),CART::TYPE_SUBSCRIPTION)));
         }
         $cartObj->updateUserSubscriptionCart();
     }

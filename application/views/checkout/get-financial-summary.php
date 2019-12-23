@@ -1,4 +1,13 @@
-<?php defined('SYSTEM_INIT') or die('Invalid Usage.');?>
+<?php defined('SYSTEM_INIT') or die('Invalid Usage.');
+$shippingTypeArray = array();
+if(!empty($products)) {
+	$shippingTypeArray  = array_column($products, 'selectedShippingMethod');
+	
+}
+$shippingTypeArray = array_values(array_filter($shippingTypeArray));
+//echo "<pre>"; print_r($products); echo "</pre>";
+$rentalSecutityTotal = 0;
+?>
 <div class="box box--white box--radius order-summary">
     <?php if(!empty($defaultAddress)) {?>
     <div class="p-4">
@@ -6,8 +15,12 @@
             <div class="section__heading">
                 <h6>
                 <?php if ($hasPhysicalProd) {
-                    echo Labels::getLabel('LBL_Shipping_to:', $siteLangId);
-                } else {
+					if (!empty($shippingTypeArray) && !in_array(ShippingMethods::MANUAL_SHIPPING, $shippingTypeArray) && !in_array(ShippingMethods::SHIPSTATION_SHIPPING, $shippingTypeArray)) {
+						echo Labels::getLabel('LBL_Billing_to:', $siteLangId);
+					} else {
+						echo Labels::getLabel('LBL_Shipping_to:', $siteLangId);
+					}
+				} else {
                     echo Labels::getLabel('LBL_Billing_to:', $siteLangId);
                 } ?>
                 </h6>
@@ -18,13 +31,17 @@
             <?php echo $defaultAddress['ua_identifier']; ?><br>
             <?php echo $defaultAddress['ua_name']; ?><br>
             <?php echo $defaultAddress['ua_address1'];?><br>
-            <?php echo $defaultAddress['ua_city'];?>,  <?php echo $defaultAddress['state_name'];?>, <?php echo (strlen($defaultAddress['ua_zip']) > 0) ? Labels::getLabel('LBL_Zip:', $siteLangId) . ' ' . $defaultAddress['ua_zip'] . '<br>' : '';?>
+            <?php if ($defaultAddress['ua_city_id'] > 0) {
+				echo $defaultAddress['city_name'];
+			} else {
+				echo $defaultAddress['ua_city'];
+			} ?>,  <?php echo $defaultAddress['state_name'];?>, <?php echo (strlen($defaultAddress['ua_zip']) > 0) ? Labels::getLabel('LBL_Zip:', $siteLangId) . ' ' . $defaultAddress['ua_zip'] . '<br>' : '';?>
             <?php echo (strlen($defaultAddress['ua_phone']) > 0) ? Labels::getLabel('LBL_Phone:', $siteLangId) . ' ' . $defaultAddress['ua_phone'] . '<br>' : '';?>
         </div>
     </div>
     <div class="divider"></div>
     <?php }?>
-    <div class="p-4">
+	<div class="p-4">
         <div class="section-head">
             <div class="section__heading">
                 <h6><?php echo Labels::getLabel('LBL_Order_Summary', $siteLangId); ?> - <?php echo count($products); ?> <?php echo Labels::getLabel('LBL_item(s)', $siteLangId); ?></h6>
@@ -34,7 +51,12 @@
         <div class="scrollbar-order-list" data-simplebar>
             <table class="cart-summary  table--justify order-table">
                 <tbody>
-                    <?php foreach ($products as $product) { ?>
+                    <?php foreach ($products as $product) { 
+						if ($product['productFor'] == applicationConstants::PRODUCT_FOR_RENT) {
+							$rentalSecutityTotal += $product['sprodata_rental_security'];
+						}
+					
+					?>
                     <tr class="physical_product_tab-js">
                         <td>
                             <?php $productUrl = CommonHelper::generateUrl('Products', 'View', array($product['selprod_id'])); ?>
@@ -75,12 +97,45 @@
                                     <!--<a class="refresh" title="<?php /* echo Labels::getLabel("LBL_Update_Quantity", $siteLangId); */ ?>" href="javascript:void(0)" onclick="cart.update('<?php /* echo md5($product['key']); */ ?>','loadFinancialSummary')"><i class="fa fa-refresh"></i></a>-->
 
                                 </div>
+								<?php if($product['productFor'] == applicationConstants::PRODUCT_FOR_RENT) { 
+									if($product['sprodata_rental_type'] == applicationConstants::RENT_TYPE_HOUR) {
+										$format = 'M d, Y h:i A';
+										$duration = Common::hoursBetweenDates($product['rentalStartDate'], $product['rentalEndDate']);
+										$unit = Labels::getLabel("LBL_Hours", $siteLangId);
+									} else {
+										$format = 'M d, Y';
+										$duration = Common::daysBetweenDates($product['rentalStartDate'], $product['rentalEndDate']);
+										$unit = Labels::getLabel("LBL_Days", $siteLangId);
+									}
+									?>
+									<div class="item__specification">
+									<?php echo Labels::getLabel("LBL_Duration:", $siteLangId) .' '. $duration.' '. $unit; ?>
+									</div>
+									<div class="item__specification">
+									<?php echo Labels::getLabel("LBL_From_:", $siteLangId) .' '. date($format, strtotime($product['rentalStartDate'])); ?>
+									</div>
+									<div class="item__specification">
+									<?php echo Labels::getLabel("LBL_To_:", $siteLangId) .' '. date($format, strtotime($product['rentalEndDate'])); ?>
+									</div>
+									<?php if ($product['selectedShippingMethod'] == ShippingMethods::SELF_PICKUP) {
+									$seller_address = $product['seller_address'];
+									?>
+									<div class="item__specification">
+										<?php echo '<span class="text-danger">'. Labels::getLabel("LBL_Pickup_from_:", $siteLangId) .'</span> '. $seller_address['shop_name']. ' '. $seller_address['shop_address_line_1']. ' '. $seller_address['shop_address_line_2']. ' '. $seller_address['shop_city'] .' '. $seller_address['state_identifier'].' '. $seller_address['shop_postalcode']. ' Contact : '. $seller_address['shop_phone']; ?>
+									</div>
+									<?php }
+									} ?>
                             </div>
                         </td>
                         <td>
-                            <div class="product_price"><span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']*$product['quantity']); ?></span>
-
-                            </div>
+                            <div class="product_price"><span class="item__price"><?php  
+							if($product['productFor'] == applicationConstants::PRODUCT_FOR_RENT) { 
+								echo CommonHelper::displayMoneyFormat(($product['sprodata_rental_price']* $duration) * $product['quantity']);
+							} else {
+								echo CommonHelper::displayMoneyFormat($product['theprice']*$product['quantity']);
+							}
+							?></span>
+							</div>
                         </td>
                     </tr>
                     <?php } ?>
@@ -107,14 +162,20 @@
                 <tbody>
                     <tr>
                         <td class="text-left"><?php echo Labels::getLabel('LBL_Sub_Total', $siteLangId); ?></td>
-                        <td class="text-right"> <?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTotal']); ?></td>
+                        <td class="text-right"> <?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTotal'] - $rentalSecutityTotal); ?></td>
                     </tr>
                     <?php if ($cartSummary['cartVolumeDiscount']) { ?>
                     <tr>
                         <td class="text-left"><?php echo Labels::getLabel('LBL_Loyalty/Volume_Discount', $siteLangId); ?></td>
                         <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartVolumeDiscount']); ?></td>
                     </tr>
-                    <?php } ?>
+                    <?php } 
+					if (0 < $cartSummary['cartDurationDiscount']) { ?>
+                    <tr>
+                        <td class="text-left"><?php echo Labels::getLabel('LBL_Duration_Discount', $siteLangId); ?></td>
+                        <td class="text-right">- <?php echo CommonHelper::displayMoneyFormat($cartSummary['cartDurationDiscount']); ?></td>
+                    </tr>
+					<?php } ?>
                     <?php if ($cartSummary['cartTaxTotal']) { ?>
                     <tr>
                         <td class="text-left"><?php echo Labels::getLabel('LBL_Tax', $siteLangId); ?></td>
@@ -124,7 +185,7 @@
                     <?php if (!empty($cartSummary['cartDiscounts'])) { ?>
                     <tr>
                         <td class="text-left"><?php echo Labels::getLabel('LBL_Discount', $siteLangId); ?></td>
-                        <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartDiscounts']['coupon_discount_total']); ?></td>
+                        <td class="text-right">- <?php echo CommonHelper::displayMoneyFormat($cartSummary['cartDiscounts']['coupon_discount_total']); ?></td>
                     </tr>
                     <?php } ?>                    
                    
@@ -141,6 +202,12 @@
                         <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($appliedRewardPointsDiscount); ?></td>
                     </tr>
                     <?php } ?>
+					<?php if ($rentalSecutityTotal > 0) { ?>
+					<tr>
+						<td class="text-left"><?php echo Labels::getLabel('LBL_Rental_Security', $siteLangId); ?></td>
+						<td class="text-right"><?php echo CommonHelper::displayMoneyFormat($rentalSecutityTotal); ?> </td>
+					</tr>
+					<?php }?>
                     <tr>
                         <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
                         <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat($cartSummary['orderNetAmount']); ?></td>

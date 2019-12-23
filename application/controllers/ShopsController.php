@@ -118,7 +118,7 @@ class ShopsController extends MyAppController
         $productSrchObj->addMultipleFields(
             array('product_id', 'selprod_id', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title', 'product_image_updated_on',
             'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type',
-            'theprice', 'selprod_price','selprod_stock', 'selprod_condition','prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','selprod_sold_count','IF(selprod_stock > 0, 1, 0) AS in_stock')
+            'theprice', 'selprod_price','selprod_stock', 'selprod_condition','prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','selprod_sold_count','IF(selprod_stock > 0, 1, 0) AS in_stock', 'IFNULL(sprodata_is_for_sell, 0) as is_sell', 'IFNULL(sprodata_is_for_rent, 0) as is_rent', 'IFNULL(sprodata_rental_price, 0)as rent_price', 'IFNULL(sprodata_rental_type, 0) as rental_type')
         );
         foreach ($allShops as $val) {
             $productShopSrchTempObj = clone $productSrchObj;
@@ -132,8 +132,11 @@ class ShopsController extends MyAppController
             $allShops[$val['shop_id']]['shopRating'] = SelProdRating::getSellerRating($val['shop_user_id']);
             $allShops[$val['shop_id']]['shopTotalReviews'] = SelProdReview::getSellerTotalReviews($val['shop_user_id']);
         }
+		
+		
         /* CommonHelper::printArray($allShops[4]['products']); */
         $this->set('allShops', $allShops);
+        $this->set('rentalTypeArr', applicationConstants::rentalTypeArr($this->siteLangId));
         $this->set('totalProdCountToDisplay', $totalProdCountToDisplay);
         $this->set('pageCount', $srch->pages());
         $this->set('recordCount', $srch->recordCount());
@@ -233,7 +236,7 @@ class ShopsController extends MyAppController
         }
 
         $this->set('data', $data);
-
+		$this->set('rentalTypeArr', applicationConstants::rentalTypeArr($this->siteLangId));
         if (false === MOBILE_APP_API_CALL) {
             $this->includeProductPageJsCss();
             $this->_template->addJs(array('js/slick.min.js', 'js/responsive-img.min.js', 'js/shop-nav.js', 'js/jquery.colourbrightness.min.js'));
@@ -385,11 +388,8 @@ class ShopsController extends MyAppController
     public function topProducts($shop_id)
     {
         $db = FatApp::getDb();
-
         $this->shopDetail($shop_id);
-
         $frm = $this->getProductSearchForm();
-
         $get = FatApp::getParameters();
         $get = Product::convertArrToSrchFiltersAssocArr($get);
 
@@ -417,7 +417,7 @@ class ShopsController extends MyAppController
 
         $data = array_merge($data, $arr);
         $this->set('data', $data);
-
+		$this->set('rentalTypeArr', applicationConstants::rentalTypeArr($this->siteLangId));
         $this->includeProductPageJsCss();
         $this->_template->addJs('js/slick.min.js');
         $this->_template->addCss(array('css/slick.css','css/product-detail.css'));

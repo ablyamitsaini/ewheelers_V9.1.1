@@ -24,7 +24,12 @@
                         <strong><?php echo ($address['ua_identifier'] != '') ? $address['ua_identifier'].': '.$address['ua_name'] : $address['ua_name']; ?></strong>
                         <?php echo $address['ua_address1'];?><br>
                         <?php echo (strlen($address['ua_address2'])>0)?$address['ua_address2'].'<br>':'';?>
-                        <?php echo (strlen($address['ua_city'])>0)?$address['ua_city'].',':'';?>
+                        <?php 
+						if ($address['ua_city_id'] > 0) {
+							echo (strlen($address['city_name'])>0)?$address['city_name'].',':'';
+						} else {
+							echo (strlen($address['ua_city'])>0)?$address['ua_city'].',':'';
+						} ?>
                         <?php echo (strlen($address['state_name'])>0)?$address['state_name'].'<br>':'';?>
                         <?php echo (strlen($address['country_name'])>0)?$address['country_name'].'<br>':'';?>
                         <?php echo (strlen($address['ua_zip'])>0) ? Labels::getLabel('LBL_Zip:', $siteLangId).$address['ua_zip'].'<br>':'';?>
@@ -79,7 +84,12 @@
                     <p><strong><?php echo ($address['ua_identifier'] != '') ? $address['ua_identifier'].': '.$address['ua_name'] : $address['ua_name']; ?></strong>
                         <?php echo $address['ua_address1'];?><br>
                         <?php echo (strlen($address['ua_address2'])>0)?$address['ua_address2'].'<br>':'';?>
-                        <?php echo (strlen($address['ua_city'])>0)?$address['ua_city'].',':'';?>
+                        <?php 
+						if ($address['ua_city_id'] > 0) {
+							echo (strlen($address['city_name'])>0)?$address['city_name'].',':'';
+						} else {
+							echo (strlen($address['ua_city'])>0)?$address['ua_city'].',':'';
+						} ?>
                         <?php echo (strlen($address['state_name'])>0)?$address['state_name'].'<br>':'';?>
                         <?php echo (strlen($address['country_name'])>0)?$address['country_name'].'<br>':'';?>
                         <?php echo (strlen($address['ua_zip'])>0) ? Labels::getLabel('LBL_Zip:', $siteLangId).$address['ua_zip'].'<br>':'';?>
@@ -109,7 +119,8 @@
         'siteLangId' => $siteLangId,
         'addressFrm' => $addressFrm,
         'labelHeading' => Labels::getLabel('LBL_Add_New_Address', $siteLangId),
-        'stateId'    =>    $stateId,
+        'stateId' => $stateId,
+        'cityId' => $cityId,
     ); ?>
     <?php $this->includeTemplate('checkout/address-form.php', $tplDataArr, false);    ?>
 </div>

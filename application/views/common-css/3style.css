@@ -14322,4 +14322,85 @@ div.faqanswer p {
 	transition: all 265ms ease-in;
 }
 
-    
+/* Rental functionality 19-11-2019 */
+.productRentTabs, .productSaleTabs {
+	display : none !important;
+}
+.rental-unavailable-date { background: #ff3232 !important; }
+.product-type-tabs {
+	display: block;
+    background: #fff;
+    border: 1px solid #eeeeee;
+    position: relative;
+    text-align: center;
+	padding: 10px;
+}
+.product-type-tabs.active {
+    background: #eeeeee;
+}
+
+
+a.product-type-tabs::before {
+	content: "";
+    position: absolute;
+    background: #eeeeee;
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    left: 10px;
+    top: 10px;
+}
+
+.product-type-tabs .sticky-title{
+	position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%,0);
+    -moz-transform: translate(-50%,0);
+    -webkit-transform: translate(-50%,0);
+    background: var(--first-color);
+    color: #fff;
+    font-size: 11px;
+    padding: 3px 7px;
+}
+
+.product-type-tabs .sticky-price {
+    display: block;
+    margin: 40px 0 15px;
+    color: #000;
+    font-size: 26px;
+    font-weight: 600;
+}
+.product-type-tabs .sticky-sub-price {
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    display: block;
+}
+.product-type-tabs.active:before {
+    background: var(--first-color);
+}
+a.product-type-tabs:after {
+    display: none;
+    content: "";
+    position: absolute;
+    border-bottom: 2px solid #fff;
+    border-left: 2px solid #fff;
+    width: 10px;
+    height: 7px;
+    top: 15px;
+    left: 15px;
+    -webkit-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+a.product-type-tabs.active:after {
+    display: block;
+}
+.hide-sell-section {
+	display : none;
+}
+.location--selection{position: relative; margin: 5px 0; max-width: 300px;}
+.location--selection:after{top: 25%; position: absolute; right: 0; content: ""; background: rgba(255, 255, 255, 0.4); width: 1px; bottom: 25%;height: 50%;}
+.location--selection img{position: absolute; top:calc(50% - 5px); left: 0;}
+.location--selection input{padding-left: 30px; height: 24px; line-height: 24px; background: var(--first-color); color: #ffffff; border-width: 0; border-radius: 0;}

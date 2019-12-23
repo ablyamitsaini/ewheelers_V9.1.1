@@ -163,6 +163,8 @@ trait SellerProducts
 
     public function sellerProductGeneralForm($product_id, $selprod_id = 0)
     {
+		$prodRentalData = array();
+		$is_rent = false;
         $selprod_id = FatUtility::int($selprod_id);
         $product_id = FatUtility::int($product_id);
         if (!$product_id) {
@@ -236,6 +238,19 @@ trait SellerProducts
 
             $customUrl  = explode("/", $urlRow['urlrewrite_custom']);
             $sellerProductRow['selprod_url_keyword'] = $customUrl[0];
+			
+			/* [ Product Rental data ]*/
+			$srch = ProductRental::getSearchObject();
+			$srch->addCondition('sprodata_selprod_id', '=', $selprod_id);
+			$rs = $srch->getResultSet();
+			$prodRentalData = FatApp::getDb()->fetch($rs);
+			
+			if (!empty($prodRentalData)) {
+				$sellerProductRow['sprodata_is_for_rent'] = $prodRentalData['sprodata_is_for_rent'];
+				$sellerProductRow['sprodata_is_for_sell'] = $prodRentalData['sprodata_is_for_sell'];
+			}
+			$is_rent = $this->isProductRental($selprod_id);
+			/* [ Product Rental data ]*/
             $frmSellerProduct->fill($sellerProductRow);
         } else {
             $sellerProductRow['selprod_available_from'] = date('Y-m-d');
@@ -258,6 +273,8 @@ trait SellerProducts
         $this->set('shippedBySeller', $shippedBySeller);
         $this->set('language', Language::getAllNames());
         $this->set('activeTab', 'GENERAL');
+        $this->set('is_rent', $is_rent);
+		$this->set('is_sale', $this->isProductSale($selprod_id));
         $this->_template->render(false, false);
     }
 
@@ -362,6 +379,37 @@ trait SellerProducts
         }
 
         $selprod_id = $sellerProdObj->getMainTableRecordId();
+		
+		/*[ Save Rental Data ]*/
+		if ($selprod_id) {
+			$prodRentalData = array();
+			$srch = ProductRental::getSearchObject();
+			$srch->addCondition('sprodata_selprod_id', '=', $selprod_id);
+			$rs = $srch->getResultSet();
+			$prodRentalData = FatApp::getDb()->fetch($rs);
+			
+			$sprod_id = 0;
+			if (!empty($prodRentalData)) {
+				$sprod_id = $prodRentalData['sprodata_id'];
+			} 
+			
+			unset($prodRentalData['sprodata_id']);
+			$prodRentalData['sprodata_is_for_sell'] = $post['sprodata_is_for_sell'];
+			$prodRentalData['sprodata_is_for_rent'] = $post['sprodata_is_for_rent'];
+			$prodRentalData['sprodata_selprod_id'] = $selprod_id;
+			
+			$record = new ProductRental($sprod_id);
+			$record->assignValues($prodRentalData);
+
+			if (!$record->save()) {
+				Message::addErrorMessage($record->getError());
+				FatUtility::dieJsonError(Message::getHtml());
+			}
+			
+		}
+		
+		/*[ Save Rental Data ]*/
+		
 
         $sellerProdObj->rewriteUrlProduct($post['selprod_url_keyword']);
         $sellerProdObj->rewriteUrlReviews($post['selprod_url_keyword']);
@@ -477,8 +525,8 @@ trait SellerProducts
             $selprod_id = $sellerProdObj->getMainTableRecordId();
             $newTabLangId = $this->siteLangId;
         }
-
-        $productId = SellerProduct::getAttributesById($selprod_id, 'selprod_product_id', false);
+		
+		$productId = SellerProduct::getAttributesById($selprod_id, 'selprod_product_id', false);
         Product::updateMinPrices($productId);
         $this->set('selprod_id', $selprod_id);
         $this->set('langId', $newTabLangId);
@@ -572,7 +620,10 @@ trait SellerProducts
         if ($langData) {
             $frmSellerProdLangFrm->fill($langData);
         }
-        $this->set('customActiveTab', '');
+		
+		$is_rent = $this->isProductRental($selprod_id);
+		
+		$this->set('customActiveTab', '');
         $this->set('frmSellerProdLangFrm', $frmSellerProdLangFrm);
         $this->set('product_id', $sellerProductRow['selprod_product_id']);
         $this->set('selprod_id', $selprod_id);
@@ -581,6 +632,8 @@ trait SellerProducts
         $this->set('formLayout', Language::getLayoutDirection($langId));
         $this->set('language', Language::getAllNames());
         $this->set('activeTab', 'GENERAL');
+        $this->set('is_rent', $is_rent);
+		$this->set('is_sale', $this->isProductSale($selprod_id));
         $this->_template->render(false, false);
     }
 
@@ -843,7 +896,8 @@ trait SellerProducts
             Message::addErrorMessage(Labels::getLabel('MSG_Invalid_Access', $this->siteLangId));
             FatApp::redirectUser($_SESSION['referer_page_url']);
         }
-
+		
+		$is_rent = $this->isProductRental($selprod_id);
 
         $arrListing = SellerProduct::getSellerProductSpecialPrices($selprod_id);
         $this->set('arrListing', $arrListing);
@@ -852,6 +906,8 @@ trait SellerProducts
         $this->set('siteLangId', $this->siteLangId);
         $this->set('product_type', $productRow['product_type']);
         $this->set('activeTab', 'SPECIAL_PRICE');
+        $this->set('is_rent', $is_rent);
+		$this->set('is_sale', $this->isProductSale($selprod_id));
         $this->_template->render(false, false);
     }
 
@@ -1021,11 +1077,15 @@ trait SellerProducts
         $rs = $srch->getResultSet();
 
         $arrListing = FatApp::getDb()->fetchAll($rs);
+		$is_rent = $this->isProductRental($selprod_id);
+		
         $this->set('arrListing', $arrListing);
         $this->set('selprod_id', $sellerProductRow['selprod_id']);
         $this->set('product_id', $sellerProductRow['selprod_product_id']);
         $this->set('product_type', $productRow['product_type']);
         $this->set('activeTab', 'VOLUME_DISCOUNT');
+        $this->set('is_rent', $is_rent);
+		$this->set('is_sale', $this->isProductSale($selprod_id));
 
 
         $productLangRow = Product::getAttributesByLangId($this->siteLangId, $sellerProductRow['selprod_product_id'], array('product_name'));
@@ -1187,7 +1247,6 @@ trait SellerProducts
     private function getSellerProductVolumeDiscountForm($langId)
     {
         $frm = new Form('frmSellerProductSpecialPrice');
-
         $frm->addHiddenField('', 'voldiscount_selprod_id', 0);
         $frm->addHiddenField('', 'voldiscount_id', 0);
         $qtyFld = $frm->addIntegerField(Labels::getLabel("LBL_Minimum_Quantity", $langId), 'voldiscount_min_qty');
@@ -1201,8 +1260,7 @@ trait SellerProducts
         return $frm;
     }
     /*    ]    */
-
-    /* Seller Product Seo [ */
+	/* Seller Product Seo [ */
     public function productSeo($selprod_id = 0)
     {
         $selprod_id = Fatutility::int($selprod_id);
@@ -1216,11 +1274,14 @@ trait SellerProducts
         $this->set('metaType', $metaType);
         $sellerProductRow = SellerProduct::getAttributesById($selprod_id);
         $productRow = Product::getAttributesById($sellerProductRow['selprod_product_id'], array('product_type'));
+		$is_rent = $this->isProductRental($selprod_id);
+		
         $this->set('userId', UserAuthentication::getLoggedUserId());
         $this->set('product_id', $sellerProductRow['selprod_product_id']);
         $this->set('product_type', $productRow['product_type']);
         $this->set('selprod_id', $selprod_id);
-
+        $this->set('is_rent', $is_rent);
+		$this->set('is_sale', $this->isProductSale($selprod_id));
         $this->_template->render(false, false);
     }
 
@@ -1248,6 +1309,8 @@ trait SellerProducts
         }
         $productSeoForm = $this->getProductSeoForm($metaId, $metaType, $selprod_id);
         $productSeoForm->fill($prodMetaData);
+		$is_rent = $this->isProductRental($selprod_id);
+		
         $this->set('metaId', $metaId);
         $this->set('product_id', $sellerProductRow['selprod_product_id']);
         $this->set('selprod_id', $selprod_id);
@@ -1257,6 +1320,8 @@ trait SellerProducts
         $this->set('activeTab', 'SEO');
         $this->set('product_type', $productRow['product_type']);
         $this->set('seoActiveTab', 'GENERAL');
+        $this->set('is_rent', $is_rent);
+		$this->set('is_sale', $this->isProductSale($selprod_id));
         $this->_template->render(false, false);
     }
 
@@ -1296,7 +1361,8 @@ trait SellerProducts
         $prodSeoLangFrm = $this->getSeoLangForm($metaId, $langId);
         $prodSeoLangFrm ->fill($metaData);
         $productRow = Product::getAttributesById($sellerProductRow['selprod_product_id'], array('product_type'));
-
+		$is_rent = $this->isProductRental($sellerProductRow[ SellerProduct::DB_TBL_PREFIX.'id']);
+		
         $this->set('languages', Language::getAllNames());
         $this->set('productSeoLangForm', $prodSeoLangFrm);
         $this->set('formLayout', Language::getLayoutDirection($langId));
@@ -1306,6 +1372,8 @@ trait SellerProducts
         $this->set('selprod_id', $sellerProductRow[ SellerProduct::DB_TBL_PREFIX.'id']);
         $this->set('product_id', $sellerProductRow[SellerProduct::DB_TBL_PREFIX.'product_id']);
         $this->set('selprod_lang_id', $langId);
+        $this->set('is_rent', $is_rent);
+		$this->set('is_sale', $this->isProductSale($sellerProductRow[ SellerProduct::DB_TBL_PREFIX.'id']));
         $this->set('seoActiveTab', '');
 
         $this->_template->render(false, false);
@@ -1323,6 +1391,9 @@ trait SellerProducts
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel("LBL_Save_Changes", $this->siteLangId));
         return $frm;
     }
+	
+	
+	
 
     public function setupProdMeta()
     {
@@ -1465,6 +1536,9 @@ trait SellerProducts
         $sellerproductLinkFrm =  $this->getLinksFrm();
         $data['selprod_id'] = $selProd_id;
         $sellerproductLinkFrm->fill($data);
+	
+		$is_rent = $this->isProductRental($selprod_id);
+		
         $this->set('sellerproductLinkFrm', $sellerproductLinkFrm);
         $this->set('upsellProducts', $upsellProds);
         $this->set('relatedProducts', $relatedProds);
@@ -1472,6 +1546,8 @@ trait SellerProducts
         $this->set('product_id', $sellerProductRow[SellerProduct::DB_TBL_PREFIX.'product_id']);
         $this->set('activeTab', 'LINKS');
         $this->set('product_type', $productRow['product_type']);
+        $this->set('is_rent', $is_rent);
+		$this->set('is_sale', $this->isProductSale($selprod_id));
         $this->_template->render(false, false);
     }
 
@@ -1518,6 +1594,8 @@ trait SellerProducts
         $selprodDownloadFrm->fill($data);
 
         $attachments = AttachedFile::getMultipleAttachments(AttachedFile::FILETYPE_SELLER_PRODUCT_DIGITAL_DOWNLOAD, $selprod_id, 0, -1);
+		
+		$is_rent = $this->isProductRental($selprod_id);
 
         $this->set('selprodDownloadFrm', $selprodDownloadFrm);
         $this->set('selprod_id', $selProd_id);
@@ -1526,6 +1604,8 @@ trait SellerProducts
         $this->set('attachments', $attachments);
         $this->set('languages', Language::getAllNames());
         $this->set('activeTab', 'DOWNLOADS');
+        $this->set('is_rent', $is_rent);
+		$this->set('is_sale', $this->isProductSale($selprod_id));
         $this->_template->render(false, false);
     }
 
@@ -1770,13 +1850,19 @@ trait SellerProducts
         $frm = $this->getLinkPoliciesForm($selprod_id, $ppoint_type);
         $data = array('selprod_id'=>$selprod_id);
         $frm->fill($data);
-        $this->set('product_id', $product_id);
+		
+		
+		$is_rent = $this->isProductRental($selprod_id);
+		
+		$this->set('product_id', $product_id);
         $this->set('selprod_id', $selprod_id);
         $this->set('frm', $frm);
         $this->set('language', Language::getAllNames());
         $this->set('activeTab', 'GENERAL');
         $this->set('product_type', $productRow['product_type']);
         $this->set('ppoint_type', $ppoint_type);
+        $this->set('is_rent', $is_rent);
+		$this->set('is_sale', $this->isProductSale($selprod_id));
         $this->_template->render(false, false);
     }
 
@@ -1797,6 +1883,9 @@ trait SellerProducts
         $srch->setPageSize($pagesize);
         $srch->addOrder('selProdId', 'desc');
         $records = FatApp::getDb()->fetchAll($srch->getResultSet(), 'ppoint_id');
+		
+		$is_rent = $this->isProductRental($selprod_id);
+		
         $this->set("selprod_id", $selprod_id);
         $this->set("arr_listing", $records);
         $this->set('pageCount', $srch->pages());
@@ -1804,6 +1893,8 @@ trait SellerProducts
         $this->set('page', $page);
         $this->set('pageSize', $pagesize);
         $this->set('postedData', $post);
+        $this->set('is_rent', $is_rent);
+		$this->set('is_sale', $this->isProductSale($selprod_id));
         $this->_template->render(false, false, 'seller/search-policies-to-link.php', false, false);
     }
 

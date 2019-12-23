@@ -47,6 +47,9 @@ class ImportExportController extends AdminBaseController
             case Importexport::TYPE_STATE:
                 $this->objPrivilege->canViewStates();
                 break;
+			case Importexport::TYPE_CITY:
+                $this->objPrivilege->canViewCities();
+                break;
             case Importexport::TYPE_POLICY_POINTS:
                 $this->objPrivilege->canViewPolicyPoints();
                 break;
@@ -136,6 +139,9 @@ class ImportExportController extends AdminBaseController
             case Importexport::TYPE_STATE:
                 $this->objPrivilege->canEditStates();
                 break;
+            case Importexport::TYPE_CITY:
+				 $this->objPrivilege->canEditCities();
+                break; 
             case Importexport::TYPE_POLICY_POINTS:
                 $this->objPrivilege->canEditPolicyPoints();
                 break;
@@ -357,6 +363,11 @@ class ImportExportController extends AdminBaseController
                 $displayMediaTab = false;
                 $title = Labels::getLabel('LBL_Import_States', $langId);
                 break;
+            case Importexport::TYPE_CITY:
+				$this->objPrivilege->canViewCities();
+				$displayMediaTab = false;
+				$title = Labels::getLabel('LBL_Import_Cities',$langId);
+			break;    
             case Importexport::TYPE_POLICY_POINTS:
                 $this->objPrivilege->canViewPolicyPoints();
                 $displayMediaTab = false;
@@ -421,6 +432,9 @@ class ImportExportController extends AdminBaseController
                 $this->objPrivilege->canViewStates();
                 $pageData = $obj->getContentByPageType(Extrapage::ADMIN_STATE_MANAGEMENT_INSTRUCTIONS, $langId);
                 break;
+            case Importexport::TYPE_CITY:
+				$this->objPrivilege->canViewCities();
+				$pageData = $obj->getContentByPageType( Extrapage::ADMIN_CITY_MANAGEMENT_INSTRUCTIONS, $langId );    
             case Importexport::TYPE_POLICY_POINTS:
                 $this->objPrivilege->canViewPolicyPoints();
                 $pageData = $obj->getContentByPageType(Extrapage::ADMIN_TYPE_POLICY_POINTS, $langId);
@@ -477,6 +491,9 @@ class ImportExportController extends AdminBaseController
             case Importexport::TYPE_STATE:
                 $this->objPrivilege->canViewStates();
                 break;
+            case Importexport::TYPE_CITY:
+				$this->objPrivilege->canViewCities();
+                break;    
             case Importexport::TYPE_POLICY_POINTS:
                 $this->objPrivilege->canViewPolicyPoints();
                 break;

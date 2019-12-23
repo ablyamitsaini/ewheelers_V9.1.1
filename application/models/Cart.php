@@ -63,6 +63,11 @@ class Cart extends FatModel
         if (!isset($this->SYSTEM_ARR['cart']) || !is_array($this->SYSTEM_ARR['cart'])) {
             $this->SYSTEM_ARR['cart'] = array();
         }
+		
+		if (!isset($this->SYSTEM_ARR['cart']['products']) || !is_array($this->SYSTEM_ARR['cart']['products'])) {
+            $this->SYSTEM_ARR['cart']['products'] = array();
+        }
+		
         if (!isset($this->SYSTEM_ARR['shopping_cart']) || !is_array($this->SYSTEM_ARR['shopping_cart'])) {
             $this->SYSTEM_ARR['shopping_cart'] = array();
         }
@@ -99,42 +104,85 @@ class Cart extends FatModel
         }
         return;
     }
-
-    public function add($selprod_id, $qty = 1, $prodgroup_id = 0, $returnUserId = false)
+	/* Add Cart Type before Add Product In Cart */
+	public function checkCartType($cartType) { //== cart type is sale or rent
+		$cartType = FatUtility::int($cartType);
+		if (isset($this->SYSTEM_ARR['cart']['cart_type']) && $this->SYSTEM_ARR['cart']['cart_type'] !== $cartType) {
+            return false;
+        }
+		return true;
+	}
+	
+	public function checkValidExtentRentalCartType() {
+		if(!isset($this->SYSTEM_ARR['cart']['cart_type']) || $this->SYSTEM_ARR['cart']['cart_type'] =='' || $this->SYSTEM_ARR['cart']['cart_type'] != applicationConstants::PRODUCT_FOR_EXTEND_RENTAL) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	
+    public function add($selprod_id, $qty = 1, $prodgroup_id = 0, $returnUserId = false, $productFor, $rentalData = array())
     {
         $this->products = array();
         $selprod_id = FatUtility::int($selprod_id);
         $prodgroup_id = FatUtility::int($prodgroup_id);
-
-        if ($qty > 0) {
+        $productFor = FatUtility::int($productFor);
+		if (!empty($rentalData) && isset($rentalData['extendOrder']) && $rentalData['extendOrder'] > 0 ) {
+			$cartType = applicationConstants::PRODUCT_FOR_EXTEND_RENTAL;
+		} else {
+			$cartType = $rentalData['extendOrder'];
+		}		
+		
+        if (!isset($this->SYSTEM_ARR['cart']['cart_type']) || $this->SYSTEM_ARR['cart']['cart_type'] == null ) {
+			$this->SYSTEM_ARR['cart']['cart_type'] = $cartType;
+		}
+		
+		if ($qty > 0) {
             $key = static::CART_KEY_PREFIX_PRODUCT . $selprod_id;
             if ($prodgroup_id) {
                 $key = static::CART_KEY_PREFIX_BATCH . $prodgroup_id;
             }
-
-            $key = base64_encode(serialize($key));
-            if (!isset($this->SYSTEM_ARR['cart'][$key])) {
-                $this->SYSTEM_ARR['cart'][$key] = FatUtility::int($qty);
+			if ($productFor == applicationConstants::PRODUCT_FOR_RENT) {
+				$key = static::CART_KEY_PREFIX_PRODUCT . $selprod_id . $rentalData['rental_start_date'].$rentalData['rental_end_date'];
+			}
+			$key = base64_encode(serialize($key));
+			
+            if (!isset($this->SYSTEM_ARR['cart']['products'][$key])) {
+               // $this->SYSTEM_ARR['cart'][$key] = FatUtility::int($qty);
+			   $this->SYSTEM_ARR['cart']['products'][$key]['quantity'] = FatUtility::int($qty);
+			   
             } else {
-                $this->SYSTEM_ARR['cart'][$key] += FatUtility::int($qty);
+               // $this->SYSTEM_ARR['cart'][$key] += FatUtility::int($qty);
+			   $this->SYSTEM_ARR['cart']['products'][$key]['quantity'] += FatUtility::int($qty);
             }
+			$this->SYSTEM_ARR['cart']['products'][$key]['productFor'] = $productFor;
+			//echo "<pre>"; print_r($rentalData); echo "</pre>"; exit;
+			
+			if (!empty($rentalData)) {
+				$this->SYSTEM_ARR['cart']['products'][$key]['rental_start_date'] = $rentalData['rental_start_date'];
+				$this->SYSTEM_ARR['cart']['products'][$key]['rental_end_date'] = $rentalData['rental_end_date'];
+				$this->SYSTEM_ARR['cart']['products'][$key]['extendOrder'] = $rentalData['extendOrder'];
+				$this->SYSTEM_ARR['cart']['products'][$key]['rental_type'] = $rentalData['rental_type'];
+			} 
         }
 
-        if ($prodgroup_id > 0) {
-            $products = $this->getProducts($this->cart_lang_id);
-            if ($products) {
-                foreach ($products as $cartKey => $product) {
-                    if ($product['is_batch'] && $prodgroup_id == $product['prodgroup_id']) {
-                        foreach ($product['products'] as $pgProduct) {
-                            $this->updateTempStockHold($pgProduct['selprod_id'], $this->SYSTEM_ARR['cart'][$key], $product['prodgroup_id']);
-                        }
-                    }
-                }
-            }
-        } else {
-            $this->updateTempStockHold($selprod_id, $this->SYSTEM_ARR['cart'][$key]);
-        }
-
+		if ($productFor == applicationConstants::PRODUCT_FOR_SALE) {
+			if ($prodgroup_id > 0) {
+				$products = $this->getProducts($this->cart_lang_id);
+				if ($products) {
+					foreach ($products as $cartKey => $product) {
+						if ($product['is_batch'] && $prodgroup_id == $product['prodgroup_id']) {
+							foreach ($product['products'] as $pgProduct) {
+								$this->updateTempStockHold($pgProduct['selprod_id'], $this->SYSTEM_ARR['cart']['products'][$key], $product['prodgroup_id']);
+							}
+						}
+					}
+				}
+			} else {
+				$this->updateTempStockHold($selprod_id, $this->SYSTEM_ARR['cart']['products'][$key]);
+			}
+		}
         $this->updateUserCart();
 
         if ($returnUserId) {
@@ -145,12 +193,12 @@ class Cart extends FatModel
 
     public function countProducts()
     {
-        return count($this->SYSTEM_ARR['cart']);
+        return count($this->SYSTEM_ARR['cart']['products']);
     }
 
     public function hasProducts()
     {
-        return count($this->SYSTEM_ARR['cart']);
+        return count($this->SYSTEM_ARR['cart']['products']);
     }
 
     public function hasStock()
@@ -208,7 +256,11 @@ class Cart extends FatModel
         $this->products = array();
         return $isPhysical;
     }
-
+	
+	public function getCartType() {
+		return $this->SYSTEM_ARR['cart']['cart_type'];
+	}
+	
     public function getProducts($siteLangId = 0)
     {
         /* if( !$siteLangId ){
@@ -235,7 +287,15 @@ class Cart extends FatModel
             /* ] */
 
             $is_cod_enabled = true;
-            foreach ($this->SYSTEM_ARR['cart'] as $key => $quantity) {
+			//echo "<pre>"; print_r($this->SYSTEM_ARR['cart']); echo "</pre>"; exit;
+			
+            //foreach ($this->SYSTEM_ARR['cart'] as $key => $quantity) {
+				
+			if (isset($this->SYSTEM_ARR['cart']['products'])) {
+			foreach ($this->SYSTEM_ARR['cart']['products'] as $key => $product) {
+				$quantity = $product['quantity'];
+				$productFor = $product['productFor'];
+				
                 $selprod_id = 0;
                 $prodgroup_id = 0;
                 $sellerProductRow = array();
@@ -245,9 +305,14 @@ class Cart extends FatModel
 
                 $keyDecoded = unserialize(base64_decode($key));
                 if (strpos($keyDecoded, static::CART_KEY_PREFIX_PRODUCT) !== false) {
-                    $selprod_id = FatUtility::int(str_replace(static::CART_KEY_PREFIX_PRODUCT, '', $keyDecoded));
+					if ($productFor == applicationConstants::PRODUCT_FOR_RENT) {
+						$rentalStartDate = $product['rental_start_date'];
+						$rentalEndDate = $product['rental_end_date'];
+						$keyDecoded = str_replace($rentalStartDate . $rentalEndDate, '', $keyDecoded);
+					}
+					$selprod_id = FatUtility::int(str_replace(static::CART_KEY_PREFIX_PRODUCT, '', $keyDecoded));
                 }
-
+				
                 //To rid of from invalid product detail in listing.
                 if (1 > $selprod_id) {
                     unset($this->SYSTEM_ARR['cart'][$key]);
@@ -268,14 +333,26 @@ class Cart extends FatModel
                 $this->products[$key]['tax'] = 0;
                 $this->products[$key]['reward_point'] = 0;
                 $this->products[$key]['volume_discount'] = 0;
+                $this->products[$key]['duration_discount'] = 0;
                 $this->products[$key]['volume_discount_total'] = 0;
+                $this->products[$key]['duration_discount_total'] = 0;
 
                 $selProdCost = $shopId = '';
                 /* seller products[ */
-                if ($selprod_id > 0) {
-                    $sellerProductRow = $this->getSellerProductData($selprod_id, $quantity, $siteLangId, $loggedUserId);
+				$duration = 0;
+				if ($productFor == applicationConstants::PRODUCT_FOR_RENT) {
+					if($product['rental_type'] == applicationConstants::RENT_TYPE_HOUR) {
+						$duration = Common::hoursBetweenDates($product['rental_start_date'], $product['rental_end_date']);
+					} else {
+						$duration = Common::daysBetweenDates($product['rental_start_date'], $product['rental_end_date']);
+					}	
+				}
 
-                    /* echo "<pre>"; var_dump($sellerProductRow); */
+
+                if ($selprod_id > 0) {
+                    $sellerProductRow = $this->getSellerProductData($selprod_id, $quantity, $siteLangId, $loggedUserId, $productFor, $duration);
+					
+					/* echo "<pre>"; var_dump($sellerProductRow); */
                     if (!$sellerProductRow) {
                         $this->removeCartKey($key);
                         continue;
@@ -309,16 +386,25 @@ class Cart extends FatModel
 
                     /*[ Product shipping cost */
                     $shippingCost = 0;
+					$this->products[$key]['selectedShippingMethod'] = '';
                     if (!empty($productSelectedShippingMethodsArr['product']) && isset($productSelectedShippingMethodsArr['product'][$sellerProductRow['selprod_id']])) {
                         $shippingDurationRow = $productSelectedShippingMethodsArr['product'][$sellerProductRow['selprod_id']];
                         $this->products[$key]['sduration_id'] = isset($shippingDurationRow['sduration_id'])?$shippingDurationRow['sduration_id']:'';
                         $shippingCost = ROUND(($shippingDurationRow['mshipapi_cost']), 2);
                         $this->products[$key]['shipping_cost'] = $shippingCost;
+                        $this->products[$key]['selectedShippingMethod'] = $shippingDurationRow['mshipapi_id'];
                     }
+					
                     /*]*/
                     //CommonHelper::printArray($sellerProductRow);exit;
                     /*[ Product Tax */
-                    $taxableProdPrice = $sellerProductRow['theprice'] - $sellerProductRow['volume_discount'];
+					
+					if ($productFor == applicationConstants::PRODUCT_FOR_RENT) {
+						$taxableProdPrice = ($sellerProductRow['sprodata_rental_price'] * $duration) - $sellerProductRow['duration_discount'];
+					} else {
+						$taxableProdPrice = $sellerProductRow['theprice'] - $sellerProductRow['volume_discount'];
+					}
+
                     $taxObj = new Tax();
                     $tax = $taxObj->calculateTaxRates($sellerProductRow['product_id'], $taxableProdPrice, $sellerProductRow['selprod_user_id'], $siteLangId, $quantity);
                     $this->products[$key]['tax'] = $tax;
@@ -357,8 +443,25 @@ class Cart extends FatModel
                     $is_cod_enabled = false;
                 }
                 /* ] */
-
-                $this->products[$key]['key'] = $key;
+				$this->products[$key]['productFor'] = $productFor;
+				if ($productFor == applicationConstants::PRODUCT_FOR_RENT) {
+					$this->products[$key]['rentalStartDate'] = $product['rental_start_date'];
+					$this->products[$key]['rentalEndDate'] = $product['rental_end_date'];
+					$this->products[$key]['extendOrder'] = $product['extendOrder'];
+					$rentalSecurity = $sellerProductRow['sprodata_rental_security'];
+					if ( $product['extendOrder'] > 0) {
+						$rentalSecurity = 0;
+					}
+					
+					$this->products[$key]['total'] = ($duration * $sellerProductRow['sprodata_rental_price']*$product['quantity']) +  $rentalSecurity;
+					
+					$this->products[$key]['sprodata_rental_security'] = $rentalSecurity;
+				}
+	
+				
+				//die($sellerProductRow['sprodata_rental_price']);
+				
+				$this->products[$key]['key'] = $key;
                 $this->products[$key]['is_batch'] = 0;
                 $this->products[$key]['is_cod_enabled'] = $is_cod_enabled;
                 $this->products[$key]['selprod_id'] = $selprod_id;
@@ -372,10 +475,13 @@ class Cart extends FatModel
                 $this->products[$key]['affiliate_commission'] = $affiliateCommission;
                 $this->products[$key]['affiliate_user_id'] = $associatedAffiliateUserId;
                 if (UserAuthentication::isUserLogged() || UserAuthentication::isGuestUserLogged()) {
-                    $this->products[$key]['shipping_address'] =  UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), $siteLangId, 0, $this->getCartShippingAddress());
-                    $this->products[$key]['seller_address'] =  Shop::getShopAddress($shopId, true, $siteLangId);
+                    $this->products[$key]['shipping_address'] = UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), $siteLangId, 0, $this->getCartShippingAddress());
+                    $this->products[$key]['seller_address'] = Shop::getShopAddress($shopId, true, $siteLangId);
                 }
             }
+			}
+			
+			//echo "<pre>"; print_r($this->products); echo "</pre>"; exit;
 
             $sellerPrice = $this->getSellersProductItemsPrice($this->products);
             foreach ($this->products as $cartkey => $cartval) {
@@ -393,7 +499,7 @@ class Cart extends FatModel
         return $this->products;
     }
 
-    public function getSellerProductData($selprod_id, &$quantity, $siteLangId, $loggedUserId = 0)
+    public function getSellerProductData($selprod_id, &$quantity, $siteLangId, $loggedUserId = 0, $productFor = applicationConstants::PRODUCT_FOR_SALE, $duration = 0)
     {
         $prodSrch = new ProductSearch($siteLangId);
         $prodSrch->setDefinedCriteria();
@@ -410,7 +516,7 @@ class Cart extends FatModel
         'product_dimension_unit', 'product_weight', 'product_weight_unit',
         'selprod_id','selprod_code', 'selprod_stock','selprod_user_id','IF(selprod_stock > 0, 1, 0) AS in_stock','selprod_min_order_qty',
         'special_price_found', 'theprice', 'shop_id', 'shop_free_ship_upto',
-        'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type', 'selprod_price', 'selprod_cost','case when product_seller_id=0 then IFNULL(psbs_user_id,0)   else product_seller_id end  as psbs_user_id','product_seller_id','product_cod_enabled','selprod_cod_enabled'));
+        'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type', 'selprod_price', 'selprod_cost','case when product_seller_id=0 then IFNULL(psbs_user_id,0)   else product_seller_id end  as psbs_user_id','product_seller_id','product_cod_enabled','selprod_cod_enabled', 'sprodata_is_for_sell', 'sprodata_is_for_rent', 'sprodata_rental_price', 'sprodata_rental_security', 'sprodata_rental_type', 'sprodata_rental_stock', 'sprodata_rental_is_pickup', 'sprodata_rental_terms'));
 
         if ($siteLangId) {
             $prodSrch->joinBrands();
@@ -444,23 +550,49 @@ class Cart extends FatModel
         $sellerProductRow['volume_discount'] = 0;
         $sellerProductRow['volume_discount_percentage'] = 0;
         $sellerProductRow['volume_discount_total'] = 0;
-        $srch = new SellerProductVolumeDiscountSearch();
-        $srch->doNotCalculateRecords();
-        $srch->addCondition('voldiscount_selprod_id', '=', $sellerProductRow['selprod_id']);
-        $srch->addCondition('voldiscount_min_qty', '<=', $quantity);
-        $srch->addOrder('voldiscount_min_qty', 'DESC');
-        $srch->setPageSize(1);
-        $srch->addMultipleFields(array('voldiscount_percentage'));
-        $rs = $srch->getResultSet();
-        $volumeDiscountRow = FatApp::getDb()->fetch($rs);
-        if ($volumeDiscountRow) {
-            $volumeDiscount = $sellerProductRow['theprice'] * ($volumeDiscountRow['voldiscount_percentage'] / 100);
-            //$sellerProductRow['theprice'] = $sellerProductRow['theprice'] - $volumeDiscount;
-            $sellerProductRow['volume_discount_percentage'] = $volumeDiscountRow['voldiscount_percentage'];
-            $sellerProductRow['volume_discount'] = $volumeDiscount;
-            $sellerProductRow['volume_discount_total'] = $volumeDiscount * $quantity;
-        }
+
+		if ($productFor == applicationConstants::PRODUCT_FOR_SALE) {
+			$srch = new SellerProductVolumeDiscountSearch();
+			$srch->doNotCalculateRecords();
+			$srch->addCondition('voldiscount_selprod_id', '=', $sellerProductRow['selprod_id']);
+			$srch->addCondition('voldiscount_min_qty', '<=', $quantity);
+			$srch->addOrder('voldiscount_min_qty', 'DESC');
+			$srch->setPageSize(1);
+			$srch->addMultipleFields(array('voldiscount_percentage'));
+			$rs = $srch->getResultSet();
+			$volumeDiscountRow = FatApp::getDb()->fetch($rs);
+			if ($volumeDiscountRow) {
+				$volumeDiscount = $sellerProductRow['theprice'] * ($volumeDiscountRow['voldiscount_percentage'] / 100);
+				//$sellerProductRow['theprice'] = $sellerProductRow['theprice'] - $volumeDiscount;
+				$sellerProductRow['volume_discount_percentage'] = $volumeDiscountRow['voldiscount_percentage'];
+				$sellerProductRow['volume_discount'] = $volumeDiscount;
+				$sellerProductRow['volume_discount_total'] = $volumeDiscount * $quantity;
+			}
+		}
         /* ] */
+		/* [ get duration discount for rental products*/
+		$sellerProductRow['duration_discount'] = 0;
+        $sellerProductRow['duration_discount_percentage'] = 0;
+        $sellerProductRow['duration_discount_total'] = 0;
+		if ($productFor == applicationConstants::PRODUCT_FOR_RENT) {
+			$srch = new SellerProductDurationDiscountSearch();
+			$srch->doNotCalculateRecords();
+			$srch->addCondition('produr_selprod_id', '=', $sellerProductRow['selprod_id']);
+			$srch->addCondition('produr_rental_duration', '<=', $duration);
+			$srch->addOrder('produr_rental_duration', 'DESC');
+			$srch->setPageSize(1);
+			$srch->addMultipleFields(array('produr_discount_percent'));
+			$rs = $srch->getResultSet();
+			$durationDiscountRow = FatApp::getDb()->fetch($rs);
+			if ($durationDiscountRow) {
+				$durationDiscount = ($sellerProductRow['sprodata_rental_price'] * $duration ) * ($durationDiscountRow['produr_discount_percent'] / 100);
+				$sellerProductRow['duration_discount_percentage'] = $durationDiscountRow['produr_discount_percent'];
+				$sellerProductRow['duration_discount'] = $durationDiscount;
+				$sellerProductRow['duration_discount_total'] = $durationDiscount * $quantity;
+			}
+		}
+		/* ] */
+
 
         /* set variable of shipping cost of the product, if shipping already selected[ */
         $sellerProductRow['shipping_cost'] = 0;
@@ -509,7 +641,10 @@ class Cart extends FatModel
     public function removeCartKey($key)
     {
         unset($this->products[$key]);
-        unset($this->SYSTEM_ARR['cart'][$key]);
+        unset($this->SYSTEM_ARR['cart']['products'][$key]);
+		if($this->countProducts() <= 0) {
+			unset($this->SYSTEM_ARR['cart']['cart_type']);
+		}
         $this->updateUserCart();
         return true;
     }
@@ -523,13 +658,13 @@ class Cart extends FatModel
             foreach ($cartProducts as $cartKey => $product) {
                 if ($key == 'all') {
                     $found = true;
-                    unset($this->SYSTEM_ARR['cart'][$cartKey]);
+                    unset($this->SYSTEM_ARR['cart']['products'][$cartKey]);
                     /* to keep track of temporary hold the product stock[ */
                     $this->updateTempStockHold($product['selprod_id'], 0, 0);
                 /* ] */
                 } elseif (md5($product['key']) == $key && !$product['is_batch']) {
                     $found = true;
-                    unset($this->SYSTEM_ARR['cart'][$cartKey]);
+                    unset($this->SYSTEM_ARR['cart']['products'][$cartKey]);
                     /* to keep track of temporary hold the product stock[ */
                     $this->updateTempStockHold($product['selprod_id'], 0, 0);
                     /* ] */
@@ -537,6 +672,10 @@ class Cart extends FatModel
                 }
             }
         }
+		if($this->countProducts() <= 0) {
+			unset($this->SYSTEM_ARR['cart']['cart_type']);
+		}
+		
         $this->updateUserCart();
         if (false === $found) {
             $this->error = Labels::getLabel('ERR_Invalid_Product', $this->cart_lang_id);
@@ -582,43 +721,64 @@ class Cart extends FatModel
 
             if (is_array($cartProducts)) {
                 foreach ($cartProducts as $cartKey => $product) {
+					
                     if (md5($product['key']) == $key) {
-                        $found = true;
-                        /* minimum quantity check[ */
-                        $minimum_quantity = ($product['selprod_min_order_qty']) ? $product['selprod_min_order_qty'] : 1;
-                        if ($quantity < $minimum_quantity) {
-                            $str = Labels::getLabel('LBL_Please_add_minimum_{minimumquantity}', $this->cart_lang_id);
-                            $str = str_replace("{minimumquantity}", $minimum_quantity, $str);
-                            $this->warning = $str." ".FatUtility::decodeHtmlEntities($product['product_name']);
-                            break;
-                        }
-                        /* ] */
+						$productFor = $product['productFor'];
+						$found = true;
+						if ($productFor == applicationConstants::PRODUCT_FOR_SALE) {
+							/* minimum quantity check[ */
+							$minimum_quantity = ($product['selprod_min_order_qty']) ? $product['selprod_min_order_qty'] : 1;
+							if ($quantity < $minimum_quantity) {
+								$str = Labels::getLabel('LBL_Please_add_minimum_{minimumquantity}', $this->cart_lang_id);
+								$str = str_replace("{minimumquantity}", $minimum_quantity, $str);
+								$this->warning = $str." ".FatUtility::decodeHtmlEntities($product['product_name']);
+								break;
+							}
+							/* ] */
+							$tempHoldStock = Product::tempHoldStockCount($product['selprod_id']);
+							$availableStock = $cartProducts[$cartKey]['selprod_stock'] - $tempHoldStock;
+							$userTempHoldStock = Product::tempHoldStockCount($product['selprod_id'], $cart_user_id, 0, true);
 
-
-                        $tempHoldStock = Product::tempHoldStockCount($product['selprod_id']);
-                        $availableStock = $cartProducts[$cartKey]['selprod_stock'] - $tempHoldStock;
-                        $userTempHoldStock = Product::tempHoldStockCount($product['selprod_id'], $cart_user_id, 0, true);
-
-                        if ($quantity > $userTempHoldStock) {
-                            if ($availableStock == 0 || ($availableStock < ($quantity - $userTempHoldStock))) {
-                                $this->warning = Labels::getLabel('MSG_Requested_quantity_more_than_stock_available', $this->cart_lang_id);
-                                $quantity = $userTempHoldStock + $availableStock;
-                            }
-                        }
-
-                        if ($quantity) {
-                            $this->SYSTEM_ARR['cart'][$cartKey] = $quantity;
-                            /* to keep track of temporary hold the product stock[ */
-                            $this->updateTempStockHold($product['selprod_id'], $quantity);
-                            /* ] */
-                            break;
-                        } else {
-                            $this->remove($key);
-                        }
-                    }
+							if ($quantity > $userTempHoldStock) {
+								if ($availableStock == 0 || ($availableStock < ($quantity - $userTempHoldStock))) {
+									$this->warning = Labels::getLabel('MSG_Requested_quantity_more_than_stock_available', $this->cart_lang_id);
+									$quantity = $userTempHoldStock + $availableStock;
+								}
+							}
+							
+							if ($quantity) {
+								$this->SYSTEM_ARR['cart']['products'][$cartKey]['quantity'] = $quantity;
+								/* to keep track of temporary hold the product stock[ */
+								$this->updateTempStockHold($product['selprod_id'], $quantity);
+								/* ] */
+								break;
+							} else {
+								$this->remove($key);
+							}
+						}
+						
+						if ($productFor == applicationConstants::PRODUCT_FOR_RENT) {
+							$rentProObj = new ProductRental();
+							$product['sprodata_rental_stock'];
+							$availedStock = $rentProObj->getRentalProductQuantity($product['selprod_id'], $product['rentalStartDate'], $product['rentalEndDate'], 0);
+							
+							$rentStock = $product['sprodata_rental_stock'] - $availedStock;
+							if ($quantity > $rentStock) {
+								$this->warning = Labels::getLabel('MSG_Requested_quantity_more_than_stock_available', $this->cart_lang_id);
+								break;
+							}
+							if ($quantity > 0) {
+								$this->SYSTEM_ARR['cart']['products'][$cartKey]['quantity'] = $quantity;
+								break;
+							} else {
+								$this->remove($key);
+							}
+						}
+					}
                 }
             }
-            $this->updateUserCart();
+			
+			$this->updateUserCart();
         } else {
             $this->error = Labels::getLabel('ERR_Quantity_should_be_greater_than_0', $this->cart_lang_id);
             return false;
@@ -844,10 +1004,13 @@ class Cart extends FatModel
         $orderNetAmount = 0;
         $cartRewardPoints = self::getCartRewardPoint();
         $cartVolumeDiscount = 0;
+        $cartDurationDiscount = 0;
 
         $isCodEnabled = true;
 
         if (is_array($products) && count($products)) {
+		//echo "<pre>"; print_r($products); echo "</pre>"; exit;
+
             foreach ($products as $product) {
                 $codEnabled = false;
                 if ($isCodEnabled && $product['is_cod_enabled']) {
@@ -859,11 +1022,14 @@ class Cart extends FatModel
                     //$cartTotalBatch += $product['prodgroup_total'];
                     $cartTotal += $product['prodgroup_total'];
                 } else {
-                    //$cartTotalNonBatch += $product['total'];
-                    $cartTotal += !empty($product['total']) ? $product['total'] : 0;
-                }
-
-                $cartVolumeDiscount += $product['volume_discount_total'];
+					$cartTotal += !empty($product['total']) ? $product['total'] : 0;
+				}
+				if($product['productFor'] == applicationConstants::PRODUCT_FOR_RENT) {
+					$cartDurationDiscount += $product['duration_discount_total'];
+				} else {
+					$cartVolumeDiscount += $product['volume_discount_total'];
+				}
+                
                 
                 /* $taxableProdPrice = $product['theprice'] - $product['volume_discount'] - ($cartDiscounts['discountedSelProdIds'][$product['selprod_id']])/$product['quantity'];
                 $taxObj = new Tax();
@@ -888,6 +1054,10 @@ class Cart extends FatModel
 
         $totalDiscountAmount = (isset($cartDiscounts['coupon_discount_total'])) ? $cartDiscounts['coupon_discount_total'] : 0;
         $orderNetAmount = (max($cartTotal - $cartVolumeDiscount - $totalDiscountAmount, 0)  + $shippingTotal  + $cartTaxTotal) ;
+		if( $cartDurationDiscount > 0) {
+			$orderNetAmount = (max($cartTotal - $cartDurationDiscount - $totalDiscountAmount, 0)  + $shippingTotal  + $cartTaxTotal) ;
+		}
+		
 
         $orderNetAmount = $orderNetAmount - CommonHelper::rewardPointDiscount($orderNetAmount, $cartRewardPoints);
         $WalletAmountCharge = ($this->isCartUserWalletSelected()) ? min($orderNetAmount, $userWalletBalance) : 0;
@@ -903,6 +1073,7 @@ class Cart extends FatModel
         }
 
         $netChargeAmt = $cartTotal + $cartTaxTotal - ((0 < $cartVolumeDiscount) ? $cartVolumeDiscount: 0);
+        $netChargeAmt = $cartTotal + $cartTaxTotal - ((0 < $cartDurationDiscount) ? $cartDurationDiscount: 0);
 
         $cartSummary = array(
             'cartTotal' => $cartTotal,
@@ -911,6 +1082,7 @@ class Cart extends FatModel
             'cartTaxTotal' => $cartTaxTotal,
             'cartDiscounts' => $cartDiscounts,
             'cartVolumeDiscount'=> $cartVolumeDiscount,
+            'cartDurationDiscount'=> $cartDurationDiscount,
             'cartRewardPoints' => $cartRewardPoints,
             'cartWalletSelected'=> $this->isCartUserWalletSelected(),
             'siteCommission' => $totalSiteCommission,
@@ -921,6 +1093,8 @@ class Cart extends FatModel
             'orderPaymentGatewayCharges' => $orderPaymentGatewayCharges,
             'netChargeAmount' => $netChargeAmt,
         );
+		
+		//echo "<pre>"; print_r($cartSummary); echo "</pre>"; exit;
 
         //CommonHelper::printArray($cartSummary); die();
         return $cartSummary;
@@ -1338,8 +1512,10 @@ class Cart extends FatModel
             if (isset($this->SYSTEM_ARR['shopping_cart']) && is_array($this->SYSTEM_ARR['shopping_cart']) && (!empty($this->SYSTEM_ARR['shopping_cart']))) {
                 $cart_arr["shopping_cart"] = $this->SYSTEM_ARR['shopping_cart'];
             }
-            $cart_arr = serialize($cart_arr);
-            $record->assignValues(array("usercart_user_id" => $this->cart_user_id,"usercart_type" =>CART::TYPE_PRODUCT, "usercart_details" => $cart_arr, "usercart_added_date" => date('Y-m-d H:i:s'),"usercart_last_used_date" => date('Y-m-d H:i:s'),"usercart_last_session_id" => $this->cart_id ));
+			
+			$cart_arr = serialize($cart_arr);
+			
+			$record->assignValues(array("usercart_user_id" => $this->cart_user_id,"usercart_type" =>CART::TYPE_PRODUCT, "usercart_details" => $cart_arr, "usercart_added_date" => date('Y-m-d H:i:s'),"usercart_last_used_date" => date('Y-m-d H:i:s'),"usercart_last_session_id" => $this->cart_id ));
             if (!$record->addNew(array(), array( 'usercart_details' => $cart_arr, "usercart_added_date" => date('Y-m-d H:i:s'),"usercart_last_used_date" => date('Y-m-d H:i:s'),"usercart_last_session_id" => $this->cart_id, "usercart_sent_reminder" => 0 ))) {
                 Message::addErrorMessage($record->getError());
                 throw new Exception('');
@@ -1432,14 +1608,30 @@ class Cart extends FatModel
         $cartInfo = unserialize($row["usercart_details"]);
 
         $cartObj = new Cart($userId, 0, $tempUserId);
-
-        foreach ($cartInfo as $key => $quantity) {
+		$cartInfo = $cartInfo['products'];
+		
+		
+        foreach ($cartInfo as $key => $product) {
             $keyDecoded = unserialize(base64_decode($key));
-
+			$quantity = $product['quantity'];
+			$productFor = $product['productFor'];
+			$rentalData = array();
+			if($productFor == applicationConstants::PRODUCT_FOR_RENT) {
+				$rentalData = array(
+					'rental_start_date' => $product['rental_start_date'],
+					'rental_end_date' => $product['rental_end_date']
+				); 
+			}
             $selprod_id = 0;
             $prodgroup_id = 0;
 
             if (strpos($keyDecoded, static::CART_KEY_PREFIX_PRODUCT) !== false) {
+				if ($productFor == applicationConstants::PRODUCT_FOR_RENT) {
+						$rentalStartDate = $product['rental_start_date'];
+						$rentalEndDate = $product['rental_end_date'];
+						$keyDecoded = str_replace($rentalStartDate . $rentalEndDate, '', $keyDecoded);
+					}
+				
                 $selprod_id = FatUtility::int(str_replace(static::CART_KEY_PREFIX_PRODUCT, '', $keyDecoded));
             }
 
@@ -1447,7 +1639,7 @@ class Cart extends FatModel
                 $prodgroup_id = FatUtility::int(str_replace(static::CART_KEY_PREFIX_BATCH, '', $keyDecoded));
             }
 
-            $cartObj->add($selprod_id, $quantity, $prodgroup_id);
+            $cartObj->add($selprod_id, $quantity, $prodgroup_id, '', $productFor, $rentalData);
 
             $db->deleteRecords('tbl_user_cart', array('smt'=>'`usercart_user_id`=? and usercart_type=?', 'vals'=>array($tempUserId,CART::TYPE_PRODUCT)));
         }

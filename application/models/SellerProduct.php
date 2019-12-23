@@ -4,6 +4,9 @@ class SellerProduct extends MyAppModel
 {
     const DB_TBL = 'tbl_seller_products';
     const DB_TBL_PREFIX = 'selprod_';
+	
+	const DB_TBL_SELLER_PROD_DATA = 'tbl_seller_products_data';
+	const DB_TBL_SELLER_PROD_DATA_PREFIX = 'sprodata_';
 
     const DB_PROD_TBL = 'tbl_products';
     const DB_PROD_TBL_PREFIX = 'product_';
@@ -71,8 +74,21 @@ class SellerProduct extends MyAppModel
                 'selprod_available_from',
             ),
         );
-
-        if (FatApp::getConfig('CONF_PRODUCT_SKU_MANDATORY', FatUtility::VAR_INT, 1)) {
+		
+		if(ALLOW_SALE > 0) {
+			$saleFields = array('sprodata_is_for_sell');
+			$arr[ImportexportCommon::VALIDATE_INT] = array_merge($arr[ImportexportCommon::VALIDATE_INT], $saleFields);
+		}
+		
+		if(ALLOW_RENT > 0) {
+			$rentIntFields = array('sprodata_is_for_rent');
+			$rentRequiredFields = array('sprodata_rental_price', 'sprodata_rental_security', 'sprodata_rental_type', 'sprodata_rental_stock', 'sprodata_minimum_rental_duration');
+			
+			$arr[ImportexportCommon::VALIDATE_INT] = array_merge($arr[ImportexportCommon::VALIDATE_INT], $saleFields);
+			$arr[ImportexportCommon::VALIDATE_NOT_NULL] = array_merge($arr[ImportexportCommon::VALIDATE_NOT_NULL], $rentRequiredFields);
+		}
+		
+		if (FatApp::getConfig('CONF_PRODUCT_SKU_MANDATORY', FatUtility::VAR_INT, 1)) {
             $physical = array(
                 'selprod_sku'
                 );

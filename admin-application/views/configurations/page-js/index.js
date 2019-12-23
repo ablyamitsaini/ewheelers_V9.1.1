@@ -19,7 +19,6 @@ $(document).ready(function() {
             $('#currentDate').html(ans.dateTime);
         });
     });
-
 });
 
 (function() {

@@ -78,6 +78,16 @@ class applicationConstants
     const URL_TYPE_PRODUCT = 3;
     const URL_TYPE_CATEGORY = 4;
     const URL_TYPE_BRAND = 5;
+	
+	const PRODUCT_FOR_SALE = 1;
+	const PRODUCT_FOR_RENT = 2; 
+	const PRODUCT_FOR_EXTEND_RENTAL = 3; 
+	
+	
+	const RENT_TYPE_DAY = 1;
+	const RENT_TYPE_HOUR = 2;
+	const PRODUCT_IS_SELF_PICKUP = 1;
+	
 
     public static function getWeightUnitsArr($langId)
     {
@@ -388,4 +398,17 @@ class applicationConstants
         '12' => Labels::getLabel('LBL_December', $langId),
         );
     }
+	
+	public static function rentalTypeArr($langId)
+    {
+        $langId = FatUtility::int($langId);
+        if ($langId < 1) {
+            $langId = FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG');
+        }
+        return array(
+			static::RENT_TYPE_DAY => Labels::getLabel('LBL_Per_Day', $langId),
+			static::RENT_TYPE_HOUR => Labels::getLabel('LBL_Per_Hour', $langId),
+        );
+    }
+	
 }

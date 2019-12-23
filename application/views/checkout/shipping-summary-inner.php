@@ -17,12 +17,10 @@ $shippingapi_idFld->developerTags['col'] = 6;
 <div class="box box--white box--radius p-4">
     <section id="shipping-summary" class="section-checkout">
         <div class="review-wrapper step__body">
-
             <?php usort($products, function ($a, $b) {
-    return $a['shop_id'] - $b['shop_id'];
-});
-
-                        $prevShopId = 0;
+				return $a['shop_id'] - $b['shop_id'];
+			});
+                    $prevShopId = 0;
                     $productsInShop = array_count_values(array_column($products, 'shop_id'));
                     if (count($products)) {
                         $productCount = 0;
@@ -80,10 +78,38 @@ $shippingapi_idFld->developerTags['col'] = 6;
                                         </div>
                                         <?php } ?>
                                     </div>
+									
+									<?php if($product['productFor'] == applicationConstants::PRODUCT_FOR_RENT) { 
+									if($product['sprodata_rental_type'] == applicationConstants::RENT_TYPE_HOUR) {
+										$format = 'M d, Y h:i A';
+										$duration = Common::hoursBetweenDates($product['rentalStartDate'], $product['rentalEndDate']);
+										$unit = Labels::getLabel("LBL_Hours", $siteLangId);
+										
+									} else {
+										$format = 'M d, Y';
+										$duration = Common::daysBetweenDates($product['rentalStartDate'], $product['rentalEndDate']);
+										$unit = Labels::getLabel("LBL_Days", $siteLangId);
+									}
+									?>
+									<div class="item__specification">
+									<?php echo Labels::getLabel("LBL_Duration:", $siteLangId) .' '. $duration.' '. $unit; ?>
+									</div>
+									<div class="item__specification">
+									<?php echo Labels::getLabel("LBL_From_:", $siteLangId) .' '. date($format, strtotime($product['rentalStartDate'])); ?>
+									</div>
+									<div class="item__specification">
+									<?php echo Labels::getLabel("LBL_To_:", $siteLangId) .' '. date($format, strtotime($product['rentalEndDate'])); ?>
+									</div>
+								<?php } ?>
+									
                                 </div>
                             </td>
                             <td>
-                                <?php
+                            <?php
+							if ($product['extendOrder'] > 0) {
+								echo '<span class="text-danger">'. Labels::getLabel("LBL_Delivered", $siteLangId) . '</span>';
+							} else {
+							
                             $selectedShippingType = "";
                             $displayManualOptions = "style='display:none'";
                             $displayShipStationOption = "style='display:none'";
@@ -139,6 +165,11 @@ $shippingapi_idFld->developerTags['col'] = 6;
                             if (sizeof($shipping_options[$product['product_id']])<2) {
                                 unset($newShippingMethods[SHIPPINGMETHODS::MANUAL_SHIPPING]);
                             }
+							if(($product['sprodata_is_for_rent'] != applicationConstants::PRODUCT_FOR_RENT && $product['sprodata_rental_is_pickup'] != applicationConstants::PRODUCT_IS_SELF_PICKUP ) || $product['productFor'] != applicationConstants::PRODUCT_FOR_RENT) {
+								unset($newShippingMethods[SHIPPINGMETHODS::SELF_PICKUP]);
+							}
+							
+							
                             if (!$product['is_physical_product'] && $product['is_digital_product']) {
                                 echo $shippingOptions = CommonHelper::displayNotApplicable($siteLangId, '');
                             } else {
@@ -173,12 +204,22 @@ $shippingapi_idFld->developerTags['col'] = 6;
                                     <?php } ?>
                                 </ul>
                                 <?php
-                            } ?>
+                            } 
+							
+							}?>
                             </td>
-                            <td><span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']*$product['quantity']); ?> </span>
+                            <td>
+							<?php if($product['productFor'] == applicationConstants::PRODUCT_FOR_RENT) {  ?>
+							<span class="item__price">
+								<?php echo CommonHelper::displayMoneyFormat($product['total']); ?> 
+							</span>
+							<?php } else { ?>
+							<span class="item__price">
+							<?php echo CommonHelper::displayMoneyFormat($product['theprice']*$product['quantity']); ?> </span>
                                 <?php if ($product['special_price_found']) { ?>
                                 <span class="text--normal text--normal-secondary text-nowrap"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span>
                                 <?php } ?>
+							<?php } ?>	
                             </td>
                             <td class="text-right">
                                 <a href="javascript:void(0)" onclick="cart.remove('<?php echo md5($product['key']); ?>','checkout')" class="icons-wrapper"><i class="icn"><svg class="svg">
@@ -192,13 +233,13 @@ $shippingapi_idFld->developerTags['col'] = 6;
                 </table>
             </div>
             <?php
-                            }
-                            $prevShopId = $product['shop_id']; ?>
+            }
+            $prevShopId = $product['shop_id']; ?>
             <?php
-                        }
-                    } else {
-                        echo Labels::getLabel('LBL_Your_cart_is_empty', $siteLangId);
-                    } ?>
+        }
+            } else {
+                echo Labels::getLabel('LBL_Your_cart_is_empty', $siteLangId);
+			} ?>
 
     </section>
     <div class="row align-items-center justify-content-between mt-4">
@@ -223,7 +264,10 @@ $shippingapi_idFld->developerTags['col'] = 6;
             /*      resetShipstationSelectBox(this); */
             $(this).parent().parent().find('.shipstation_selectbox').show();
             $(this).parent().parent().find('.manual_shipping').hide();
-        }
+        } else if ($(this).val() == "3") {
+			$(this).parent().parent().find('.shipstation_selectbox').hide();
+            $(this).parent().parent().find('.manual_shipping').hide();
+		}
     });
 
     function resetShipstationSelectBox(obj) {

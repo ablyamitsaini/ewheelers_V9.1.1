@@ -16,7 +16,7 @@ if ($products) {
         <?php if($product['in_stock'] == 0) { ?>
             <span class="tag--soldout"><?php echo Labels::getLabel('LBL_SOLD_OUT', $siteLangId);?></span>
         <?php  } ?>
-        <div class="products__body"> <?php $this->includeTemplate('_partial/collection-ui.php', array('product'=>$product,'siteLangId'=>$siteLangId, 'forPage'=> $forPage), false); ?> <div class="products__img">
+        <div class="products__body"> <?php $this->includeTemplate('_partial/collection-ui.php', array('product'=>$product,'siteLangId'=>$siteLangId, 'forPage'=> $forPage, 'rentalTypeArr' => $rentalTypeArr), false); ?> <div class="products__img">
                 <?php $uploadedTime = AttachedFile::setTimeParam($product['product_image_updated_on']);?> <a title="<?php echo $product['selprod_title']; ?>"
                     href="<?php echo !isset($product['promotion_id'])?CommonHelper::generateUrl('Products', 'View', array($product['selprod_id'])):CommonHelper::generateUrl('Products', 'track', array($product['promotion_record_id']))?>">
                     <img data-ratio="1:1 (500x500)"
@@ -35,7 +35,7 @@ if ($products) {
                         </div>
             <div class="products__title"><a title="<?php echo $product['selprod_title']; ?>"
                     href="<?php echo CommonHelper::generateUrl('Products', 'View', array($product['selprod_id'])); ?>"><?php echo (mb_strlen($product['selprod_title']) > 50) ? mb_substr($product['selprod_title'], 0, 50)."..." : $product['selprod_title']; ?>
-                </a></div> <?php $this->includeTemplate('_partial/collection-product-price.php', array('product'=>$product,'siteLangId'=>$siteLangId), false); ?>
+                </a></div> <?php $this->includeTemplate('_partial/collection-product-price.php', array('product'=>$product,'siteLangId'=>$siteLangId, 'rentalTypeArr' => $rentalTypeArr), false); ?>
         </div>
     </div>
     <!--/product tile-->

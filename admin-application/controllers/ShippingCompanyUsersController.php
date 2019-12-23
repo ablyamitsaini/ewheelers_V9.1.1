@@ -131,6 +131,7 @@ class ShippingCompanyUsersController extends AdminBaseController
         $fldUserType->value = User::USER_TYPE_SHIPPING_COMPANY;
 
         $stateId = 0;
+        $cityId = 0;
 
         if ($user_id > 0) {
             $userObj = new User($user_id);
@@ -147,11 +148,13 @@ class ShippingCompanyUsersController extends AdminBaseController
             $data['credential_username'] = htmlentities($data['credential_username']);
             } */
             $stateId = $data['user_state_id'];
+            $cityId = $data['user_city_id'];
             $frmUser->fill($data);
         }
 
         $this->set('user_id', $user_id);
         $this->set('stateId', $stateId);
+        $this->set('cityId', $cityId);
         $this->set('frmUser', $frmUser);
         $this->_template->render(false, false);
     }
@@ -163,8 +166,14 @@ class ShippingCompanyUsersController extends AdminBaseController
 
         $post = FatApp::getPostedData();
         $user_state_id = FatUtility::int($post['user_state_id']);
+        $user_city_id = FatUtility::int($post['user_city_id']);
+		if($user_city_id > -1) {
+			$post['user_city'] = '';
+		}
+		
         $post = $frm->getFormDataFromArray($post);
         $post['user_state_id'] = $user_state_id;
+        $post['user_city_id'] = $user_city_id;
 
         if (false === $post) {
             Message::addErrorMessage(current($frm->getValidationErrors()));

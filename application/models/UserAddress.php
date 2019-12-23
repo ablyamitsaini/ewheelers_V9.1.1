@@ -44,6 +44,9 @@
         $srch->joinTable(States::DB_TBL, 'LEFT OUTER JOIN', 's.state_id = ua.ua_state_id', 's');
         $srch->addCondition('state_active', '=', applicationConstants::ACTIVE);
 
+		$srch->joinTable(City::DB_TBL, 'LEFT OUTER JOIN', 'city.city_id = ua.ua_city_id AND city_active = '. applicationConstants::ACTIVE , 'city');
+        //$srch->addCondition('city_active', '=', applicationConstants::ACTIVE);
+
         $srch->addMultipleFields(array('ua.*','state_code','country_code'));
         if ($lang_id) {
             $srch->joinTable(Countries::DB_TBL_LANG, 'LEFT OUTER JOIN', 'c.country_id = c_l.countrylang_country_id AND countrylang_lang_id = '.$lang_id, 'c_l');
@@ -51,6 +54,9 @@
 
             $srch->joinTable(States::DB_TBL_LANG, 'LEFT OUTER JOIN', 's.state_id = s_l.statelang_state_id AND s_l.statelang_lang_id = ' . $lang_id, 's_l');
             $srch->addFld('IFNULL(state_name, state_identifier) as state_name');
+
+			$srch->joinTable(City::DB_TBL_LANG, 'LEFT OUTER JOIN', 'city.city_id = city_l.citylang_city_id AND city_l.citylang_lang_id = ' . $lang_id, 'city_l');
+            $srch->addFld('IFNULL(city_name, city_identifier) as city_name');
         }
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();
@@ -63,9 +69,11 @@
         }
         $srch->addOrder(static::tblFld('is_default'), 'DESC');
         $rs = $srch->getResultSet();
+		
 
-        if ($ua_id) {
+		if ($ua_id) {
             return FatApp::getDb()->fetch($rs);
+			
         }
         return FatApp::getDb()->fetchAll($rs);
     }

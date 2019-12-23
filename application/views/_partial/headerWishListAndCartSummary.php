@@ -3,6 +3,9 @@ $user_is_buyer = 0;
 if (UserAuthentication::isUserLogged()) {
     $user_is_buyer = User::getAttributesById(UserAuthentication::getLoggedUserId(), 'user_is_buyer');
 }
+$rentalSecutityTotal = 0;
+
+
 if ($user_is_buyer > 0 || (!UserAuthentication::isUserLogged())) { ?>
     <a href="javascript:void(0)">
         <span class="icn"><svg class="svg">
@@ -11,7 +14,11 @@ if ($user_is_buyer > 0 || (!UserAuthentication::isUserLogged())) { ?>
         <span class="icn-txt"><strong><?php echo Labels::getLabel("LBL_Cart", $siteLangId); ?></strong>
             <span class="cartQuantity"><?php echo $totalCartItems.' '; ?></span>
             <?php /* if (0 < $cartSummary['cartTotal']) { */ ?>
-                <span class="cartValue"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTotal']); ?></span>
+                <span class="cartValue">
+				<?php 
+				//echo CommonHelper::displayMoneyFormat($cartSummary['cartTotal']); 
+				echo CommonHelper::displayMoneyFormat($cartSummary['netChargeAmount']); 
+				?></span>
             <?php /* } */ ?>
         </span>
     </a>
@@ -24,7 +31,12 @@ if ($user_is_buyer > 0 || (!UserAuthentication::isUserLogged())) { ?>
                     <tbody>
                         <?php
                         if (count($products)) {
+							
                             foreach ($products as $product) {
+								if($product['productFor'] == applicationConstants::PRODUCT_FOR_RENT) {
+									$rentalSecutityTotal += $product['sprodata_rental_security'];
+								}
+								
                                 $productUrl = CommonHelper::generateUrl('Products', 'View', array($product['selprod_id']));
                                 $shopUrl = CommonHelper::generateUrl('Shops', 'View', array($product['shop_id']));
                                 $imageUrl =  FatCache::getCachedUrl(CommonHelper::generateUrl('image', 'product', array($product['product_id'], "EXTRA-SMALL", $product['selprod_id'], 0, $siteLangId)), CONF_IMG_CACHE_TIME, '.jpg'); ?> <tr class="<?php echo (!$product['in_stock']) ? 'disabled' : '';
@@ -44,14 +56,41 @@ if ($user_is_buyer > 0 || (!UserAuthentication::isUserLogged())) { ?>
                                             echo $option['option_name'].':'; ?> <?php echo $option['optionvalue_name']; ?> <?php $count++;
                                         }
                                     } ?> | <?php echo Labels::getLabel('LBL_Quantity:', $siteLangId) ?> <?php echo $product['quantity']; ?> </div>
+									<?php if($product['productFor'] == applicationConstants::PRODUCT_FOR_RENT) { 
+									if($product['sprodata_rental_type'] == applicationConstants::RENT_TYPE_HOUR) {
+										$format = 'M d, Y h:i A';
+										$duration = Common::hoursBetweenDates($product['rentalStartDate'], $product['rentalEndDate']);
+									} else {
+										$format = 'M d, Y';
+										$duration = Common::daysBetweenDates($product['rentalStartDate'], $product['rentalEndDate']);
+									}
+									?>
+									<div class="item__specification">
+									<?php echo Labels::getLabel("LBL_From_:", $siteLangId) .' '. date($format, strtotime($product['rentalStartDate'])); ?>
+									</div>
+									<div class="item__specification">
+									<?php echo Labels::getLabel("LBL_To_:", $siteLangId) .' '. date($format, strtotime($product['rentalEndDate'])); ?>
+									</div>
+									<?php } ?>
+									
+									
                                 </div>
                             </td>
                             <td>
-                                <div class="product_price"><span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']*$product['quantity']); ?> </span>
+							<?php if($product['productFor'] == applicationConstants::PRODUCT_FOR_RENT) {  ?>
+								<div class="product_price"><span class="item__price"><?php 
+								//echo CommonHelper::displayMoneyFormat($product['total']); 
+								echo CommonHelper::displayMoneyFormat(($product['sprodata_rental_price']* $duration) * $product['quantity']);
+								?> </span>
+                              
+                                </div>
+							<?php } else { ?>
+								<div class="product_price"><span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']*$product['quantity']); ?> </span>
                                     <?php if ($product['special_price_found']) { ?>
                                         <span class="text--normal text--normal-secondary text-nowrap"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span>
                                     <?php } ?>
                                 </div>
+							<?php } ?>	
                             </td>
                             <td class="">
                                 <a href="javascript:void(0)" class="icons-wrapper" onclick="cart.remove('<?php echo md5($product['key']); ?>')" title="<?php echo Labels::getLabel('LBL_Remove', $siteLangId); ?>">
@@ -74,7 +113,7 @@ if ($user_is_buyer > 0 || (!UserAuthentication::isUserLogged())) { ?>
             <table class="table--justify">
                 <tr>
                     <td class=""><?php echo Labels::getLabel('LBL_Sub_Total', $siteLangId); ?></td>
-                    <td class=""><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTotal']); ?></td>
+                    <td class=""><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTotal'] - $rentalSecutityTotal); ?></td>
                 </tr>
                 <tr>
                     <td class=""><?php echo Labels::getLabel('LBL_Tax', $siteLangId); ?></td>
@@ -83,10 +122,27 @@ if ($user_is_buyer > 0 || (!UserAuthentication::isUserLogged())) { ?>
                 <?php if (0 < $cartSummary['cartVolumeDiscount']) { ?>
                     <tr>
                         <td class="text-left"><?php echo Labels::getLabel('LBL_Volume_Discount', $siteLangId); ?></td>
-                        <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartVolumeDiscount']); ?></td>
+                        <td class="text-right">- <?php echo CommonHelper::displayMoneyFormat($cartSummary['cartVolumeDiscount']); ?></td>
                     </tr>
                 <?php }
-                $netChargeAmt = $cartSummary['cartTotal']+$cartSummary['cartTaxTotal'] - ((0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0); ?>
+				if (0 < $cartSummary['cartDurationDiscount']) { ?>
+                    <tr>
+                        <td class="text-left"><?php echo Labels::getLabel('LBL_Duration_Discount', $siteLangId); ?></td>
+                        <td class="text-right">- <?php echo CommonHelper::displayMoneyFormat($cartSummary['cartDurationDiscount']); ?></td>
+                    </tr>
+                <?php }
+				if ($product['productFor'] == applicationConstants::PRODUCT_FOR_RENT) {
+					$netChargeAmt = $cartSummary['cartTotal']+$cartSummary['cartTaxTotal'] - ((0 < $cartSummary['cartDurationDiscount'])?$cartSummary['cartDurationDiscount']:0);
+				} else  {
+					$netChargeAmt = $cartSummary['cartTotal']+$cartSummary['cartTaxTotal'] - ((0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0); 
+				}
+				
+				if ($rentalSecutityTotal > 0) { ?>
+				<tr>
+					<td><?php echo Labels::getLabel('LBL_Rental_Security', $siteLangId); ?></td>
+					<td><?php echo CommonHelper::displayMoneyFormat($rentalSecutityTotal); ?> </td>
+				</tr>
+				<?php }?>
                 <tr>
                     <td class="hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
                     <td class="hightlighted"><?php echo CommonHelper::displayMoneyFormat($netChargeAmt); ?></td>

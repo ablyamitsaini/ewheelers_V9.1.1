@@ -125,10 +125,25 @@ $(document).on('change','.collection-language-js',function(){
 	getCountryStates = function(countryId, stateId, dv){
 		fcom.displayProcessing();
 		fcom.ajax(fcom.makeUrl('Shops','getStates',[countryId,stateId]),'',function(res){
+			$('#ua_city_id').empty();
 			$(dv).empty();
 			$(dv).append(res);
 		});
 	};
+	
+	getCountryStatesCities = function(countrySelector, stateId, cityId, dv) {
+		var countryId = $(countrySelector).val();
+		fcom.ajax(fcom.makeUrl('Users', 'getCities', [countryId, stateId, cityId]), '', function (res) {
+			$(dv).empty();
+			$(dv).append(res);
+			if ($(dv).val() < 0) {
+				$('.user-cityname--js').show();
+			} else {
+				$('.user-cityname--js').hide();
+			}
+		});
+	};
+	
 
 	shopMediaForm = function(shopId){
 			fcom.displayProcessing();

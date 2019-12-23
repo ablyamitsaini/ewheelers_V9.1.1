@@ -267,6 +267,8 @@ class Orders extends MyAppModel
                 'op_l'
             );
         }
+		$srch->joinTable(OrderProductData::DB_TBL, 'LEFT OUTER JOIN ', 'op.op_id = opd_op_id', 'opd'); //== join order products data
+		
         return $srch;
     }
 
@@ -367,18 +369,22 @@ class Orders extends MyAppModel
             foreach ($row as $opId => $val) {
                 $db->deleteRecords(OrderProduct::DB_TBL_CHARGES, array('smt' => OrderProduct::DB_TBL_CHARGES_PREFIX.'op_id = ?', 'vals' => array( $opId ) ));
                 $db->deleteRecords(Orders::DB_TBL_ORDER_PRODUCTS_SHIPPING, array('smt' =>'opshipping_op_id = ?', 'vals' => array( $opId ) ));
-                $db->deleteRecords(Orders::DB_TBL_ORDER_PRODUCTS_SHIPPING_LANG, array('smt' => 'opshippinglang_op_id = ?', 'vals' => array( $opId ) ));
+                $db->deleteRecords(OrderProductData::DB_TBL, array('smt' => 'opd_op_id = ?', 'vals' => array( $opId ) ));
             }
         }
 
         $db->deleteRecords(static::DB_TBL_ORDER_PRODUCTS, array('smt' => 'op_order_id = ?', 'vals' => array( $this->getOrderId() ) ));
         $db->deleteRecords(static::DB_TBL_ORDER_PRODUCTS_LANG, array('smt' => 'oplang_order_id = ?', 'vals' => array( $this->getOrderId() ) ));
+		$db->deleteRecords(static::DB_TBL_ORDER_PRODUCTS, array('smt' => 'op_order_id = ?', 'vals' => array( $this->getOrderId() ) ));
+		
 
         if (!empty($products)) {
             $opRecordObj = new TableRecord(static::DB_TBL_ORDER_PRODUCTS);
             $opLangRecordObj = new TableRecord(static::DB_TBL_ORDER_PRODUCTS_LANG);
             $opShippingRecordObj = new TableRecord(static::DB_TBL_ORDER_PRODUCTS_SHIPPING);
             $opShippingLangRecordObj = new TableRecord(static::DB_TBL_ORDER_PRODUCTS_SHIPPING_LANG);
+			
+			$opDataRecordObj = new TableRecord(OrderProductData::DB_TBL);
 
             $counter = 1;
             foreach ($products as $selprodId => $product) {
@@ -404,6 +410,8 @@ class Orders extends MyAppModel
 
                 /* saving of products lang data[ */
                 $productsLangData = $product['productsLangData'];
+				//echo "<pre>"; print_r($productsLangData); echo "</pre>"; exit;
+				
                 if (!empty($productsLangData)) {
                     foreach ($productsLangData as $productLangData) {
                         $productLangData['oplang_op_id'] = $op_id;
@@ -415,6 +423,18 @@ class Orders extends MyAppModel
                             return false;
                         }
                     }
+                }
+				/* saving product data (rental) */
+				$pData = $product['productsData'];
+				if (!empty($pData)) {
+					$pData['opd_op_id'] = $op_id;
+					$pData['opd_order_id'] = $this->getOrderId();
+					$opDataRecordObj->assignValues($pData);
+					if (!$opDataRecordObj->addNew()) {
+						$db->rollbackTransaction();
+						$this->error = $opDataRecordObj->getError();
+						return false;
+					} 
                 }
 
                 /* Saving of digital download data[ */
@@ -1186,14 +1206,21 @@ class Orders extends MyAppModel
             $emailObj->newOrderBuyerAdmin($orderId, $orderInfo['order_language_id']);
 
             $subOrders = $this->getChildOrders(array("order"=>$orderId), $orderInfo['order_type']);
-            foreach ($subOrders as $subkey => $subval) {
-                $this->addChildProductOrderHistory($subval["op_id"], $orderInfo['order_language_id'], FatApp::getConfig("CONF_DEFAULT_PAID_ORDER_STATUS"), '', true);
+			
+			foreach ($subOrders as $subkey => $subval) {
+				if ($subval["opd_extend_from_op_id"] > 0) { //== Mark Extended order default status delivered after payments
+					$orderStatus = FatApp::getConfig("CONF_DEFAULT_DEIVERED_ORDER_STATUS");
+				} else {
+					$orderStatus = FatApp::getConfig("CONF_DEFAULT_PAID_ORDER_STATUS");
+				}
+				
+				$this->addChildProductOrderHistory($subval["op_id"], $orderInfo['order_language_id'], $orderStatus, '', true);
                 if ($subval['op_product_type'] == Product::PRODUCT_TYPE_DIGITAL) {
                     $emailObj->newDigitalOrderBuyer($orderId, $subval["op_id"], $orderInfo['order_language_id']);
                 }
             }
-
-            $isReferrerRewarded = false;
+			
+			$isReferrerRewarded = false;
             $isReferralRewarded = false;
 
             $paymentMethodRow = PaymentMethods::getAttributesById($orderInfo['order_pmethod_id']);
@@ -1349,6 +1376,8 @@ class Orders extends MyAppModel
                 $selProdIdArr = array($childOrderInfo['op_selprod_id']);
             }
 
+			if ($childOrderInfo['opd_sold_or_rented'] == applicationConstants::PRODUCT_FOR_SALE) {
+			
             foreach ($selProdIdArr as $opSelprodId) {
                 if (empty($opSelprodId)) {
                     continue;
@@ -1363,6 +1392,7 @@ class Orders extends MyAppModel
                     $emailNotificationObj->sendProductStockAlert($opSelprodId);
                 }
             }
+			}
 
             /* if ( FatApp::getConfig("CONF_ALLOW_REVIEWS") ){
             $emailNotificationObj->sendBuyerReviewNotification( $childOrderInfo['op_id'] , $childOrderInfo['order_language_id'] );
@@ -1871,7 +1901,7 @@ class Orders extends MyAppModel
         $srch->joinTable(OrderProduct::DB_TBL_CHARGES, 'LEFT OUTER JOIN', 'opc.'.OrderProduct::DB_TBL_CHARGES_PREFIX.'op_id = op.op_id', 'opc');
         $srch->joinTable(Orders::DB_TBL_ORDER_PRODUCTS_SHIPPING, 'LEFT OUTER JOIN', 'ops.opshipping_op_id = op.op_id', 'ops');
 
-        $srch->addMultipleFields(array('op.*','opst.*','op_l.*','o.order_id','o.order_is_paid','o.order_language_id','o.order_user_id','sum('.OrderProduct::DB_TBL_CHARGES_PREFIX.'amount) as op_other_charges', 'o.order_affiliate_user_id','pmethod_code','optsu_user_id','ops.opshipping_by_seller_user_id'));
+        $srch->addMultipleFields(array('op.*','opst.*','op_l.*','o.order_id','o.order_is_paid','o.order_language_id','o.order_user_id','sum('.OrderProduct::DB_TBL_CHARGES_PREFIX.'amount) as op_other_charges', 'o.order_affiliate_user_id','pmethod_code','optsu_user_id','ops.opshipping_by_seller_user_id', 'opd.*'));
         $srch->addCondition('op_id', '=', $op_id);
         $srch->doNotCalculateRecords();
         $srch->doNotLimitRecords();

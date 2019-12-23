@@ -38,10 +38,23 @@
 		<div class="top-bar">
 			<div class="container">
 				<div class="row align-items-center">
-					<div class="col-lg-6 col-xs-6 d-none d-xl-block d-lg-block hide--mobile">
+					<div class="col-lg-4 col-xs-4 d-none d-xl-block d-lg-block hide--mobile">
 						<div class="slogan"><?php echo Labels::getLabel('LBL_Multi-vendor_Ecommerce_Marketplace_Solution', $siteLangId); ?></div>
 					</div>
-					<div class="col-lg-6 col-xs-12">
+					<?php if(0) { ?>
+                    <div class="col-lg-4 col-xs-4">
+                        <div class="location--selection">
+                            <?php if (!empty($confCountryDetail) && $confCountryDetail['country_code'] != '') { ?>
+                            <img src="<?php echo CONF_WEBROOT_FRONTEND ?>images/flags/<?php echo strtolower($confCountryDetail['country_code']); ?>.png" class="user_country_flag" />
+                            <?php } ?>
+                            <input id="user_city_country" class="user_city_country" type="text" placeholder="Enter City" />
+                        </div>
+					</div>
+					<div class="col-lg-4 col-xs-4 d-none d-xl-block d-lg-block hide--mobile">
+						<div class="slogan align--center"><?php echo Labels::getLabel('LBL_Multi-vendor_Ecommerce_Marketplace_Solution', $siteLangId); ?></div>
+					</div>
+					<?php } ?>
+					<div class="col-lg-4 col-xs-4">
 						<div class="short-links">
 							<ul>
 								<?php $this->includeTemplate('_partial/headerTopNavigation.php'); ?> <?php $this->includeTemplate('_partial/headerLanguageArea.php'); ?> <?php $this->includeTemplate('_partial/headerUserArea.php'); ?>

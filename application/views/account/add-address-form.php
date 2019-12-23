@@ -11,6 +11,18 @@ $countryFld->setFieldTagAttribute('onChange', 'getCountryStates(this.value,'.$st
 
 $stateFld = $addressFrm->getField('ua_state_id');
 $stateFld->setFieldTagAttribute('id', 'ua_state_id');
+$stateFld->setFieldTagAttribute('onChange','getCountryStatesCities(\'#ua_country_id\', this.value, '. $cityId.' ,\'#ua_city_id\')');
+
+$cityFld = $addressFrm->getField('ua_city_id');
+$cityFld->setFieldTagAttribute('id','ua_city_id');
+
+$cityNameFld = $addressFrm->getField('ua_city');
+$cityNameFld->setFieldTagAttribute('id','ua_city');
+$cityNameFld->setWrapperAttribute('class','user-cityname--js');
+if ($cityId > -1) {
+	$cityNameFld->setWrapperAttribute('style','display:none;');
+}
+
 $cancelFld = $addressFrm->getField('btn_cancel');
 $cancelFld->setFieldTagAttribute('onclick', 'searchAddresses()');
 $cancelFld->setFieldTagAttribute('class', 'btn btn--primary-border');
@@ -41,6 +53,8 @@ $submitFld->setFieldTagAttribute('class', 'btn btn--primary');
 <div class="container--addresses"> <?php echo $addressFrm->getFormHtml();?> </div>
 <script language="javascript">
     $(document).ready(function() {
-        getCountryStates($("#ua_country_id").val(), <?php echo $stateId ;?>, '#ua_state_id');
+        getCountryStates($("#ua_country_id").val(), <?php echo $stateId ;?>, '#ua_state_id', '#ua_city_id');
+		getCountryStatesCities("#ua_country_id", <?php echo $stateId ;?>, <?php echo $cityId ;?>, '#ua_city_id');
+		//alert($('#ua_city_id').val());
     });
 </script>

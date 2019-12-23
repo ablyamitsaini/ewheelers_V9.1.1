@@ -79,6 +79,7 @@ $(document).ready(function(){
 	
 	getCountryStates = function(countryId,stateId,dv){ 
 		fcom.ajax(fcom.makeUrl('ManualShippingApi','getStates',[countryId,stateId]),'',function(res){
+			$('#ua_city_id').empty();
 			$(dv).empty();
 			$(dv).append(res);
 		});

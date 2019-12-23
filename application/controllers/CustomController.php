@@ -407,16 +407,26 @@
 
             FatApp::getDb()->deleteRecords('tbl_user_cart', array('smt'=>'`usercart_user_id`=? and `usercarrt_type`=?', 'vals'=>array(UserAuthentication::getLoggedUserId(),CART::TYPE_PRODUCT)));
             $cartObj = new Cart();
-            foreach ($cartInfo as $key => $quantity) {
+			$cartInfo = $cartInfo['products'];
+            foreach ($cartInfo as $key => $product) {
                 $keyDecoded = unserialize(base64_decode($key));
 
                 $selprod_id = 0;
-
+				$quantity = $product['quantity'];
+				$productFor = $product['productFor'];
+				$rentalData = array();
+				if ($productFor == applicationConstants::PRODUCT_FOR_RENT) {
+					$rentalData = array(
+						'rental_start_date' => $product['rental_start_date'],
+						'rental_end_date' => $product['rental_end_date']
+					); 
+				}
 
                 if (strpos($keyDecoded, Cart::CART_KEY_PREFIX_PRODUCT) !== false) {
                     $selprod_id = FatUtility::int(str_replace(Cart::CART_KEY_PREFIX_PRODUCT, '', $keyDecoded));
                 }
-                $cartObj->add($selprod_id, $quantity);
+                //$cartObj->add($selprod_id, $quantity);
+				$cartObj->add($selprod_id, $quantity, '', '', $productFor, $rentalData);
             }
             $cartObj->updateUserCart();
         }
@@ -443,16 +453,25 @@
 
             FatApp::getDb()->deleteRecords('tbl_user_cart', array('smt'=>'`usercart_user_id`=? and `usercarrt_type`=?', 'vals'=>array(UserAuthentication::getLoggedUserId(),CART::TYPE_PRODUCT)));
             $cartObj = new Cart();
-            foreach ($cartInfo as $key => $quantity) {
+			$cartInfo = $cartInfo['products'];
+			
+            foreach ($cartInfo as $key => $product) {
                 $keyDecoded = unserialize(base64_decode($key));
-
+				$quantity = $product['quantity'];
+				$productFor = $product['productFor'];
                 $selprod_id = 0;
-
+				$rentalData = array();
+				if ($productFor == applicationConstants::PRODUCT_FOR_RENT) {
+					$rentalData = array(
+						'rental_start_date' => $product['rental_start_date'],
+						'rental_end_date' => $product['rental_end_date']
+					); 
+				}
 
                 if (strpos($keyDecoded, Cart::CART_KEY_PREFIX_PRODUCT) !== false) {
                     $selprod_id = FatUtility::int(str_replace(Cart::CART_KEY_PREFIX_PRODUCT, '', $keyDecoded));
                 }
-                $cartObj->add($selprod_id, $quantity);
+                $cartObj->add($selprod_id, $quantity, '', '', $productFor, $rentalData);
             }
             $cartObj->updateUserCart();
         }

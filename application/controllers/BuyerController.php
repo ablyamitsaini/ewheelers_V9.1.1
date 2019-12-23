@@ -35,7 +35,7 @@ class BuyerController extends BuyerBaseController
         $srch->setPageSize(applicationConstants::DASHBOARD_PAGE_SIZE);
 
         $srch->addMultipleFields(
-            array('order_id', 'order_user_id','op_selprod_id','op_is_batch','selprod_product_id','order_date_added', 'order_net_amount', 'op_invoice_number','totCombinedOrders as totOrders', 'op_selprod_title', 'op_product_name', 'op_product_type', 'op_status_id', 'op_id','op_qty','op_selprod_options', 'op_brand_name', 'op_shop_name','op_other_charges','op_unit_price', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name')
+            array('order_id', 'order_user_id','op_selprod_id','op_is_batch','selprod_product_id','order_date_added', 'order_net_amount', 'op_invoice_number','totCombinedOrders as totOrders', 'op_selprod_title', 'op_product_name', 'op_product_type', 'op_status_id', 'op_id','op_qty','op_selprod_options', 'op_brand_name', 'op_shop_name','op_other_charges','op_unit_price', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name', 'opd.opd_sold_or_rented')
         );
         $rs = $srch->getResultSet();
         $orders = FatApp::getDb()->fetchAll($rs);
@@ -170,6 +170,8 @@ class BuyerController extends BuyerBaseController
         $srch->joinPaymentMethod();
         $srch->joinSellerProducts();
         $srch->joinOrderUser();
+		//echo $srch->getQuery(); die();
+		
         //$srch->joinShippingUsers();
         $srch->addOrderProductCharges();
         $srch->addCondition('order_user_id', '=', $userId);
@@ -248,6 +250,16 @@ class BuyerController extends BuyerBaseController
         }
         $productType = !empty($childOrderDetail['selprod_product_id']) ? Product::getAttributesById($childOrderDetail['selprod_product_id'], 'product_type') : 0;
         // CommonHelper::printArray($orderDetail, true);
+		
+		//echo "<pre>"; print_r($childOrderDetail); echo "</pre>"; exit;
+		$soldOrRented = '';
+		$extendFromOpId = '';
+		if ($primaryOrderDisplay) {
+			$soldOrRented = $childOrderDetail['opd_sold_or_rented'];
+			$extendFromOpId = $childOrderDetail['opd_extend_from_op_id'];
+		}
+		
+		
         $this->set('orderDetail', $orderDetail);
         $this->set('childOrderDetail', $childOrderDetail);
         $this->set('orderStatuses', $orderStatuses);
@@ -257,9 +269,8 @@ class BuyerController extends BuyerBaseController
         $this->set('productType', $productType);
         $this->set('languages', Language::getAllNames());
         $this->set('yesNoArr', applicationConstants::getYesNoArr($this->siteLangId));
-
-
-        $urlParts = array($orderId,$opId);
+        $this->set('rentalTypeArr', applicationConstants::rentalTypeArr($this->siteLangId));
+        $urlParts = array($orderId, $opId);
         $this->set('urlParts', $urlParts);
         if ($print !== false) {
             $print = true;
@@ -269,8 +280,20 @@ class BuyerController extends BuyerBaseController
         if (true ===  MOBILE_APP_API_CALL) {
             $this->set('opId', $opId);
         }
-
-        $this->_template->render();
+		if ($soldOrRented == applicationConstants::PRODUCT_FOR_RENT) {
+			$extendChildOrderdata = OrderProductData::getOrderProductData($opId, true);
+			$parentOrderId = '';
+			if($extendFromOpId > 0) {
+				$parentOrderId = OrderProduct::getOrderIdByOprId($extendFromOpId);
+			}
+			$this->set('extendChildOrder', $extendChildOrderdata);
+			$this->set('parentOrderId', $parentOrderId);
+			$this->set('extendFromOpId', $extendFromOpId);
+			$this->_template->render(true, true, 'buyer/rent-view-order.php', false, true);
+		} else {
+			$this->_template->render();
+		}
+       
     }
 
     public function downloadDigitalFile($aFileId, $recordId = 0)
@@ -376,15 +399,26 @@ class BuyerController extends BuyerBaseController
 
     public function orders()
     {
-        $frmOrderSrch = $this->getOrderSearchForm($this->siteLangId);
+        $frmOrderSrch = $this->getOrderSearchForm($this->siteLangId, applicationConstants::PRODUCT_FOR_SALE);
         $this->set('frmOrderSrch', $frmOrderSrch);
+		$this->set('orderType', applicationConstants::PRODUCT_FOR_SALE);
         $this->_template->render(true, true);
     }
+	
+	public function RentalOrders() {
+		$frmOrderSrch = $this->getOrderSearchForm($this->siteLangId, applicationConstants::PRODUCT_FOR_RENT);
+        $this->set('frmOrderSrch', $frmOrderSrch);
+        $this->set('orderType', applicationConstants::PRODUCT_FOR_RENT);
+        $this->_template->render(true, true, 'buyer/orders.php', false, true);
+	}
+	
 
     public function orderSearchListing()
     {
         $frm = $this->getOrderSearchForm($this->siteLangId);
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
+		$orderType = $post['order_type'];
+		
         $page = (empty($post['page']) || $post['page'] <= 0) ? 1 : FatUtility::int($post['page']);
         $pagesize = FatApp::getConfig('conf_page_size', FatUtility::VAR_INT, 10);
 
@@ -421,12 +455,13 @@ class BuyerController extends BuyerBaseController
         $srch->addCondition('order_user_id', '=', $user_id);
         $srch->joinPaymentMethod();
         $srch->addOrder("op_id", "DESC");
+		$srch->addCondition('opd_sold_or_rented', '=', $orderType);
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
         $srch->addMultipleFields(
             array('order_id', 'order_user_id', 'order_date_added', 'order_net_amount', 'op_invoice_number',
             'totCombinedOrders as totOrders', 'op_selprod_id', 'op_selprod_title', 'op_product_name', 'op_id','op_other_charges','op_unit_price',
-            'op_qty', 'op_selprod_options', 'op_brand_name', 'op_shop_name', 'op_status_id', 'op_product_type', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name','order_pmethod_id','order_status','pmethod_name', 'IFNULL(orrequest_id, 0) as return_request', 'IFNULL(ocrequest_id, 0) as cancel_request', 'orderstatus_color_code')
+            'op_qty', 'op_selprod_options', 'op_brand_name', 'op_shop_name', 'op_status_id', 'op_product_type', 'IFNULL(orderstatus_name, orderstatus_identifier) as orderstatus_name','order_pmethod_id','order_status','pmethod_name', 'IFNULL(orrequest_id, 0) as return_request', 'IFNULL(ocrequest_id, 0) as cancel_request', 'orderstatus_color_code', 'opd.opd_sold_or_rented')
         );
 
         $keyword = FatApp::getPostedData('keyword', null, '');
@@ -473,6 +508,8 @@ class BuyerController extends BuyerBaseController
             $charges = $oObj->getOrderProductChargesArr($order['op_id'], MOBILE_APP_API_CALL);
             $order['charges'] = $charges;
         }
+		
+		
 
         $this->set('orders', $orders);
         $this->set('page', $page);
@@ -2303,13 +2340,14 @@ class BuyerController extends BuyerBaseController
         return $frm;
     }
 
-    private function getOrderSearchForm($langId)
+    private function getOrderSearchForm($langId, $orderType = applicationConstants::PRODUCT_FOR_SALE)
     {
         $currency_id = FatApp::getConfig('CONF_CURRENCY', FatUtility::VAR_INT, 1);
         $currencyData = Currency::getAttributesById($currency_id, array('currency_code','currency_symbol_left','currency_symbol_right'));
         $currencySymbol = ($currencyData['currency_symbol_left'] != '') ? $currencyData['currency_symbol_left'] : $currencyData['currency_symbol_right'];
 
         $frm = new Form('frmOrderSrch');
+		$frm->addHiddenField('', 'order_type', $orderType);
         $frm->addTextBox('', 'keyword', '', array('placeholder' => Labels::getLabel('LBL_Keyword', $langId) ));
         $frm->addSelectBox('', 'status', Orders::getOrderProductStatusArr($langId, unserialize(FatApp::getConfig("CONF_BUYER_ORDER_STATUS"))), '', array(), Labels::getLabel('LBL_Status', $langId));
         $frm->addDateField('', 'date_from', '', array('placeholder' => Labels::getLabel('LBL_Date_From', $langId),'readonly'=>'readonly' ));
@@ -2492,13 +2530,22 @@ class BuyerController extends BuyerBaseController
         $cartInfo = unserialize($orderDetail['order_cart_data']);
         unset($cartInfo['shopping_cart']);
         $outOfStock = false;
-        foreach ($cartInfo as $key => $quantity) {
+		$cartInfo = $this->SYSTEM_ARR['cart']['products'];
+       // foreach ($cartInfo as $key => $quantity) {
+		foreach ($cartInfo as $key => $product) {
+			$quantity = $product['quantity'];
+			$productFor = $product['productFor'];   
             $keyDecoded = unserialize(base64_decode($key));
 
             $selprod_id = 0;
 
             if (strpos($keyDecoded, Cart::CART_KEY_PREFIX_PRODUCT) !== false) {
-                $selprod_id = FatUtility::int(str_replace(Cart::CART_KEY_PREFIX_PRODUCT, '', $keyDecoded));
+				if ($productFor == applicationConstants::PRODUCT_FOR_RENT) {
+					$rentalStartDate = $product['rental_start_date'];
+					$rentalEndDate = $product['rental_end_date'];
+					$keyDecoded = str_replace($rentalStartDate . $rentalEndDate, '', $keyDecoded);
+				}
+				$selprod_id = FatUtility::int(str_replace(Cart::CART_KEY_PREFIX_PRODUCT, '', $keyDecoded));
             }
             $selProdStock = SellerProduct::getAttributesById($selprod_id, 'selprod_stock', false);
             if (!$selProdStock && $selProdStock <= 0) {

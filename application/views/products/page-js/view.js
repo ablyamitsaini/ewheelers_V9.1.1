@@ -324,3 +324,4 @@ function setupReviewAbuse(frm){
 $('.gallery').modaal({
     type: 'image'
 });
+

@@ -79,6 +79,23 @@ class ShopSearch extends SearchBase
             $this->addCondition('shop_state.state_active', '=', applicationConstants::ACTIVE);
         }
     }
+	
+	public function joinShopCity($langId = 0, $isActive = true)
+    {
+        $langId = FatUtility::int($langId);
+        if ($this->langId) {
+            $langId = $this->langId;
+        }
+        $this->joinTable(City::DB_TBL, 'LEFT OUTER JOIN', 's.shop_city_id = shop_city.city_id', 'shop_city');
+
+        if ($langId) {
+            $this->joinTable(City::DB_TBL_LANG, 'LEFT OUTER JOIN', 'shop_city.city_id = shop_city_l.citylang_city_id AND shop_city_l.statelang_lang_id = '.$langId, 'shop_city_l');
+        }
+        if ($isActive) {
+            $this->addCondition('shop_city.city_active', '=', applicationConstants::ACTIVE);
+        }
+    }
+	
 
     public function joinSellerOrder()
     {

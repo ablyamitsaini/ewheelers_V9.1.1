@@ -141,6 +141,8 @@ class ProductSearch extends SearchBase
             $fields2 = array('selprod_title','selprod_warranty','selprod_return_policy','sprods_l.selprod_comments as selprodComments');
         }
 
+		$this->joinTable(SellerProduct::DB_TBL_SELLER_PROD_DATA, 'LEFT OUTER JOIN', 'msellprod.selprod_id = spd.sprodata_selprod_id ', 'spd');
+		
         if (isset($criteria['optionvalue']) && $criteria['optionvalue'] !='') {
             $this->addOptionCondition($criteria['optionvalue']);
             $useTempTable = false;
@@ -161,6 +163,9 @@ class ProductSearch extends SearchBase
         } else { 
             $this->joinBasedOnPriceCondition($splPriceForDate, $criteria, $checkAvailableFrom);
         }
+        
+        $productType = (!empty($criteria['producttype'])) ? $criteria['producttype'] : array();
+        $this->addProductTypeCondition($productType);
         // $this->joinBasedOnPriceCondition($splPriceForDate, $criteria, $checkAvailableFrom);
     }
 
@@ -275,6 +280,8 @@ class ProductSearch extends SearchBase
         }
 
         if ($joinSpecialPrice == true) {
+			//echo'inside if';
+			//die();
             $now = FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d');
             if ('' == $splPriceForDate) {
                 $splPriceForDate = $now;
@@ -288,6 +295,8 @@ class ProductSearch extends SearchBase
                 $fields2 = array('selprod_title','selprod_warranty','selprod_return_policy','sprods_l.selprod_comments as selprodComments');
             }
 
+			$srch->joinTable(SellerProduct::DB_TBL_SELLER_PROD_DATA, 'LEFT OUTER JOIN', 'sprods.selprod_id = spd.sprodata_selprod_id', 'spd');
+			
             $srch->joinTable(
                 SellerProduct::DB_TBL_SELLER_PROD_SPCL_PRICE,
                 'LEFT OUTER JOIN',
@@ -311,7 +320,7 @@ class ProductSearch extends SearchBase
                 $srch->addCondition('selprod_available_from', '<=', $now);
             }
 
-            $fields1 = array('sprods.*', 'm.*',
+            $fields1 = array('sprods.*', 'm.*', 'spd.*',
             '(CASE WHEN m.splprice_selprod_id IS NULL THEN 0 ELSE 1 END) AS special_price_found',
             'COALESCE(m.splprice_price, selprod_price) AS theprice');
             $srch->addMultipleFields(array_merge($fields1, $fields2));
@@ -320,16 +329,27 @@ class ProductSearch extends SearchBase
             $srch->doNotCalculateRecords();
             $this->joinTable('(' . $srch->getQuery() . ')', 'LEFT OUTER JOIN', 'p.product_id = pricetbl.selprod_product_id', 'pricetbl');
         } else {
+			//echo'inside else';
+			//die();
+			
             $this->joinTable(SellerProduct::DB_TBL, 'INNER JOIN', 'p.product_id = sprods.selprod_product_id and selprod_active = '.applicationConstants::ACTIVE .' and selprod_deleted = '.applicationConstants::NO, 'sprods');
             if ($this->langId) {
                 $this->joinTable(SellerProduct::DB_LANG_TBL, 'LEFT OUTER JOIN', 'sprods.selprod_id = sprods_l.selprodlang_selprod_id AND sprods_l.selprodlang_lang_id = '.$this->langId, 'sprods_l');
             }
+			
+			$this->joinTable(SellerProduct::DB_TBL_SELLER_PROD_DATA, 'LEFT OUTER JOIN', 'sprods.selprod_id = spd.sprodata_selprod_id', 'spd');
+			
         }
+		
+		$productType = (!empty($criteria['producttype'])) ? $criteria['producttype'] : array();
+        $this->addProductTypeCondition($productType);
+		
         if (0 < $bySeller) {
             $this->addCondition('selprod_user_id', '=', $bySeller);
         } else {
             $this->addCondition('selprod_user_id', '>', 0);
         }
+		
     }
 
     /* public function joinProductVariantOptions(){
@@ -661,6 +681,34 @@ class ProductSearch extends SearchBase
                 $this->addDirectCondition('brand_id IN ('. implode(',', $brand).')');
             }
         }
+    }
+    
+    public function addProductTypeCondition($productType = array())
+    {
+        $prodForSale = $prodForRent = 0;
+        if (!empty($productType) && in_array(Product::PRODUCT_FOR_SALE, $productType)) {
+            $prodForSale = 1;
+        }
+        
+        if (!empty($productType) && in_array(Product::PRODUCT_FOR_RENT, $productType)) {
+            $prodForRent = 1;
+        }
+        
+        if((ALLOW_SALE && ALLOW_RENT) && (($prodForSale == 0 && $prodForRent == 0) || ($prodForSale == 1 && $prodForRent == 1))) {
+            $cnd = $this->addCondition('sprodata_is_for_sell', '=', 1);
+			$cnd->attachCondition('sprodata_is_for_rent', '=', 1, 'OR');
+        } else if (ALLOW_RENT && $prodForRent == 1) {
+            $this->addCondition('sprodata_is_for_rent', '=', 1);
+        } else if (ALLOW_SALE && $prodForSale == 1) {
+            $this->addCondition('sprodata_is_for_sell', '=', 1);
+        } else if (ALLOW_SALE && $prodForSale == 0 && $prodForRent == 0) {
+            $this->addCondition('sprodata_is_for_sell', '=', 1);
+        } else if (ALLOW_RENT && $prodForSale == 0 && $prodForRent == 0) {
+            $this->addCondition('sprodata_is_for_rent', '=', 1);
+        } else {
+            echo "abc"; exit;
+        }
+
     }
 
     public function addOptionCondition($optionValue, $obj = false, $alias = '')

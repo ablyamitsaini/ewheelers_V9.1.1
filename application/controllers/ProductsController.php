@@ -221,6 +221,21 @@ class ProductsController extends MyAppController
         }
         /* ] */
 
+        /* Product Type Filter Data*/
+        $productTypeCheckedArr = array();
+        if (array_key_exists('producttype', $headerFormParamsAssocArr)) {
+            if (true ===  MOBILE_APP_API_CALL) {
+                $headerFormParamsAssocArr['producttype'] = json_decode($headerFormParamsAssocArr['producttype'], true);
+            }
+            $productTypeCheckedArr = $headerFormParamsAssocArr['producttype'];
+        }
+        
+        $prodTypeSrch = clone $prodSrchObj;
+        $prodTypeSrch->setPageSize(1);
+        $prodTypeSrch->addMultipleFields(array('SUM(IF(sprodata_is_for_sell = 1, 1, 0)) AS sellProductCount', 'SUM(IF(sprodata_is_for_rent = 1, 1, 0)) AS rentProductCount'));
+        $prodTypeSrch = $prodTypeSrch->getResultSet();
+        $prodTypeArr = $db->fetch($prodTypeSrch);
+
         /* Brand Filters Data[ */
         $brandsArr = array();
         $brandId = 0;
@@ -444,6 +459,8 @@ class ProductsController extends MyAppController
         $this->set('filterDefaultMinValue', $filterDefaultMinValue);
         $this->set('filterDefaultMaxValue', $filterDefaultMaxValue);
         $this->set('availability', $availability);
+        $this->set('productTypeCheckedArr', $productTypeCheckedArr);
+        $this->set('prodTypeArr', $prodTypeArr);
         $availabilityArr = (true ===  MOBILE_APP_API_CALL) ? array_values($availabilityArr) : $availabilityArr;
         $this->set('availabilityArr', $availabilityArr);
 
@@ -455,14 +472,33 @@ class ProductsController extends MyAppController
         exit;
     }
 
-    public function view($selprod_id = 0)
+    public function view($selprod_id = 0, $oprID = 0)
     {
         $selprod_id = FatUtility::int($selprod_id);
+        $oprID = FatUtility::int($oprID);
         if (true ===  MOBILE_APP_API_CALL && 1 > $selprod_id) {
             FatUtility::dieJsonError(Labels::getLabel('MSG_INVALID_REQUEST', $this->siteLangId));
         }
-
-        $prodSrchObj = new ProductSearch($this->siteLangId);
+		
+		if ($oprID > 0) {
+			if( !UserAuthentication::isUserLogged()) {
+				FatUtility::exitWithErrorCode(404);
+			}
+			$userId = UserAuthentication::getLoggedUserId();
+			$srch = new SearchBase(OrderProduct::DB_TBL, 'op');
+			$srch->joinTable(Orders::DB_TBL, 'INNER JOIN', 'o.order_id = op.op_order_id', 'o');
+			$srch->addCondition('o.order_user_id', '=', $userId);
+			$srch->addCondition('op.op_selprod_id', '=', $selprod_id);
+			$srch->addCondition('op.op_id', '=', $oprID);
+			$rs = $srch->getResultSet();
+			$orderInfo = FatApp::getDb()->fetch($rs);
+			if (empty($orderInfo)) {
+				FatUtility::exitWithErrorCode(404);
+			}
+		}
+		
+		
+		$prodSrchObj = new ProductSearch($this->siteLangId);
 
         /* fetch requested product[ */
         $prodSrch = clone $prodSrchObj;
@@ -503,13 +539,15 @@ class ProductsController extends MyAppController
         $selProdReviewObj->addMultipleFields(array('spr.spreview_selprod_id','spr.spreview_product_id',"ROUND(AVG(sprating_rating),2) as prod_rating","count(spreview_id) as totReviews"));
         $selProdRviewSubQuery = $selProdReviewObj->getQuery();
         $prodSrch->joinTable('(' . $selProdRviewSubQuery . ')', 'LEFT OUTER JOIN', 'sq_sprating.spreview_product_id = product_id', 'sq_sprating');
+		//echo $prodSrch->getQuery(); die();
+		
         $prodSrch->addMultipleFields(
             array(
             'product_id','product_identifier', 'COALESCE(product_name,product_identifier) as product_name', 'product_seller_id', 'product_model','product_type', 'prodcat_id', 'COALESCE(prodcat_name,prodcat_identifier) as prodcat_name', 'product_upc', 'product_isbn', 'product_short_description', 'product_description',
             'selprod_id', 'selprod_user_id', 'selprod_code', 'selprod_condition', 'selprod_price', 'special_price_found','splprice_start_date', 'splprice_end_date', 'COALESCE(selprod_title, product_name, product_identifier) as selprod_title', 'selprod_warranty', 'selprod_return_policy','selprodComments',
             'theprice', 'selprod_stock' , 'selprod_threshold_stock_level', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'brand_id', 'COALESCE(brand_name, brand_identifier) as brand_name', 'brand_short_description', 'user_name',
             'shop_id', 'COALESCE(shop_name, shop_identifier) as shop_name', 'COALESCE(sq_sprating.prod_rating,0) prod_rating ','COALESCE(sq_sprating.totReviews,0) totReviews',
-            'splprice_display_dis_type', 'splprice_display_dis_val', 'splprice_display_list_price', 'product_attrgrp_id', 'product_youtube_video', 'product_cod_enabled', 'selprod_cod_enabled','selprod_available_from', 'selprod_min_order_qty', 'product_image_updated_on')
+            'splprice_display_dis_type', 'splprice_display_dis_val', 'splprice_display_list_price', 'product_attrgrp_id', 'product_youtube_video', 'product_cod_enabled', 'selprod_cod_enabled','selprod_available_from', 'selprod_min_order_qty', 'product_image_updated_on', 'sprodata_is_for_sell as is_sell', 'sprodata_is_for_rent as is_rent', 'sprodata_rental_price as rent_price', 'sprodata_rental_security ', 'sprodata_rental_type as rental_type', 'sprodata_rental_terms', 'sprodata_rental_stock', 'sprodata_rental_buffer_days', 'sprodata_minimum_rental_duration')
         );
 
         $productRs = $prodSrch->getResultSet();
@@ -543,7 +581,7 @@ class ProductsController extends MyAppController
         /* Current Product option Values[ */
         $options = SellerProduct::getSellerProductOptions($selprod_id, false);
         $productSelectedOptionValues = array();
-        $productGroupImages= array();
+        $productGroupImages = array();
         $productImagesArr = array();
 
         if (count($options) > 0) {
@@ -646,8 +684,40 @@ class ProductsController extends MyAppController
         $product['selprod_return_policies'] =  SellerProduct::getSelprodPolicies($product['selprod_id'], PolicyPoint::PPOINT_TYPE_RETURN, $this->siteLangId);
         $product['selprod_warranty_policies'] =  SellerProduct::getSelprodPolicies($product['selprod_id'], PolicyPoint::PPOINT_TYPE_WARRANTY, $this->siteLangId);
         /* Form buy product[ */
-        $frm = $this->getCartForm($this->siteLangId);
-        $frm->fill(array('selprod_id' => $selprod_id));
+		$productFor = applicationConstants::PRODUCT_FOR_SALE;
+		$isRent = $product['is_rent'];
+		$rentalType = $product['rental_type'];
+		$unavailableDates = array();
+		$extendedOrderData = array();
+
+		if ($isRent > 0 && ALLOW_RENT > 0 ) {
+			$productFor = applicationConstants::PRODUCT_FOR_RENT;
+
+			$extendedOrderData = OrderProductData::getOrderProductData($oprID);
+			$rentalAvailableDate = '';
+			if(!empty($extendedOrderData)) {
+				$rentalAvailableDate = $extendedOrderData['opd_rental_end_date'];
+				if ($rentalType == applicationConstants::RENT_TYPE_DAY) {
+					$rentalAvailableDate = date('Y-m-d', strtotime('+1 days', strtotime($rentalAvailableDate)));
+				}
+				
+			}
+			
+			if (strtotime($product['selprod_available_from']) < time()) {
+                $startDate = date('Y-m-d');
+            } else {
+                $startDate = date('Y-m-d', strtotime($product['selprod_available_from']));
+            }
+			$endDate = date('Y-m-d', strtotime('+6 month'));
+			$productOrderData = OrderProductData::getProductOrders($selprod_id, $startDate, $endDate, $product['sprodata_rental_buffer_days']);
+			
+			if (!empty($productOrderData)) {
+                $unavailableDates = ProductRental::prodDisableDates($productOrderData, $product['sprodata_rental_stock'], $product['sprodata_rental_buffer_days']);
+			}
+
+		}
+		$frm = $this->getCartForm($this->siteLangId, $isRent, $rentalType);
+        $frm->fill(array('selprod_id' => $selprod_id, 'product_for' => $productFor, 'extend_order' => $oprID, 'rental_start_date' => $rentalAvailableDate));
         $this->set('frmBuyProduct', $frm);
         /* ] */
 
@@ -805,6 +875,8 @@ class ProductsController extends MyAppController
 
         /* Get Product Volume Discount (if any)[ */
         $this->set('volumeDiscountRows', $sellerProduct->getVolumeDiscounts());
+		$rentProdobj = new ProductRental();
+        $this->set('durationDiscountRows', $rentProdobj->getDurationDiscounts($selprod_id));
         /* ] */
 
         if (!empty($product)) {
@@ -832,9 +904,75 @@ class ProductsController extends MyAppController
             $recentlyViewed = $this->getRecentlyViewedProductsDetail($recentlyViewed);
             $this->set('recentlyViewed', $recentlyViewed);
         }
-
+	
+		$this->set('rentalTypeArr', applicationConstants::rentalTypeArr($this->siteLangId));
+		$this->set('unavailableDates', $unavailableDates);
+		$this->set('extendedOrderData', $extendedOrderData);
+		$this->set('orderProdId', $oprID);
         $this->_template->render();
     }
+	
+	public function getRentalDetails() {
+		$post = FatApp::getPostedData();
+		if (empty($post)) {
+           FatUtility::dieJsonError(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
+        }
+		$selprod_id = FatUtility::int($post['selprod_id']);
+		$rentalStartDate = $post['rental_start_date'];
+		$rentalEndDate = $post['rental_end_date'];
+		$quantity = FatUtility::int($post['quantity']);
+		
+		if (strtotime($rentalEndDate) <= strtotime($rentalStartDate) || strtotime($rentalStartDate) <= strtotime(date('Y-m-d H:i:s')) ) {
+			$message = Labels::getLabel('LBL_Rental_End_Date_Must_be_greater_then_start_date_and_from_current_date', $this->siteLangId);
+			
+			FatUtility::dieJsonError(Labels::getLabel('LBL_Rental_End_Date_Must_be_greater_then_start_date_and_from_current_date', $this->siteLangId));
+		}
+		
+		if ($selprod_id < 1) {
+			FatUtility::dieJsonError(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
+		}
+		
+		$srch = new ProductSearch();
+        $srch->setDefinedCriteria();
+		$srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
+        $srch->addMultipleFields(array('selprod_id', 'sprodata_rental_stock', 'sprodata_rental_buffer_days', 'sprodata_minimum_rental_duration', 'sprodata_rental_price', 'sprodata_rental_security', 'sprodata_rental_type'));
+		$srch->addCondition('selprod_id', '=', $selprod_id);
+		$srch->addCondition('sprodata_is_for_rent', '=', 1);
+		$rs = $srch->getResultSet();
+        $db = FatApp::getDb();
+        $sellerProductRow = $db->fetch($rs);
+		
+		if (empty($sellerProductRow)) {
+			FatUtility::dieJsonError(Labels::getLabel('LBL_Invalid_Request', $this->siteLangId));
+		}
+		
+		$rentProd = new ProductRental();
+		$alreadyBookedQty = $rentProd->getRentalProductQuantity($selprod_id, $rentalStartDate, $rentalEndDate, $sellerProductRow['sprodata_rental_buffer_days']);
+		
+		$availableQty = $sellerProductRow['sprodata_rental_stock'] - $alreadyBookedQty;
+		if (1 > $availableQty) {
+			FatUtility::dieJsonError(Labels::getLabel('LBL_This_product_is_out_of_stock_now', $this->siteLangId));
+		} else if ($availableQty < $quantity) {
+			FatUtility::dieJsonError(Labels::getLabel('LBL_Max_available_quantity_is', $this->siteLangId). ' ' . $availableQty);
+		}
+		if (applicationConstants::RENT_TYPE_HOUR == $sellerProductRow['sprodata_rental_type']) {
+			$duration = Common::hoursBetweenDates($rentalStartDate, $rentalEndDate);
+		} else {
+			$duration = Common::daysBetweenDates($rentalStartDate, $rentalEndDate);
+		}
+		
+		$totalPayableAmount = $sellerProductRow['sprodata_rental_price'] * $quantity * $duration + $sellerProductRow['sprodata_rental_security'];
+
+		$data = array(
+			'availableQuantity' => $availableQty,
+			'rentalPrice' => CommonHelper::displayMoneyFormat($sellerProductRow['sprodata_rental_price']),
+			'rentalSecurity' => CommonHelper::displayMoneyFormat($sellerProductRow['sprodata_rental_security']),
+			'totalPayableAmount' => CommonHelper::displayMoneyFormat($totalPayableAmount)
+		);
+		
+		FatUtility::dieJsonSuccess($data);
+	}
+	
 
     private function getProductSpecifications($product_id, $langId)
     {
@@ -935,7 +1073,7 @@ class ProductsController extends MyAppController
             'selprod_id', 'selprod_user_id',  'selprod_code', 'selprod_stock', 'selprod_condition', 'selprod_price', 'COALESCE(selprod_title, product_name, product_identifier) as selprod_title',
             'special_price_found','splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type',
             'theprice', 'brand_id', 'COALESCE(brand_name, brand_identifier) as brand_name', 'brand_short_description', 'user_name',
-            'IF(selprod_stock > 0, 1, 0) AS in_stock','selprod_sold_count','selprod_return_policy'
+            'IF(selprod_stock > 0, 1, 0) AS in_stock','selprod_sold_count','selprod_return_policy', 'sprodata_is_for_sell as is_sell', 'sprodata_is_for_rent as is_rent', 'sprodata_rental_price as rent_price', 'sprodata_rental_security ', 'sprodata_rental_type as rental_type', 'sprodata_rental_terms', 'sprodata_rental_stock', 'sprodata_rental_buffer_days', 'sprodata_minimum_rental_duration'
                  )
         );
 
@@ -994,7 +1132,7 @@ class ProductsController extends MyAppController
         $srch->joinTable('(' . $selProdRviewSubQuery . ')', 'LEFT OUTER JOIN', 'sq_sprating.spreview_selprod_id = selprod_id', 'sq_sprating');
         $srch->addFld('COALESCE(prod_rating,0) prod_rating');*/
 
-        $srch->addCondition('product_id', 'in', array_keys($recommendedProds));
+        //===commented $srch->addCondition('product_id', 'in', array_keys($recommendedProds));
         $srch->setPageSize(5);
         $srch->doNotCalculateRecords();
 
@@ -1068,7 +1206,7 @@ class ProductsController extends MyAppController
             array(
             'product_id', 'COALESCE(product_name, product_identifier) as product_name', 'prodcat_id', 'COALESCE(prodcat_name, prodcat_identifier) as prodcat_name', 'product_image_updated_on',
             'selprod_id', 'selprod_condition', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'theprice',
-            'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type','selprod_sold_count', 'COALESCE(selprod_title, product_name, product_identifier) as selprod_title','selprod_price')
+            'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type','selprod_sold_count', 'COALESCE(selprod_title, product_name, product_identifier) as selprod_title','selprod_price', 'sprodata_is_for_sell as is_sell', 'sprodata_is_for_rent as is_rent', 'sprodata_rental_price as rent_price', 'sprodata_rental_security ', 'sprodata_rental_type as rental_type', 'sprodata_rental_terms', 'sprodata_rental_stock', 'sprodata_rental_buffer_days', 'sprodata_minimum_rental_duration')
         );
         // echo $prodSrch->getQuery(); die;
 
@@ -1106,6 +1244,7 @@ class ProductsController extends MyAppController
         }
 
         $this->set('recentViewedProducts', $recentViewedProducts);
+		$this->set('rentalTypeArr', applicationConstants::rentalTypeArr($this->siteLangId));
         $this->_template->render(false, false);
     }
 
@@ -1143,7 +1282,7 @@ class ProductsController extends MyAppController
                 array(
                 'product_id', 'COALESCE(product_name, product_identifier) as product_name', 'prodcat_id', 'COALESCE(prodcat_name, prodcat_identifier) as prodcat_name', 'product_image_updated_on', 'COALESCE(selprod_title,product_name, product_identifier) as selprod_title',
                 'selprod_id', 'selprod_condition', 'IF(selprod_stock > 0, 1, 0) AS in_stock', 'theprice',
-                'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type','selprod_sold_count','selprod_price')
+                'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type','selprod_sold_count','selprod_price', 'sprodata_is_for_sell as is_sell', 'sprodata_is_for_rent as is_rent', 'sprodata_rental_price as rent_price', 'sprodata_rental_security ', 'sprodata_rental_type as rental_type', 'sprodata_rental_terms', 'sprodata_rental_stock', 'sprodata_rental_buffer_days', 'sprodata_minimum_rental_duration')
             );
 
             $productRs = $prodSrch->getResultSet();
@@ -1242,16 +1381,50 @@ class ProductsController extends MyAppController
         Product::recordProductWeightage($selprod_code, $weightageKey, $weightageSettings[$weightageKey]);
     }
 
-    private function getCartForm($formLangId)
+    private function getCartForm($formLangId, $isRent = 0, $rentalType = 0)
     {
+		$forSale = applicationConstants::PRODUCT_FOR_SALE;
+		$forRent = applicationConstants::PRODUCT_FOR_RENT;
+		
         $frm = new Form('frmBuyProduct', array('id'=>'frmBuyProduct'));
-        $fld = $frm->addTextBox(Labels::getLabel('LBL_Quantity', $formLangId), 'quantity', 1, array('maxlength' => '3'));
+		/* [ Rental Product Fields */
+		$productForFld = $frm->addHiddenField('', 'product_for');
+		$extend_order = $frm->addHiddenField('', 'extend_order');
+		if ($isRent > 0 && ALLOW_RENT > 0) {
+			
+			$startDateFld = $frm->addTextBox(Labels::getLabel('LBL_Rental_Start_Date', $formLangId), 'rental_start_date', '', array('readonly' => 'readonly'));
+			
+			$startDateUnReqFld = new FormFieldRequirement('rental_start_date', Labels::getLabel('LBL_Rental_Start_Date', $formLangId));
+			$startDateUnReqFld->setRequired(false);
+
+			$startDateReqFld = new FormFieldRequirement('rental_start_date', Labels::getLabel('LBL_Rental_Start_Date', $formLangId));
+			$startDateReqFld->setRequired(true);
+				
+			$endDateFld = $frm->addTextBox(Labels::getLabel('LBL_Rental_End_Date', $formLangId), 'rental_end_date', '', array('readonly' => 'readonly'));
+			
+			$endDateUnReqFld = new FormFieldRequirement('rental_end_date', Labels::getLabel('LBL_Rental_End_Date', $formLangId));
+			$endDateUnReqFld->setRequired(false);
+
+			$endDateReqFld = new FormFieldRequirement('rental_end_date', Labels::getLabel('LBL_Rental_End_Date', $formLangId));
+			$endDateReqFld->setRequired(true);
+			$endDateReqFld->setCompareWith('rental_start_date', 'ge', '');
+			
+			$productForFld->requirements()->addOnChangerequirementUpdate($forSale, 'eq', 'rental_start_date', $startDateUnReqFld);
+			$productForFld->requirements()->addOnChangerequirementUpdate($forRent, 'eq', 'rental_start_date', $startDateReqFld);
+			
+			$productForFld->requirements()->addOnChangerequirementUpdate($forSale, 'eq', 'rental_end_date', $endDateUnReqFld);
+			$productForFld->requirements()->addOnChangerequirementUpdate($forRent, 'eq', 'rental_end_date', $endDateReqFld);
+		}
+		
+		/* Rental Product Fields ] */
+		$fld = $frm->addTextBox(Labels::getLabel('LBL_Quantity', $formLangId), 'quantity', 1, array('maxlength' => '3'));
         $fld->requirements()->setIntPositive();
         // $frm->addSubmitButton(null, 'btnProductBuy', Labels::getLabel('LBL_Buy_Now', $formLangId ), array( 'id' => 'btnProductBuy' ) );
         //$frm->addSubmitButton(null, 'btnAddToCart', Labels::getLabel('LBL_Add_to_Cart', $formLangId), array( 'id' => 'btnAddToCart' ));
         $frm->addHTML(null, 'btnProductBuy', '<button name="btnProductBuy" type="submit" id="btnProductBuy" class="btn btn--primary block-on-mobile add-to-cart--js btnBuyNow"> '.Labels::getLabel('LBL_Buy_Now', $formLangId).'</button>');
         $frm->addHTML(null, 'btnAddToCart', '<button name="btnAddToCart" type="submit" id="btnAddToCart" class="btn btn--secondary block-on-mobile add-to-cart--js btn--primary-border"> '.Labels::getLabel('LBL_Add_to_Cart', $formLangId).'</button>');
         $frm->addHiddenField('', 'selprod_id');
+        
         return $frm;
     }
 
@@ -1330,7 +1503,7 @@ class ProductsController extends MyAppController
         $productSrchObj->addMultipleFields(
             array('product_id', 'selprod_id', 'COALESCE(product_name, product_identifier) as product_name', 'COALESCE(selprod_title, product_name, product_identifier) as selprod_title',
             'special_price_found', 'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type',
-            'theprice', 'selprod_price','selprod_stock', 'selprod_condition','prodcat_id','COALESCE(prodcat_name, prodcat_identifier) as prodcat_name','COALESCE(sq_sprating.prod_rating,0) prod_rating ','selprod_sold_count')
+            'theprice', 'selprod_price','selprod_stock', 'selprod_condition','prodcat_id','COALESCE(prodcat_name, prodcat_identifier) as prodcat_name','COALESCE(sq_sprating.prod_rating,0) prod_rating ','selprod_sold_count', 'sprodata_is_for_sell as is_sell', 'sprodata_is_for_rent as is_rent', 'sprodata_rental_price as rent_price', 'sprodata_rental_security ', 'sprodata_rental_type as rental_type', 'sprodata_rental_terms', 'sprodata_rental_stock', 'sprodata_rental_buffer_days', 'sprodata_minimum_rental_duration')
         );
 
         $productCatSrchObj = ProductCategory::getSearchObject(false, $this->siteLangId);
@@ -1508,7 +1681,7 @@ class ProductsController extends MyAppController
             $prodSrch->addFld('COALESCE(uwlp.uwlp_selprod_id, 0) as is_in_any_wishlist');
         }
 
-        $prodSrch->addMultipleFields(array('product_id','product_identifier','COALESCE(product_name,product_identifier) as product_name','product_seller_id','product_model','product_type','prodcat_id','COALESCE(prodcat_name,prodcat_identifier) as prodcat_name','product_upc','product_isbn','product_short_description','product_description','selprod_id','selprod_user_id','selprod_code', 'selprod_condition','selprod_price','special_price_found','splprice_start_date', 'splprice_end_date','COALESCE(selprod_title,product_name, product_identifier) as selprod_title','selprod_warranty','selprod_return_policy','selprodComments','theprice', 'selprod_stock','selprod_threshold_stock_level','IF(selprod_stock > 0, 1, 0) AS in_stock', 'brand_id','COALESCE(brand_name, brand_identifier) as brand_name', 'brand_short_description', 'user_name','shop_id', 'shop_name','splprice_display_dis_type', 'splprice_display_dis_val', 'splprice_display_list_price','product_attrgrp_id', 'product_youtube_video', 'product_cod_enabled','selprod_cod_enabled','selprod_available_from'));
+        $prodSrch->addMultipleFields(array('product_id','product_identifier','COALESCE(product_name,product_identifier) as product_name','product_seller_id','product_model','product_type','prodcat_id','COALESCE(prodcat_name,prodcat_identifier) as prodcat_name','product_upc','product_isbn','product_short_description','product_description','selprod_id','selprod_user_id','selprod_code', 'selprod_condition','selprod_price','special_price_found','splprice_start_date', 'splprice_end_date','COALESCE(selprod_title,product_name, product_identifier) as selprod_title','selprod_warranty','selprod_return_policy','selprodComments','theprice', 'selprod_stock','selprod_threshold_stock_level','IF(selprod_stock > 0, 1, 0) AS in_stock', 'brand_id','COALESCE(brand_name, brand_identifier) as brand_name', 'brand_short_description', 'user_name','shop_id', 'shop_name','splprice_display_dis_type', 'splprice_display_dis_val', 'splprice_display_list_price','product_attrgrp_id', 'product_youtube_video', 'product_cod_enabled','selprod_cod_enabled','selprod_available_from', 'sprodata_is_for_sell as is_sell', 'sprodata_is_for_rent as is_rent', 'sprodata_rental_price as rent_price', 'sprodata_rental_security ', 'sprodata_rental_type as rental_type', 'sprodata_rental_terms', 'sprodata_rental_stock', 'sprodata_rental_buffer_days', 'sprodata_minimum_rental_duration'));
         /* echo $selprod_id; die; */
         $productRs = $prodSrch->getResultSet();
         $product = FatApp::getDb()->fetch($productRs);
@@ -1596,9 +1769,32 @@ class ProductsController extends MyAppController
         $product['selprod_warranty_policies'] =  SellerProduct::getSelprodPolicies($product['selprod_id'], PolicyPoint::PPOINT_TYPE_WARRANTY, $this->siteLangId);
 
         /* Form buy product[ */
-        $frm = $this->getCartForm($this->siteLangId);
-        $frm->fill(array('selprod_id' => $selprod_id));
-        $this->set('frmBuyProduct', $frm);
+        /*$frm = $this->getCartForm($this->siteLangId);
+        $frm->fill(array('selprod_id' => $selprod_id)); */
+      
+		$productFor = applicationConstants::PRODUCT_FOR_SALE;
+		$isRent = $product['is_rent'];
+		$rentalType = $product['rental_type'];
+		$unavailableDates = array();
+		if ($isRent > 0 ) {
+			$productFor = applicationConstants::PRODUCT_FOR_RENT;
+			
+			if (strtotime($product['selprod_available_from']) < time()) {
+                $startDate = date('Y-m-d');
+            } else {
+                $startDate = date('Y-m-d', strtotime($product['selprod_available_from']));
+            }
+			$endDate = date('Y-m-d', strtotime('+6 month'));
+			$productOrderData = OrderProductData::getProductOrders($selprod_id, $startDate, $endDate, $product['sprodata_rental_buffer_days']);
+			
+			if (!empty($productOrderData)) {
+                $unavailableDates = ProductRental::prodDisableDates($productOrderData, $product['sprodata_rental_stock'], $product['sprodata_rental_buffer_days']);
+			}
+		}
+		$frm = $this->getCartForm($this->siteLangId, $isRent, $rentalType);
+        $frm->fill(array('selprod_id' => $selprod_id, 'product_for' => $productFor));
+		$this->set('frmBuyProduct', $frm);
+		$this->set('unavailableDates', $unavailableDates);
         /* ] */
 
         $optionSrchObj = clone $prodSrchObj;
@@ -1663,6 +1859,7 @@ class ProductsController extends MyAppController
         }
         $this->set('product', $product);
         $this->set('productImagesArr', $productGroupImages);
+		$this->set('rentalTypeArr', applicationConstants::rentalTypeArr($this->siteLangId));
         $this->_template->render(false, false);
     }
 

@@ -256,6 +256,7 @@ if (array_key_exists('brand_id', $postedData) && $postedData['brand_id'] > 0) {
                                         'postedData'=> $postedData,
                                         'recordCount'=> $recordCount,
                                         'siteLangId'=> $siteLangId,
+										'rentalTypeArr' => applicationConstants::rentalTypeArr($siteLangId)
                                     );
                         $this->includeTemplate('products/products-list.php', $productsData, false);
                     ?> </div>

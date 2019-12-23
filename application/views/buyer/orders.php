@@ -6,6 +6,10 @@ $frmOrderSrch->setFormTagAttribute('class', 'form');
 $frmOrderSrch->developerTags['colClassPrefix'] = 'col-md-';
 $frmOrderSrch->developerTags['fld_default_col'] = 12;
 
+
+$orderTypeFld = $frmOrderSrch->getField('order_type');
+$orderType = $orderTypeFld->value;
+
 $keywordFld = $frmOrderSrch->getField('keyword');
 $keywordFld->setWrapperAttribute('class', 'col-lg-4');
 $keywordFld->developerTags['col'] = 4;
@@ -52,10 +56,21 @@ $cancelBtnFld->developerTags['col'] = 2;
 $cancelBtnFld->developerTags['noCaptionTag'] = true;
 ?> <?php $this->includeTemplate('_partial/buyerDashboardNavigation.php'); ?> <main id="main-area" class="main" role="main">
     <div class="content-wrapper content-space">
-        <div class="content-header justify-content-between row mb-4">
+		
+		<div class="content-header justify-content-between row mb-4">
             <div class="content-header-left col-md-auto">
                 <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
                 <h2 class="content-header-title"> <?php echo Labels::getLabel('LBL_Order_History', $siteLangId); ?></h2>
+				<div class="tabs tabs--small clearfix">
+				<ul>
+					<li class="<?php echo ($orderType == applicationConstants::PRODUCT_FOR_SALE)? 'is-active':'';?>">
+						<a href="<?php echo CommonHelper::generateUrl('Buyer', 'orders');?>"> <?php echo Labels::getLabel('LBL_Sold_orders', $siteLangId); ?> </a>
+					</li>
+					<li class="<?php echo ($orderType == applicationConstants::PRODUCT_FOR_RENT)? 'is-active':'';?>">
+						<a href="<?php echo CommonHelper::generateUrl('Buyer', 'RentalOrders');?>"> <?php echo Labels::getLabel('LBL_Rented_orders', $siteLangId); ?> </a>
+					</li>
+				</ul>
+				</div>
             </div>
         </div>
         <div class="content-body">
