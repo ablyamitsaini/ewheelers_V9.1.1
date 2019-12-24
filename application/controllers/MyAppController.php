@@ -231,7 +231,7 @@ class MyAppController extends FatController
         $stateId = FatUtility::int($stateId);
 
         $stateObj = new States();
-        $statesArr = $stateObj->getStatesByCountryId($countryId, $this->siteLangId);
+        $statesArr = $stateObj->getStatesDataByCountryId($countryId, $this->siteLangId);
 
         if (true === $return) {
             return $statesArr;
@@ -241,6 +241,20 @@ class MyAppController extends FatController
         $this->set('stateId', $stateId);
         $this->_template->render(false, false, '_partial/states-list.php');
     }
+	public function getCities($countryId, $stateId, $cityId, $return = false)
+    {
+        $countryId = FatUtility::int($countryId);
+        $stateId = FatUtility::int($stateId);
+		$citiesArr = City::getCitiesByCountryAndState($countryId, $stateId, $this->siteLangId);
+		if (true === $return) {
+            return $citiesArr;
+        }
+
+        $this->set('citiesArr', $citiesArr);
+        $this->set('cityId', $cityId);
+        $this->_template->render(false, false, '_partial/cities-list.php');
+    }
+	
 
     public function getBreadcrumbNodes($action)
     {
@@ -407,7 +421,20 @@ class MyAppController extends FatController
         $fld->requirement->setRequired(true);
 
         $frm->addSelectBox(Labels::getLabel('LBL_State', $siteLangId), 'ua_state_id', array(), '', array(), Labels::getLabel('LBL_Select', $siteLangId))->requirement->setRequired(true);
-        $frm->addRequiredField(Labels::getLabel('LBL_City', $siteLangId), 'ua_city');
+
+		$cithSelectFld = $frm->addSelectBox(Labels::getLabel('LBL_City', $siteLangId), 'ua_city_id', array(), '', array(), Labels::getLabel('LBL_City', $siteLangId));
+		$cithSelectFld->requirement->setRequired(true);
+
+		$cityFld = $frm->addTextBox(Labels::getLabel('LBL_City_Name', $siteLangId), 'ua_city');
+
+		$cityNameUnReqFld = new FormFieldRequirement('ua_city', Labels::getLabel('LBL_City_Name', $siteLangId));
+        $cityNameUnReqFld->setRequired(false);
+
+        $cityNameReqFld = new FormFieldRequirement('ua_city', Labels::getLabel('LBL_City_Name', $siteLangId));
+        $cityNameReqFld->setRequired(true);
+
+		$cithSelectFld->requirements()->addOnChangerequirementUpdate(1, 'lt', 'ua_city', $cityNameReqFld);
+		$cithSelectFld->requirements()->addOnChangerequirementUpdate(0, 'gt', 'ua_city', $cityNameUnReqFld);
 
         $zipFld = $frm->addRequiredField(Labels::getLabel('LBL_Postalcode', $this->siteLangId), 'ua_zip');
         $zipFld->requirements()->setRegularExpressionToValidate(ValidateElement::ZIP_REGEX);

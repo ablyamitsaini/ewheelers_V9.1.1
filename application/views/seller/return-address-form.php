@@ -11,6 +11,11 @@ $countryFld->setFieldTagAttribute('onChange', 'getCountryStates(this.value,'.$st
 
 $stateFld = $frm->getField('ura_state_id');
 $stateFld->setFieldTagAttribute('id', 'ura_state_id');
+$stateFld->setFieldTagAttribute('onChange','getCountryStatesCities(\'#ura_country_id\', this.value, '. $cityId.' ,\'#ua_city_id\')');
+
+$cityFld = $frm->getField('ura_city_id');
+$cityFld->setFieldTagAttribute('id','ua_city_id');
+
 ?>
 <?php
 $variables= array('language'=>$language,'siteLangId'=>$siteLangId,'shop_id'=>$shop_id,'action'=>$action);
@@ -36,6 +41,7 @@ $this->includeTemplate('seller/_partial/shop-navigation.php', $variables, false)
 </div>
 <script language="javascript">
 $(document).ready(function(){
-    getCountryStates($( "#ura_country_id" ).val(),<?php echo $stateId ;?>,'#ura_state_id');
+    getCountryStates($("#ura_country_id" ).val(),<?php echo $stateId ;?>,'#ura_state_id', '#ua_city_id');
+	getCountryStatesCities("#ura_country_id", <?php echo $stateId ;?>, <?php echo $cityId ;?>, '#ua_city_id');
 });
 </script>

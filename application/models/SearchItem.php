@@ -93,6 +93,7 @@ class SearchItem extends MyAppModel
                     case 'prodcat':
                     case 'optionvalue':
                     case 'condition':
+                    case 'producttype':
                         $dashPosition =strpos($valueString, '-');
                         $id = substr($valueString, 0, $dashPosition);
                         $valueString = substr($valueString, $dashPosition+1);

@@ -450,7 +450,12 @@ class ImportExportController extends SellerBaseController
 
         $fld = $frm->addCheckBox(Labels::getLabel("LBL_Use_1_for_yes_0_for_no", $langId), 'CONF_USE_O_OR_1', 1, array(), false, 0);
         $fld->htmlAfterField = '<br><small>'.Labels::getLabel("MSG_Use_1_for_yes_0_for_no_for_status_type_data", $langId).'</small>';
-
+		
+		if(ALLOW_RENT > 0) {
+			$fld = $frm->addCheckBox(Labels::getLabel("LBL_Use_1_for_Day_2_for_Hour", $langId), 'CONF_USE_1_OR_2_FOR_RENTAL_TYPE', 1, array(), false, 0);
+			$fld->htmlAfterField = '<br><small>'.Labels::getLabel("MSG_Use_1_for_Day_2_for_Hour_for_Rental_type", $langId).'</small>';
+		}
+		
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Submit', $langId));
         return $frm;
     }

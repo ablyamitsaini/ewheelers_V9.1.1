@@ -19,6 +19,7 @@ class OrderProduct extends MyAppModel
     const CHARGE_TYPE_REWARD_POINT_DISCOUNT = 5;
     const CHARGE_TYPE_VOLUME_DISCOUNT = 6;
     const CHARGE_TYPE_ADJUST_SUBSCRIPTION_PRICE = 7;
+	const CHARGE_TYPE_DURATION_DISCOUNT = 8;
 
     public function __construct($id = 0)
     {
@@ -41,6 +42,18 @@ class OrderProduct extends MyAppModel
 
         return $srch;
     }
+	public static function getOrderIdByOprId($oprId) {
+		$opSrch = static::getSearchObject();
+		$opSrch->addCondition('op_id', '=', $oprId);
+		$opSrch->addFld('op_order_id');
+		$rs = $opSrch->getResultSet();
+        $result =  FatApp::getDb()->fetch($rs);
+		if (empty ($result)) {
+			return ;
+		} 
+		return $result['op_order_id'];
+	}
+	
 
     public static function getChargeTypeArr($langId)
     {
@@ -49,12 +62,13 @@ class OrderProduct extends MyAppModel
             $langId = FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG');
         }
         return array(
-        static::CHARGE_TYPE_TAX =>    Labels::getLabel('LBL_Order_Product_Tax_Charges', $langId),
-        static::CHARGE_TYPE_DISCOUNT =>    Labels::getLabel('LBL_Order_Product_Discount_Charges', $langId),
-        static::CHARGE_TYPE_SHIPPING    =>    Labels::getLabel('LBL_Order_Product_Shipping_Charges', $langId),
-        /* static::CHARGE_TYPE_BATCH_DISCOUNT=>Labels::getLabel('LBL_Order_Product_Batch_Discount', $langId), */
-        static::CHARGE_TYPE_REWARD_POINT_DISCOUNT    =>    Labels::getLabel('LBL_Order_Product_Reward_Point', $langId),
-        static::CHARGE_TYPE_VOLUME_DISCOUNT    =>    Labels::getLabel('LBL_Order_Product_Volume_Discount', $langId),
+			static::CHARGE_TYPE_TAX => Labels::getLabel('LBL_Order_Product_Tax_Charges', $langId),
+			static::CHARGE_TYPE_DISCOUNT => Labels::getLabel('LBL_Order_Product_Discount_Charges', $langId),
+			static::CHARGE_TYPE_SHIPPING => Labels::getLabel('LBL_Order_Product_Shipping_Charges', $langId),
+			/* static::CHARGE_TYPE_BATCH_DISCOUNT=>Labels::getLabel('LBL_Order_Product_Batch_Discount', $langId), */
+			static::CHARGE_TYPE_REWARD_POINT_DISCOUNT => Labels::getLabel('LBL_Order_Product_Reward_Point', $langId),
+			static::CHARGE_TYPE_VOLUME_DISCOUNT => Labels::getLabel('LBL_Order_Product_Volume_Discount', $langId),
+			static::CHARGE_TYPE_DURATION_DISCOUNT => Labels::getLabel('LBL_Order_Product_Duration_Discount', $langId),
         );
     }
 

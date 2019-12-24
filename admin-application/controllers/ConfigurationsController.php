@@ -521,6 +521,29 @@ class ConfigurationsController extends AdminBaseController
 
         switch ($type) {
             case Configurations::FORM_GENERAL:
+				
+				$allowSale = $frm->addCheckBox(Labels::getLabel('LBL_Allow_Sale', $this->adminLangId), 'CONF_ALLOW_SALE', 1, array(), false, 0);
+				
+				$allowSaleUnReqFld = new FormFieldRequirement('CONF_ALLOW_SALE', Labels::getLabel('LBL_Allow_Sale', $this->adminLangId));
+				$allowSaleUnReqFld->setRequired(false);
+
+				$allowSaleReqFld = new FormFieldRequirement('CONF_ALLOW_SALE', Labels::getLabel('LBL_Allow_Sale', $this->adminLangId));
+				$allowSaleReqFld->setRequired(true);
+				
+				$allowRent = $frm->addCheckBox(Labels::getLabel('LBL_Allow_Rent', $this->adminLangId), 'CONF_ALLOW_RENT', 1, array(), false, 0);
+				
+				$allowRentUnReqFld = new FormFieldRequirement('CONF_ALLOW_RENT', Labels::getLabel('LBL_Allow_Rent', $this->adminLangId));
+				$allowRentUnReqFld->setRequired(false);
+
+				$allowRentReqFld = new FormFieldRequirement('CONF_ALLOW_RENT', Labels::getLabel('LBL_Allow_Rent', $this->adminLangId));
+				$allowRentReqFld->setRequired(true);
+				
+				$allowRent->requirements()->addOnChangerequirementUpdate(1, 'eq', 'CONF_ALLOW_SALE', $allowSaleUnReqFld);
+				$allowRent->requirements()->addOnChangerequirementUpdate(0, 'eq', 'CONF_ALLOW_SALE', $allowSaleReqFld);
+			
+				$allowSale->requirements()->addOnChangerequirementUpdate(1, 'eq', 'CONF_ALLOW_RENT', $allowRentUnReqFld);
+				$allowSale->requirements()->addOnChangerequirementUpdate(0, 'eq', 'CONF_ALLOW_RENT', $allowRentReqFld);
+			
                 $frm->addEmailField(Labels::getLabel('LBL_Store_Owner_Email', $this->adminLangId), 'CONF_SITE_OWNER_EMAIL');
                 $phnFld = $frm->addTextBox(Labels::getLabel('LBL_Telephone', $this->adminLangId), 'CONF_SITE_PHONE', '', array('class'=>'phone-js ltr-right', 'placeholder' => ValidateElement::PHONE_NO_FORMAT, 'maxlength' => ValidateElement::PHONE_NO_LENGTH));
                 $phnFld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);
@@ -849,6 +872,20 @@ class ConfigurationsController extends AdminBaseController
                 );
                 $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Set_the_default_child_order_status_when_an_order_is_marked_Shipped.", $this->adminLangId)."</small>";
 
+				/* [ Rental Order Status */
+				$fld = $frm->addSelectBox(
+                    Labels::getLabel("LBL_Default_Rental_Returned_Order_Status", $this->adminLangId),
+                    'CONF_DEFAULT_RENTAL_RETURNED_ORDER_STATUS',
+                    $orderStatusArr,
+                    false,
+                    array(),
+                    ''
+                );
+                $fld->htmlAfterField = "<small>".Labels::getLabel("LBL_Set_the_default_child_order_status_when_an_order_is_marked_Rental_Returned.", $this->adminLangId)."</small>";
+				
+				/* Rental Order Status ]*/
+				 
+				
                 $fld =$frm->addSelectBox(
                     Labels::getLabel("LBL_Default_Delivered_Order_Status", $this->adminLangId),
                     'CONF_DEFAULT_DEIVERED_ORDER_STATUS',
@@ -1521,6 +1558,12 @@ class ConfigurationsController extends AdminBaseController
 
                 $fld = $frm->addCheckBox(Labels::getLabel("LBL_Use_1_for_yes_0_for_no", $this->adminLangId), 'CONF_USE_O_OR_1', 1, array(), false, 0);
                 $fld->htmlAfterField = '<br><small>'.Labels::getLabel("MSG_Use_1_for_yes_0_for_no_for_status_type_data", $this->adminLangId).'</small>';
+				
+				if(ALLOW_RENT > 0) {
+					$fld = $frm->addCheckBox(Labels::getLabel("LBL_Use_1_for_Day_2_for_Hour", $this->adminLangId), 'CONF_USE_1_OR_2_FOR_RENTAL_TYPE', 1, array(), false, 0);
+					$fld->htmlAfterField = '<br><small>'.Labels::getLabel("MSG_Use_1_for_Day_2_for_Hour_for_Rental_type", $this->adminLangId).'</small>';
+				}
+				
                 break;
         }
         $frm->addHiddenField('', 'form_type', $type);

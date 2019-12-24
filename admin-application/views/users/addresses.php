@@ -35,10 +35,16 @@
 								$td->appendElement('plaintext', array(), $sr_no);
 							break;
 							case 'user_address':
+								if ($row['ua_city_id'] > -1) {
+									$city = $row['city_name'];
+								} else {
+									$city = $row['ua_city'];
+								}
+							
 								$address = $row['ua_name'].'<br>';
 								$address.= $row['ua_address1'];
 								$address.= (strlen($row['ua_address2'])>0)?','.$row['ua_address2'].'<br>':'<br>';
-								$address.= (strlen($row['ua_city'])>0)?$row['ua_city'].',':'';
+								$address.= (strlen($city)>0)?$city.',':'';
 								$address.= (strlen($row['state_name'])>0)?$row['state_name'].'<br>':'';
 								$address.= (strlen($row['country_name'])>0)?$row['country_name'].'<br>':'';
 								$address.= (strlen($row['ua_zip'])>0) ? 'Postal Code: '.$row['ua_zip'].'<br>':'';

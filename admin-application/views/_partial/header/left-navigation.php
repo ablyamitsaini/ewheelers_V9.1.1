@@ -134,6 +134,7 @@
                 $objPrivilege->canViewNavigationManagement(AdminAuthentication::getLoggedAdminId(), true) ||
                 $objPrivilege->canViewCountries(AdminAuthentication::getLoggedAdminId(), true) ||
                 $objPrivilege->canViewStates(AdminAuthentication::getLoggedAdminId(), true) ||
+                $objPrivilege->canViewCities(AdminAuthentication::getLoggedAdminId(), true) ||
                 $objPrivilege->canViewCollections(AdminAuthentication::getLoggedAdminId(), true) ||
                 $objPrivilege->canViewPolicyPoints(AdminAuthentication::getLoggedAdminId(), true)  ||
                 $objPrivilege->canViewEmptyCartItems(AdminAuthentication::getLoggedAdminId(), true) ||
@@ -171,6 +172,10 @@
                     <?php if ($objPrivilege->canViewStates(AdminAuthentication::getLoggedAdminId(), true)) {?>
                         <li><a href="<?php echo CommonHelper::generateUrl('States'); ?>"><?php echo Labels::getLabel('LBL_States_Management', $adminLangId);?></a></li>
                     <?php }?>
+                    
+                    <?php if($objPrivilege->canViewCities(AdminAuthentication::getLoggedAdminId(), true)){?>
+						<li><a href="<?php echo CommonHelper::generateUrl('Cities'); ?>"><?php echo Labels::getLabel('LBL_Cities_Management',$adminLangId);?></a></li>
+					<?php }?>
 
                     <?php if ($objPrivilege->canViewCollections(AdminAuthentication::getLoggedAdminId(), true)) {?>
                         <li><a href="<?php echo CommonHelper::generateUrl('Collections'); ?>"><?php echo Labels::getLabel('LBL_Collection_Management', $adminLangId);?> </a></li>

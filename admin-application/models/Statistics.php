@@ -45,6 +45,7 @@ class Statistics extends MyAppModel
             $srch->doNotCalculateRecords();
             $srch->doNotLimitRecords();
             $cnd = $srch->addCondition('order_is_paid', '=', Orders::ORDER_IS_PAID);
+
             $cnd->attachCondition('pmethod_code', '=', 'CashOnDelivery');
             $srch->addMultipleFields(array('avg(CASE WHEN order_have_booking = 1 THEN order_actual_net_amount ELSE order_net_amount END) AS avg_order,count(order_id) as total_orders'));
             $rs = $srch->getResultSet();

@@ -13,6 +13,17 @@ if (CommonHelper::isThemePreview() && isset($_SESSION['preview_theme'])) {
     $themeActive = 'false';
 }
 
+$confCountryDetail = array();
+if (!empty(SessionHelper::getUserLocation())) {
+    $confCountryDetail = SessionHelper::getUserLocation();
+} else {
+    $confCountryCode = FatApp::getConfig('CONF_COUNTRY', FatUtility::VAR_STRING);
+    if ('' != $confCountryCode) {   
+        $confCountryDetail = Countries::getCountryById($confCountryCode, $siteLangId);
+    }
+}
+
+        
 array_walk($jsVariables, function (&$item1, $key) {
     $item1 = html_entity_decode($item1, ENT_QUOTES, 'UTF-8');
 });
@@ -61,7 +72,7 @@ if (isset($isUserDashboard) && $isUserDashboard) {
 }
 
 if (!isset($exculdeMainHeaderDiv)) {
-    $this->includeTemplate('_partial/topHeader.php', array('siteLangId'=>$siteLangId), false);
+    $this->includeTemplate('_partial/topHeader.php', array('siteLangId'=>$siteLangId, 'confCountryDetail' => $confCountryDetail), false);
 }
 
 if (!$isAppUser) {

@@ -90,14 +90,7 @@ class States extends MyAppModel
 
     public function getStatesByCountryId($countryId, $langId, $isActive = true)
     {
-        $langId = FatUtility::int($langId);
-        $countryId = FatUtility::int($countryId);
-
-        $srch = static::getSearchObject($isActive, $langId);
-        $srch->addCondition('state_country_id', '=', $countryId);
-        $srch->doNotCalculateRecords();
-        $srch->doNotLimitRecords();
-        $srch->addOrder('state_name', 'ASC');
+        $srch = SELF::getStatesObj($countryId, $langId, $isActive);
         $srch->addMultipleFields(
             array(
                 'state_id',
@@ -113,4 +106,39 @@ class States extends MyAppModel
         }
         return $row;
     }
+    
+    public function getStatesDataByCountryId($countryId, $langId, $isActive = true)
+    {
+        $srch = SELF::getStatesObj($countryId, $langId, $isActive);
+        $srch->addMultipleFields(
+            array(
+                'state_id',
+                'state_code',
+                'IFNULL(state_name, state_identifier) as state_name'
+                )
+        );
+
+        $rs = $srch->getResultSet();
+        $row = FatApp::getDb()->fetchAll($rs);
+
+        if (!is_array($row)) {
+            return false;
+        }
+        return $row;
+    }
+    
+    private function getStatesObj($countryId, $langId, $isActive = true)
+    {
+        $langId = FatUtility::int($langId);
+        $countryId = FatUtility::int($countryId);
+
+        $srch = static::getSearchObject($isActive, $langId);
+        $srch->addCondition('state_country_id', '=', $countryId);
+        $srch->doNotCalculateRecords();
+        $srch->doNotLimitRecords();
+        $srch->addOrder('state_name', 'ASC');
+        return $srch;
+    }
+    
+    
 }

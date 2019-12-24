@@ -5,7 +5,9 @@
 	<?php }?>
 	</ul>
 </div>
-<?php foreach( $row['categories'] as $key => $category ){?>
+<?php 
+$rentalTypeArr = applicationConstants::rentalTypeArr($siteLangId);
+foreach( $row['categories'] as $key => $category ){?>
 	<div id="tb-<?php echo $key; ?>" class="tabs-content tabs-content-js" style="display: block;">
 		<div class="ft-pro-wrapper">
 		<?php $i=1; foreach( $category['products'] as $key => $product ){ ?>

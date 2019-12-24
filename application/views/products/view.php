@@ -3,6 +3,13 @@ defined('SYSTEM_INIT') or die('Invalid Usage.');
 $buyQuantity = $frmBuyProduct->getField('quantity');
 $buyQuantity->addFieldTagAttribute('class', 'qty-input cartQtyTextBox productQty-js');
 $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
+
+$rentalAvailableDate = date('Y-m-d');
+if(!empty($extendedOrderData)) {
+	$rentalAvailableDate = $extendedOrderData['opd_rental_end_date'];
+	//$rentalAvailableDate = date('Y-m-d H:i:s', strtotime('+1 '));
+}
+
 ?>
 <div id="body" class="body detail-page" role="main">
     <section class="">
@@ -123,24 +130,62 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                         </div>
                                     </div>
                                     <div class="brand-data"><span class="txt-gray-light"><?php echo Labels::getLabel('LBL_Brand', $siteLangId); ?>:</span> <?php echo $product['brand_name'];?></div>
-                                    <div class="col products__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?>
-                                        <?php if ($product['special_price_found']) { ?>
-                                        <span class="products__price_old"><?php echo CommonHelper::displayMoneyFormat($product['selprod_price']); ?></span>
-                                        <span class="product_off"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span>
-                                        <?php } ?>
-                                    </div>
+									<!-- [ REntal Functionality -->
+									<div class="row product-type-tabs-container mb-4">
+										<?php if (ALLOW_RENT > 0 && $product['is_rent'] > 0) { ?>
+										<div class="col-sm-6">
+											<a href="javascript:void(0);" class="product-type-tabs active product-type-tabs--js" data-productfor="<?php echo applicationConstants::PRODUCT_FOR_RENT; ?>" >
+												<span class="sticky-title"><?php echo Labels::getLabel('LBL_For_Rental', $siteLangId);?></span>
+												<span class="sticky-price">
+                                                <span>
+													<?php echo CommonHelper::displayMoneyFormat($product['rent_price']); ?>
+												</span>
+                                                <span class="sticky-sub-price"> 
+													<?php echo $rentalTypeArr[$product['rental_type']];?> </span>
+												</span>
+											</a>
+										</div>
+										<?php } ?>
+										<?php if (ALLOW_SALE > 0 && $product['is_sell'] > 0 && $orderProdId < 1) { ?>
+										<div class="col-sm-6">
+											<a href="javascript:void(0);" class="product-type-tabs product-type-tabs--js <?php echo ( $product['is_rent'] < 1) ? 'active' : '';?>" data-productfor="<?php echo applicationConstants::PRODUCT_FOR_SALE; ?>">
+												<span class="sticky-title"><?php echo Labels::getLabel('LBL_For_Sale', $siteLangId);?></span>
+												<span class="sticky-price">
+                                                <span>
+													<?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?>
+													<?php if($product['special_price_found']){ ?>
+													<span class="products__price_old"><?php echo CommonHelper::displayMoneyFormat($product['selprod_price']); ?></span>
+													<span class="product_off"><?php echo CommonHelper::showProductDiscountedText($product, $siteLangId); ?></span>
+													<?php }?>
+												</span>
+                                                <span class="sticky-sub-price"> 
+													<?php echo Labels::getLabel('LBL_Retail', $siteLangId);?> 
+												</span>
+												</span>
+											</a>
+										</div>
+										<?php } ?>
+									</div>
+									<?php if ($product['is_rent'] > 0 && ALLOW_RENT > 0) { ?>
+									<div class="row align-items-end rental-fields--js mb-4">
+										<div class="col-sm-12 cms">
+											<table>
+												<tr>
+													<th><?php echo Labels::getLabel('LBL_Retail_Security', $siteLangId);?></th>
+													<td><?php echo CommonHelper::displayMoneyFormat($product['sprodata_rental_security']); ?>
+													</td>
+												</tr>	
+												<tr>	
+													<th><?php echo Labels::getLabel('LBL_Minimum_Rental_Duration', $siteLangId);?></th>
+													<td><?php echo $product['sprodata_minimum_rental_duration'];?></td>
+												</tr>
+											</table>
+										</div>
+									</div>
+									<?php } ?>
+									<!-- REntal Functionality ]-->
 									
-									<?php
-										if($is_booking == 1 && FatApp::getConfig('CONF_ENABLE_BOOK_NOW_MODULE') == 1 && ($product['selprod_book_now_enable'] == applicationConstants::BOTH || $product['selprod_book_now_enable'] == applicationConstants::BOOK_NOW)){				
-										$bookPrice = ($booking_percentage / 100) * $product['theprice'];
-										?>	
-										<b><?php echo Labels::getLabel('LBL_Booking_Price', $siteLangId) . " : " . CommonHelper::displayMoneyFormat($bookPrice); ?>                   
-										</b>
-										<?php
-										}
-									?>
-
-                                    <!--<div class="detail-grouping">
+									<!--<div class="detail-grouping">
                                         <div class="products__category"><a href="<?php echo CommonHelper::generateUrl('Category', 'View', array($product['prodcat_id']));?>"><?php echo $product['prodcat_name'];?> </a></div>
                                     </div>-->
 
@@ -190,11 +235,11 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                                         <a optionValueId="<?php echo $opVal['optionvalue_id']; ?>" selectedOptionValues="<?php echo implode("_", $selectedOptionsArr); ?>" title="<?php echo $opVal['optionvalue_name'];
                                                     echo (!$isAvailable) ? ' '.Labels::getLabel('LBL_Not_Available', $siteLangId) : ''; ?>" class="<?php echo (!$option['option_is_color']) ? 'selector__link' : '';
                                                     echo (in_array($opVal['optionvalue_id'], $product['selectedOptionValues'])) ? ' ' : ' ';
-                                                    echo (!$optionUrl) ? ' is-disabled' : '';  ?>" href="<?php echo ($optionUrl) ? $optionUrl : 'javascript:void(0)'; ?>"> <span class="colors"
+													echo (!$optionUrl) ? ' is-disabled' : '';  ?>" href="<?php echo ($optionUrl) ? $optionUrl : 'javascript:void(0)'; ?>"> <span class="colors"
                                                                 style="background-color:#<?php echo $opVal['optionvalue_color_code']; ?>;"></span><?php echo $opVal['optionvalue_name'];?></a>
                                                         <?php } else { ?>
                                                         <a optionValueId="<?php echo $opVal['optionvalue_id']; ?>" selectedOptionValues="<?php echo implode("_", $selectedOptionsArr); ?>" title="<?php echo $opVal['optionvalue_name'];
-                                                    echo (!$isAvailable) ? ' '.Labels::getLabel('LBL_Not_Available', $siteLangId) : ''; ?>"
+														echo (!$isAvailable) ? ' '.Labels::getLabel('LBL_Not_Available', $siteLangId) : ''; ?>"
                                                             class="<?php echo (in_array($opVal['optionvalue_id'], $product['selectedOptionValues'])) ? '' : ' '; echo (!$optionUrl) ? ' is-disabled' : '' ?>"
                                                             href="<?php echo ($optionUrl) ? $optionUrl : 'javascript:void(0)'; ?>">
                                                             <?php echo $opVal['optionvalue_name'];  ?> </a>
@@ -233,159 +278,247 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                     <?php }*/?>
 
                                     <!-- Add To Cart [ -->
-                                    <?php if ($product['in_stock']) {
-                                    echo $frmBuyProduct->getFormTag();
-                                    $qtyField =  $frmBuyProduct->getField('quantity');
-                                    $qtyFieldName =  $qtyField->getCaption();
-                                if (strtotime($product['selprod_available_from'])<= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))) { 
+								<?php if ($product['in_stock'] ||  $product['sprodata_rental_stock'] > 0) {
+                                echo $frmBuyProduct->getFormTag();
+                                $qtyField =  $frmBuyProduct->getField('quantity');
+                                $qtyFieldName =  $qtyField->getCaption();
+								$extendOrderId = 0;
 								
-								if($product['selprod_book_now_enable'] == applicationConstants::BOTH && $is_booking == 1 && FatApp::getConfig('CONF_ENABLE_BOOK_NOW_MODULE') == 1 && $product['selprod_test_drive_enable'] == 1){
-										$button_class = 'row-flexible4';
- 									}elseif($product['selprod_book_now_enable'] == applicationConstants::BUY_NOW && $product['selprod_test_drive_enable'] == 1){
-										$button_class = 'row-flexible';
-									}elseif($product['selprod_book_now_enable'] == applicationConstants::BOTH && $is_booking == 1 && FatApp::getConfig('CONF_ENABLE_BOOK_NOW_MODULE') == 1 ){
-										$button_class = 'row-flexible';			
-									}elseif($product['selprod_test_drive_enable'] == 1 && $product['selprod_book_now_enable'] == applicationConstants::BOOK_NOW && $is_booking == 1 && FatApp::getConfig('CONF_ENABLE_BOOK_NOW_MODULE') == 1){
-										$button_class = '';
-									}elseif($product['selprod_test_drive_enable'] == 1){
-										$button_class = 'row-flexible';
-									}else{
-										$button_class = '';
+								if($frmBuyProduct->getField('extend_order')) {
+									$extOrderFld = $frmBuyProduct->getField('extend_order');
+									$extendOrderId = $extOrderFld->value;
+								}
+									
+								if (strtotime($product['selprod_available_from'])<= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))) {
+								if ($product['is_rent'] > 0 && ALLOW_RENT > 0) {
+									$rentalStartDateFld = $frmBuyProduct->getField('rental_start_date');
+									$rentalEndDateFld = $frmBuyProduct->getField('rental_end_date');
+									$rentalStartDateName = $rentalStartDateFld->getCaption();
+									$rentalEndDateName = $rentalEndDateFld->getCaption();
+									if ($product['rental_type'] == applicationConstants::RENT_TYPE_HOUR) {
+										$rentalStartDateFld->addFieldTagAttribute('class', 'rental_start_datetime');
+										$rentalEndDateFld->addFieldTagAttribute('class', 'rental_end_datetime');
+									} else {
+										$rentalStartDateFld->addFieldTagAttribute('class', 'rental_start_date');
+										$rentalEndDateFld->addFieldTagAttribute('class', 'rental_end_date');
 									}
-								
+									if ($extendOrderId > 0) {
+										$rentalStartDateFld->addFieldTagAttribute('disabled', 'true');
+										$qtyField->addFieldTagAttribute('disabled', 'true');
+									}
+									$rentalStartDateFld->addFieldTagAttribute('onChange', 'getRentalDetails()');
+									$rentalEndDateFld->addFieldTagAttribute('onChange', 'getRentalDetails()');
+
+									
 								?>
-                                    <div class="row align-items-end <?php echo $button_class;?>">
-                                        <div class="col-xl-4 col-lg-5 col-md-5 mb-2">
-                                            <div class="form__group form__group-select">
-                                                <label class="h6"><?php echo $qtyFieldName; ?></label>
-                                                <div class="qty-wrapper">
-                                                    <div class="quantity" data-stock="<?php echo $product['selprod_stock']; ?>">
-                                                        <span class="decrease decrease-js">-</span>
-                                                        <div class="qty-input-wrapper" data-stock="<?php echo $product['selprod_stock']; ?>">
-                                                            <?php echo $frmBuyProduct->getFieldHtml('quantity'); ?>
-                                                        </div>
-                                                        <span class="increase increase-js">+</span>
+								<div class="row align-items-end rental-fields--js mb-3">
+									<div class="col-sm-6">
+                                        <div class="form__group form__group-select">
+                                            <label class="h6"><?php echo $rentalStartDateName; ?></label>
+                                            <?php echo $frmBuyProduct->getFieldHtml('rental_start_date'); ?>
+                                        </div>
+                                    </div>
+								
+									<div class="col-sm-6">
+                                        <div class="form__group form__group-select">
+                                            <label class="h6"><?php echo $rentalEndDateName; ?></label>
+                                            <?php echo $frmBuyProduct->getFieldHtml('rental_end_date'); ?>
+                                        </div>
+                                    </div>
+								</div>
+								<?php } ?>
+								<div class="row align-items-end mb-3">
+                                    <div class="col-xl-4 col-lg-5 col-md-5 mb-2">
+                                        <div class="form__group form__group-select">
+                                            <label class="h6"><?php echo $qtyFieldName; ?></label>
+                                            <div class="qty-wrapper">
+                                                <div class="quantity" data-stock="<?php echo $product['selprod_stock']; ?>">
+                                                    <span class="decrease <?php echo ($extendOrderId < 1)? 'decrease-js' :'';?> ">-</span>
+                                                    <div class="qty-input-wrapper" data-stock="<?php echo $product['selprod_stock']; ?>">
+                                                        <?php echo $frmBuyProduct->getFieldHtml('quantity'); ?>
                                                     </div>
+                                                    <span class="increase <?php echo ($extendOrderId < 1)? 'increase-js' :'';?> ">+</span>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-xl-8 col-lg-7 col-md-7 mb-2">
-                                            <label class="h6">&nbsp;</label>
-                                            <div class="buy-group">
-                                                <?php if (strtotime($product['selprod_available_from']) <= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))) {
-													
-													if($product['selprod_book_now_enable'] == applicationConstants::BOTH && $is_booking == 1 && FatApp::getConfig('CONF_ENABLE_BOOK_NOW_MODULE') == 1){
-														echo $frmBuyProduct->getFieldHtml('btnAddToCart');
-														echo $frmBuyProduct->getFieldHtml('btnProductBuy');
-														echo $frmBuyProduct->getFieldHtml('btnBookNow');
-														
-													}elseif($product['selprod_book_now_enable'] == applicationConstants::BUY_NOW){
-														echo $frmBuyProduct->getFieldHtml('btnAddToCart');
-														echo $frmBuyProduct->getFieldHtml('btnProductBuy');
-													}elseif($product['selprod_book_now_enable'] == applicationConstants::BOOK_NOW && $is_booking == 1 && FatApp::getConfig('CONF_ENABLE_BOOK_NOW_MODULE') == 1){
-														echo $frmBuyProduct->getFieldHtml('btnBookNow');
-													}else{
-														echo $frmBuyProduct->getFieldHtml('btnAddToCart');
-														echo $frmBuyProduct->getFieldHtml('btnProductBuy');
-													}
-													
-													if($product['selprod_test_drive_enable']){
-														echo $frmBuyProduct->getFieldHtml('btnTestDrive');
-													}
-													
-													/* echo $frmBuyProduct->getFieldHtml('btnProductBuy');
-														echo $frmBuyProduct->getFieldHtml('btnAddToCart');
-													if($product['selprod_test_drive_enable']){
-														echo $frmBuyProduct->getFieldHtml('btnTestDrive');
-													} */
-													
-                                            /* echo $frmBuyProduct->getFieldHtml('btnProductBuy');
-                                            echo $frmBuyProduct->getFieldHtml('btnAddToCart'); */
-											
+                                    </div>
+                                    <div class="col-xl-8 col-lg-7 col-md-7 mb-2">
+                                        <label class="h6">&nbsp;</label>
+                                        <div class="buy-group">
+                                        <?php if (strtotime($product['selprod_available_from']) <= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))) {
+                                            echo $frmBuyProduct->getFieldHtml('btnProductBuy');
+                                            echo $frmBuyProduct->getFieldHtml('btnAddToCart');
                                         }
-                                        echo $frmBuyProduct->getFieldHtml('selprod_id'); ?>
-                                            </div>
+                                       
+                                        echo $frmBuyProduct->getFieldHtml('selprod_id');
+										echo $frmBuyProduct->getFieldHtml('product_for');
+										echo $frmBuyProduct->getFieldHtml('extend_order');
+										?>
                                         </div>
                                     </div>
-                                    <?php } ?>
-                                    <div class="gap"></div>
+                                </div>
+                                <?php } ?>
+								<?php if ($product['is_rent'] > 0 && ALLOW_RENT > 0) { ?>
+								<div class="row align-items-end rental-fields--js mb-3">
+									<div class="col-sm-12 mb-3">
+										<p>
+											<span><?php echo Labels::getLabel('LBL_Available_Quanity:', $siteLangId); ?></span> 
+											<span class="rental-stock--js"><?php echo $product['sprodata_rental_stock']; ?></span>
+										</p>
+										<p>
+											<small class="text-danger"><?php echo Labels::getLabel('LBL_Note:', $siteLangId); ?></small>
+											<small><?php echo Labels::getLabel('LBL_Available_Quantity_May_Vary_According_to_The_Selected_Dates', $siteLangId); ?></small>
+										</p>
+									</div>
+									<div class="col-sm-12">
+									<div class="sold-by bg-gray p-4 rounded">
+										<div class="row align-items-center justify-content-between">
+											<div class="col-xl-12 col-lg-12 col-md-12">
+												<h6 class="m-0 -color-light"> <strong><?php echo Labels::getLabel('LBL_Enter_Start_Date_And_End_Date_to_Calculate_Rental_Price', $siteLangId); ?> </strong>
+												</h6>
+												<p class="mt-2">
+													<small><?php echo Labels::getLabel('LBL_Rental_Price', $siteLangId); ?>:</small>  
+													<small class="rental-price--js"><?php 
+													echo CommonHelper::displayMoneyFormat($product['rent_price']);
+													?></small> + 
+													<small><?php echo Labels::getLabel('LBL_Rental_Security', $siteLangId); ?>:</small>  
+													<small class="rental-security--js"><?php
+													echo CommonHelper::displayMoneyFormat($product['sprodata_rental_security']);
+													?></small>
+												</p>
+												<h6 class="mt-2 -color-light"><strong><?php echo Labels::getLabel('LBL_Total_Payment', $siteLangId); ?> : <span class="total-amount--js"><?php $total = $product['rent_price'] + $product['sprodata_rental_security']; 
+												echo CommonHelper::displayMoneyFormat($total);
+												?></span></strong>
+												</h6>
+											</div>
+										</div>
+									</div>
+									</div>
+								</div>
+								<?php } ?>
+                                <div class="gap"></div>
 
-                                    </form>
-                                    <?php echo $frmBuyProduct->getExternalJs();?>
-									<div id="testDrivefrm"></div>
-									<?php
+                                </form>
+                                <?php echo $frmBuyProduct->getExternalJs();
                                 } else { ?>
                                     <div class="sold">
                                         <h3 class="text--normal-secondary"><?php echo Labels::getLabel('LBL_Sold_Out', $siteLangId); ?></h3>
                                         <p class="text--normal-secondary"><?php echo Labels::getLabel('LBL_This_item_is_currently_out_of_stock', $siteLangId); ?></p>
                                     </div>
-                                    <?php } ?>
-                                    <?php if (strtotime($product['selprod_available_from'])> strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))) { ?>
+                                <?php } ?>
+                                <?php if (strtotime($product['selprod_available_from'])> strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))) { ?>
                                     <div class="sold">
                                         <h3 class="text--normal-secondary"><?php echo Labels::getLabel('LBL_Not_Available', $siteLangId); ?></h3>
                                         <p class="text--normal-secondary">
                                             <?php echo str_replace('{available-date}', FatDate::Format($product['selprod_available_from']), Labels::getLabel('LBL_This_item_will_be_available_from_{available-date}', $siteLangId)); ?>
                                         </p>
                                     </div>
-                                    <?php }?>
+                                <?php }?>
                                     <!-- ] -->
+								<?php /* if ($product['product_upc']!='') { ?>
+                                <div class="gap"></div>
+                                <div><?php echo Labels::getLabel('LBL_EAN/UPC_code', $siteLangId).' : '.$product['product_upc'];?></div>
+                                <?php } */ ?>
 
+                            <?php /* Volume Discounts[ */
+                            if (isset($volumeDiscountRows) && !empty($volumeDiscountRows) && $product['in_stock'] && (ALLOW_SALE > 0 && $product['is_sell'] > 0)) { ?>
+							
+							<div class="sale-products--js <?php echo (ALLOW_RENT > 0 && $product['is_rent'] > 0) ? 'hide-sell-section' : '';?>" >
+                                <div class="gap"></div>
+                                <div class="h6">
+									<?php echo Labels::getLabel('LBL_Wholesale_Price_(Piece)', $siteLangId); ?>:
+								</div>
+                                <ul class="<?php echo (count($volumeDiscountRows) > 1) ? 'js--discount-slider' : ''; ?> discount-slider" dir="<?php echo CommonHelper::getLayoutDirection(); ?>">
+                                <?php foreach ($volumeDiscountRows as $volumeDiscountRow) {
+									$volumeDiscount = $product['theprice'] * ($volumeDiscountRow['voldiscount_percentage'] / 100);
+									$price = ($product['theprice'] - $volumeDiscount); ?>
+                                    <li>
+										<div class="qty__value">
+											<?php echo($volumeDiscountRow['voldiscount_min_qty']); ?> 
+											<?php echo Labels::getLabel('LBL_Or_more', $siteLangId); ?> 
+											(<?php echo $volumeDiscountRow['voldiscount_percentage'].'%'; ?>) <span class="item__price">
+											<?php echo CommonHelper::displayMoneyFormat($price); ?> / 
+											<?php echo Labels::getLabel('LBL_Product', $siteLangId); ?>
+											</span>
+										</div>
+                                    </li>
+                                <?php } ?>
+                                </ul>
+                            </div>
+							<script type="text/javascript">
+                                $("document").ready(function() {
+                                    $('.js--discount-slider').slick(getSlickSliderSettings(2, 1, langLbl.layoutDirection, false, {1199: 2,1023: 2,767: 1,480: 1}));
+								});
+							</script>								
+                            <?php } /* ] */ ?>
+							
+							<?php /* Duration Discounts[ */
+                            if (isset($durationDiscountRows) && !empty($durationDiscountRows) && $product['in_stock'] && (ALLOW_RENT > 0 && $product['is_rent'] > 0)) { ?>
+							<div class="rental-fields--js" >
+                                <div class="gap"></div>
+                                <div class="h6">
+									<?php echo Labels::getLabel('LBL_Wholesale_Price_(Piece)', $siteLangId); ?>:
+								</div>
+                                <ul class="<?php echo (count($durationDiscountRows) > 1) ? 'js--duration-discount-slider' : ''; ?> discount-slider" dir="<?php echo CommonHelper::getLayoutDirection(); ?>">
+                                <?php foreach ($durationDiscountRows as $discountRow) {
+									$durationDiscount = $product['rent_price'] * ($discountRow['produr_discount_percent'] / 100);
+									$price = ($product['rent_price'] - $durationDiscount); ?>
+                                    <li>
+										<div class="qty__value">
+											<?php echo($discountRow['produr_rental_duration']); ?> 
+											<?php echo Labels::getLabel('LBL_Or_more', $siteLangId); ?> 
+											(<?php echo $discountRow['produr_discount_percent'].'%'; ?>) <span class="item__price">
+											<?php echo CommonHelper::displayMoneyFormat($price); ?> / 
+											<?php echo Labels::getLabel('LBL_Product', $siteLangId); ?>
+											</span>
+										</div>
+                                    </li>
+                                <?php } ?>
+                                </ul>
+                            </div>
+							<script type="text/javascript">
+                                $("document").ready(function() {
+                                    $('.js--duration-discount-slider').slick(getSlickSliderSettings(2, 1, langLbl.layoutDirection, false, {1199: 2,1023: 2,767: 1,480: 1}));
+								});
+							</script>								
+                            <?php } /* ] */ ?>
+							<!-- Upsell Products [ -->
+                            <?php if (count($upsellProducts)>0 && ALLOW_SALE > 0 && $product['is_sell'] > 0) { ?>
 
-                                    <?php /* if ($product['product_upc']!='') { ?>
-                                    <div class="gap"></div>
-                                    <div><?php echo Labels::getLabel('LBL_EAN/UPC_code', $siteLangId).' : '.$product['product_upc'];?></div>
-                                    <?php } */ ?>
+							<div class="sale-products--js <?php echo (ALLOW_RENT > 0 && $product['is_rent'] > 0) ? 'hide-sell-section' : '';?>">
 
-                                    <?php /* Volume Discounts[ */
-                            if (isset($volumeDiscountRows) && !empty($volumeDiscountRows) && $product['in_stock']) { ?>
-                                    <div class="gap"></div>
-                                    <div class="h6"><?php echo Labels::getLabel('LBL_Wholesale_Price_(Piece)', $siteLangId); ?>:</div>
-                                    <ul class="<?php echo (count($volumeDiscountRows) > 1) ? 'js--discount-slider' : ''; ?> discount-slider" dir="<?php echo CommonHelper::getLayoutDirection(); ?>">
-                                        <?php foreach ($volumeDiscountRows as $volumeDiscountRow) {
-                                $volumeDiscount = $product['theprice'] * ($volumeDiscountRow['voldiscount_percentage'] / 100);
-                                $price = ($product['theprice'] - $volumeDiscount); ?>
-                                        <li>
-                                            <div class="qty__value"><?php echo($volumeDiscountRow['voldiscount_min_qty']); ?> <?php echo Labels::getLabel('LBL_Or_more', $siteLangId); ?>
-                                                (<?php echo $volumeDiscountRow['voldiscount_percentage'].'%'; ?>) <span class="item__price"><?php echo CommonHelper::displayMoneyFormat($price); ?> /
-                                                    <?php echo Labels::getLabel('LBL_Product', $siteLangId); ?></span></div>
-                                        </li>
-                                        <?php
-                            } ?>
-                                    </ul>
-                                    <script type="text/javascript">
-                                        $("document").ready(function() {
-                                            $('.js--discount-slider').slick(getSlickSliderSettings(2, 1, langLbl.layoutDirection, false, {1199: 2,1023: 2,767: 1,480: 1}));
-                                        });
-                                    </script>
-                                    <?php } /* ] */ ?>
-
-                                    <!-- Upsell Products [ -->
-                                    <?php if (count($upsellProducts)>0) { ?>
-                                    <div class="gap"></div>
-                                    <div class="h6"><?php echo Labels::getLabel('LBL_Product_Add-ons', $siteLangId); ?></div>
+                                <div class="gap"></div>
+                                <div class="h6"><?php echo Labels::getLabel('LBL_Product_Add-ons', $siteLangId); ?></div>
                                     <div class="addons-scrollbar" data-simplebar>
                                         <table class="table cart--full cart-tbl cart-tbl-addons">
                                             <tbody>
                                                 <?php  foreach ($upsellProducts as $usproduct) {
-                                $cancelClass ='';
-                                $uncheckBoxClass='';
-                                if ($usproduct['selprod_stock'] <= 0) {
-                                    $cancelClass ='cancelled--js';
-                                    $uncheckBoxClass ='remove-add-on';
-                                } ?>
+												$cancelClass ='';
+												$uncheckBoxClass='';
+												if ($usproduct['selprod_stock'] <= 0) {
+													$cancelClass ='cancelled--js';
+													$uncheckBoxClass ='remove-add-on';
+												} ?>
                                                 <tr>
                                                     <td class="<?php echo $cancelClass; ?>">
-                                                        <figure class="item__pic"><a title="<?php echo $usproduct['selprod_title']; ?>" href="<?php echo CommonHelper::generateUrl('products', 'view', array($usproduct['selprod_id']))?>"><img
-                                                                    src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'product', array($usproduct['product_id'], 'MINI', $usproduct['selprod_id'] )), CONF_IMG_CACHE_TIME, '.jpg'); ?>"
-                                                                    alt="<?php echo $usproduct['product_identifier']; ?>"> </a></figure>
+                                                        <figure class="item__pic">
+														<a title="<?php echo $usproduct['selprod_title']; ?>" href="<?php echo CommonHelper::generateUrl('products', 'view', array($usproduct['selprod_id']))?>">
+															<img src="<?php echo FatCache::getCachedUrl(CommonHelper::generateUrl('Image', 'product', array($usproduct['product_id'], 'MINI', $usproduct['selprod_id'] )), CONF_IMG_CACHE_TIME, '.jpg'); ?>" alt="<?php echo $usproduct['product_identifier']; ?>"> 
+														</a>
+														</figure>
                                                     </td>
                                                     <td class="<?php echo $cancelClass; ?>">
                                                         <div class="item__description">
-                                                            <div class="item__title"><a href="<?php echo CommonHelper::generateUrl('products', 'view', array($usproduct['selprod_id']))?>"><?php echo $usproduct['selprod_title']?></a></div>
+                                                            <div class="item__title">
+															<a href="<?php echo CommonHelper::generateUrl('products', 'view', array($usproduct['selprod_id']))?>">
+															<?php echo $usproduct['selprod_title']?>
+															</a>
+															</div>
                                                         </div>
                                                         <?php if ($usproduct['selprod_stock'] <= 0) { ?>
-                                                        <div class="addon--tag--soldout"><?php echo Labels::getLabel('LBL_SOLD_OUT', $siteLangId);?></div>
-                                                        <?php  } ?><div class="item__price"><?php echo CommonHelper::displayMoneyFormat($usproduct['theprice']); ?></div>
+														<div class="addon--tag--soldout"><?php echo Labels::getLabel('LBL_SOLD_OUT', $siteLangId);?></div>
+														<?php  } ?>
+														<div class="item__price"><?php echo CommonHelper::displayMoneyFormat($usproduct['theprice']); ?></div>
                                                     </td>
 
                                                     <td class="<?php echo $cancelClass; ?>">
@@ -399,21 +532,21 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="<?php echo $cancelClass; ?>"><label class="checkbox">
-                                                            <input <?php if ($usproduct['selprod_stock'] > 0) { ?> checked="checked" <?php } ?> type="checkbox" class="cancel <?php echo $uncheckBoxClass; ?>" id="check_addons" name="check_addons"
-                                                                title="<?php echo Labels::getLabel('LBL_Remove', $siteLangId); ?>">
-                                                            <i class="input-helper"></i> </label>
+                                                    <td class="<?php echo $cancelClass; ?>">
+														<label class="checkbox">
+                                                            <input <?php if ($usproduct['selprod_stock'] > 0) { ?> checked="checked" <?php } ?> type="checkbox" class="cancel <?php echo $uncheckBoxClass; ?>" id="check_addons" name="check_addons" title="<?php echo Labels::getLabel('LBL_Remove', $siteLangId); ?>">
+                                                            <i class="input-helper"></i> 
+														</label>
                                                     </td>
                                                 </tr>
-                                                <?php
-                            } ?>
+                                                <?php  } ?>
                                             </tbody>
                                         </table>
                                     </div>
+								</div>
                                     <?php } ?>
                                     <!-- ] -->
-
-                                </div>
+								</div>
                                 <div class="gap"></div>
                                 <div class="sold-by bg-gray p-4 rounded">
                                     <div class="row align-items-center justify-content-between">
@@ -431,11 +564,8 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
                                                         <span class="rate"><?php echo round($shop_rating,1),'','', '';  if($shopTotalReviews){ ?><?php } ?> </span>
                                                     <?php } ?>
                                                 </div>
-
-                                            </h6>
-
-
-                                            <?php /*if ($shop_rating>0) { ?>
+											</h6>
+											<?php /*if ($shop_rating>0) { ?>
                                             <div class="products__rating"> <i class="icn"><svg class="svg">
                                                         <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#star-yellow"></use>
                                                     </svg></i> <span class="rate"><?php echo round($shop_rating, 1); ?><span></span></span>
@@ -632,6 +762,100 @@ $buyQuantity->addFieldTagAttribute('data-page', 'product-view');
     <?php } ?>
     <div id="recentlyViewedProductsDiv"></div>
 </div>
+<script>
+	var disableDates = <?php echo json_encode($unavailableDates);?>;
+	//console.log(disableDates);
+	
+	var availableDate = new Date('<?php echo $rentalAvailableDate; ?>');
+	var availableDate = new Date(availableDate.getTime() + 86400000);
+	$('.rental_start_date').datepicker({
+        dateFormat: 'yy-mm-dd',
+        defaultDate: availableDate,
+        minDate: availableDate,
+        beforeShowDay: function(date){
+			var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+			if( disableDates.indexOf(string) == -1) {
+				return [ disableDates.indexOf(string) == -1, '' ];
+			} else  {
+				return [ disableDates.indexOf(string) == -1, 'rental-unavailable-date' ];
+			}
+			
+			$('.ui-datepicker').addClass('product-rental-calendar');
+	      
+		},
+        onSelect: function (select_date) {
+			getRentalDetails();
+            var selectedDate = new Date(select_date);
+			var msecsInADay = 86400000;
+			var endDate = new Date(selectedDate.getTime() + msecsInADay);
+			$(".rental_end_date").datepicker( "option", "minDate", endDate );
+			//$("#endDatePicker").datepicker( "option", "maxDate", '+2y' );
+        }
+    });
+	
+	$('.rental_end_date').datepicker({
+        dateFormat: 'yy-mm-dd',
+        minDate: availableDate,
+        defaultDate: availableDate,
+        beforeShowDay: function(date){
+			var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+			if( disableDates.indexOf(string) == -1) {
+				return [ disableDates.indexOf(string) == -1, '' ];
+			} else  {
+				return [ disableDates.indexOf(string) == -1, 'rental-unavailable-date' ];
+			}
+		},
+        onSelect: function (select_date) {
+			getRentalDetails();
+            var selectedDate = new Date(select_date);
+			var msecsInADay = 86400000;
+			var startDate = new Date(selectedDate.getTime() - msecsInADay);
+			$(".rental_start_date").datepicker( "option", "maxDate", startDate );
+        }
+    });
+	
+	$('.rental_start_datetime').datetimepicker({
+        dateFormat: 'yy-mm-dd H:i',
+        defaultDate: availableDate,
+        minDate: availableDate,
+        beforeShowDay: function(date){
+			var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+			if( disableDates.indexOf(string) == -1) {
+				return [ disableDates.indexOf(string) == -1, '' ];
+			} else  {
+				return [ disableDates.indexOf(string) == -1, 'rental-unavailable-date' ];
+			}
+		},
+        onChangeDateTime: function (select_date) {
+			getRentalDetails();
+            var selectedDate = new Date(select_date);
+			var msecsInAHour = 60*60*1000; // Miliseconds in hours
+			var startDate = new Date(selectedDate.getTime() + msecsInAHour);
+			$(".rental_end_datetime").datepicker( "option", "maxDate", startDate );
+        }
+    });
+	
+	$('.rental_end_datetime').datetimepicker({
+        dateFormat: 'yy-mm-dd H:i',
+        minDate: availableDate,
+        defaultDate: availableDate,
+        beforeShowDay: function(date){
+			var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+			if( disableDates.indexOf(string) == -1) {
+				return [ disableDates.indexOf(string) == -1, '' ];
+			} else  {
+				return [ disableDates.indexOf(string) == -1, 'rental-unavailable-date' ];
+			}
+		},
+        onChangeDateTime: function (selected_date) {
+            if (selected_date) {
+                selected_date.setDate(selected_date.getDate() - 1);
+                $(".rental_start_date").datepicker({maxDate: selected_date});
+            }
+        }
+    });
+	
+</script>
 <script type="text/javascript">
     var mainSelprodId = <?php echo $product['selprod_id'];?>;
     var layout = '<?php echo CommonHelper::getLayoutDirection();?>';

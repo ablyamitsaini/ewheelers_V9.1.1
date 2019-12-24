@@ -184,3 +184,4 @@ echo FatUtility::generateUrl('JsCss', 'js', array(), '', false). '&f=' . rawurle
 //$content  = ob_get_clean();
 //echo CommonHelper::minifyHtml($content);
 ?>
+

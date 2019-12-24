@@ -45,6 +45,39 @@ if (isset($prodcat_code)) {
 <div class="selected-filters" id="filters"> </div>
 <!-- ] -->
 
+
+    
+    
+<?php 
+$productTypeArr = array(); 
+if(ALLOW_SALE > 0) {
+	$productTypeArr[1] = 'For Sale';
+}
+if(ALLOW_RENT > 0) {
+	$productTypeArr[2] = 'For Rent';
+}
+
+$productTypeCheckedArr = (!empty($productTypeCheckedArr))? $productTypeCheckedArr : array(); 
+?>
+
+ 
+<!--Product Type Filters[ -->
+<div class="divider--filters"></div>
+<div class="widgets__heading filter-head-js"><?php echo Labels::getLabel('LBL_Products_For', $siteLangId); ?></div>
+<div class="scrollbar-filters" id="scrollbar-filters">
+    <ul class="list-vertical">
+        <?php foreach ($productTypeArr as $key => $productType) { 
+            if ((ALLOW_SALE && !empty($prodTypeArr) && $prodTypeArr['sellProductCount'] > 0) || (ALLOW_RENT && !empty($prodTypeArr) && $prodTypeArr['rentProductCount'] > 0)) {
+            ?>
+        <li><label class="checkbox product_type" id="producttype_<?php echo $key; ?>"><input name="producttype" type="checkbox" <?php if (in_array($key, $productTypeCheckedArr)) {
+              echo "checked='true'";
+          } ?>  value="<?php echo $key; ?>"><i class="input-helper"></i><?php echo $productType; ?> </label></li>
+        <?php } }?>
+    </ul>
+</div>
+<!-- ] -->
+
+
 <!--Categories Filters[ resetAll-->
 
 <?php if (isset($categoriesArr) && $categoriesArr) {

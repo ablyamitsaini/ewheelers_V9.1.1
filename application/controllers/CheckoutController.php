@@ -583,8 +583,23 @@ class CheckoutController extends MyAppController
             $post['data'] = (!empty($post['data']) ? json_decode($post['data'], true) : array());
         }
         $cartProducts = $this->cartObj->getProducts($this->siteLangId);
-
-        //$this->cartObj = new Cart();
+		$cartType = $this->cartObj->getCartType();
+		
+		if($cartType == applicationConstants::PRODUCT_FOR_EXTEND_RENTAL) {
+			//$this->set('msg', Labels::getLabel('MSG_Shipping_Method_selected_successfully.', $this->siteLangId));
+            if (true ===  MOBILE_APP_API_CALL) {
+                $userWalletBalance = User::getUserBalance($user_id, true);
+                $cartObj = new Cart();
+                $cartSummary = $cartObj->getCartFinancialSummary($this->siteLangId);
+                $this->set('cartSummary', $cartSummary);
+                $this->set('recordCount', !empty($cartProducts) ? count($cartProducts) : 0);
+                $this->set('userWalletBalance', $userWalletBalance);
+                $this->_template->render();
+            }
+            $this->_template->render(false, false, 'json-success.php');
+		}
+		
+		//$this->cartObj = new Cart();
         $productToShippingMethods = array();
         $user_id = UserAuthentication::getLoggedUserId();
 
@@ -602,12 +617,13 @@ class CheckoutController extends MyAppController
                 $shipBy = 0;
 
                 if ($cartProducts[$cartkey]['psbs_user_id']) {
-                    $shipBy =$cartProducts[$cartkey]['psbs_user_id'];
+                    $shipBy = $cartProducts[$cartkey]['psbs_user_id'];
                 }
                 $ua_country_id = isset($shippingAddressDetail['ua_country_id']) ? $shippingAddressDetail['ua_country_id'] : 0;
                 $shipping_options = Product::getProductShippingRates($cartval['product_id'], $this->siteLangId, $ua_country_id, $shipBy);
                 $free_shipping_options = Product::getProductFreeShippingAvailabilty($cartval['product_id'], $this->siteLangId, $ua_country_id, $shipBy);
                 $productKey = md5($cartval["key"]);
+
                 if ($cartval && $cartval['product_type'] == Product::PRODUCT_TYPE_PHYSICAL && !isset($cartval['is_for_booking'])) {
                     /* get Product Data[ */
                     $prodSrch = clone $prodSrchObj;
@@ -630,19 +646,33 @@ class CheckoutController extends MyAppController
                     if (isset($post["data"][$productKey]['shipping_type']) && ($post["data"][$productKey]['shipping_type'] ==  ShippingCompanies::MANUAL_SHIPPING) &&  !empty($post["data"][$productKey]['shipping_locations'])) {
                         foreach ($shipping_options as $shipOption) {
                             if ($shipOption['pship_id'] == $post['data'][$productKey]["shipping_locations"]) {
-                                $productToShippingMethods['product'][$cartval['selprod_id']] = array(
-                                'selprod_id'    =>    $cartval['selprod_id'],
-                                'pship_id'    =>    $post['data'][$productKey]["shipping_locations"],
-                                'sduration_id'    =>    $shipOption['sduration_id'],
-                                'sduration_name' => $shipOption['sduration_name'],
-                                'sduration_from' => $shipOption['sduration_from'],
-                                'sduration_to' => $shipOption['sduration_to'],
-                                'sduration_days_or_weeks' => $shipOption['sduration_days_or_weeks'],
-                                'mshipapi_id'    =>    $post['data'][$productKey]["shipping_type"],
-                                'mshipcompany_id'    =>    $shipOption['scompanylang_scompany_id'],
-                                'mshipcompany_name'    =>    $shipOption['scompany_name'],
-                                'shipped_by_seller'    =>    Product::isShippedBySeller($cartval['selprod_user_id'], $product['product_seller_id'], $product['shippedBySellerId']),
-                                'mshipapi_cost' =>  ($free_shipping_options == 0)? ($shipOption['pship_charges'] + ($shipOption['pship_additional_charges'] * ($cartval['quantity'] -1))) : 0 ,
+								$durationType = 'days';
+								if( $shipOption['sduration_days_or_weeks'] == ShippingDurations::SHIPPING_DURATION_WEEK ) {
+									$durationType = 'weeks';
+								}
+								if ($cartval['productFor'] == applicationConstants::PRODUCT_FOR_RENT) {
+									$rentalStartDate = $cartval['rentalStartDate'];
+									$minShipDate = date('Y-m-d', strtotime('+'.$shipOption['sduration_from'].' '. $durationType, strtotime(date('Y-m-d'))));
+									if (strtotime($minShipDate) > strtotime($rentalStartDate) ) {
+										$json['error']['product'][$sn] = sprintf(Labels::getLabel('M_%s_cannot_delivered_on_%s_(It_will_take_minimum_%s_%s)', $this->siteLangId), htmlentities($cartval['product_name']), date('M, d Y', strtotime($rentalStartDate)), $shipOption['sduration_from'], $durationType);
+										
+										continue;
+									}
+								}
+								
+								$productToShippingMethods['product'][$cartval['selprod_id']] = array(
+									'selprod_id' => $cartval['selprod_id'],
+									'pship_id' => $post['data'][$productKey]["shipping_locations"],
+									'sduration_id' => $shipOption['sduration_id'],
+									'sduration_name' => $shipOption['sduration_name'],
+									'sduration_from' => $shipOption['sduration_from'],
+									'sduration_to' => $shipOption['sduration_to'],
+									'sduration_days_or_weeks' => $shipOption['sduration_days_or_weeks'],
+									'mshipapi_id' => $post['data'][$productKey]["shipping_type"],
+									'mshipcompany_id' => $shipOption['scompanylang_scompany_id'],
+									'mshipcompany_name' => $shipOption['scompany_name'],
+									'shipped_by_seller' => Product::isShippedBySeller($cartval['selprod_user_id'], $product['product_seller_id'], $product['shippedBySellerId']),
+									'mshipapi_cost' => ($free_shipping_options == 0)? ($shipOption['pship_charges'] + ($shipOption['pship_additional_charges'] * ($cartval['quantity'] -1))) : 0 ,
                                 );
                                 continue;
                             }
@@ -650,21 +680,32 @@ class CheckoutController extends MyAppController
                     } elseif (isset($post['data'][$productKey]["shipping_type"]) && ($post['data'][$productKey]["shipping_type"] ==  ShippingCompanies::SHIPSTATION_SHIPPING) && !empty($post['data'][$productKey]["shipping_services"])) {
                         list($carrier_name, $carrier_price) = explode("-", $post['data'][$productKey]["shipping_services"]);
                         $productToShippingMethods['product'][$cartval['selprod_id']] = array(
-                          'selprod_id'    =>    $cartval['selprod_id'],
-                          'mshipapi_id'    =>    $post['data'][$productKey]["shipping_type"],
-                          'mshipcompany_name'    =>    ($carrier_name),
-                          'mshipapi_cost' =>  $carrier_price ,
-                          'mshipapi_key' =>  $post['data'][$productKey]["shipping_services"],
-                          'mshipapi_label' =>  str_replace("_", " ", $post['data'][$productKey]["shipping_services"]) ,
-                          'shipped_by_seller'    =>    Product::isShippedBySeller($cartval['selprod_user_id'], $product['product_seller_id'], $product['shippedBySellerId']),
-                                            );
+							'selprod_id' => $cartval['selprod_id'],
+							'mshipapi_id' => $post['data'][$productKey]["shipping_type"],
+							'mshipcompany_name' => ($carrier_name),
+							'mshipapi_cost' => $carrier_price,
+							'mshipapi_key' => $post['data'][$productKey]["shipping_services"],
+							'mshipapi_label' => str_replace("_", " ", $post['data'][$productKey]["shipping_services"]),
+							'shipped_by_seller' => Product::isShippedBySeller($cartval['selprod_user_id'], $product['product_seller_id'], $product['shippedBySellerId']),
+                        );
                         continue;
-                    } else {
+                    } elseif (isset($post['data'][$productKey]["shipping_type"]) && ($post['data'][$productKey]["shipping_type"] ==  ShippingCompanies::SELF_PICKUP)) {
+						$productToShippingMethods['product'][$cartval['selprod_id']] = array(
+							'selprod_id' => $cartval['selprod_id'],
+							'mshipapi_id' => $post['data'][$productKey]["shipping_type"],
+							'mshipcompany_name' => '',
+							'mshipapi_cost' => 0,
+							'mshipapi_key' => '',
+							'mshipapi_label' => '',
+							'shipped_by_seller' => '',
+                        );
+                        continue;
+					} else {
                         $json['error']['product'][$sn] = sprintf(Labels::getLabel('M_Shipping_Info_Required_for_%s', $this->siteLangId), htmlentities($cartval['product_name']));
                     }
                 }
             }
-
+			//echo "<pre>"; print_r($json); echo "</pre>"; exit;
 
             if (!$json) {
                 $this->cartObj->setProductShippingMethod($productToShippingMethods);
@@ -690,7 +731,12 @@ class CheckoutController extends MyAppController
                 }
                 $this->_template->render(false, false, 'json-success.php');
             } else {
-                $this->errMessage = Labels::getLabel('MSG_Shipping_Method_is_not_selected_on_products_in_cart', $this->siteLangId);
+				if(isset($json['error']['product']) && !empty($json['error']['product'])) {
+					$errors = implode(". \n", $json['error']['product']);
+				} else {
+					$errors = Labels::getLabel('MSG_Shipping_Method_is_not_selected_on_products_in_cart', $this->siteLangId);
+				}
+                $this->errMessage = $errors;
                 if (true ===  MOBILE_APP_API_CALL) {
                     FatUtility::dieJsonError($this->errMessage);
                 }
@@ -706,7 +752,9 @@ class CheckoutController extends MyAppController
     public function reviewCart()
     {
         $criteria = array( 'isUserLogged' => true, 'hasProducts' => true, 'hasStock' => true, 'hasBillingAddress' => true );
-        if ($this->cartObj->hasPhysicalProduct()) {
+		$cartType = $this->cartObj->getCartType();
+		
+        if ($this->cartObj->hasPhysicalProduct() && $cartType != applicationConstants::PRODUCT_FOR_EXTEND_RENTAL) {
             $criteria['hasShippingAddress'] = true;
             $criteria['isProductShippingMethodSet'] = true;
         }
@@ -782,7 +830,7 @@ class CheckoutController extends MyAppController
         'selprod_condition', 'selprod_code',
         'special_price_found', 'theprice', 'shop_id', 'IFNULL(product_name, product_identifier) as product_name', 'IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title','IFNULL(brand_name, brand_identifier) as brand_name','shop_name',
         'seller_user.user_name as shop_onwer_name', 'seller_user_cred.credential_username as shop_owner_username',
-        'seller_user.user_phone as shop_owner_phone','seller_user_cred.credential_email as shop_owner_email','selprod_download_validity_in_days','selprod_max_download_times' );
+        'seller_user.user_phone as shop_owner_phone','seller_user_cred.credential_email as shop_owner_email','selprod_download_validity_in_days','selprod_max_download_times', 'sprodata_is_for_sell', 'sprodata_is_for_rent', 'sprodata_rental_price', 'sprodata_rental_security', 'sprodata_rental_type', 'sprodata_rental_stock' );
         $prodSrch->addMultipleFields($fields);
         $rs = $prodSrch->getResultSet();
         return $productInfo = FatApp::getDb()->fetch($rs);
@@ -812,9 +860,12 @@ class CheckoutController extends MyAppController
             $payFromWallet = FatApp::getPostedData('payFromWallet', Fatutility::VAR_INT, 0);
             $this->cartObj->updateCartWalletOption($payFromWallet);
         }
+		
+		$cartType = $this->cartObj->getCartType();
+		
 
         $criteria = array( 'isUserLogged' => true, 'hasProducts' => true, 'hasStock' => true, 'hasBillingAddress' => true );
-        if ($this->cartObj->hasPhysicalProduct()) {
+        if ($this->cartObj->hasPhysicalProduct() && $cartType != applicationConstants::PRODUCT_FOR_EXTEND_RENTAL) {
             $criteria['hasShippingAddress'] = true;
             $criteria['isProductShippingMethodSet'] = true;
         }
@@ -903,33 +954,45 @@ class CheckoutController extends MyAppController
         $orderData['order_date_added'] = date('Y-m-d H:i:s');
 
         /* addresses[ */
+		if ($billingAddressArr['ua_city_id'] > 0) {
+			$billingCity = $billingAddressArr['city_name'];
+		} else {
+			$billingCity = $billingAddressArr['ua_city'];
+		}
+		
         $userAddresses[0] = array(
-        'oua_order_id'    =>    $order_id,
-        'oua_type'        =>    Orders::BILLING_ADDRESS_TYPE,
-        'oua_name'        =>    $billingAddressArr['ua_name'],
-        'oua_address1'    =>    $billingAddressArr['ua_address1'],
-        'oua_address2'    =>    $billingAddressArr['ua_address2'],
-        'oua_city'        =>    $billingAddressArr['ua_city'],
-        'oua_state'        =>    $billingAddressArr['state_name'],
-        'oua_country'    =>    $billingAddressArr['country_name'],
-        'oua_country_code'    =>    $billingAddressArr['country_code'],
-        'oua_phone'        =>    $billingAddressArr['ua_phone'],
-        'oua_zip'        =>    $billingAddressArr['ua_zip'],
+        'oua_order_id' => $order_id,
+        'oua_type' => Orders::BILLING_ADDRESS_TYPE,
+        'oua_name' => $billingAddressArr['ua_name'],
+        'oua_address1' => $billingAddressArr['ua_address1'],
+        'oua_address2' => $billingAddressArr['ua_address2'],
+        'oua_city' => $billingCity,
+        'oua_state' => $billingAddressArr['state_name'],
+        'oua_country' => $billingAddressArr['country_name'],
+        'oua_country_code' => $billingAddressArr['country_code'],
+        'oua_phone'  => $billingAddressArr['ua_phone'],
+        'oua_zip' => $billingAddressArr['ua_zip'],
         );
 
         if (!empty($shippingAddressArr)) {
+			if ($shippingAddressArr['ua_city_id'] > 0) {
+				$city = $shippingAddressArr['city_name'];
+			} else {
+				$city = $shippingAddressArr['ua_city'];
+			}
+			
             $userAddresses[1] = array(
-            'oua_order_id'    =>    $order_id,
-            'oua_type'        =>    Orders::SHIPPING_ADDRESS_TYPE,
-            'oua_name'        =>    $shippingAddressArr['ua_name'],
-            'oua_address1'    =>    $shippingAddressArr['ua_address1'],
-            'oua_address2'    =>    $shippingAddressArr['ua_address2'],
-            'oua_city'        =>    $shippingAddressArr['ua_city'],
-            'oua_state'        =>    $shippingAddressArr['state_name'],
-            'oua_country'    =>    $shippingAddressArr['country_name'],
-            'oua_country_code'    =>    $shippingAddressArr['country_code'],
-            'oua_phone'        =>    $shippingAddressArr['ua_phone'],
-            'oua_zip'        =>    $shippingAddressArr['ua_zip'],
+            'oua_order_id' => $order_id,
+            'oua_type' => Orders::SHIPPING_ADDRESS_TYPE,
+            'oua_name' => $shippingAddressArr['ua_name'],
+            'oua_address1' => $shippingAddressArr['ua_address1'],
+            'oua_address2' => $shippingAddressArr['ua_address2'],
+            'oua_city' => $city,
+            'oua_state' => $shippingAddressArr['state_name'],
+            'oua_country' => $shippingAddressArr['country_name'],
+            'oua_country_code' => $shippingAddressArr['country_code'],
+            'oua_phone' => $shippingAddressArr['ua_phone'],
+            'oua_zip' => $shippingAddressArr['ua_zip'],
             );
         }
         $orderData['userAddresses'] = $userAddresses;
@@ -937,8 +1000,8 @@ class CheckoutController extends MyAppController
 
         /* order extras[ */
         $orderData['extra'] = array(
-        'oextra_order_id'    =>    $order_id,
-        'order_ip_address'    =>    $_SERVER['REMOTE_ADDR']
+        'oextra_order_id' => $order_id,
+        'order_ip_address' => $_SERVER['REMOTE_ADDR']
         );
 
         if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
@@ -1079,14 +1142,16 @@ class CheckoutController extends MyAppController
             }
 
             $orderLangData[$lang_id] = array(
-            'orderlang_lang_id'            =>    $lang_id,
-            'order_shippingapi_name'    =>    $order_shippingapi_name
+            'orderlang_lang_id' => $lang_id,
+            'order_shippingapi_name' => $order_shippingapi_name
             );
         }
         $orderData['orderLangData'] = $orderLangData;
 
         /* order products[ */
-        
+        $cartProducts = $this->cartObj->getProducts($this->siteLangId);
+		//echo "<pre>"; print_r($cartProducts); echo "</pre>"; exit;
+
         $orderData['products'] = array();
         $orderData['prodCharges'] = array();
 
@@ -1104,20 +1169,26 @@ class CheckoutController extends MyAppController
                 $sduration_name = '';
                 $shippingDurationTitle = '';
                 $shippingDurationRow = array();
-
+				
                 if (!empty($productSelectedShippingMethodsArr['product']) && isset($productSelectedShippingMethodsArr['product'][$productInfo['selprod_id']])) {
                     $shippingDurationRow = $productSelectedShippingMethodsArr['product'][$productInfo['selprod_id']];
-                    if ($shippingDurationRow['mshipapi_id']== ShippingMethods::MANUAL_SHIPPING) {
+                    if ($shippingDurationRow['mshipapi_id'] == ShippingMethods::MANUAL_SHIPPING) {
                         $productShippingData = array(
-                        'opshipping_method_id' =>$shippingDurationRow['mshipapi_id'],
-                        'opshipping_pship_id' =>$shippingDurationRow['pship_id'],
-                        'opshipping_company_id' =>$shippingDurationRow['mshipcompany_id'],
-                        'opshipping_max_duration' =>$shippingDurationRow['sduration_to'],
-                        'opshipping_duration_id' =>$shippingDurationRow['sduration_id'],
+							'opshipping_method_id' => $shippingDurationRow['mshipapi_id'],
+							'opshipping_pship_id' => $shippingDurationRow['pship_id'],
+							'opshipping_company_id' => $shippingDurationRow['mshipcompany_id'],
+							'opshipping_max_duration' => $shippingDurationRow['sduration_to'],
+							'opshipping_duration_id' => $shippingDurationRow['sduration_id'],
                         );
-                    } elseif ($shippingDurationRow['mshipapi_id']== ShippingMethods::SHIPSTATION_SHIPPING) {
-                        $productShippingData = array( 'opshipping_method_id' =>$shippingDurationRow['mshipapi_id'] );
-                    }
+                    } elseif ($shippingDurationRow['mshipapi_id'] == ShippingMethods::SHIPSTATION_SHIPPING) {
+                        $productShippingData = array(
+							'opshipping_method_id' => $shippingDurationRow['mshipapi_id']
+						);
+                    } elseif ($shippingDurationRow['mshipapi_id'] == ShippingMethods::SELF_PICKUP) {
+						$productShippingData = array(
+							'opshipping_method_id' => $shippingDurationRow['mshipapi_id']
+						);
+					}
                     $productShippingData['opshipping_by_seller_user_id'] = $shippingDurationRow['shipped_by_seller'];
                 }
                 $productsLangData = array();
@@ -1129,20 +1200,20 @@ class CheckoutController extends MyAppController
                     }
 
                     if (!empty($shippingDurationRow)) {
-                        if ($shippingDurationRow['mshipapi_id']== ShippingMethods::MANUAL_SHIPPING) {
+                        if ($shippingDurationRow['mshipapi_id'] == ShippingMethods::MANUAL_SHIPPING) {
                             $shippingDurationTitle = ShippingDurations::getShippingDurationTitle($shippingDurationRow, $lang_id);
                             $sduration_name = $shippingDurationRow['mshipcompany_name'];
-                            $productShippingLangData[$lang_id] =  array(
-                            'opshipping_duration'=>$shippingDurationTitle,
-                            'opshipping_duration_name'=>$shippingDurationRow['mshipcompany_name'],
-                            'opshippinglang_lang_id' => $lang_id
+                            $productShippingLangData[$lang_id] = array(
+								'opshipping_duration' => $shippingDurationTitle,
+								'opshipping_duration_name' => $shippingDurationRow['mshipcompany_name'],
+								'opshippinglang_lang_id' => $lang_id
                             );
-                        } elseif ($shippingDurationRow['mshipapi_id']== ShippingMethods::SHIPSTATION_SHIPPING) {
+                        } elseif ($shippingDurationRow['mshipapi_id'] == ShippingMethods::SHIPSTATION_SHIPPING) {
                             $sduration_name = $shippingDurationRow['mshipapi_label'];
-                            $productShippingLangData[$lang_id] =  array(
-                            'opshipping_carrier'=>$shippingDurationRow['mshipcompany_name'],
-                            'opshipping_duration_name'=>$sduration_name,
-                            'opshippinglang_lang_id' => $lang_id
+                            $productShippingLangData[$lang_id] = array(
+								'opshipping_carrier' => $shippingDurationRow['mshipcompany_name'],
+								'opshipping_duration_name' => $sduration_name,
+								'opshippinglang_lang_id' => $lang_id
                             );
                         }
                     }
@@ -1170,23 +1241,88 @@ class CheckoutController extends MyAppController
                     $op_product_weight_unit_name = ($productInfo['product_weight_unit']) ? $weightUnitsArr[$productInfo['product_weight_unit']] : '';
 
                     $productsLangData[$lang_id] = array(
-                    'oplang_lang_id'    =>    $lang_id,
-                    'op_product_name'    =>    $langSpecificProductInfo['product_name'],
-                    'op_selprod_title'    =>    $op_selprod_title,
-                    'op_selprod_options'=>  $op_selprod_options,
-                    'op_brand_name'        =>    $langSpecificProductInfo['brand_name'],
-                    'op_shop_name'        =>    $langSpecificProductInfo['shop_name'],
-                    'op_shipping_duration_name'    =>    $sduration_name,
-                    'op_shipping_durations'    =>    $shippingDurationTitle,
-                    'op_products_dimension_unit_name'    =>    $op_products_dimension_unit_name,
-                    'op_product_weight_unit_name'        =>    $op_product_weight_unit_name,
+						'oplang_lang_id' => $lang_id,
+						'op_product_name' => $langSpecificProductInfo['product_name'],
+						'op_selprod_title' => $op_selprod_title,
+						'op_selprod_options' => $op_selprod_options,
+						'op_brand_name' => $langSpecificProductInfo['brand_name'],
+						'op_shop_name' => $langSpecificProductInfo['shop_name'],
+						'op_shipping_duration_name' => $sduration_name,
+						'op_shipping_durations' => $shippingDurationTitle,
+						'op_products_dimension_unit_name' => $op_products_dimension_unit_name,
+						'op_product_weight_unit_name' => $op_product_weight_unit_name,
                     );
                 }
-
+				$orderKey = CART::CART_KEY_PREFIX_PRODUCT.$productInfo['selprod_id'];
                 /* $taxCollectedBySeller = applicationConstants::NO;
                 if(FatApp::getConfig('CONF_TAX_COLLECTED_BY_SELLER',FatUtility::VAR_INT,0)){
                 $taxCollectedBySeller = applicationConstants::YES;
                 } */
+
+				$productPrice = $cartProduct['theprice'];
+				$opdSoldOrRented = $cartProduct['productFor'];
+				$opdRentalStartDate = '';
+				$opdRentalEndDate = '';
+				$opdRentalType = '';
+				$opdRentalSecurity = '';
+				$opdRentalIsPickup = ''; //== pending
+				$opdRentalTerms = '';
+				$opdRentalPriceMultiplier = '';
+				$opdRentalPrice = '';
+				$opdRefundedSecurityAmount = ''; //== pending
+				$opdRefundedSecurityType = ''; //== pending
+				$opdRefundedSecurityStatus = ''; //== pending
+				$opdRentalDurationDiscount = 0; //== pending
+				
+				if ($cartProduct['productFor'] == applicationConstants::PRODUCT_FOR_RENT) {
+					$extendOrderId = $cartProduct['extendOrder'];
+					$opdRentalSecurity = $productInfo['sprodata_rental_security'];
+					if ($extendOrderId > 0) {
+						$opdRentalSecurity = 0;
+					}
+					
+					$productPrice = $cartProduct['total'];
+					$opdRentalStartDate = $cartProduct['rentalStartDate'];
+					$opdRentalEndDate = $cartProduct['rentalEndDate'];
+					
+					if ($productInfo['sprodata_rental_type'] == applicationConstants::RENT_TYPE_HOUR) {
+						$duration = Common::hoursBetweenDates($opdRentalStartDate, $opdRentalEndDate);
+					} else {
+						$duration = Common::daysBetweenDates($opdRentalStartDate, $opdRentalEndDate);
+					}
+					
+					if ($cartProduct['selectedShippingMethod'] == ShippingMethods::SELF_PICKUP) {
+						$opdRentalIsPickup = 1;
+					}
+					
+					if ($cartProduct['duration_discount_total'] > 0) {
+						$opdRentalDurationDiscount = $cartProduct['duration_discount_total'];
+					}
+					
+					$opdRentalType = $productInfo['sprodata_rental_type'];
+					
+					$opdRentalTerms = $productInfo['sprodata_rental_terms'];
+					$opdRentalPrice = $productInfo['sprodata_rental_price'];
+					$opdRentalPriceMultiplier = $duration;
+					
+					$orderKey = CART::CART_KEY_PREFIX_PRODUCT.$productInfo['selprod_id']. $opdRentalStartDate. $opdRentalEndDate;
+				}
+				$productsData = array(
+					'opd_sold_or_rented' => $opdSoldOrRented,
+					'opd_rental_start_date' => $opdRentalStartDate,
+					'opd_rental_end_date' => $opdRentalEndDate,
+					'opd_rental_type' => $opdRentalType,
+					'opd_rental_security' => $opdRentalSecurity,
+					'opd_rental_is_pickup' => $opdRentalIsPickup,
+					'opd_rental_terms' => $opdRentalTerms,
+					'opd_rental_price_multiplier' => $opdRentalPriceMultiplier,
+					'opd_rental_price' => $opdRentalPrice,
+					'opd_refunded_security_amount' => $opdRefundedSecurityAmount,
+					'opd_refunded_security_type' => $opdRefundedSecurityType,
+					'opd_refunded_security_status' => $opdRefundedSecurityStatus,
+					'opd_rental_duration_discount' => $opdRentalDurationDiscount,
+					'opd_extend_from_op_id' => $extendOrderId
+				);
 				
 				/* book now products */
 				$is_booking = 0;
@@ -1196,51 +1332,55 @@ class CheckoutController extends MyAppController
 				}
 
 				/* ------- */
+				
 
-                $orderData['products'][CART::CART_KEY_PREFIX_PRODUCT.$productInfo['selprod_id']] = array(
-                'op_selprod_id'        =>    $productInfo['selprod_id'],
-                'op_is_batch'        =>    0,
-                'op_selprod_user_id'=>    $productInfo['selprod_user_id'],
-                'op_selprod_code'    =>    $productInfo['selprod_code'],
-                'op_qty'            =>    $cartProduct['quantity'],
-                'op_unit_price'        =>    $cartProduct['theprice'],
-                'op_unit_cost'        =>    $cartProduct['selprod_cost'],
-                'op_selprod_sku'    =>    $productInfo['selprod_sku'],
-                'op_selprod_condition'    =>    $productInfo['selprod_condition'],
-                'op_product_model'    =>    $productInfo['product_model'],
-                'op_product_type'    =>    $productInfo['product_type'],
-                'op_product_length'    =>    $productInfo['product_length'],
-                'op_product_width'    =>    $productInfo['product_width'],
-                'op_product_height'    =>    $productInfo['product_height'],
-                'op_product_dimension_unit'    =>    $productInfo['product_dimension_unit'],
-                'op_product_weight'    =>    $productInfo['product_weight'],
-                'op_product_weight_unit'    =>    $productInfo['product_weight_unit'],
-                'op_shop_id'        =>    $productInfo['shop_id'],
-                'op_shop_owner_username'=>    $productInfo['shop_owner_username'],
-                'op_shop_owner_name'=>    $productInfo['shop_onwer_name'],
-                'op_shop_owner_email'    =>    $productInfo['shop_owner_email'],
-                'op_shop_owner_phone'    =>    $productInfo['shop_owner_phone'],
-                'op_selprod_max_download_times' => ($productInfo['selprod_max_download_times']!='-1')?$cartProduct['quantity']*$productInfo['selprod_max_download_times']:$productInfo['selprod_max_download_times'],
-                'op_selprod_download_validity_in_days' => $productInfo['selprod_download_validity_in_days'],
-                'op_sduration_id'            =>    $cartProduct['sduration_id'],
-                //'op_discount_total'    =>    0, //todo:: after coupon discount integration
-                //'op_tax_total'    =>    $cartProduct['tax'],
-                'op_commission_charged' => $cartProduct['commission'],
-                'op_commission_percentage'    => $cartProduct['commission_percentage'],
-                'op_affiliate_commission_percentage' => $cartProduct['affiliate_commission_percentage'],
-                'op_affiliate_commission_charged' => $cartProduct['affiliate_commission'],
-                'op_status_id'        =>   (isset($cartProduct['is_for_booking'])?FatApp::getConfig("CONF_DEFAULT_BOOKING_ORDER_STATUS"):FatApp::getConfig("CONF_DEFAULT_ORDER_STATUS")),
-                // 'op_volume_discount_percentage'    =>    $cartProduct['volume_discount_percentage'],
-                'productsLangData'    =>    $productsLangData,
-                'productShippingData'    =>    $productShippingData,
-                'productShippingLangData'    =>    $productShippingLangData,
-                /* 'op_tax_collected_by_seller'    =>    $taxCollectedBySeller, */
-                'op_free_ship_upto'    =>    $cartProduct['shop_free_ship_upto'],
-                'op_actual_shipping_charges'    =>    $cartProduct['shipping_cost'],
-				/* 'op_booking_product_actual_amount'  =>    $cartProduct['actualbookprice'],  */
-				'op_product_amount_without_book'  =>    $cartProduct['priceWithoutBooking'], 
-				'op_is_booking'    =>    $is_booking,
-                );
+                $orderData['products'][$orderKey] = array(
+					'op_selprod_id' => $productInfo['selprod_id'],
+					'op_is_batch' => 0,
+					'op_selprod_user_id' => $productInfo['selprod_user_id'],
+					'op_selprod_code' => $productInfo['selprod_code'],
+					'op_qty' => $cartProduct['quantity'],
+					//'op_unit_price' => $cartProduct['theprice'],
+					'op_unit_price' => $productPrice,
+					'op_unit_cost' => $cartProduct['selprod_cost'],
+					'op_selprod_sku' => $productInfo['selprod_sku'],
+					'op_selprod_condition' => $productInfo['selprod_condition'],
+					'op_product_model' => $productInfo['product_model'],
+					'op_product_type' => $productInfo['product_type'],
+					'op_product_length' => $productInfo['product_length'],
+					'op_product_width' => $productInfo['product_width'],
+					'op_product_height' => $productInfo['product_height'],
+					'op_product_dimension_unit' => $productInfo['product_dimension_unit'],
+					'op_product_weight' => $productInfo['product_weight'],
+					'op_product_weight_unit' => $productInfo['product_weight_unit'],
+					'op_shop_id' => $productInfo['shop_id'],
+					'op_shop_owner_username' => $productInfo['shop_owner_username'],
+					'op_shop_owner_name' => $productInfo['shop_onwer_name'],
+					'op_shop_owner_email' => $productInfo['shop_owner_email'],
+					'op_shop_owner_phone' => $productInfo['shop_owner_phone'],
+					'op_selprod_max_download_times' => ($productInfo['selprod_max_download_times']!='-1')?$cartProduct['quantity']*$productInfo['selprod_max_download_times']:$productInfo['selprod_max_download_times'],
+					'op_selprod_download_validity_in_days' => $productInfo['selprod_download_validity_in_days'],
+					'op_sduration_id' => $cartProduct['sduration_id'],
+					//'op_discount_total' => 0, //todo:: after coupon discount integration
+					//'op_tax_total' => $cartProduct['tax'],
+					'op_commission_charged' => $cartProduct['commission'],
+					'op_commission_percentage' => $cartProduct['commission_percentage'],
+					'op_affiliate_commission_percentage' => $cartProduct['affiliate_commission_percentage'],
+					'op_affiliate_commission_charged' => $cartProduct['affiliate_commission'],
+					'op_status_id' => FatApp::getConfig("CONF_DEFAULT_ORDER_STATUS"),
+					// 'op_volume_discount_percentage' => $cartProduct['volume_discount_percentage'],
+					'productsLangData' => $productsLangData,
+					'productShippingData' => $productShippingData,
+					'productShippingLangData' => $productShippingLangData,
+					/* 'op_tax_collected_by_seller' => $taxCollectedBySeller, */
+					'op_free_ship_upto' => $cartProduct['shop_free_ship_upto'],
+					'op_actual_shipping_charges' => $cartProduct['shipping_cost'],
+					'op_product_amount_without_book'  =>    $cartProduct['priceWithoutBooking'], 
+					'op_is_booking'    =>    $is_booking,
+					// Order Product Data(rental)
+					'productsData' => $productsData
+				);
+
 
                 $order_affiliate_user_id = isset($cartProduct['affiliate_user_id'])?$cartProduct['affiliate_user_id']:'';
                 $order_affiliate_total_commission += isset($cartProduct['affiliate_commission'])?$cartProduct['affiliate_commission']:'';
@@ -1261,29 +1401,31 @@ class CheckoutController extends MyAppController
                 $rewardPoints = $orderData['order_reward_point_value'];
                 $usedRewardPoint = 0;
                 if ($rewardPoints > 0) {
-                    $selProdAmount = ($cartProduct['quantity'] * $cartProduct['theprice']) + $shippingCost +  $cartProduct['tax']  - $discount - $cartProduct['volume_discount_total'] ;
+                    $selProdAmount = ($cartProduct['quantity'] * $cartProduct['theprice']) + $shippingCost +  $cartProduct['tax'] - $discount - $cartProduct['volume_discount_total'] ;
                     $usedRewardPoint = round((($rewardPoints * $selProdAmount)/($orderData['order_net_amount']+$rewardPoints)), 2);
                 }
 
-                $orderData['prodCharges'][CART::CART_KEY_PREFIX_PRODUCT.$productInfo['selprod_id']] = array(
-                OrderProduct::CHARGE_TYPE_SHIPPING => array(
-                'amount' => $shippingCost
-                ),
-                OrderProduct::CHARGE_TYPE_TAX =>array(
-                'amount' => $cartProduct['tax']
-                ),
-                OrderProduct::CHARGE_TYPE_DISCOUNT =>array(
-                'amount' => -$discount /*[Should be negative value]*/
-                ),
-                OrderProduct::CHARGE_TYPE_REWARD_POINT_DISCOUNT =>array(
-                'amount' => -$usedRewardPoint
-                ),
-                /* OrderProduct::CHARGE_TYPE_BATCH_DISCOUNT => array(
-                'amount' => -$cartProduct['batch_discount_single_product'] */
-                OrderProduct::CHARGE_TYPE_VOLUME_DISCOUNT => array(
-                'amount'    =>    -$cartProduct['volume_discount_total']
-                ),
-
+                $orderData['prodCharges'][$orderKey] = array(
+					OrderProduct::CHARGE_TYPE_SHIPPING => array(
+						'amount' => $shippingCost
+					),
+					OrderProduct::CHARGE_TYPE_TAX => array(
+						'amount' => $cartProduct['tax']
+					),
+					OrderProduct::CHARGE_TYPE_DISCOUNT => array(
+						'amount' => -$discount /*[Should be negative value]*/
+					),
+					OrderProduct::CHARGE_TYPE_REWARD_POINT_DISCOUNT => array(
+						'amount' => -$usedRewardPoint
+					),
+					/* OrderProduct::CHARGE_TYPE_BATCH_DISCOUNT => array(
+					'amount' => -$cartProduct['batch_discount_single_product'] */
+					OrderProduct::CHARGE_TYPE_VOLUME_DISCOUNT => array(
+						'amount' => -$cartProduct['volume_discount_total']
+					),
+					OrderProduct::CHARGE_TYPE_DURATION_DISCOUNT => array(
+						'amount' => -$cartProduct['duration_discount_total']
+					),
                 );
             }
         }
@@ -1319,7 +1461,7 @@ class CheckoutController extends MyAppController
 
         $userWalletBalance = User::getUserBalance($userId, true);
 
-        if (false ===  MOBILE_APP_API_CALL) {
+        if (false === MOBILE_APP_API_CALL) {
             $WalletPaymentForm = $this->getWalletPaymentForm($this->siteLangId);
             $confirmForm = $this->getConfirmFormWithNoAmount($this->siteLangId);
 
@@ -1341,12 +1483,10 @@ class CheckoutController extends MyAppController
             $this->set('redeemRewardFrm', $redeemRewardFrm);
         }
 
-
-
         $this->set('paymentMethods', $paymentMethods);
         $this->set('userWalletBalance', $userWalletBalance);
         $this->set('cartSummary', $cartSummary);
-        if (false ===  MOBILE_APP_API_CALL) {
+        if (false === MOBILE_APP_API_CALL) {
             $excludePaymentGatewaysArr = applicationConstants::getExcludePaymentGatewayArr();
             $cartHasPhysicalProduct = false;
             if ($this->cartObj->hasPhysicalProduct()) {
@@ -1359,7 +1499,7 @@ class CheckoutController extends MyAppController
             $this->set('confirmForm', $confirmForm);
         }
 
-        if (true ===  MOBILE_APP_API_CALL) {
+        if (true === MOBILE_APP_API_CALL) {
             $this->set('products', $cartProducts);
             $this->set('orderId', $order_id);
             $this->set('orderType', $orderInfo['order_type']);
@@ -1683,7 +1823,10 @@ class CheckoutController extends MyAppController
 
         /* ConfirmOrder function is called for both wallet payments and for paymentgateway selection as well. */
         $criteria = array( 'isUserLogged' => true, 'hasProducts' => true, 'hasStock' => true, 'hasBillingAddress' => true );
-        if ($this->cartObj->hasPhysicalProduct()) {
+		
+		$cartType = $this->cartObj->getCartType();
+		
+        if ($this->cartObj->hasPhysicalProduct() && $cartType != applicationConstants::PRODUCT_FOR_EXTEND_RENTAL) {
             $criteria['hasShippingAddress'] = true;
             $criteria['isProductShippingMethodSet'] = true;
         }
@@ -1846,8 +1989,10 @@ class CheckoutController extends MyAppController
         $address =  UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), $this->siteLangId, 0, $address_id);
         if ($address_id) {
             $stateId =  $address['ua_state_id'];
+			$cityId = $address['ua_city_id'];
         } else {
             $stateId = 0;
+			$cityId = 0;
         }
         $addressFrm->fill($address);
         $this->set('addressFrm', $addressFrm);
@@ -1866,6 +2011,7 @@ class CheckoutController extends MyAppController
         $this->set('cartHasPhysicalProduct', $cartHasPhysicalProduct);
         $this->set('labelHeading', $labelHeading);
         $this->set('stateId', $stateId);
+		$this->set('cityId', $cityId);
         $this->_template->render(false, false, 'checkout/address-form.php');
     }
 
@@ -1876,7 +2022,10 @@ class CheckoutController extends MyAppController
         $addressAssoc = array();
         foreach ($addresses as $address) {
             $city = $address['ua_city'];
-            $state = (strlen($address['ua_city']) > 0) ? ', '. $address['state_name'] : $address['state_name'];
+			if ($address['ua_city_id'] > 0 && !empty($address['city_name'])) {
+				$city = $address['city_name'];
+			}
+            $state = (strlen($city) > 0) ? ', '. $address['state_name'] : $address['state_name'];
             $country = (strlen($state) > 0) ? ', '.$address['country_name'] : $address['country_name'];
             $location = $city . $state . $country;
             $addressAssoc[$address['ua_id']] = $location;
@@ -2001,7 +2150,7 @@ class CheckoutController extends MyAppController
         $cartSummary = $this->cartObj->getCartFinancialSummary($this->siteLangId);
         //$summaryWithoutBook = $this->cartObj->getCartFinancialSummary($this->siteLangId,1);
         $products = $this->cartObj->getProducts($this->siteLangId);
-
+		//echo "<pre>"; print_r($products); echo "</pre>"; exit;
         $hasPhysicalProd = $this->cartObj->hasPhysicalProduct();
         if (!$hasPhysicalProd) {
             $selected_shipping_address_id = $this->cartObj->getCartBillingAddress();

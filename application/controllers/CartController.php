@@ -21,6 +21,8 @@ class CartController extends MyAppController
         $loggedUserId = UserAuthentication::getLoggedUserId(true);
         $cartObj = new Cart($loggedUserId, $this->siteLangId, $this->app_user['temp_user_id']);
         $productsArr = $cartObj->getProducts($this->siteLangId);
+		
+		$cartType = $cartObj->getCartType();
         $prodGroupIds = array();
 
         if (0 < count($productsArr) || true ===  MOBILE_APP_API_CALL) {
@@ -75,6 +77,7 @@ class CartController extends MyAppController
             $cartSummary = $cartObj->getCartFinancialSummary($this->siteLangId);
             $PromoCouponsFrm = $this->getPromoCouponsForm($this->siteLangId);
 
+            $this->set('cartType', $cartType);
             $this->set('products', $productsArr);
             $this->set('prodGroupIds', $prodGroupIds);
             $this->set('PromoCouponsFrm', $PromoCouponsFrm);
@@ -138,19 +141,160 @@ class CartController extends MyAppController
             }
             $user_id = UserAuthentication::getLoggedUserId();
         }
-
+		$cObj = new Cart();
         $json = array();
         //$selprod_id = FatApp::getPostedData('selprod_id', FatUtility::VAR_INT, 0);
         $quantity = FatApp::getPostedData('quantity', FatUtility::VAR_INT, 1);
-
-        if (true ===  MOBILE_APP_API_CALL) {
-            $productsToAdd  = isset($post['addons']) ? json_decode($post['addons'], true) : array();
-        } else {
-            $productsToAdd  = isset($post['addons'])?$post['addons']:array();
+        $productFor = FatApp::getPostedData('product_for', FatUtility::VAR_INT, 1);
+        $extendOrder = FatApp::getPostedData('extend_order', FatUtility::VAR_INT, 0);
+		if ($extendOrder > 0) {
+			$cartType = applicationConstants::PRODUCT_FOR_EXTEND_RENTAL;
+			$extendChildOrderdata = OrderProductData::getOrderProductData($extendOrder, true);
+			if(!empty($extendChildOrderdata)) { //== check if order is already extend
+				$message = Labels::getLabel('MSG_Invalid_Request_(order_is_already_extended)', $this->siteLangId);
+				if (true ===  MOBILE_APP_API_CALL) {
+					FatUtility::dieJsonError($message);
+				}
+				Message::addErrorMessage($message);
+				FatUtility::dieWithError(Message::getHtml());
+			}
+			if (!$cObj->checkValidExtentRentalCartType()) {
+				$message = Labels::getLabel('MSG_Extend_rental_option_can_be_add_once_in_cart', $this->siteLangId);
+				if (true ===  MOBILE_APP_API_CALL) {
+					FatUtility::dieJsonError($message);
+				}
+				Message::addErrorMessage($message);
+				FatUtility::dieWithError(Message::getHtml());
+			}
+			
+		} else {
+			$cartType = $productFor;
+		}
+	
+		
+		if (!$cObj->checkCartType($cartType))
+		{ //== Same type product is allowed in cart (sale or rent)
+			$cartType = $cObj->getCartType();
+			if($cartType == applicationConstants::PRODUCT_FOR_EXTEND_RENTAL) {
+				$message = Labels::getLabel('MSG_Products_in_cart_must_be_extend_rental_or_all_for_buy_or_all_for_rent', $this->siteLangId);
+			} else {
+				$message = Labels::getLabel('MSG_Products_in_cart_must_be_all_for_buy_or_all_for_rent', $this->siteLangId);
+			}
+	
+            if (true ===  MOBILE_APP_API_CALL) {
+                FatUtility::dieJsonError($message);
+            }
+			Message::addErrorMessage($message);
+            FatUtility::dieWithError(Message::getHtml());	
+		}
+		$rentalData = array();
+		if ($productFor == applicationConstants::PRODUCT_FOR_RENT) {
+			$productRentalData = ProductRental::getProductRentalData($selprod_id);
+			
+			if (empty($productRentalData)) {
+				$message = Labels::getLabel('LBL_Invalid_Request', $this->siteLangId);
+				if (true ===  MOBILE_APP_API_CALL)
+				{
+					FatUtility::dieJsonError($message);
+				}
+				Message::addErrorMessage($message);
+				FatUtility::dieWithError(Message::getHtml());
+			}
+			
+			
+			$rentProd = new ProductRental();
+			$alreadyBookedQty = $rentProd->getRentalProductQuantity($selprod_id, $post['rental_start_date'], $post['rental_end_date'], $productRentalData['sprodata_rental_buffer_days']);
+		
+			$availableQty = $productRentalData['sprodata_rental_stock'] - $alreadyBookedQty;
+			if (1 > $availableQty) {
+				$message = Labels::getLabel('LBL_This_product_is_out_of_stock_now', $this->siteLangId);
+				if (true ===  MOBILE_APP_API_CALL) {
+					FatUtility::dieJsonError($message);
+				}
+				Message::addErrorMessage($message);
+				FatUtility::dieWithError(Message::getHtml());
+				
+			} else if ($availableQty < $quantity) {
+				$message = Labels::getLabel('LBL_Max_available_quantity_is', $this->siteLangId). ' ' . $availableQty;
+				if (true ===  MOBILE_APP_API_CALL) {
+					FatUtility::dieJsonError($message);
+				}
+				Message::addErrorMessage($message);
+				FatUtility::dieWithError(Message::getHtml());
+			}
+			
+			
+			/* Validation for rental minimum duration and available stock */
+			$minDur = $productRentalData['sprodata_minimum_rental_duration'];
+			$rentalStartDate = $post['rental_start_date'];
+			$rentalEndDate = $post['rental_end_date'];
+			$rental_type = $productRentalData['sprodata_rental_type'];
+			$rentalData = array(
+				'rental_start_date' => $rentalStartDate,
+				'rental_end_date' => $rentalEndDate,
+				'extendOrder' => $extendOrder,
+				'rental_type' => $rental_type
+			);
+			
+			//$rentStock = $productRentalData['sprodata_rental_stock'];
+			$rentProObj = new ProductRental();
+			$availedStock = $rentProObj->getRentalProductQuantity($selprod_id, $rentalStartDate, $rentalEndDate, $productRentalData['sprodata_rental_buffer_days']);
+			$rentStock = $productRentalData['sprodata_rental_stock'] - $availedStock;
+			//echo "<pre>"; print_r(Product::tempHoldStockCount($selprod_id)); echo "</pre>"; exit;
+			
+			if ($quantity > $rentStock)
+			{
+				$message = Labels::getLabel('MSG_Requested_quantity_more_than_stock_available', $this->siteLangId);
+				if (true === MOBILE_APP_API_CALL)
+				{
+					FatUtility::dieJsonError($message);
+				}
+				Message::addErrorMessage($message);
+				FatUtility::dieWithError(Message::getHtml());
+			}
+			
+			if (strtotime($rentalEndDate) <= strtotime($rentalStartDate))
+			{
+				$message = Labels::getLabel('LBL_Rental_End_Date_Must_be_greater_from_rental_start_date', $this->siteLangId);
+				if (true === MOBILE_APP_API_CALL)
+				{
+					FatUtility::dieJsonError($message);
+				}
+				Message::addErrorMessage($message);
+				FatUtility::dieWithError(Message::getHtml());
+			}
+			
+			if ($rental_type == applicationConstants::RENT_TYPE_HOUR)
+			{
+				$rentalTypeMessage = Labels::getLabel('LBL_Hours', $this->siteLangId);
+				$selectedDays = Common::hoursBetweenDates($rentalStartDate, $rentalEndDate);
+			} else
+			{
+				$rentalTypeMessage = Labels::getLabel('LBL_days', $this->siteLangId);
+				$selectedDays = Common::daysBetweenDates($rentalStartDate, $rentalEndDate);
+			}
+			
+			if ($selectedDays < $minDur)
+			{
+				$message = Labels::getLabel('LBL_Minimum_rental_duration_is', $this->siteLangId) .' '. $minDur. ' '. $rentalTypeMessage;
+				if (true ===  MOBILE_APP_API_CALL) {
+					FatUtility::dieJsonError($message);
+				}
+				Message::addErrorMessage($message);
+				FatUtility::dieWithError(Message::getHtml());
+			}
+		}	
+		
+        if (true ===  MOBILE_APP_API_CALL)
+		{
+            $productsToAdd = isset($post['addons']) ? json_decode($post['addons'], true) : array();
+        } else
+		{
+            $productsToAdd = isset($post['addons'])?$post['addons']:array();
         }
         $productsToAdd[$selprod_id] = $quantity;
 
-        $this->addProductToCart($productsToAdd, $selprod_id, $isForbooking);
+        $this->addProductToCart($productsToAdd, $selprod_id, $productFor, $rentalData, $isForbooking);
 
         if (true ===  MOBILE_APP_API_CALL) {
             
@@ -204,7 +348,7 @@ class CartController extends MyAppController
         }
     }
 
-    private function addProductToCart($productsToAdd, $selprod_id, $isForbooking = 0)
+    private function addProductToCart($productsToAdd, $selprod_id, $productFor, $rentalData = array(), $isForbooking = 0)
     {
         $ProductAdded = false;
         foreach ($productsToAdd as $productId => $quantity) {
@@ -217,7 +361,6 @@ class CartController extends MyAppController
                 FatUtility::dieWithError(Message::getHtml());
             }
             $srch = new ProductSearch($this->siteLangId);
-
             $srch->setDefinedCriteria();
             $srch->joinBrands();
             $srch->joinSellerSubscription();
@@ -227,8 +370,14 @@ class CartController extends MyAppController
             $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
             $srch->addMultipleFields(
                 array(
-                'selprod_id','selprod_code', 'selprod_min_order_qty', 'selprod_stock', 'product_name' )
+                'selprod_id','selprod_code', 'selprod_min_order_qty', 'selprod_stock', 'product_name', 'sprodata_rental_stock' )
             );
+			if ($productFor == applicationConstants::PRODUCT_FOR_RENT) {
+				$srch->addCondition('sprodata_is_for_rent', '=', 1);
+			} else {
+				$srch->addCondition('sprodata_is_for_sell', '=', 1);
+			}
+			//echo $srch->getQuery(); die();
             $rs = $srch->getResultSet();
             $db = FatApp::getDb();
             $sellerProductRow = $db->fetch($rs);
@@ -244,7 +393,7 @@ class CartController extends MyAppController
             $selprod_code = $sellerProductRow['selprod_code'];
             $productAdd = true;
             /* cannot add, out of stock products in cart[ */
-            if ($sellerProductRow['selprod_stock'] <= 0) {
+            if ($sellerProductRow['selprod_stock'] <= 0 && $productFor == applicationConstants::PRODUCT_FOR_SALE) {
                 if ($productId!=$selprod_id) {
                     $message = Labels::getLabel('LBL_Out_of_Stock_Products_cannot_be_added_to_cart_%s', $this->siteLangId);
                     $message = sprintf($message, FatUtility::decodeHtmlEntities($sellerProductRow['product_name']));
@@ -267,25 +416,27 @@ class CartController extends MyAppController
             /* ] */
 
             /* minimum quantity check[ */
-            $minimum_quantity = ($sellerProductRow['selprod_min_order_qty']) ? $sellerProductRow['selprod_min_order_qty'] : 1;
-            if ($quantity < $minimum_quantity) {
-                $productAdd = false;
-                if ($productId!=$selprod_id) {
-                    $str = Labels::getLabel('LBL_Please_add_minimum_{minimumquantity}', $this->siteLangId);
-                    $str = str_replace("{minimumquantity}", $minimum_quantity, $str);
-                    if (true ===  MOBILE_APP_API_CALL) {
-                        LibHelper::dieJsonError($str);
-                    }
-                    $productErr['addon'][$productId] = $str." ".FatUtility::decodeHtmlEntities($sellerProductRow['product_name']);
-                } else {
-                    $str = Labels::getLabel('LBL_Please_add_minimum_{minimumquantity}', $this->siteLangId);
-                    $str = str_replace("{minimumquantity}", $minimum_quantity, $str);
-                    if (true ===  MOBILE_APP_API_CALL) {
-                        LibHelper::dieJsonError($str);
-                    }
-                    $productErr['product'] = $str." ".FatUtility::decodeHtmlEntities($sellerProductRow['product_name']);
-                }
-            }
+			if($productFor == applicationConstants::PRODUCT_FOR_SALE) {
+				$minimum_quantity = ($sellerProductRow['selprod_min_order_qty']) ? $sellerProductRow['selprod_min_order_qty'] : 1;
+				if ($quantity < $minimum_quantity) {
+					$productAdd = false;
+					if ($productId!=$selprod_id) {
+						$str = Labels::getLabel('LBL_Please_add_minimum_{minimumquantity}', $this->siteLangId);
+						$str = str_replace("{minimumquantity}", $minimum_quantity, $str);
+						if (true ===  MOBILE_APP_API_CALL) {
+							LibHelper::dieJsonError($str);
+						}
+						$productErr['addon'][$productId] = $str." ".FatUtility::decodeHtmlEntities($sellerProductRow['product_name']);
+					} else {
+						$str = Labels::getLabel('LBL_Please_add_minimum_{minimumquantity}', $this->siteLangId);
+						$str = str_replace("{minimumquantity}", $minimum_quantity, $str);
+						if (true ===  MOBILE_APP_API_CALL) {
+							LibHelper::dieJsonError($str);
+						}
+						$productErr['product'] = $str." ".FatUtility::decodeHtmlEntities($sellerProductRow['product_name']);
+					}
+				}
+			}
             /* ] */
 
             /* product availability date check covered in product search model[ ] */
@@ -293,26 +444,28 @@ class CartController extends MyAppController
             $cartObj = new Cart($loggedUserId, $this->siteLangId, $this->app_user['temp_user_id']);
 
             /* cannot add quantity more than stock of the product[ */
-            $selprod_stock = $sellerProductRow['selprod_stock'] - Product::tempHoldStockCount($productId);
-            if ($quantity > $selprod_stock) {
-                if ($productId != $selprod_id) {
-                    $message = Labels::getLabel('MSG_Requested_quantity_more_than_stock_available', $this->siteLangId);
-                    if (true ===  MOBILE_APP_API_CALL) {
-                        FatUtility::dieJsonError($message);
-                    }
-                    $productErr['addon'][$productId]=Message::addInfo($message." ". $selprod_stock." " .strip_tags($sellerProductRow['product_name']));
-                } else {
-                    $message = Labels::getLabel('MSG_Requested_quantity_more_than_stock_available', $this->siteLangId);
-                    if (true ===  MOBILE_APP_API_CALL) {
-                        FatUtility::dieJsonError($message);
-                    }
-                    $productErr['product']=$message." ". $selprod_stock." " .strip_tags($sellerProductRow['product_name']);
-                }
-            }
+			if($productFor == applicationConstants::PRODUCT_FOR_SALE) {
+				$selprod_stock = $sellerProductRow['selprod_stock'] - Product::tempHoldStockCount($productId);
+				if ($quantity > $selprod_stock) {
+					if ($productId != $selprod_id) {
+						$message = Labels::getLabel('MSG_Requested_quantity_more_than_stock_available', $this->siteLangId);
+						if (true ===  MOBILE_APP_API_CALL) {
+							FatUtility::dieJsonError($message);
+						}
+						$productErr['addon'][$productId]=Message::addInfo($message." ". $selprod_stock." " .strip_tags($sellerProductRow['product_name']));
+					} else {
+						$message = Labels::getLabel('MSG_Requested_quantity_more_than_stock_available', $this->siteLangId);
+						if (true ===  MOBILE_APP_API_CALL) {
+							FatUtility::dieJsonError($message);
+						}
+						$productErr['product']=$message." ". $selprod_stock." " .strip_tags($sellerProductRow['product_name']);
+					}
+				}
+			}
             /* ] */
            /*  if ($productAdd) {
                 $returnUserId = (true ===  MOBILE_APP_API_CALL) ? true : false;
-                $cartUserId = $cartObj->add($productId, $quantity, 0, $returnUserId);
+				$cartUserId = $cartObj->add($productId, $quantity, 0, $returnUserId, $productFor, $rentalData);
                 if (true ===  MOBILE_APP_API_CALL) {
                     $this->set('tempUserId', $cartUserId);
                 }
@@ -322,14 +475,14 @@ class CartController extends MyAppController
 			if ($productAdd) {
 				if($isForbooking == 1){
 					$returnUserId = (true ===  MOBILE_APP_API_CALL) ? true : false;
-					$cartObj->add($productId, $quantity, 0,'',$isForbooking);
+					$cartUserId = $cartObj->add($productId, $quantity, 0, $returnUserId, $productFor, $rentalData,$isForbooking);
 					if (true ===  MOBILE_APP_API_CALL) {
 						$this->set('tempUserId', $cartUserId);
 					}
 					$ProductAdded = true;
 				}else{
 					$returnUserId = (true ===  MOBILE_APP_API_CALL) ? true : false;
-					$cartUserId = $cartObj->add($productId, $quantity, 0, '' ,$returnUserId);
+					$cartUserId = $cartObj->add($productId, $quantity, 0, $returnUserId, $productFor, $rentalData);
 					if (true ===  MOBILE_APP_API_CALL) {
 						$this->set('tempUserId', $cartUserId);
 					}

@@ -83,6 +83,15 @@ class applicationConstants
     const BOOK_NOW = 2;
     const BOTH = 0;
 
+	const PRODUCT_FOR_SALE = 1;
+	const PRODUCT_FOR_RENT = 2; 
+	const PRODUCT_FOR_EXTEND_RENTAL = 3; 
+	
+	const RENT_TYPE_DAY = 1;
+	const RENT_TYPE_HOUR = 2;
+	const PRODUCT_IS_SELF_PICKUP = 1;
+	
+
     public static function getWeightUnitsArr($langId)
     {
         $langId = FatUtility::int($langId);
@@ -399,10 +408,11 @@ class applicationConstants
         if ($langId < 1) {
             $langId = FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG');
         }
+		
         return array(
-        static::BUY_NOW        =>    Labels::getLabel('LBL_Buy_Only', $langId),
-        static::BOOK_NOW    =>    Labels::getLabel('LBL_Book_Only', $langId),
-        static::BOTH    =>    Labels::getLabel('LBL_Both', $langId),
+			static::BUY_NOW        =>    Labels::getLabel('LBL_Buy_Only', $langId),
+			static::BOOK_NOW    =>    Labels::getLabel('LBL_Book_Only', $langId),
+			static::BOTH    =>    Labels::getLabel('LBL_Both', $langId),
         );
     }
 	
@@ -413,8 +423,20 @@ class applicationConstants
             $langId = FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG');
         }
         return array(
-        static::BUY_NOW        =>    Labels::getLabel('LBL_Buy', $langId),
-        static::BOOK_NOW    =>    Labels::getLabel('LBL_Book', $langId),
+			static::BUY_NOW        =>    Labels::getLabel('LBL_Buy', $langId),
+			static::BOOK_NOW    =>    Labels::getLabel('LBL_Book', $langId),
+        );
+    }
+
+	public static function rentalTypeArr($langId)
+    {
+        $langId = FatUtility::int($langId);
+        if ($langId < 1) {
+            $langId = FatApp::getConfig('CONF_ADMIN_DEFAULT_LANG');
+        }
+        return array(
+			static::RENT_TYPE_DAY => Labels::getLabel('LBL_Per_Day', $langId),
+			static::RENT_TYPE_HOUR => Labels::getLabel('LBL_Per_Hour', $langId),
         );
     }
 }

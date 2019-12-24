@@ -57,3 +57,4 @@ if ($relatedProductsRs) { ?>
     </div>
     <div class="gap"></div>
 <?php } ?>
+

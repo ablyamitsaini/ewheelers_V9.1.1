@@ -218,6 +218,22 @@ class AdminBaseController extends FatController
         $this->set('stateId', $stateId);
         $this->_template->render(false, false, '_partial/states-list.php');
     }
+	
+	public function getCities($countryId, $stateId, $cityId = 0)
+    {
+        $countryId = FatUtility::int($countryId);
+        $stateId = FatUtility::int($stateId);
+        $cityId = FatUtility::int($cityId);
+
+        
+        $statesArr = City::getCitiesByCountryAndState($countryId, $stateId, $this->adminLangId);
+
+        $this->set('statesArr', $statesArr);
+        $this->set('stateId', $stateId);
+        $this->set('cityId', $cityId);
+        $this->_template->render(false, false, '_partial/cities-list.php');
+    }
+	
 
     protected function getUserSearchForm()
     {
@@ -268,7 +284,14 @@ class AdminBaseController extends FatController
         $fld->requirement->setRequired(true);
 
         $frm->addSelectBox(Labels::getLabel('LBL_State', $this->adminLangId), 'user_state_id', array())->requirement->setRequired(true);
+        //$frm->addTextBox(Labels::getLabel('LBL_City', $this->adminLangId), 'user_city');
+		
+		$citySelectFld = $frm->addSelectBox(Labels::getLabel('LBL_City', $this->adminLangId), 'user_city_id', array(), '', array(), Labels::getLabel('LBL_City', $this->adminLangId));
+		
+		$citySelectFld->requirement->setRequired(true);
+		
         $frm->addTextBox(Labels::getLabel('LBL_City', $this->adminLangId), 'user_city');
+		
 
         switch ($userType) {
         case User::USER_TYPE_SHIPPING_COMPANY:

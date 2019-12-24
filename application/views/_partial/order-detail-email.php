@@ -199,4 +199,5 @@ $str='<table cellspacing="0" cellpadding="0" border="0" width="100%" style="bord
 	}
 	
 	$str.='<td style="padding:10px;font-size:13px; color:#333;border:1px solid #ddd;">'.$shippingInfo.'</td></tr></table>';
+
 echo $str;

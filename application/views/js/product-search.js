@@ -38,6 +38,20 @@ $(document).ready(function(){
 		reloadProductListing(frm);
 		//searchProducts(frm,0,0,1,1);
 	});
+    
+    
+    $(document).on('change', 'input[name=producttype]', function() {
+		var id= $(this).parent().parent().find('label').attr('id');
+		if($(this).is(":checked")){
+			addFilter(id,this);
+			addToSearchQueryString(id,this);
+		}else{
+			removeFilter(id,this);
+		}
+		removePaginationFromLink();
+		reloadProductListing(frm);
+		//searchProducts(frm,0,0,1,1);
+	});
 
 	$(document).on('change', 'input[name=category]', function() {
 		var id= $(this).parent().parent().find('label').attr('id');
@@ -503,6 +517,19 @@ function updatePriceFilter(minPrice,maxPrice,addPriceFilter){
 		}
 		/* ] */
 
+        /* Product Type value pickup[ */
+        var productType=[];
+		$("input:checkbox[name=producttype]:checked").each(function(){
+			var id = $(this).parent().parent().find('label').attr('id');
+			addToSearchQueryString (id,this);
+			addFilter (id,this);
+			productType.push($(this).val());
+		});
+		if ( productType.length ){
+			data=data+"&productType="+[productType];
+		}
+        /* ] */
+        
 		/* brands filter value pickup[ */
 		var brands=[];
 		$("input:checkbox[name=brands]:checked").each(function(){

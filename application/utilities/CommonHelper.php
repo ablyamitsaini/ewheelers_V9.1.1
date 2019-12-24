@@ -293,8 +293,13 @@ class CommonHelper extends FatUtility
         }
 
         $shippingAmount = isset($opArr['charges'][OrderProduct::CHARGE_TYPE_SHIPPING]['opcharge_amount']) ? $opArr['charges'][OrderProduct::CHARGE_TYPE_SHIPPING]['opcharge_amount'] : 0;
+
 		if($calculateWithoutBook == 0){
-			$cartTotal = $opArr['op_qty'] * $opArr['op_unit_price'];
+			if($opArr['opd_sold_or_rented'] == applicationConstants::PRODUCT_FOR_RENT) {
+				$cartTotal = $opArr['op_unit_price'];
+			} else {
+				$cartTotal = $opArr['op_qty'] * $opArr['op_unit_price'];
+			}
 		}else{
 			$cartTotal = $opArr['op_qty'] * $opArr['op_product_amount_without_book'];
 		}
@@ -330,7 +335,7 @@ class CommonHelper extends FatUtility
                 $amount = isset($opArr['charges'][OrderProduct::CHARGE_TYPE_DISCOUNT]['opcharge_amount'])?$opArr['charges'][OrderProduct::CHARGE_TYPE_DISCOUNT]['opcharge_amount']:0;
                 break;
             case 'CART_TOTAL':
-                $amount = $cartTotal;
+                $amount = 000;
                 break;
             case 'TAX':
                 //$amount = FatUtility::convertToType($opArr['op_tax_total'] , FatUtility::VAR_FLOAT);
@@ -339,7 +344,11 @@ class CommonHelper extends FatUtility
             case 'VOLUME_DISCOUNT':
                 $amount = isset($opArr['charges'][OrderProduct::CHARGE_TYPE_VOLUME_DISCOUNT]['opcharge_amount']) ? $opArr['charges'][OrderProduct::CHARGE_TYPE_VOLUME_DISCOUNT]['opcharge_amount'] : 0;
                 break;
+			case 'DURATION_DISCOUNT':
+                $amount = isset($opArr['charges'][OrderProduct::CHARGE_TYPE_DURATION_DISCOUNT]['opcharge_amount']) ? $opArr['charges'][OrderProduct::CHARGE_TYPE_DURATION_DISCOUNT]['opcharge_amount'] : 0;
+                break;	
         }
+		
 
         if ($pricePerItem) {
             $amount = round($amount/$opArr['op_qty'], 2);
@@ -350,6 +359,9 @@ class CommonHelper extends FatUtility
     public static function getOrderProductRefundAmtArr($requestRow = array())
     {
         $volumeDiscount = isset($requestRow['charges'][OrderProduct::CHARGE_TYPE_VOLUME_DISCOUNT]['opcharge_amount'])?abs($requestRow['charges'][OrderProduct::CHARGE_TYPE_VOLUME_DISCOUNT]['opcharge_amount']):0;
+		
+		$durationDiscount = isset($requestRow['charges'][OrderProduct::CHARGE_TYPE_DURATION_DISCOUNT]['opcharge_amount'])?abs($requestRow['charges'][OrderProduct::CHARGE_TYPE_DURATION_DISCOUNT]['opcharge_amount']):0;
+		
         $shipCharges = isset($requestRow['charges'][OrderProduct::CHARGE_TYPE_SHIPPING][OrderProduct::DB_TBL_CHARGES_PREFIX.'amount'])?$requestRow['charges'][OrderProduct::CHARGE_TYPE_SHIPPING][OrderProduct::DB_TBL_CHARGES_PREFIX.'amount']:0;
 
         $productAvaliedFreeShip = false;
@@ -401,6 +413,13 @@ class CommonHelper extends FatUtility
             $volumeDiscountPerQty = ($volumeDiscount/$requestRow['op_qty']);
             $deductVolumeDiscountFromRefund = ($volumeDiscountPerQty * $requestRow['orrequest_qty']);
         }
+		
+		$durationDiscountPerQty = 0;
+        $deductDurationDiscountFromRefund = 0;
+        if ($durationDiscount > 0) {
+            $durationDiscountPerQty = ($durationDiscount/$requestRow['op_qty']);
+            $deductDurationDiscountFromRefund = ($durationDiscountPerQty * $requestRow['orrequest_qty']);
+        }
 
         $couponDiscountPerQty = 0;
         $deductCouponDiscountFromRefund = 0;
@@ -417,7 +436,7 @@ class CommonHelper extends FatUtility
         if ($requestRow['op_qty'] == $requestRow['orrequest_qty']) {
             $op_refund_amount = $totalPaidAmtBuyer;
         } else {
-            $op_refund_amount = $cartAmount + $taxToRefund - $deductVolumeDiscountFromRefund - $deductCouponDiscountFromRefund;
+            $op_refund_amount = $cartAmount + $taxToRefund - $deductVolumeDiscountFromRefund - $deductCouponDiscountFromRefund - $deductDurationDiscountFromRefund;
         }
 
         $op_refund_shipping = 0;
@@ -441,7 +460,7 @@ class CommonHelper extends FatUtility
         $opDataToUpdate = array(
             'op_refund_qty'=>$requestRow['orrequest_qty'],
             'op_cart_amount'=>$cartAmount,
-            'op_prod_price'=>$cartAmount- $deductVolumeDiscountFromRefund - $deductCouponDiscountFromRefund,
+            'op_prod_price'=>$cartAmount- $deductVolumeDiscountFromRefund - $deductCouponDiscountFromRefund - $deductDurationDiscountFromRefund,
             'op_refund_amount'=>round($op_refund_amount, 2),
             'op_refund_shipping'=>$op_refund_shipping,
             'op_refund_commission'=>$op_refund_commission,
@@ -817,6 +836,7 @@ class CommonHelper extends FatUtility
         $havingData = fgetcsv($file);
 
         if (!$havingData) {
+            fclose($file);
             unlink(ImportexportCommon::IMPORT_ERROR_LOG_PATH.$fileName);
         }
         return $havingData;

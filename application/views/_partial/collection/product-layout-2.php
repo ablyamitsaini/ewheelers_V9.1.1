@@ -19,7 +19,9 @@ if( isset( $collections ) && count($collections) ){
 		</div>
 		<div class="ft-products">
 			<div class="row">
-				<?php foreach( $row['products'] as $product ){ ?>
+				<?php 
+				$rentalTypeArr = applicationConstants::rentalTypeArr($siteLangId);
+				foreach( $row['products'] as $product ){ ?>
 				<div class="col-xl-4 col-lg-6 col-md-6 mb-4">
 					<?php $layoutClass = 'products--layout'; include('product-layout-1-list.php'); ?>
 				</div>

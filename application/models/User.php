@@ -736,6 +736,7 @@ class User extends MyAppModel
         }
         $assignValues = array(
         'ura_user_id'=>$this->mainTableRecordId,
+        'ura_city_id'=>$data['ura_city_id'],
         'ura_state_id'=>$data['ura_state_id'],
         'ura_country_id'=>$data['ura_country_id'],
         'ura_zip'=>$data['ura_zip'],

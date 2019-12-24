@@ -10,6 +10,7 @@ class ShippingMethods extends MyAppModel
 
     const MANUAL_SHIPPING =1;
     const SHIPSTATION_SHIPPING =2;
+    const SELF_PICKUP = 3;
 
     private $db;
 

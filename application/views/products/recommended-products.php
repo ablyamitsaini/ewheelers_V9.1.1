@@ -47,7 +47,7 @@
                     <?php echo $rProduct['prodcat_name'];?> </a>
                     </div>
 					<div class="products__title"><a title="<?php echo $rProduct['selprod_title'];?>" href="<?php echo CommonHelper::generateUrl('Products','View',array($rProduct['selprod_id']));?>"><?php echo (mb_strlen($rProduct['selprod_title']) > 50) ? mb_substr($rProduct['selprod_title'],0,50)."..." : $rProduct['selprod_title'];?> </a></div>
-                    <?php $this->includeTemplate('_partial/collection-product-price.php',array('product'=>$rProduct,'siteLangId'=>$siteLangId),false);?>
+                    <?php $this->includeTemplate('_partial/collection-product-price.php',array('product'=>$rProduct,'siteLangId'=>$siteLangId, 'rentalTypeArr' => $rentalTypeArr),false);?>
 				</div>
 			</div>
 			<!--/product tile-->

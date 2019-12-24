@@ -385,4 +385,14 @@ class Common
         $template->set('pollForm', $pollForm);
         $template->set('siteLangId', CommonHelper::getLangId());
     }
+	
+	/* get Days between two dates*/
+	public static function daysBetweenDates($startDate, $endDate) {
+        $days = abs((strtotime($endDate) - strtotime($startDate)) / (60 * 60 * 24));
+        return $days > 0 ? $days : 1;
+    }
+	public static function hoursBetweenDates($startDate, $endDate) {
+        $hours = abs((strtotime($endDate) - strtotime($startDate)) / (60 * 60));
+        return $hours > 0 ? $hours : 1;
+    }
 }

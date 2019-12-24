@@ -4,6 +4,9 @@ $frm->setFormTagAttribute('class', 'form');
 $frm->developerTags['colClassPrefix'] = 'col-md-';
 $frm->developerTags['fld_default_col'] = 4;
 
+$fld = $frm->getField('user_company');
+$fld->developerTags['col'] = 12;
+
 $fld = $frm->getField('user_profile_info');
 $fld->developerTags['col'] = 6;
 
@@ -35,6 +38,18 @@ $countryFld->setFieldTagAttribute('onChange', 'getCountryStates(this.value,'.$st
 
 $stateFld = $frm->getField('user_state_id');
 $stateFld->setFieldTagAttribute('id', 'user_state_id');
+$stateFld->setFieldTagAttribute('onChange', 'getCountryStatesCities(\'#user_country_id\', this.value, '. $cityId.' ,\'#ua_city_id\')');
+
+$cityIdFld = $frm->getField('user_city_id');
+$cityIdFld->setFieldTagAttribute('id', 'ua_city_id');
+
+$cityNameFld = $frm->getField('user_city');
+$cityNameFld->setFieldTagAttribute('id', 'user_city');
+$cityNameFld->setWrapperAttribute('class', 'user-cityname--js');
+
+if($cityId > 0) {
+	$cityNameFld->setWrapperAttribute('style','display:none;');
+}
 
 
 $imgFrm->setFormTagAttribute('action', CommonHelper::generateUrl('Account', 'uploadProfileImage'));
@@ -114,7 +129,8 @@ $fld->addFieldTagAttribute('class','btn btn--primary btn--sm'); */
 </div>
 <script language="javascript">
     $(document).ready(function() {
-        getCountryStates($("#user_country_id").val(), <?php echo $stateId ;?>, '#user_state_id');
+        getCountryStates($("#user_country_id").val(), <?php echo $stateId ;?>, '#user_state_id', '#ua_city_id');
+		getCountryStatesCities("#user_country_id", <?php echo $stateId ;?>, <?php echo $cityId ;?>, '#ua_city_id');
         $('.user_dob_js').datepicker('option', {
             maxDate: new Date()
         });

@@ -543,3 +543,48 @@ function getCookie(cname) {
   }
   return "";
 }
+
+function enterLocation()
+{
+    var input = document.getElementById('user_city_country');
+    var autocomplete = new google.maps.places.Autocomplete(input);
+    autocomplete.addListener('place_changed', function () {
+        var addressObj = autocomplete.getPlace();
+        var userAddress = getAddressComponent(addressObj.address_components);
+        if (userAddress !== false) {
+            userAddress.latitude = addressObj.geometry.location.lat();
+            userAddress.longitude = addressObj.geometry.location.lng();
+            codeLatLng(userAddress.latitude, userAddress.longitude);
+        }
+    });
+}
+
+function getAddressComponent(addressObj) 
+{
+    var address = {region: '', city: '', state: '', country: '', country_code: ''}
+    addressObj.forEach(function (addressElement, index) {
+        if (typeof addressElement != 'object')
+            return false;
+        if (!addressElement.hasOwnProperty('types'))
+            return  false;
+        if (typeof addressElement.types != 'object')
+            return false;
+        if (addressElement.types.length <= 0)
+            return  false;
+        if (addressElement.types.indexOf("administrative_area_level_3") !== -1) {
+            address.region = addressElement.long_name;
+        } else if (address.region == '' && addressElement.types.indexOf("locality") !== -1) {
+            address.region = addressElement.long_name;
+        } else if (address.region == '' && addressElement.types.indexOf("sublocality") !== -1) {
+            address.region = addressElement.long_name;
+        } else if (addressElement.types.indexOf("administrative_area_level_2") !== -1) {
+            address.city = addressElement.long_name;
+        } else if (addressElement.types.indexOf("administrative_area_level_1") !== -1) {
+            address.state = addressElement.long_name;
+        } else if (addressElement.types.indexOf("country") !== -1) {
+            address.country = addressElement.long_name;
+            address.country_code = addressElement.short_name;
+        }
+    });
+    return address;
+}

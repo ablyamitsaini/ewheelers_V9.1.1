@@ -59,7 +59,7 @@ $cancelBtnFld->developerTags['noCaptionTag'] = true;
         <div class="content-header  row justify-content-between mb-3">
             <div class="col-md-auto">
                 <?php $this->includeTemplate('_partial/dashboardTop.php'); ?>
-                <h2 class="content-header-title"><?php echo Labels::getLabel('LBL_My_Sales', $siteLangId); ?></h2>
+                <?php $this->includeTemplate('_partial/sellerOrdersPagesTabs.php', array('siteLangId'=>$siteLangId,'controllerName'=>$controllerName,'action'=>$action), false); ?>
             </div>
         </div>
         <div class="content-body">

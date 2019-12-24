@@ -392,3 +392,141 @@ ALTER TABLE `tbl_orders` ADD `order_actual_net_amount` DECIMAL(10,2) NOT NULL AF
 ALTER TABLE `tbl_order_products` ADD `op_product_amount_without_book` DECIMAL(10,2) NOT NULL AFTER `op_booking_product_actual_amount`;
 
 ALTER TABLE `tbl_orders` ADD `order_have_booking` TINYINT(1) NOT NULL AFTER `order_actual_net_amount`;
+
+
+
+/* -------------rental module updates------------- */
+
+
+CREATE TABLE `tbl_seller_products_data` (
+  `sprodata_id` int(11) NOT NULL,
+  `sprodata_selprod_id` int(11) NOT NULL,
+  `sprodata_is_for_sell` tinyint(1) NOT NULL,
+  `sprodata_is_for_rent` tinyint(1) NOT NULL,
+  `sprodata_rental_price` decimal(10,2) NOT NULL,
+  `sprodata_rental_security` decimal(10,2) NOT NULL,
+  `sprodata_rental_type` tinyint(1) NOT NULL,
+  `sprodata_rental_is_pickup` int(11) NOT NULL,
+  `sprodata_rental_terms` longtext NOT NULL,
+  `sprodata_rental_stock` int(11) NOT NULL,
+  `sprodata_rental_buffer_days` int(11) NOT NULL,
+  `sprodata_minimum_rental_duration` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+ALTER TABLE `tbl_seller_products_data`
+  ADD PRIMARY KEY (`sprodata_id`);
+  
+  
+ALTER TABLE `tbl_seller_products_data`
+  MODIFY `sprodata_id` int(11) NOT NULL AUTO_INCREMENT;
+  
+
+CREATE TABLE `tbl_product_duration_discount` (
+  `produr_id` int(11) NOT NULL,
+  `produr_selprod_id` int(11) NOT NULL,
+  `produr_rental_duration` int(11) NOT NULL,
+  `produr_discount_percent` decimal(10,2) NOT NULL,
+  `produr_added_date` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `tbl_product_duration_discount`
+  ADD PRIMARY KEY (`produr_id`);
+  
+ALTER TABLE `tbl_product_duration_discount`
+  MODIFY `produr_id` int(11) NOT NULL AUTO_INCREMENT;  
+
+  
+CREATE TABLE `tbl_prod_unavailable_rental_durations` (
+  `pu_id` int(11) NOT NULL,
+  `pu_selprod_id` int(11) NOT NULL,
+  `pu_start_date` date NOT NULL,
+  `pu_end_date` date NOT NULL,
+  `pu_quantity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `tbl_prod_unavailable_rental_durations`
+  ADD PRIMARY KEY (`pu_id`);
+
+ALTER TABLE `tbl_prod_unavailable_rental_durations`
+  MODIFY `pu_id` int(11) NOT NULL AUTO_INCREMENT;  
+  
+INSERT INTO `tbl_orders_status` (`orderstatus_identifier`, `orderstatus_color_code`, `orderstatus_type`, `orderstatus_priority`, `orderstatus_is_active`, `orderstatus_is_digital`) VALUES('Rental Returned', '#D37E0B', 1, 0, 1, 0);
+
+CREATE TABLE `tbl_cities` (
+  `city_id` int(11) NOT NULL,
+  `city_state_id` int(11) NOT NULL,
+  `city_country_id` int(11) NOT NULL,
+  `city_identifier` varchar(100) NOT NULL,
+  `city_active` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `tbl_cities`
+  ADD PRIMARY KEY (`city_id`);
+  
+ALTER TABLE `tbl_cities`
+  MODIFY `city_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;  
+  
+CREATE TABLE `tbl_cities_lang` (
+  `citylang_city_id` int(11) NOT NULL,
+  `citylang_lang_id` int(11) NOT NULL,
+  `city_name` varchar(150) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;  
+
+ALTER TABLE `tbl_cities_lang`
+  ADD PRIMARY KEY (`citylang_city_id`,`citylang_lang_id`);
+
+ALTER TABLE `tbl_cities`
+  ADD UNIQUE KEY `city_country_id` (`city_country_id`,`city_state_id`,`city_identifier`),
+  ADD UNIQUE KEY `city_state_id` (`city_state_id`,`city_identifier`);
+
+ALTER TABLE `tbl_user_address` ADD `ua_city_id` INT(11) NOT NULL AFTER `ua_city`;
+ALTER TABLE `tbl_users` ADD `user_city_id` INT(11) NOT NULL AFTER `user_city`;
+ALTER TABLE `tbl_shops` ADD `shop_city_id` INT(11) NOT NULL AFTER `shop_state_id`;
+
+ALTER TABLE `tbl_user_return_address` ADD `ura_city_id` INT(11) NOT NULL AFTER `ura_user_id`;
+
+
+CREATE TABLE `tbl_order_products_data` (
+  `opd_id` int(11) NOT NULL,
+  `opd_op_id` int(11) NOT NULL,
+  `opd_order_id` varchar(30) NOT NULL,
+  `opd_sold_or_rented` int(11) NOT NULL,
+  `opd_rental_start_date` datetime NOT NULL,
+  `opd_rental_end_date` datetime NOT NULL,
+  `opd_rental_type` int(11) NOT NULL,
+  `opd_rental_security` decimal(10,2) NOT NULL,
+  `opd_rental_is_pickup` int(11) NOT NULL,
+  `opd_rental_terms` longtext NOT NULL,
+  `opd_rental_price_multiplier` int(11) NOT NULL,
+  `opd_rental_duration_discount` decimal(10,2) NOT NULL,
+  `opd_retail_price` decimal(10,2) NOT NULL,
+  `opd_refunded_security_amount` decimal(10,2) NOT NULL,
+  `opd_refunded_security_type` int(11) NOT NULL,
+  `opd_refunded_security_status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+ALTER TABLE `tbl_order_products_data`
+  ADD PRIMARY KEY (`opd_id`);
+  
+ALTER TABLE `tbl_order_products_data`
+  MODIFY `opd_id` int(11) NOT NULL AUTO_INCREMENT;  
+  
+INSERT INTO `tbl_configurations` (`conf_name`, `conf_val`, `conf_common`) VALUES
+('CONF_ALLOW_SALE', '1', 0),
+('CONF_ALLOW_RENT', '1', 0);
+
+ALTER TABLE `tbl_order_products_data` ADD `opd_extend_from_op_id` INT(255) NOT NULL AFTER `opd_op_id`;
+
+ALTER TABLE `tbl_shops` ADD `shop_latitude` VARCHAR(30) NOT NULL AFTER `shop_city_id`, ADD `shop_longitude` VARCHAR(30) NOT NULL AFTER `shop_latitude`;
+
+ALTER TABLE `tbl_order_products_data` CHANGE `opd_rental_terms` `opd_rental_terms` LONGTEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;
+
+
+ALTER TABLE `tbl_order_products_data` CHANGE `opd_retail_price` `opd_rental_price` DECIMAL(10,2) NOT NULL;
+INSERT INTO `tbl_shipping_apis` (`shippingapi_id`, `shippingapi_identifier`, `shippingapi_active`, `shippingapi_display_order`, `shippingapi_code`) VALUES
+(3, 'Self Pickup', 1, 3, 'self_pickup');
+
+
+INSERT INTO `tbl_extra_pages` (`epage_id`, `epage_identifier`, `epage_type`, `epage_content_for`, `epage_active`, `epage_default`, `epage_default_content`) VALUES (NULL, 'Product Rental Inventory Update Instructions', '46', '1', '1', '0', '<h5>Seller Product Id</h5><p>User defined product identifier for the Product. This field needs to be the same as the seller product identifier defined in the Seller Product General Data sheet.</p><h5>SKU</h5><p>User defined field for the product SKU.</p><h5>Product</h5><p>User defined field for the product name.</p><h5>Rental Price</h5><p>User defined field for the product rental price.</p><h5>Rental Security</h5><p>User defined field for the product rental security.</p><h5>Stock/quantity</h5><p>User defined field for the stock/quantity of the product.</p>');

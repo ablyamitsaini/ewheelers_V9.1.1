@@ -153,8 +153,14 @@ class UsersController extends AdminBaseController
 
         $post = FatApp::getPostedData();
         $user_state_id = FatUtility::int($post['user_state_id']);
+        $user_city_id = FatUtility::int($post['user_city_id']);
         $post = $frm->getFormDataFromArray($post);
         $post['user_state_id'] = $user_state_id;
+        $post['user_city_id'] = $user_city_id;
+		if( $user_city_id > -1 ) {
+			$post['user_city'] = '';
+		}
+		
 
         if (false === $post) {
             Message::addErrorMessage(current($frm->getValidationErrors()));
@@ -183,6 +189,7 @@ class UsersController extends AdminBaseController
         $frmUser = $this->getForm($user_id);
 
         $stateId = 0;
+        $cityId = 0;
         if (0 < $user_id) {
             $userObj = new User($user_id);
             $srch = $userObj->getUserSearchObj();
@@ -203,11 +210,13 @@ class UsersController extends AdminBaseController
             $data['credential_username'] = htmlentities($data['credential_username']);
             } */
             $stateId = $data['user_state_id'];
+            $cityId = $data['user_city_id'];
             $frmUser->fill($data);
         }
 
         $this->set('user_id', $user_id);
         $this->set('stateId', $stateId);
+        $this->set('cityId', $cityId);
         $this->set('frmUser', $frmUser);
         $this->_template->render(false, false);
     }
@@ -511,12 +520,14 @@ class UsersController extends AdminBaseController
         $addressFrm = $this->getUserAddressForm($this->adminLangId);
 
         $stateId = 0;
+        $cityId = 0;
         if ($ua_id > 0) {
             $data =  UserAddress::getUserAddresses($userId, $this->adminLangId, 0, $ua_id);
             if ($data === false) {
                 FatUtility::dieWithError($this->str_invalid_request);
             }
             $stateId =  $data['ua_state_id'];
+            $cityId =  $data['ua_city_id'];
             $addressFrm->fill($data);
         } else {
             $addressFrm->fill(array('ua_user_id'=>$userId));
@@ -524,6 +535,7 @@ class UsersController extends AdminBaseController
 
         $this->set('addressFrm', $addressFrm);
         $this->set('stateId', $stateId);
+        $this->set('cityId', $cityId);
         $this->set('user_id', $userId);
         $this->_template->render(false, false);
     }
@@ -539,7 +551,12 @@ class UsersController extends AdminBaseController
         }
 
         $ua_state_id = FatUtility::int($post['ua_state_id']);
+        $ua_city_id = FatUtility::int($post['ua_city_id']);
         $post = $frm->getFormDataFromArray($post);
+		
+		if ($ua_city_id > -1) {
+			$post['ua_city'] = '';
+		}
 
         if (false === $post) {
             Message::addErrorMessage(current($frm->getValidationErrors()));
@@ -547,6 +564,7 @@ class UsersController extends AdminBaseController
         }
 
         $post['ua_state_id'] = $ua_state_id;
+        $post['ua_city_id'] = $ua_city_id;
 
         $user_id = FatUtility::int($post['ua_user_id']);
         $ua_id = FatUtility::int($post['ua_id']);
@@ -1916,7 +1934,11 @@ class UsersController extends AdminBaseController
         $fld->requirement->setRequired(true);
 
         $frm->addSelectBox(Labels::getLabel('LBL_State', $this->adminLangId), 'user_state_id', array())->requirement->setRequired(true);
-        $frm->addTextBox(Labels::getLabel('LBL_City', $this->adminLangId), 'user_city');
+		
+		$citySelectFld = $frm->addSelectBox(Labels::getLabel('LBL_City', $this->adminLangId), 'user_city_id', array(), '', array(), Labels::getLabel('LBL_City', $this->adminLangId));
+		$citySelectFld->requirement->setRequired(true);
+		
+        $frm->addTextBox(Labels::getLabel('LBL_City_Name', $this->adminLangId), 'user_city');
 
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $this->adminLangId));
         return $frm;
@@ -2038,7 +2060,7 @@ class UsersController extends AdminBaseController
         $frm->addRequiredField(Labels::getLabel('LBL_Name', $this->adminLangId), 'ua_name');
         $frm->addRequiredField(Labels::getLabel('LBL_Address_Line1', $this->adminLangId), 'ua_address1');
         $frm->addTextBox(Labels::getLabel('LBL_Address_Line2', $this->adminLangId), 'ua_address2');
-        $frm->addRequiredField(Labels::getLabel('LBL_City', $this->adminLangId), 'ua_city');
+        //$frm->addRequiredField(Labels::getLabel('LBL_City', $this->adminLangId), 'ua_city');
 
         $countryObj = new Countries();
         $countriesArr = $countryObj->getCountriesArr($langId);
@@ -2046,6 +2068,12 @@ class UsersController extends AdminBaseController
         $fld->requirement->setRequired(true);
 
         $frm->addSelectBox(Labels::getLabel('LBL_State', $this->adminLangId), 'ua_state_id', array())->requirement->setRequired(true);
+		
+		$citySelectFld = $frm->addSelectBox(Labels::getLabel('LBL_City', $this->adminLangId), 'ua_city_id', array(), '', array(), Labels::getLabel('LBL_City', $this->adminLangId));
+		$citySelectFld->requirement->setRequired(true);
+		
+		$cityFld = $frm->addTextBox(Labels::getLabel('LBL_City_Name', $this->adminLangId), 'ua_city');
+		
         $frm->addTextBox(Labels::getLabel('LBL_Postal_Code', $this->adminLangId), 'ua_zip');
         $phnFld = $frm->addTextBox(Labels::getLabel('LBL_Phone', $this->adminLangId), 'ua_phone', '', array('class'=>'phone-js ltr-right', 'placeholder' => ValidateElement::PHONE_NO_FORMAT, 'maxlength' => ValidateElement::PHONE_NO_LENGTH));
         $phnFld->requirements()->setRegularExpressionToValidate(ValidateElement::PHONE_REGEX);

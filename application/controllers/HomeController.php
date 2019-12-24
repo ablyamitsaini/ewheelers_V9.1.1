@@ -12,8 +12,8 @@ class HomeController extends MyAppController
         $sponsoredProds = $this->getSponsoredProducts($productSrchObj);
         $slides = $this->getSlides();
         $banners = $this->getBanners();
-
-        $this->set('sponsoredProds', $sponsoredProds);
+		
+		$this->set('sponsoredProds', $sponsoredProds);
         $this->set('sponsoredShops', $sponsoredShops);
         $this->set('slides', $slides);
         $this->set('banners', $banners);
@@ -136,8 +136,7 @@ class HomeController extends MyAppController
 
     private function getProductSearchObj($loggedUserId)
     {
-        $loggedUserId = FatUtility::int($loggedUserId);
-
+		$loggedUserId = FatUtility::int($loggedUserId);
         $productSrchObj = new ProductSearch($this->siteLangId);
         $productSrchObj->joinProductToCategory();
         /* $productSrchObj->doNotCalculateRecords();
@@ -156,7 +155,7 @@ class HomeController extends MyAppController
         }
 
         $productSrchObj->addCondition('selprod_deleted', '=', applicationConstants::NO);
-        $productSrchObj->addMultipleFields(array('product_id','selprod_id','IFNULL(product_name, product_identifier) as product_name','IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title','product_image_updated_on','special_price_found', 'splprice_display_list_price','splprice_display_dis_val','splprice_display_dis_type','theprice','selprod_price','selprod_stock','selprod_condition','prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','selprod_sold_count','IF(selprod_stock > 0, 1, 0) AS in_stock','selprod_test_drive_enable'));
+        $productSrchObj->addMultipleFields(array('product_id','selprod_id','IFNULL(product_name, product_identifier) as product_name','IFNULL(selprod_title  ,IFNULL(product_name, product_identifier)) as selprod_title','product_image_updated_on','special_price_found', 'splprice_display_list_price','splprice_display_dis_val','splprice_display_dis_type','theprice','selprod_price','selprod_stock','selprod_condition','prodcat_id','IFNULL(prodcat_name, prodcat_identifier) as prodcat_name','selprod_sold_count','IF(selprod_stock > 0, 1, 0) AS in_stock','selprod_test_drive_enable', 'IFNULL(sprodata_is_for_sell, 0) as is_sell', 'IFNULL(sprodata_is_for_rent, 0) as is_rent', 'IFNULL(sprodata_rental_price, 0)as rent_price', 'IFNULL(sprodata_rental_type, 0) as rental_type'));
         return $productSrchObj;
     }
 
@@ -251,7 +250,17 @@ class HomeController extends MyAppController
     {
         $post = FatApp::getPostedData();
 
-        $countryCode = $post['country'];
+        $_SESSION[SessionHelper::USER_lOCATION_SESSION] = [
+            'city' => $post['city'],
+            'state' => $post['state'],
+            //'region' => $post['region'],
+            'country' => $post['country'],
+            'latitude' => $post['latitude'],
+            'longitude' => $post['longitude'],
+            'country_code' => $post['country_code']
+        ];
+        
+        $countryCode = $post['country_code'];
         $this->updateSettingByCurrentLocation($countryCode);
 
         if (!$_SESSION['geo_location']) {
@@ -395,6 +404,7 @@ class HomeController extends MyAppController
                     $productSrchTempObj->addOrder('theprice', $orderBy);
                     $productSrchTempObj->joinSellers();
                     $productSrchTempObj->joinSellerSubscription($langId);
+                    $productSrchTempObj->addProductTypeCondition();
                     $productSrchTempObj->addGroupBy('selprod_id');
                     $productSrchTempObj->setPageSize($collection['collection_primary_records']);
                     $rs = $productSrchTempObj->getResultSet();

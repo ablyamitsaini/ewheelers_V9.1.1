@@ -19,8 +19,21 @@
     $stateFld = $addressFrm->getField('ua_state_id');
     $stateFld->developerTags['col'] = 6;
     $stateFld->setFieldTagAttribute('id','ua_state_id');
+    $stateFld->setFieldTagAttribute('onChange','getCountryStatesCities(\'#ua_country_id\', this.value, 0 ,\'#ua_city_id\')');
 
-    $zipFld = $addressFrm->getField('ua_zip');
+	$cityFld = $addressFrm->getField('ua_city_id');
+    $cityFld->developerTags['col'] = 12;
+    $cityFld->setFieldTagAttribute('id','ua_city_id');
+    
+	$cityNameFld = $addressFrm->getField('ua_city');
+    $cityNameFld->developerTags['col'] = 12;
+    $cityNameFld->setFieldTagAttribute('id','ua_city');
+	$cityNameFld->setWrapperAttribute('class','user-cityname--js');
+	if ($cityId > -1) {
+		$cityNameFld->setWrapperAttribute('style','display:none;');
+	}
+    
+	$zipFld = $addressFrm->getField('ua_zip');
     $zipFld->developerTags['col'] = 6;
 
     $phoneFld = $addressFrm->getField('ua_phone');
@@ -53,6 +66,7 @@
 </div>
 <script language="javascript">
     $(document).ready(function() {
-        getCountryStates($("#ua_country_id").val(), <?php echo $stateId ;?>, '#ua_state_id');
+        getCountryStates($("#ua_country_id").val(), <?php echo $stateId ;?>, '#ua_state_id', '#ua_city_id');
+        getCountryStatesCities("#ua_country_id", <?php echo $stateId ;?>, <?php echo $cityId ;?>, '#ua_city_id');
     });
 </script>

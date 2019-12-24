@@ -11,12 +11,26 @@ $this->includeTemplate('_partial/dashboardNavigation.php'); ?>
             <div class="cards">
                 <div class="cards-content p-4">
                     <div id="productInventory"> <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?> </div>
-                    <div class="cms mt-4">
-                        <?php if (!empty($pageData['epage_content'])) { ?>
-                            <h3 class="mb-4"><?php echo $pageData['epage_label']; ?></h3>
-                            <?php echo FatUtility::decodeHtmlEntities($pageData['epage_content']);
-                        } ?>
+					
+					<?php if(ALLOW_SALE > 0) { ?>
+                    <div class="cms mt-4 mb-4">
+					<?php if (!empty($pageData['epage_content'])) { ?>
+                        <h3 class="mb-4"><?php echo $pageData['epage_label']; ?></h3>
+                        <?php echo FatUtility::decodeHtmlEntities($pageData['epage_content']);
+                    } ?>
                     </div>
+					<?php } ?>
+					
+					
+					<div id="productRentalInventory"> <?php echo Labels::getLabel('LBL_Loading..', $siteLangId); ?> </div>
+					<?php if(ALLOW_RENT > 0) { ?>
+					<div class="cms mt-4">
+					<?php if (!empty($pageRentalData['epage_content'])) { ?>
+                        <h3 class="mb-4"><?php echo $pageRentalData['epage_label']; ?></h3>
+                        <?php echo FatUtility::decodeHtmlEntities($pageRentalData['epage_content']);
+                    } ?>
+                    </div>
+					<?php } ?>	
                 </div>
             </div>
         </div>

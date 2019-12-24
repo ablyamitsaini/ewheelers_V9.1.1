@@ -151,10 +151,11 @@ class ShopsController extends AdminBaseController
     {
         $this->objPrivilege->canEditShops();
 
-        $shop_id=FatUtility::int($shop_id);
+        $shop_id = FatUtility::int($shop_id);
         $frm = $this->getForm($shop_id);
 
         $stateId = 0;
+        $cityId = 0;
         if (0 < $shop_id) {
             $data = Shop::getAttributesById($shop_id);
             if ($data === false) {
@@ -174,11 +175,13 @@ class ShopsController extends AdminBaseController
             /* ] */
             $frm->fill($data);
             $stateId = $data['shop_state_id'];
+            $cityId = $data['shop_city_id'];
         }
 
         $this->set('languages', Language::getAllNames());
         $this->set('shop_id', $shop_id);
         $this->set('stateId', $stateId);
+        $this->set('cityId', $cityId);
         $this->set('frmShop', $frm);
         $this->_template->render(false, false);
     }
@@ -186,13 +189,13 @@ class ShopsController extends AdminBaseController
     public function setup()
     {
         $this->objPrivilege->canEditShops();
-
         $frm = $this->getForm();
-
         $post = FatApp::getPostedData();
         $shop_state = FatUtility::int($post['shop_state']);
+        $shop_city_id = FatUtility::int($post['shop_city_id']);
         $post = $frm->getFormDataFromArray($post);
         $post['shop_state_id'] = $shop_state;
+        $post['shop_city_id'] = $shop_city_id;
 
         if (false === $post) {
             Message::addErrorMessage(current($frm->getValidationErrors()));
@@ -253,8 +256,14 @@ class ShopsController extends AdminBaseController
         if ($shop_id == 0 || $lang_id == 0) {
             FatUtility::dieWithError($this->str_invalid_request);
         }
+		
+		$data = Shop::getAttributesById($shop_id);
+		$cityId = 0;
+		if (!empty($data)) {
+			$cityId = $data['shop_city_id'];
+		}
 
-        $shopLangFrm = $this->getLangForm($shop_id, $lang_id);
+        $shopLangFrm = $this->getLangForm($shop_id, $lang_id, $cityId);
         $langData = Shop::getAttributesByLangId($lang_id, $shop_id);
 
         if ($langData) {
@@ -282,25 +291,36 @@ class ShopsController extends AdminBaseController
             Message::addErrorMessage($this->str_invalid_request_id);
             FatUtility::dieWithError(Message::getHtml());
         }
+		
+		$shopData = Shop::getAttributesById($shop_id);
+		$cityId = 0;
+		if (!empty($shopData)) {
+			$cityId = $shopData['shop_city_id'];
+		}
 
         $frm = $this->getLangForm($shop_id, $lang_id);
         $post = $frm->getFormDataFromArray(FatApp::getPostedData());
         unset($post['shop_id']);
         unset($post['lang_id']);
         $data = array(
-        'shoplang_lang_id'=>$lang_id,
-        'shoplang_shop_id'=>$shop_id,
-        'shop_name'=>$post['shop_name'],
-        'shop_city'=>$post['shop_city'],
-        'shop_contact_person'=>$post['shop_contact_person'],
-        'shop_description'=>$post['shop_description'],
-        'shop_payment_policy'=>$post['shop_payment_policy'],
-        'shop_delivery_policy'=>$post['shop_delivery_policy'],
-        'shop_refund_policy'=>$post['shop_refund_policy'],
-        'shop_additional_info'=>$post['shop_additional_info'],
-        'shop_seller_info'=>$post['shop_seller_info'],
+			'shoplang_lang_id'=>$lang_id,
+			'shoplang_shop_id'=>$shop_id,
+			'shop_name'=>$post['shop_name'],
+			//'shop_city'=>$post['shop_city'],
+			'shop_contact_person'=>$post['shop_contact_person'],
+			'shop_description'=>$post['shop_description'],
+			'shop_payment_policy'=>$post['shop_payment_policy'],
+			'shop_delivery_policy'=>$post['shop_delivery_policy'],
+			'shop_refund_policy'=>$post['shop_refund_policy'],
+			'shop_additional_info'=>$post['shop_additional_info'],
+			'shop_seller_info'=>$post['shop_seller_info'],
         );
-
+		if ($cityId == -1 ) {
+			$data['shop_city'] = $post['shop_city'];
+		} else {
+			$data['shop_city'] = '';
+		}
+		
         $shopObj = new Shop($shop_id);
         if (!$shopObj->updateLangData($lang_id, $data)) {
             Message::addErrorMessage($shopObj->getError());
@@ -530,6 +550,8 @@ class ShopsController extends AdminBaseController
         $fld->requirement->setRequired(true);
 
         $frm->addSelectBox(Labels::getLabel('LBL_State', $this->adminLangId), 'shop_state', array())->requirement->setRequired(true);
+		
+		$frm->addSelectBox(Labels::getLabel('LBL_City', $this->adminLangId), 'shop_city_id', array())->requirement->setRequired(true);
 
         $activeInactiveArr = applicationConstants::getActiveInactiveArr($this->adminLangId);
         $frm->addSelectBox(Labels::getLabel('LBL_Status', $this->adminLangId), 'shop_active', $activeInactiveArr, '', array(), '');
@@ -544,13 +566,17 @@ class ShopsController extends AdminBaseController
         return $frm;
     }
 
-    private function getLangForm($shop_id = 0, $lang_id = 0)
+    private function getLangForm($shop_id = 0, $lang_id = 0, $cityId = 0)
     {
         $frm = new Form('frmShopLang');
         $frm->addHiddenField('', 'shop_id', $shop_id);
         $frm->addHiddenField('', 'lang_id', $lang_id);
         $frm->addRequiredField(Labels::getLabel('LBL_Shop_Name', $this->adminLangId), 'shop_name');
-        $frm->addTextBox(Labels::getLabel('LBL_Shop_City', $this->adminLangId), 'shop_city');
+		if ($cityId == -1) {
+			$frm->addTextBox(Labels::getLabel('LBL_Shop_City', $this->adminLangId), 'shop_city');
+		} else {
+			$frm->addHiddenField('', 'shop_city', '');
+		}
         $frm->addTextBox(Labels::getLabel('LBL_Contact_person', $this->adminLangId), 'shop_contact_person');
         $frm->addTextarea(Labels::getLabel('LBL_Description', $this->adminLangId), 'shop_description');
         $frm->addTextarea(Labels::getLabel('LBL_Payment_Policy', $this->adminLangId), 'shop_payment_policy');

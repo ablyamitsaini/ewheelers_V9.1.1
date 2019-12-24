@@ -42,6 +42,9 @@ class Product extends MyAppModel
 
     const PRODUCT_TYPE_PHYSICAL = 1;
     const PRODUCT_TYPE_DIGITAL = 2;
+    
+    const PRODUCT_FOR_SALE = 1;
+    const PRODUCT_FOR_RENT = 2;
 
     const APPROVED = 1;
     const UNAPPROVED = 0;
@@ -1234,6 +1237,9 @@ class Product extends MyAppModel
 
         //$srch->setDefinedCriteria($join_price, 0, $criteria, true);
         $srch->joinForPrice('', $criteria, true);
+		//echo $srch->getQuery();
+		//die();
+		
         $srch->unsetDefaultLangForJoins();
         $srch->joinSellers();
         $srch->joinShops($langId, true, true, $shop_id);
@@ -1258,7 +1264,7 @@ class Product extends MyAppModel
             'selprod_id', 'selprod_user_id',  'selprod_code', 'selprod_stock', 'selprod_condition', 'selprod_price', 'COALESCE(selprod_title  ,COALESCE(product_name, product_identifier)) as selprod_title',
             'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type', 'splprice_start_date', 'splprice_end_date',
             'brand_id', 'COALESCE(brand_name, brand_identifier) as brand_name', 'user_name', 'IF(selprod_stock > 0, 1, 0) AS in_stock',
-            'selprod_sold_count','selprod_return_policy',/* 'ifnull(sq_sprating.totReviews,0) totReviews','IF(ufp_id > 0, 1, 0) as isfavorite', */'selprod_min_order_qty','selprod_test_drive_enable'
+            'selprod_sold_count','selprod_return_policy',/* 'ifnull(sq_sprating.totReviews,0) totReviews','IF(ufp_id > 0, 1, 0) as isfavorite', */'selprod_min_order_qty','selprod_test_drive_enable', 'IFNULL(sprodata_is_for_sell, 0) as is_sell', 'IFNULL(sprodata_is_for_rent, 0) as is_rent', 'IFNULL(sprodata_rental_price, 0)as rent_price', 'IFNULL(sprodata_rental_type, 0) as rental_type'
             )
         );
 

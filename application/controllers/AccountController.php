@@ -922,6 +922,7 @@ class AccountController extends LoggedUserController
 
         $frm->fill($data);
         $stateId = $data['user_state_id'];
+        $cityId = $data['user_city_id'];
 
         $mode = 'Add';
         $file_row = AttachedFile::getAttachment(AttachedFile::FILETYPE_USER_PROFILE_IMAGE, $userId);
@@ -934,6 +935,7 @@ class AccountController extends LoggedUserController
         $this->set('imgFrm', $imgFrm);
         $this->set('mode', $mode);
         $this->set('stateId', $stateId);
+        $this->set('cityId', $cityId);
         $this->set('siteLangId', $this->siteLangId);
         $this->_template->render(false, false);
     }
@@ -1033,7 +1035,12 @@ class AccountController extends LoggedUserController
 
         /* CommonHelper::printArray($post);  */
         $user_state_id = FatUtility::int($post['user_state_id']);
+        $user_city_id = FatUtility::int($post['user_city_id']);
         $post = $frm->getFormDataFromArray($post);
+		
+		if($user_city_id > -1) {
+			$post['user_city'] = '';
+		}
 
         if (false === $post) {
             $message = Labels::getLabel(current($frm->getValidationErrors()), $this->siteLangId);
@@ -1046,6 +1053,7 @@ class AccountController extends LoggedUserController
         }
 
         $post['user_state_id'] = $user_state_id;
+        $post['user_city_id'] = $user_city_id;
 
         if (isset($post['user_id'])) {
             unset($post['user_id']);
@@ -2619,7 +2627,11 @@ class AccountController extends LoggedUserController
         $fld->requirement->setRequired(true);
 
         $frm->addSelectBox(Labels::getLabel('LBL_State', $this->siteLangId), 'user_state_id', array(), '', array(), Labels::getLabel('LBL_Select', $this->siteLangId))->requirement->setRequired(true);
-        $frm->addTextBox(Labels::getLabel('LBL_City', $this->siteLangId), 'user_city');
+        //$frm->addTextBox(Labels::getLabel('LBL_City', $this->siteLangId), 'user_city');
+
+		$citySelectFld = $frm->addSelectBox(Labels::getLabel('LBL_City', $this->siteLangId), 'user_city_id', array(), '', array(), Labels::getLabel('LBL_City', $this->siteLangId));
+		$citySelectFld->requirement->setRequired(true);
+		$cityFld = $frm->addTextBox(Labels::getLabel('LBL_City_Name', $this->siteLangId), 'user_city');
 
         if (User::isAffiliate()) {
             $zipFld = $frm->addRequiredField(Labels::getLabel('LBL_Postalcode', $this->siteLangId), 'user_zip');
@@ -3165,6 +3177,7 @@ class AccountController extends LoggedUserController
         $addressFrm = $this->getUserAddressForm($this->siteLangId);
 
         $stateId = 0;
+		$cityId = 0;
 
         if ($ua_id > 0) {
             $data =  UserAddress::getUserAddresses(UserAuthentication::getLoggedUserId(), $this->siteLangId, 0, $ua_id);
@@ -3173,11 +3186,13 @@ class AccountController extends LoggedUserController
                 FatUtility::dieJsonError(Message::getHtml());
             }
             $stateId =  $data['ua_state_id'];
+            $cityId =  $data['ua_city_id'];
             $addressFrm->fill($data);
         }
 
         $this->set('ua_id', $ua_id);
         $this->set('stateId', $stateId);
+        $this->set('cityId', $cityId);
         $this->set('addressFrm', $addressFrm);
         $this->_template->render(false, false);
     }

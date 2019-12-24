@@ -4,6 +4,7 @@ class SellerController extends SellerBaseController
     // use Attributes;
     use Options;
     use CustomProducts;
+	use SellerRentalProducts; //== For Rental Product Settings
     use SellerProducts;
     use SellerCollections;
     use CustomCatalogProducts;
@@ -183,6 +184,7 @@ class SellerController extends SellerBaseController
         $srch->addCountsOfOrderedProducts();
         $srch->joinTable('(' . $qryOtherCharges . ')', 'LEFT OUTER JOIN', 'op.op_id = opcc.opcharge_op_id', 'opcc');
         $srch->addCondition('op_selprod_user_id', '=', $userId);
+		$srch->addCondition('opd_sold_or_rented', '=', 1);
         $srch->addOrder("op_id", "DESC");
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
@@ -258,7 +260,15 @@ class SellerController extends SellerBaseController
         $currencySymbol = ($currencyData['currency_symbol_left'] != '') ? $currencyData['currency_symbol_left'] : $currencyData['currency_symbol_right'];
         $frm = new Form('frmOrderSrch');
         $frm->addTextBox('', 'keyword', '', array('placeholder' => Labels::getLabel('LBL_Keyword', $langId) ));
-        $frm->addSelectBox('', 'status', Orders::getOrderProductStatusArr($langId, unserialize(FatApp::getConfig("CONF_VENDOR_ORDER_STATUS"))), '', array(), Labels::getLabel('LBL_Status', $langId));
+		
+		$rentalReturnStatus = FatApp::getConfig("CONF_DEFAULT_RENTAL_RETURNED_ORDER_STATUS");
+		$vendorOrderStatus = unserialize(FatApp::getConfig("CONF_VENDOR_ORDER_STATUS"));
+		
+		if(($key = array_search($rentalReturnStatus,$vendorOrderStatus)) !== false) {
+			unset($vendorOrderStatus[$key]);
+		}
+		
+        $frm->addSelectBox('', 'status', Orders::getOrderProductStatusArr($langId, $vendorOrderStatus), '', array(), Labels::getLabel('LBL_Status', $langId));
         $frm->addTextBox('', 'price_from', '', array('placeholder' => Labels::getLabel('LBL_Price_Min', $langId).' ['.$currencySymbol.']' ));
         $frm->addTextBox('', 'price_to', '', array('placeholder' => Labels::getLabel('LBL_Price_Max', $langId).' ['.$currencySymbol.']' ));
         $frm->addDateField('', 'date_from', '', array('placeholder' => Labels::getLabel('LBL_Date_From', $langId) ,'readonly'=>'readonly' ));
@@ -1456,10 +1466,12 @@ class SellerController extends SellerBaseController
 
         $shop_id = 0;
         $stateId = 0;
+        $cityId = 0;
 
         if (!false == $shopDetails) {
             $shop_id =  $shopDetails['shop_id'];
             $stateId = $shopDetails['shop_state_id'];
+            $cityId = $shopDetails['shop_city_id'];
         }
 
         $shopLayoutTemplateId =  $shopDetails['shop_ltemplate_id'];
@@ -1487,6 +1499,7 @@ class SellerController extends SellerBaseController
 
         $this->set('shopFrm', $shopFrm);
         $this->set('stateId', $stateId);
+        $this->set('cityId', $cityId);
         $this->set('shop_id', $shop_id);
         $this->set('siteLangId', $this->siteLangId);
         $this->set('language', Language::getAllNames());
@@ -1815,6 +1828,7 @@ class SellerController extends SellerBaseController
         }
         $post = FatApp::getPostedData();
         $state_id = FatUtility::int($post['shop_state']);
+        $city_id = FatUtility::int($post['shop_city_id']);
 
         $frm =  $this->getShopInfoForm();
         $post = $frm->getFormDataFromArray($post);
@@ -1829,6 +1843,7 @@ class SellerController extends SellerBaseController
 
         $post['shop_user_id'] = $userId;
         $post['shop_state_id'] = $state_id;
+        $post['shop_city_id'] = $city_id;
 
 
         if ($shop_id > 0) {
@@ -1939,7 +1954,7 @@ class SellerController extends SellerBaseController
         'shoplang_shop_id' => $shop_id,
         'shoplang_lang_id' => $lang_id,
         'shop_name' => $post['shop_name'],
-        'shop_city'=>$post['shop_city'],
+        //'shop_city'=>$post['shop_city'],
         'shop_contact_person'=>$post['shop_contact_person'],
         'shop_description'=>$post['shop_description'],
         'shop_payment_policy'=>$post['shop_payment_policy'],
@@ -1948,6 +1963,10 @@ class SellerController extends SellerBaseController
         'shop_additional_info'=>$post['shop_additional_info'],
         'shop_seller_info'=>$post['shop_seller_info'],
         );
+		
+		if(isset($post['shop_city'])) {
+			$data['shop_city'] = $post['shop_city'];
+		}
 
         if (!$shopObj->updateLangData($lang_id, $data)) {
             Message::addErrorMessage($shopObj->getError());
@@ -2945,20 +2964,30 @@ class SellerController extends SellerBaseController
             FatApp::redirectUser(CommonHelper::generateUrl('Seller', 'shop'));
         }
         $extraPage = new Extrapage();
-        $pageData = $extraPage->getContentByPageType(Extrapage::PRODUCT_INVENTORY_UPDATE_INSTRUCTIONS, $this->siteLangId);
-
+		$pageData = array();
+		$pageRentalData = array();
+		if (ALLOW_SALE > 0) {
+			$pageData = $extraPage->getContentByPageType(Extrapage::PRODUCT_INVENTORY_UPDATE_INSTRUCTIONS, $this->siteLangId);
+		}
+        if (ALLOW_RENT > 0) {
+			$pageRentalData = $extraPage->getContentByPageType(Extrapage::PRODUCT_RENTAL_INVENTORY_UPDATE_INSTRUCTIONS, $this->siteLangId);
+		}
         $this->set('pageData', $pageData);
+        $this->set('pageRentalData', $pageRentalData);
         $this->_template->render(true, true);
     }
 
     public function InventoryUpdateForm()
     {
-        $frm = $this->getInventoryUpdateForm($this->siteLangId);
-
-        $this->set('frm', $frm);
-        $this->_template->render(false, false);
+		if (ALLOW_SALE > 0) {
+			$frm = $this->getInventoryUpdateForm($this->siteLangId);
+			$this->set('frm', $frm);
+			$this->_template->render(false, false);
+		} else {
+			return;
+		}
     }
-
+	
     public function updateInventory()
     {
         $frm = $this->getInventoryUpdateForm($this->siteLangId);
@@ -3080,6 +3109,139 @@ class SellerController extends SellerBaseController
         exit;
     }
 
+	/* Rental Inventory Update [  */
+	public function rentalInventoryUpdateForm()
+    {
+		if (ALLOW_RENT > 0) {
+			$frm = $this->getInventoryUpdateForm($this->siteLangId);
+			$this->set('frm', $frm);
+			$this->_template->render(false, false);
+		} else {
+			return;
+		}
+    }
+	
+	public function exportRentalInventory()
+    {
+        $srch = SellerProduct::getSearchObject($this->siteLangId);
+		$srch->joinTable(SellerProduct::DB_TBL_SELLER_PROD_DATA, 'LEFT OUTER JOIN', 'spd.sprodata_selprod_id = sp.selprod_id', 'spd');
+        $srch->joinTable(Product::DB_TBL, 'INNER JOIN', 'p.product_id = sp.selprod_product_id', 'p');
+        $srch->joinTable(Product::DB_LANG_TBL, 'LEFT OUTER JOIN', 'p.product_id = p_l.productlang_product_id AND p_l.productlang_lang_id = '.$this->siteLangId, 'p_l');
+        $srch->addCondition('selprod_user_id', '=', UserAuthentication::getLoggedUserId());
+        $srch->addCondition('selprod_deleted', '=', applicationConstants::NO);
+        $srch->addCondition('selprod_active', '=', applicationConstants::ACTIVE);
+        $srch->addOrder('product_name');
+        $srch->addOrder('selprod_active', 'DESC');
+        $srch->addMultipleFields(array('selprod_id', 'selprod_sku', 'IFNULL(product_name, product_identifier) as product_name', 'selprod_title', 'sprodata_rental_price', 'sprodata_rental_security', 'sprodata_rental_stock', 'sprodata_rental_buffer_days' ));
+        $srch->doNotCalculateRecords();
+        $srch->doNotLimitRecords();
+        $rs = $srch->getResultSet();
+        $inventoryData  = FatApp::getDb()->fetchAll($rs, 'selprod_id');
+		
+		$sheetData = array();
+        /* $arr = array('selprod_id','selprod_sku','selprod_title', 'selprod_price','selprod_stock'); */
+        $arr = $this->getRentalInventorySheetColoum($this->siteLangId);
+        array_push($sheetData, $arr);
+
+        foreach ($inventoryData as $key => $val) {
+            $title = $val['product_name'];
+            if ($val['selprod_title'] != "") {
+                $title .= "-[" . $val['selprod_title'] . "]";
+            }
+            $arr = array($val['selprod_id'], $val['selprod_sku'], $title, $val['sprodata_rental_price'], $val['sprodata_rental_security'], $val['sprodata_rental_stock'], $val['sprodata_rental_buffer_days']);
+            array_push($sheetData, $arr);
+        }
+
+        CommonHelper::convertToCsv($sheetData, str_replace(' ', '_', Labels::getLabel('LBL_Rental_Inventory_Report', $this->siteLangId)).'_'.date("Y-m-d").'.csv', ',');
+        exit;
+    }
+	
+	public function updateRentalInventory()
+    {
+        $frm = $this->getInventoryUpdateForm($this->siteLangId);
+        $post = FatApp::getPostedData();
+        $loggedUserId = UserAuthentication::getLoggedUserId();
+        $lang_id = FatApp::getPostedData('lang_id', FatUtility::VAR_INT, 0);
+        if (!isset($_FILES['file'])) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_File_Upload', $this->siteLangId));
+        }
+
+        if (!is_uploaded_file($_FILES['file']['tmp_name'])) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Please_select_a_file', $this->siteLangId));
+        }
+
+        $uploadedFile = $_FILES['file']['tmp_name'];
+        $fileHandle = fopen($uploadedFile, 'r');
+		
+        if ($fileHandle == false) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_File_Upload', $this->siteLangId));
+        }
+
+        /* validate file extension [ */
+        $mimes = array('application/vnd.ms-excel','text/plain','text/csv','text/tsv','application/octet-stream');
+        if (!in_array($_FILES['file']['type'], $mimes)) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_File_Upload', $this->siteLangId));
+        }
+        /* ] */
+
+        $firstLine = fgetcsv($fileHandle);
+        $defaultColArr = $this->getRentalInventorySheetColoum($this->siteLangId);
+        if ($firstLine != $defaultColArr) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Invalid_Coloum_CSV_File', $this->siteLangId));
+        }
+        $processFile = false;
+        $db = FatApp::getDb();
+
+        while (($dataArray = fgetcsv($fileHandle)) !== false) {
+			$selprod_id = FatUtility::int($dataArray[0]);
+            $selprod_sku = $dataArray[1];
+            $selprod_rental_price = FatUtility::float($dataArray[3]);
+            $selprod_rental_security = FatUtility::float($dataArray[4]);
+            $selprod_rental_stock = FatUtility::int($dataArray[5]);
+            $selprod_buffer_days = FatUtility::int($dataArray[6]);
+            $productId = SellerProduct::getAttributesById($selprod_id, 'selprod_product_id', false);
+            $assignValues = array();
+            if ($selprod_rental_price != '') {
+                $assignValues['sprodata_rental_price'] = $selprod_rental_price;
+            }
+            if ($selprod_rental_stock < 0 || $selprod_rental_price < 0 ) {
+                continue;
+            }
+			
+			$assignValues['sprodata_rental_stock'] = $selprod_rental_stock;
+			$assignValues['sprodata_rental_buffer_days'] = $selprod_buffer_days;
+			
+			if ($selprod_id > 0) {
+                $whereSmt = array('smt' => 'sprodata_selprod_id = ?', 'vals' => array($selprod_id));
+                $db->updateFromArray(ProductRental::DB_TBL, $assignValues, $whereSmt);
+            }
+            $processFile = true;
+        }
+
+        if (!$processFile) {
+            FatUtility::dieJsonError(Labels::getLabel('MSG_Uploaded_file_seems_to_be_empty,_please_upload_a_valid_file_or_records_skipped', $this->siteLangId));
+        }
+
+		FatUtility::dieJsonSuccess(Labels::getLabel('MSG_Inventory_has_been_updated_successfully', $this->siteLangId));
+    }
+	
+	private function getRentalInventorySheetColoum($langId)
+    {
+        $arr = array(
+			Labels::getLabel("LBL_Seller_Product_Id", $langId),
+			Labels::getLabel("LBL_SKU", $langId),
+			Labels::getLabel("LBL_Product", $langId),
+			Labels::getLabel('LBL_Rental_Price', $langId),
+			Labels::getLabel("LBL_Rental_Security", $langId),
+			Labels::getLabel("LBL_Rental_Stock/Quantity", $langId),
+			Labels::getLabel("LBL_Rental_Buffer_Days", $langId),
+        );
+        return $arr;
+    }
+	
+	/* Rental Inventory Update ]  */
+	
+	
     private function getInventorySheetColoum($langId)
     {
         $arr = array(
@@ -3142,10 +3304,9 @@ class SellerController extends SellerBaseController
 
     private function getInventoryUpdateForm($langId = 0)
     {
-        $frm = new Form('frmInventoryUpdate');
+        $frm = new Form();
         $frm->addHiddenField('', 'lang_id', $langId);
-
-        $fld = $frm->addButton('', 'csvfile', Labels::getLabel('Lbl_Upload_Csv_File', $this->siteLangId), array('class'=>'csvFile-Js','id'=>'csvFile-Js'));
+        $fld = $frm->addButton('', 'csvfile', Labels::getLabel('Lbl_Upload_Csv_File', $this->siteLangId), array());
         return $frm;
     }
 
@@ -3200,7 +3361,10 @@ class SellerController extends SellerBaseController
         $fld->requirement->setRequired(true);
 
         $frm->addSelectBox(Labels::getLabel('Lbl_State', $this->siteLangId), 'shop_state', array(), '', array(), Labels::getLabel('Lbl_Select', $this->siteLangId))->requirement->setRequired(true);
-
+		
+		$cithSelectFld = $frm->addSelectBox(Labels::getLabel('LBL_City', $this->siteLangId), 'shop_city_id', array(), '', array(), Labels::getLabel('LBL_City', $this->siteLangId));
+		$cithSelectFld->requirement->setRequired(true);
+        
         $onOffArr = applicationConstants::getOnOffArr($this->siteLangId);
 
         $frm->addSelectBox(Labels::getLabel('Lbl_Display_Status', $this->siteLangId), 'shop_supplier_display_status', $onOffArr, '', array(), '');
@@ -3223,6 +3387,14 @@ class SellerController extends SellerBaseController
         <div><img src="'.CommonHelper::generateUrl('Image','shopBanner',array($shop_id, $this->siteLangId, 'THUMB')).'"></div>';
         } */
 
+        $frm->addHiddenField('', 'shop_latitude');
+        
+        $frm->addHiddenField('', 'shop_longitude');
+        
+        $frm->addButton('', 'btn_position', Labels::getLabel('M_GET_POSITION', $this->siteLangId));
+        
+        $frm->addHtml('', 'map_html', '<div class="map-wrap"><div id="shop_map" style="width:100%;height:500px;"></div></div>');
+        
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Save_Changes', $this->siteLangId));
         return $frm;
     }
@@ -3276,11 +3448,18 @@ class SellerController extends SellerBaseController
 
     private function getShopLangInfoForm($shop_id =0, $lang_id = 0)
     {
-        $frm = new Form('frmShopLang');
+        $userId = UserAuthentication::getLoggedUserId();
+        $shopDetails = Shop::getAttributesByUserId($userId, null, false);
+		$city_id = $shopDetails['shop_city_id'];
+		
+		$frm = new Form('frmShopLang');
         $frm->addHiddenField('', 'shop_id', $shop_id);
         $frm->addHiddenField('', 'lang_id', $lang_id);
         $frm->addRequiredField(Labels::getLabel('LbL_Shop_Name', $lang_id), 'shop_name');
-        $frm->addTextBox(Labels::getLabel('Lbl_Shop_City', $lang_id), 'shop_city');
+		
+		if($city_id < 0) {
+			$frm->addTextBox(Labels::getLabel('Lbl_Shop_City', $lang_id), 'shop_city');
+		}
         $frm->addTextBox(Labels::getLabel('Lbl_Contact_Person', $lang_id), 'shop_contact_person');
         $frm->addTextarea(Labels::getLabel('Lbl_Description', $lang_id), 'shop_description');
         $frm->addTextarea(Labels::getLabel('Lbl_Payment_Policy', $lang_id), 'shop_payment_policy');
@@ -3858,7 +4037,39 @@ class SellerController extends SellerBaseController
                 }
             }
         }
+		/* [ Rental and sale options ] */
+		if (ALLOW_SALE &&  ALLOW_RENT) {
+			$allowSale = $frm->addCheckBox(Labels::getLabel('LBL_For_Sale', $this->siteLangId), 'sprodata_is_for_sell', 1, array(), false, 0);
+				
+			$allowSaleUnReqFld = new FormFieldRequirement('sprodata_is_for_sell', Labels::getLabel('LBL_For_Sale', $this->siteLangId));
+			$allowSaleUnReqFld->setRequired(false);
 
+			$allowSaleReqFld = new FormFieldRequirement('sprodata_is_for_sell', Labels::getLabel('LBL_For_Sale', $this->siteLangId));
+			$allowSaleReqFld->setRequired(true);
+			
+			$allowRent = $frm->addCheckBox(Labels::getLabel('LBL_For_Rent', $this->siteLangId), 'sprodata_is_for_rent', 1, array(), false, 0);
+		
+			$allowRentUnReqFld = new FormFieldRequirement('sprodata_is_for_rent', Labels::getLabel('LBL_For_Rent', $this->siteLangId));
+			$allowRentUnReqFld->setRequired(false);
+
+			$allowRentReqFld = new FormFieldRequirement('sprodata_is_for_rent', Labels::getLabel('LBL_For_Rent', $this->siteLangId));
+			$allowRentReqFld->setRequired(true);
+		
+			$allowRent->requirements()->addOnChangerequirementUpdate(1, 'eq', 'sprodata_is_for_sell', $allowSaleUnReqFld);
+			$allowRent->requirements()->addOnChangerequirementUpdate(0, 'eq', 'sprodata_is_for_sell', $allowSaleReqFld);
+		
+			$allowSale->requirements()->addOnChangerequirementUpdate(1, 'eq', 'sprodata_is_for_rent', $allowRentUnReqFld);
+			$allowSale->requirements()->addOnChangerequirementUpdate(0, 'eq', 'sprodata_is_for_rent', $allowRentReqFld);
+		} elseif(ALLOW_RENT) {
+			$allowRent = $frm->addCheckBox(Labels::getLabel('LBL_For_Rent', $this->siteLangId), 'sprodata_is_for_rent', 1, array(), false, 0);
+			$allowRent->requirements()->setRequired();
+		} else {
+			$allowSale = $frm->addCheckBox(Labels::getLabel('LBL_For_Sale', $this->siteLangId), 'sprodata_is_for_sell', 1, array(), false, 0);
+			$allowSale->requirements()->setRequired();
+		}
+		/* [ Rental and sale options ] */
+		
+		
         $frm->addTextBox(Labels::getLabel('LBL_Url_Keyword', $this->siteLangId), 'selprod_url_keyword')->requirements()->setRequired();
 
         $costPrice = $frm->addFloatField(Labels::getLabel('LBL_Cost_Price', $this->siteLangId).' ['.CommonHelper::getCurrencySymbol(true).']', 'selprod_cost');
@@ -3998,16 +4209,16 @@ class SellerController extends SellerBaseController
     public function returnAddressForm()
     {
         $userId = UserAuthentication::getLoggedUserId();
-
         $frm = $this->getReturnAddressForm();
         $stateId = 0;
-
+        $cityId = 0;
         $userObj = new User($userId);
         $data = $userObj->getUserReturnAddress();
 
         if ($data != false) {
             $frm->fill($data);
             $stateId = $data['ura_state_id'];
+            $cityId = $data['ura_city_id'];
         }
 
 
@@ -4029,6 +4240,7 @@ class SellerController extends SellerBaseController
         $this->set('siteLangId', $this->siteLangId);
         $this->set('frm', $frm);
         $this->set('stateId', $stateId);
+        $this->set('cityId', $cityId);
         $this->set('languages', Language::getAllNames());
         $this->_template->render(false, false);
     }
@@ -4039,6 +4251,7 @@ class SellerController extends SellerBaseController
 
         $post = FatApp::getPostedData();
         $ura_state_id = FatUtility::int($post['ura_state_id']);
+        $ura_city_id = FatUtility::int($post['ura_city_id']);
         $frm = $this->getReturnAddressForm();
         $post = $frm->getFormDataFromArray($post);
 
@@ -4046,7 +4259,11 @@ class SellerController extends SellerBaseController
             Message::addErrorMessage(current($frm->getValidationErrors()));
             FatUtility::dieJsonError(Message::getHtml());
         }
+		
         $post['ura_state_id'] = $ura_state_id;
+        $post['ura_city_id'] = $ura_city_id;
+		//echo "<pre>"; print_r($post); echo "</pre>"; exit;
+		
 
         $userObj = new User($userId);
         if (!$userObj->updateUserReturnAddress($post)) {
@@ -4070,16 +4287,20 @@ class SellerController extends SellerBaseController
             FatUtility::dieJsonError(Message::getHtml());
         }
 
-        $frm = $this->getReturnAddressLangForm($langId);
         $stateId = 0;
+        $cityId = 0;
 
         $userObj = new User($userId);
         $data = $userObj->getUserReturnAddress($langId);
-
+		if(!empty($data)) {
+			$stateId = $data['ura_state_id'];
+			$cityId = $data['ura_city_id'];
+		}
+		
+		$frm = $this->getReturnAddressLangForm($langId, $cityId);
         if ($data != false) {
             $frm->fill($data);
         }
-
 
         $shopDetails = Shop::getAttributesByUserId($userId, null, false);
 
@@ -4099,6 +4320,7 @@ class SellerController extends SellerBaseController
         $this->set('siteLangId', $this->siteLangId);
         $this->set('frm', $frm);
         $this->set('stateId', $stateId);
+        $this->set('cityId', $cityId);
         $this->set('formLangId', $langId);
         $this->set('formLayout', Language::getLayoutDirection($langId));
         $this->_template->render(false, false);
@@ -4163,6 +4385,10 @@ class SellerController extends SellerBaseController
         $fld->requirement->setRequired(true);
 
         $frm->addSelectBox(Labels::getLabel('LBL_State', $this->siteLangId), 'ura_state_id', array(), '', array(), Labels::getLabel('LBL_Select', $this->siteLangId))->requirement->setRequired(true);
+		
+		$frm->addSelectBox(Labels::getLabel('LBL_City', $this->siteLangId), 'ura_city_id', array(), '', array(), Labels::getLabel('LBL_Select', $this->siteLangId))->requirement->setRequired(true);
+		
+		
         /* $frm->addTextBox(Labels::getLabel('LBL_City',$this->siteLangId), 'ura_city');     */
         $zipFld = $frm->addTextBox(Labels::getLabel('LBL_Postalcode', $this->siteLangId), 'ura_zip');
         $zipFld->requirements()->setRegularExpressionToValidate(ValidateElement::ZIP_REGEX);
@@ -4178,18 +4404,22 @@ class SellerController extends SellerBaseController
         return $frm;
     }
 
-    private function getReturnAddressLangForm($formLangId)
+    private function getReturnAddressLangForm($formLangId, $cityId = 0)
     {
         $formLangId = FatUtility::int($formLangId);
 
         $frm = new Form('frmReturnAddressLang');
         $frm->addHiddenField('', 'lang_id', $formLangId);
         $frm->addTextBox(Labels::getLabel('LBL_Name', $formLangId), 'ura_name')->requirement->setRequired(true);
-        ;
-        $frm->addTextBox(Labels::getLabel('LBL_City', $formLangId), 'ura_city')->requirement->setRequired(true);
-        ;
+		
+		if ($cityId == -1) {
+			$frm->addTextBox(Labels::getLabel('LBL_City', $formLangId), 'ura_city')->requirement->setRequired(true);
+		} else {
+			$frm->addHiddenField('', 'ura_city', '');
+		}
+		
         $frm->addTextarea(Labels::getLabel('LBL_Address1', $formLangId), 'ura_address_line_1')->requirement->setRequired(true);
-        ;
+		
         $frm->addTextarea(Labels::getLabel('LBL_Address2', $formLangId), 'ura_address_line_2');
         $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_SAVE_CHANGES', $this->siteLangId));
         return $frm;

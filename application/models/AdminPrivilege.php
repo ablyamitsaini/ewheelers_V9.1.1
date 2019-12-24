@@ -106,6 +106,8 @@ class AdminPrivilege
 	const SECTION_TEST_DRIVE_REQUEST = 102;		   
     const SECTION_TEST_DRIVE_MANAGEMENT = 103;		
     const SECTION_TEST_DRIVE_REPORT = 104;
+    const SECTION_CITIES = 105;
+
 
     const PRIVILEGE_NONE = 0;
     const PRIVILEGE_READ = 1;
@@ -746,6 +748,16 @@ class AdminPrivilege
     {
         return $this->checkPermission($adminId, static::SECTION_STATES, static::PRIVILEGE_READ, $returnResult);
     }
+    
+    public function canViewCities( $adminId = 0, $returnResult = false )
+    {
+		return $this->checkPermission( $adminId, static::SECTION_CITIES, static::PRIVILEGE_READ, $returnResult);
+	}
+    
+    public function canEditCities( $adminId = 0, $returnResult = false )
+    {
+		return $this->checkPermission( $adminId, static::SECTION_CITIES, static::PRIVILEGE_WRITE, $returnResult);
+	}
 
     public function canEditStates($adminId = 0, $returnResult = false)
     {

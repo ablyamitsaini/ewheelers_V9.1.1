@@ -80,7 +80,7 @@ class CategoryController extends MyAppController
         $rs = $srch->getResultSet();
         $db = FatApp::getDb();
         $products = $db->fetchAll($rs);
-
+		
         $data = array(
             'frmProductSearch'=>$frm,
             'category'=>$category,

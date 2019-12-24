@@ -136,6 +136,32 @@ $action = strtolower($action);
                                 </svg>
                             </i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Manage_Social_Platforms', $siteLangId);?></span></a></div>
                 </li>
+
+                <li class="divider"></li>
+                <li class="menu__item">
+                    <div class="menu__item__inner"> <span class="menu-head"><?php echo Labels::getLabel('LBL_Settings', $siteLangId);?></span></div>
+                </li>
+                <li class="menu__item <?php echo ($controller == 'seller' && $action == 'taxcategories') ? 'is-active' : ''; ?>">
+                    <div class="menu__item__inner"><a title="<?php echo Labels::getLabel('LBL_Tax_Category', $siteLangId);?>" href="<?php echo CommonHelper::generateUrl('Seller', 'taxCategories'); ?>">
+                            <i class="icn shop"><svg class="svg">
+                                    <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-tax-category" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-tax-category"></use>
+                                </svg>
+                            </i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Tax_Category', $siteLangId);?></span></a></div>
+                </li>
+                <li class="menu__item <?php echo ($controller == 'seller' && $action == 'options') ? 'is-active' : ''; ?>">
+                    <div class="menu__item__inner"><a title="<?php echo Labels::getLabel('LBL_Options', $siteLangId);?>" href="<?php echo CommonHelper::generateUrl('Seller', 'options'); ?>">
+                            <i class="icn shop"><svg class="svg">
+                                    <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-options" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-options"></use>
+                                </svg>
+                            </i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Options', $siteLangId);?></span></a></div>
+                </li>
+                <li class="menu__item <?php echo ($controller == 'seller' && $action == 'socialplatforms') ? 'is-active' : ''; ?>">
+                    <div class="menu__item__inner"><a title="<?php echo Labels::getLabel('LBL_Manage_Social_Platforms', $siteLangId);?>" href="<?php echo CommonHelper::generateUrl('Seller', 'socialPlatforms'); ?>">
+                            <i class="icn shop"><svg class="svg">
+                                    <use xlink:href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-socialplatforms" href="<?php echo CONF_WEBROOT_URL; ?>images/retina/sprite.svg#dash-socialplatforms"></use>
+                                </svg>
+                            </i><span class="menu-item__title"><?php echo Labels::getLabel('LBL_Manage_Social_Platforms', $siteLangId);?></span></a></div>
+                </li>
                 <li class="divider"></li>
                 <?php if (FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE')) { ?>
                     <li class="menu__item">
@@ -184,6 +210,7 @@ $action = strtolower($action);
                             </i><span class="menu-item__title"><?php echo Labels::getLabel("LBL_Messages", $siteLangId); ?> <?php if ($todayUnreadMessageCount > 0) {
             ?><span
                                     class="msg-count"><?php echo ($todayUnreadMessageCount < 9) ? $todayUnreadMessageCount : '9+' ; ?></span> <?php
+
         } ?></span></a></div>
                 </li>
                 <li class="menu__item <?php echo ($controller == 'account' && $action == 'credits') ? 'is-active' : ''; ?>">
@@ -251,3 +278,4 @@ $action = strtolower($action);
         </nav>
     </div>
 </div>
+

@@ -654,4 +654,29 @@ class DummyController extends MyAppController
             }
         }
     }
+    
+    public function unlinkfile() {
+    
+        $fileName = 'Cities Error_EN_25-Nov-2019-1136451918997804.csv';
+        //unlink(ImportexportCommon::IMPORT_ERROR_LOG_PATH.$fileName);
+        
+        
+        
+        $file = fopen(ImportexportCommon::IMPORT_ERROR_LOG_PATH.$fileName, "r");
+
+        /**** Skip first heading row ****/
+        fgetcsv($file);
+        /**** Skip first heading row ****/
+
+        $havingData = fgetcsv($file);
+        
+        fclose($file);
+        echo "<pre>"; print_r($havingData); echo "</pre>"; //exit;
+        if (!$havingData) {
+            unlink(ImportexportCommon::IMPORT_ERROR_LOG_PATH.$fileName);
+        }
+        
+        echo "done";
+        //return $havingData;
+    }
 }

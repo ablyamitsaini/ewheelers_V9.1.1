@@ -17,6 +17,7 @@ class Importexport extends ImportexportCommon
     const TYPE_POLICY_POINTS = 10;
     const TYPE_USERS = 11;
     const TYPE_TAX_CATEGORY = 12;
+    const TYPE_CITY = 13;
 
     const MAX_LIMIT = 1000;
 
@@ -37,6 +38,10 @@ class Importexport extends ImportexportCommon
     const SELLER_PROD_BUY_TOGTHER = 11;
     const SELLER_PROD_RELATED_PRODUCT = 12;
     const SELLER_PROD_POLICY = 13;
+	
+	
+    const SELLER_PROD_DURATION_DISCOUNT = 14;
+    const SELLER_PROD_UNAVAILABLE_DATES = 15;
 
     const BY_ID_RANGE = 1;
     const BY_BATCHES = 2;
@@ -57,6 +62,7 @@ class Importexport extends ImportexportCommon
                 $arr[static::TYPE_TAG] = Labels::getLabel('LBL_Export_Tags', $langId);
                 $arr[static::TYPE_COUNTRY] = Labels::getLabel('LBL_Export_Countries', $langId);
                 $arr[static::TYPE_STATE] = Labels::getLabel('LBL_Export_States', $langId);
+                $arr[static::TYPE_CITY] = Labels::getLabel('LBL_Export_Cities',$langId);
                 $arr[static::TYPE_POLICY_POINTS] = Labels::getLabel('LBL_Export_Policy_Points', $langId);
                 if (!$sellerDashboard) {
                     $arr[static::TYPE_USERS] = Labels::getLabel('LBL_Export_users', $langId);
@@ -77,6 +83,7 @@ class Importexport extends ImportexportCommon
                     $arr[static::TYPE_TAG] = Labels::getLabel('LBL_Import_Tags', $langId);
                     $arr[static::TYPE_COUNTRY] = Labels::getLabel('LBL_Import_Countries', $langId);
                     $arr[static::TYPE_STATE] = Labels::getLabel('LBL_Import_States', $langId);
+                    $arr[static::TYPE_CITY] = Labels::getLabel('LBL_Import_Cities',$langId);
                     $arr[static::TYPE_POLICY_POINTS] = Labels::getLabel('LBL_Import_Policy_Points', $langId);
                 }
                 $arr[static::TYPE_SELLER_PRODUCTS] = Labels::getLabel('LBL_Import_Seller_Products', $langId);
@@ -88,7 +95,7 @@ class Importexport extends ImportexportCommon
         }
 
         return $arr;
-    }
+        }
 
     public static function getOptionContentTypeArr($langId)
     {
@@ -117,13 +124,26 @@ class Importexport extends ImportexportCommon
         static::SELLER_PROD_GENERAL_DATA=>Labels::getLabel('LBL_General_Data', $langId),
         static::SELLER_PROD_OPTION=>Labels::getLabel('LBL_Product_Options', $langId),
         static::SELLER_PROD_SEO=>Labels::getLabel('LBL_SEO_Data', $langId),
-        static::SELLER_PROD_SPECIAL_PRICE=>Labels::getLabel('LBL_Special_Price', $langId),
-        static::SELLER_PROD_VOLUME_DISCOUNT=>Labels::getLabel('LBL_Volume_Discount', $langId),
+        //static::SELLER_PROD_SPECIAL_PRICE=>Labels::getLabel('LBL_Special_Price', $langId),
+        //static::SELLER_PROD_VOLUME_DISCOUNT=>Labels::getLabel('LBL_Volume_Discount', $langId),
         static::SELLER_PROD_BUY_TOGTHER=>Labels::getLabel('LBL_Buy_togther', $langId),
         static::SELLER_PROD_RELATED_PRODUCT=>Labels::getLabel('LBL_Related_products', $langId),
         static::SELLER_PROD_POLICY=>Labels::getLabel('LBL_Seller_Product_Policy', $langId),
+		//static::SELLER_PROD_DURATION_DISCOUNT => Labels::getLabel('LBL_Duration_Discounts', $langId),
+		//static::SELLER_PROD_UNAVAILABLE_DATES => Labels::getLabel('LBL_Unavailable_Dates', $langId),
         );
-        return $arr;
+		
+		if(ALLOW_SALE > 0) {
+			$arr[static::SELLER_PROD_SPECIAL_PRICE] = Labels::getLabel('LBL_Special_Price', $langId);
+			$arr[static::SELLER_PROD_VOLUME_DISCOUNT] = Labels::getLabel('LBL_Volume_Discount', $langId);
+		}
+		
+		if(ALLOW_RENT > 0) {
+			$arr[static::SELLER_PROD_DURATION_DISCOUNT] = Labels::getLabel('LBL_Duration_Discounts', $langId);
+			$arr[static::SELLER_PROD_UNAVAILABLE_DATES] = Labels::getLabel('LBL_Unavailable_Dates', $langId);
+		}
+		
+		return $arr;
     }
 
     public static function getDataRangeArr($langId)
@@ -267,6 +287,18 @@ class Importexport extends ImportexportCommon
                         $this->CSVfileObj = $this->openCSVfileToWrite($sheetName, $langId);
                         $this->exportSellerProdPolicy($langId, $offset, $noOfRows, $minId, $maxId, $userId);
                         break;
+					case Importexport::SELLER_PROD_DURATION_DISCOUNT:
+                        $sheetName = Labels::getLabel('LBL_Seller_Prod_Duration_Discount', $langId) . $sheetName;
+                        $this->CSVfileObj = $this->openCSVfileToWrite($sheetName, $langId);
+                        $this->exportSellerProdDurationDiscount($langId, $offset, $noOfRows, $minId, $maxId, $userId);
+                        break;
+					case Importexport::SELLER_PROD_UNAVAILABLE_DATES:
+                        $sheetName = Labels::getLabel('LBL_Seller_Prod_Unavialable_Rental_Dates', $langId) . $sheetName;
+                        $this->CSVfileObj = $this->openCSVfileToWrite($sheetName, $langId);
+                        $this->exportSellerProdUnavailableRentalDates($langId, $offset, $noOfRows, $minId, $maxId, $userId);
+                        break;
+						
+						
                     default:
                         $default = true;
                         break;
@@ -311,6 +343,11 @@ class Importexport extends ImportexportCommon
                 $this->CSVfileObj = $this->openCSVfileToWrite($sheetName, $langId);
                 $this->exportStates($langId, $userId);
                 break;
+            case Importexport::TYPE_CITY:
+                $sheetName = Labels::getLabel('LBL_City', $langId) . $sheetName;
+                $this->CSVfileObj = $this->openCSVfileToWrite($sheetName, $langId);
+                $this->exportCities($langId, $userId);
+                break;   
             case Importexport::TYPE_POLICY_POINTS:
                 $sheetName = Labels::getLabel('LBL_Policy_points', $langId) . $sheetName;
                 $this->CSVfileObj = $this->openCSVfileToWrite($sheetName, $langId);
@@ -475,6 +512,17 @@ class Importexport extends ImportexportCommon
                         $this->CSVfileObj = $this->openCSVfileToWrite($sheetName, $langId, true);
                         $this->importSellerProdPolicy($csvFilePointer, $post, $langId, $userId);
                         break;
+					case Importexport::SELLER_PROD_DURATION_DISCOUNT:
+                        $sheetName = Labels::getLabel('LBL_Seller_Product_Duration_Discount_Error', $langId);
+                        $this->CSVfileObj = $this->openCSVfileToWrite($sheetName, $langId, true);
+                        $this->importSellerProdDurationDiscount($csvFilePointer, $post, $langId, $userId);
+                        break;
+					case Importexport::SELLER_PROD_UNAVAILABLE_DATES:
+                        $sheetName = Labels::getLabel('LBL_Seller_Product_Rental_Unavialable_Dates_Error', $langId);
+                        $this->CSVfileObj = $this->openCSVfileToWrite($sheetName, $langId, true);
+                        $this->importSellerProdRentalUnavialableDates($csvFilePointer, $post, $langId, $userId);
+                        break;	
+						
                     default:
                         $default = true;
                         break;
@@ -516,6 +564,11 @@ class Importexport extends ImportexportCommon
                 $this->importStates($csvFilePointer, $post, $langId);
                 Product::updateMinPrices();
                 break;
+            case Importexport::TYPE_CITY:
+                $sheetName = Labels::getLabel('LBL_Cities_Error', $langId);
+                $this->CSVfileObj = $this->openCSVfileToWrite($sheetName, $langId, true);
+                $this->importCities($csvFilePointer, $post, $langId);
+                break;    
             case Importexport::TYPE_POLICY_POINTS:
                 $sheetName = Labels::getLabel('LBL_Policy_Points_Error', $langId);
                 $this->CSVfileObj = $this->openCSVfileToWrite($sheetName, $langId, true);
@@ -2817,6 +2870,7 @@ class Importexport extends ImportexportCommon
         $userId = FatUtility::int($userId);
 
         $srch = SellerProduct::getSearchObject($langId);
+        $srch->joinTable(SellerProduct::DB_TBL_SELLER_PROD_DATA, 'LEFT OUTER JOIN', 'spd.sprodata_selprod_id = sp.selprod_id', 'spd');
         $srch->joinTable(Product::DB_TBL, 'INNER JOIN', 'p.product_id = sp.selprod_product_id', 'p');
         $srch->joinTable(User::DB_TBL, 'LEFT OUTER JOIN', 'u.user_id = sp.selprod_user_id', 'u');
         $srch->joinTable(User::DB_TBL_CRED, 'LEFT OUTER JOIN', 'uc.credential_user_id = u.user_id', 'uc');
@@ -2825,7 +2879,7 @@ class Importexport extends ImportexportCommon
             /*$srch->addCondition('selprod_deleted', '=', applicationConstants::NO);*/
         }
         $srch->doNotCalculateRecords();
-        $srch->addMultipleFields(array('sp.*','sp_l.*','user_id','credential_username','product_id','product_identifier'));
+        $srch->addMultipleFields(array('sp.*','sp_l.*','user_id','credential_username','product_id','product_identifier', 'spd.*'));
         if (isset($offset) && isset($noOfRows)) {
             $srch->setPageNumber($offset);
             $srch->setPageSize($noOfRows);
@@ -2863,10 +2917,21 @@ class Importexport extends ImportexportCommon
                 if (in_array($columnKey, array( 'selprod_added_on', 'selprod_available_from' ))) {
                     $colValue = $this->displayDateTime($colValue);
                 }
-                if (in_array($columnKey, array( 'selprod_subtract_stock', 'selprod_track_inventory', 'selprod_active', 'selprod_cod_enabled', 'selprod_deleted' )) && !$this->settings['CONF_USE_O_OR_1']) {
+                if (in_array($columnKey, array( 'selprod_subtract_stock', 'selprod_track_inventory', 'selprod_active', 'selprod_cod_enabled', 'selprod_deleted', 'sprodata_is_for_sell', 'sprodata_is_for_rent', 'sprodata_rental_is_pickup' )) && !$this->settings['CONF_USE_O_OR_1']) {
                     $colValue = (FatUtility::int($colValue) == 1) ? 'YES' : 'NO';
                 }
-
+				
+				if (in_array($columnKey, array('sprodata_rental_type')) && !$this->settings['CONF_USE_1_OR_2_FOR_RENTAL_TYPE']) {
+					
+					if( FatUtility::int($colValue) == 1) {
+						$colValue = 'DAY';
+					} elseif(FatUtility::int($colValue) == 2) {
+						$colValue = 'HOUR';
+					} else{
+						$colValue = '';
+					}
+				}
+				
                 $sheetData[] = $colValue;
             }
             CommonHelper::writeExportDataToCSV($this->CSVfileObj, $sheetData);
@@ -2874,7 +2939,8 @@ class Importexport extends ImportexportCommon
         CommonHelper::writeExportDataToCSV($this->CSVfileObj, array(), true, $this->CSVfileName);
     }
 
-    public function importSellerProdGeneralData($csvFilePointer, $post, $langId, $sellerId = null)
+	/***********************/
+	public function importSellerProdGeneralData($csvFilePointer, $post, $langId, $sellerId = null)
     {
         $sellerId = FatUtility::int($sellerId);
 
@@ -2895,7 +2961,7 @@ class Importexport extends ImportexportCommon
         while (($row = $this->getFileRow($csvFilePointer)) !== false) {
             $rowIndex++;
 
-            $selProdGenArr = $selProdGenLangArr = array();
+            $selProdGenArr = $selProdGenLangArr = $selProductRentalData = array();
             $errorInRow = false;
 
             //if(array_key_exists($row['selprod_product_id'], $prodTypeArr))
@@ -2971,7 +3037,38 @@ class Importexport extends ImportexportCommon
                                 $colValue = (strtoupper($colValue) == 'YES') ? applicationConstants::YES : applicationConstants::NO;
                             }
                             break;
-                    }
+							
+						case 'sprodata_is_for_sell':
+                            if (!$this->settings['CONF_USE_O_OR_1']) {
+                                $colValue = (strtoupper($colValue) == 'YES') ? applicationConstants::YES : applicationConstants::NO;
+                            }
+                            break;
+
+						case 'sprodata_is_for_rent':
+                            if (!$this->settings['CONF_USE_O_OR_1']) {
+                                $colValue = (strtoupper($colValue) == 'YES') ? applicationConstants::YES : applicationConstants::NO;
+                            }
+                            break;
+							
+						case 'sprodata_rental_is_pickup':
+                            if (!$this->settings['CONF_USE_O_OR_1']) {
+                                $colValue = (strtoupper($colValue) == 'YES') ? applicationConstants::YES : applicationConstants::NO;
+                            }
+                            break;
+						case 'sprodata_rental_type':
+                            if (!$this->settings['CONF_USE_1_OR_2_FOR_RENTAL_TYPE']) {
+                                
+								if (strtoupper($colValue) == 'HOUR') {
+									$colValue = applicationConstants::RENT_TYPE_HOUR;
+								} elseif (strtoupper($colValue) == 'DAY') {
+									$colValue = applicationConstants::RENT_TYPE_DAY;
+								} else {
+									$colValue = 0;
+								}
+							}
+                            break;
+						
+					}
 
                     if (FatApp::getConfig('CONF_ENABLE_SELLER_SUBSCRIPTION_MODULE', FatUtility::VAR_INT, 0) && 0 < $userId) {
                         if (!array_key_exists($userId, $userProdUploadLimit)) {
@@ -2987,7 +3084,9 @@ class Importexport extends ImportexportCommon
                     } else {
                         if (in_array($columnKey, array( 'selprod_title', 'selprod_comments' ))) {
                             $selProdGenLangArr[$columnKey] = $colValue;
-                        } else {
+                        } elseif (in_array($columnKey, array('sprodata_is_for_sell', 'sprodata_is_for_rent', 'sprodata_rental_price', 'sprodata_rental_security', 'sprodata_rental_type', 'sprodata_rental_is_pickup', 'sprodata_rental_terms', 'sprodata_rental_stock', 'sprodata_rental_buffer_days', 'sprodata_minimum_rental_duration'))) {
+							$selProductRentalData[$columnKey] = $colValue;
+						} else {
                             $selProdGenArr[$columnKey] = $colValue;
                         }
                     }
@@ -3008,7 +3107,7 @@ class Importexport extends ImportexportCommon
                 $selProdData = SellerProduct::getAttributesById($selprodId, array('selprod_id', 'selprod_sold_count', 'selprod_user_id'));
 
                 if (!empty($selProdData) && $selProdData['selprod_id'] && (!$sellerId || ($sellerId && $selProdData['selprod_user_id'] == $sellerId))) {
-                    $where = array('smt' => 'selprod_id = ?', 'vals' => array( $selprodId ) );
+                    $where = array('smt' => 'selprod_id = ?', 'vals' => array( $selprodId ));
                     $selProdGenArr['selprod_sold_count'] = $selProdData['selprod_sold_count'];
 
                     if ($sellerId) {
@@ -3059,10 +3158,25 @@ class Importexport extends ImportexportCommon
                 }
 
                 if ($selprodId) {
+					/* update rental data ] */
+					$rpsrch = ProductRental::getSearchObject();
+					$rpsrch->addCondition('sprodata_selprod_id', '=', $selprodId);
+					$rprs = $rpsrch->getResultSet();
+					$productData = $this->db->fetch($rprs);
+					$selProductRentalData['sprodata_selprod_id'] = $selprodId;
+					
+					if(!empty($productData)) {
+						$where = array('smt' => 'sprodata_selprod_id = ?', 'vals' => array($selprodId));
+						$this->db->updateFromArray(ProductRental::DB_TBL, $selProductRentalData, $where);
+					}else {
+						$this->db->insertFromArray(ProductRental::DB_TBL, $selProductRentalData, false, array(), $selProductRentalData);
+					}
+					/* [ update rental data ]*/
+					
                     /* Lang Data [ */
                     $langData = array(
-                    'selprodlang_selprod_id'=> $selprodId,
-                    'selprodlang_lang_id'=> $langId,
+                    'selprodlang_selprod_id' => $selprodId,
+                    'selprodlang_lang_id' => $langId,
                     );
                     $langData = array_merge($langData, $selProdGenLangArr);
                     $this->db->insertFromArray(SellerProduct::DB_LANG_TBL, $langData, false, array(), $langData);
@@ -3097,6 +3211,8 @@ class Importexport extends ImportexportCommon
         $success['msg'] = Labels::getLabel('LBL_data_imported/updated_Successfully.', $langId);
         FatUtility::dieJsonSuccess($success);
     }
+	
+	/**********/
 
     public function exportSellerProdOptionData($langId, $offset = null, $noOfRows = null, $minId = null, $maxId = null, $userId = null)
     {
@@ -3709,7 +3825,249 @@ class Importexport extends ImportexportCommon
         FatUtility::dieJsonSuccess($success);
     }
 
-    public function exportSellerProdBuyTogther($langId, $offset = null, $noOfRows = null, $minId = null, $maxId = null, $userId = null)
+	public function exportSellerProdDurationDiscount($langId, $offset = null, $noOfRows = null, $minId = null, $maxId = null, $userId = null)
+    {
+        $userId = FatUtility::int($userId);
+        $srch = SellerProduct::getSearchObject($langId);
+        $srch->joinTable(SellerProductDurationDiscount::DB_TBL, 'INNER JOIN', 'sp.selprod_id = spdd.produr_selprod_id', 'spdd');
+        $srch->doNotCalculateRecords();
+        $srch->addMultipleFields(array('spdd.produr_rental_duration','spdd.produr_discount_percent','sp.selprod_id'));
+        if ($userId) {
+            $srch->addCondition('sp.selprod_user_id', '=', $userId);
+        }
+
+        if (isset($offset) && isset($noOfRows)) {
+            $srch->setPageNumber($offset);
+            $srch->setPageSize($noOfRows);
+        } else {
+            $srch->setPageSize(static::MAX_LIMIT);
+        }
+
+        if (isset($minId) && isset($maxId)) {
+            $srch->addCondition('selprod_id', '>=', $minId);
+            $srch->addCondition('selprod_id', '<=', $maxId);
+        }
+
+        $srch->addOrder('selprod_id', 'ASC');
+        $rs = $srch->getResultSet();
+        $sheetData = array();
+        /* Sheet Heading Row [ */
+        $headingsArr = $this->getSelProdDurationDiscountColoumArr($langId);
+        CommonHelper::writeExportDataToCSV($this->CSVfileObj, $headingsArr);
+        /* ] */
+
+        while ($row = $this->db->fetch($rs)) {
+            $sheetData = array();
+            foreach ($headingsArr as $columnKey => $heading) {
+                $colValue = array_key_exists($columnKey, $row) ? $row[$columnKey] : '';
+                $sheetData[] = $colValue;
+            }
+            CommonHelper::writeExportDataToCSV($this->CSVfileObj, $sheetData);
+        }
+        CommonHelper::writeExportDataToCSV($this->CSVfileObj, array(), true, $this->CSVfileName);
+    }
+	
+	public function importSellerProdDurationDiscount($csvFilePointer, $post, $langId, $userId = null)
+    {
+        $rowIndex = 1;
+        $selProdArr = array();
+
+        $coloumArr = $this->getSelProdDurationDiscountColoumArr($langId);
+        $this->validateCSVHeaders($csvFilePointer, $coloumArr, $langId);
+
+        $errInSheet = false;
+        while (($row = $this->getFileRow($csvFilePointer)) !== false) {
+            $rowIndex++;
+
+            $selProdDurationDisArr = array();
+            $errorInRow = false;
+
+            foreach ($coloumArr as $columnKey => $columnTitle) {
+                $colIndex = $this->headingIndexArr[$columnTitle];
+                $colValue = $this->getCell($row, $colIndex, '');
+                $invalid = false;
+
+                $errMsg = ProductRental::validateDurationDiscountFields($columnKey, $columnTitle, $colValue, $langId);
+
+                if (false !== $errMsg) {
+                    $errorInRow = true;
+                    $err = array( $rowIndex, ($colIndex + 1), $errMsg );
+                    CommonHelper::writeToCSVFile($this->CSVfileObj, $err);
+                } else {
+                    if ('selprod_id' == $columnKey) {
+                        $selProdId = $colValue;
+                        if ($userId) {
+                            $selProdId = $colValue = $this->getCheckAndSetSelProdIdByTempId($colValue, $userId);
+                        }
+                        if (!$selProdId) {
+                            $invalid = true;
+                        }
+                    }
+
+                    if (true === $invalid) {
+                        $errMsg = str_replace('{column-name}', $columnTitle, Labels::getLabel("MSG_Invalid_{column-name}.", $langId));
+                        CommonHelper::writeToCSVFile($this->CSVfileObj, array( $rowIndex, ($colIndex + 1), $errMsg ));
+                    } else {
+                        $selProdDurationDisArr[$columnKey] = $colValue;
+                    }
+                }
+            }
+            unset($selProdDurationDisArr['selprod_id']);
+            if (false === $errorInRow && count($selProdDurationDisArr)) {
+                $data = array(
+                'produr_selprod_id'=>$selProdId,
+                );
+                $data = array_merge($data, $selProdDurationDisArr);
+
+                if (!in_array($selProdId, $selProdArr)) {
+                    $selProdArr[] = $selProdId;
+                    $where = array( 'smt' => 'produr_selprod_id = ?','vals' => array( $selProdId ) );
+                    $this->db->deleteRecords(SellerProductDurationDiscount::DB_TBL, $where);
+                }
+                $this->db->insertFromArray(SellerProductDurationDiscount::DB_TBL, $data);
+            } else {
+                $errInSheet = true;
+            }
+        }
+        // Close File
+        CommonHelper::writeToCSVFile($this->CSVfileObj, array(), true);
+
+
+        if (CommonHelper::checkCSVFile($this->CSVfileName)) {
+            $success['CSVfileUrl'] = FatUtility::generateFullUrl('custom', 'downloadLogFile', array($this->CSVfileName), CONF_WEBROOT_FRONTEND);
+        }
+        if ($errInSheet) {
+            $success['msg'] = Labels::getLabel('LBL_Error!_Please_check_error_log_sheet.', $langId);
+            FatUtility::dieJsonError($success);
+        }
+        $success['msg'] = Labels::getLabel('LBL_data_imported/updated_Successfully.', $langId);
+        FatUtility::dieJsonSuccess($success);
+    }
+	
+	
+	
+	public function exportSellerProdUnavailableRentalDates($langId, $offset = null, $noOfRows = null, $minId = null, $maxId = null, $userId = null) {
+		$userId = FatUtility::int($userId);
+        $srch = SellerProduct::getSearchObject($langId);
+        $srch->joinTable(SellerRentalProductUnavailableDate::DB_TBL, 'INNER JOIN', 'sp.selprod_id = spud.pu_selprod_id', 'spud');
+        $srch->doNotCalculateRecords();
+        $srch->addMultipleFields(array('spud.*','sp.selprod_id'));
+        if ($userId) {
+            $srch->addCondition('sp.selprod_user_id', '=', $userId);
+        }
+
+        if (isset($offset) && isset($noOfRows)) {
+            $srch->setPageNumber($offset);
+            $srch->setPageSize($noOfRows);
+        } else {
+            $srch->setPageSize(static::MAX_LIMIT);
+        }
+
+        if (isset($minId) && isset($maxId)) {
+            $srch->addCondition('selprod_id', '>=', $minId);
+            $srch->addCondition('selprod_id', '<=', $maxId);
+        }
+
+        $srch->addOrder('selprod_id', 'ASC');
+        $rs = $srch->getResultSet();
+        $sheetData = array();
+        /* Sheet Heading Row [ */
+        $headingsArr = $this->getSelProdUnavialableDatesColoumArr($langId);
+        CommonHelper::writeExportDataToCSV($this->CSVfileObj, $headingsArr);
+        /* ] */
+
+        while ($row = $this->db->fetch($rs)) {
+            $sheetData = array();
+            foreach ($headingsArr as $columnKey => $heading) {
+                $colValue = array_key_exists($columnKey, $row) ? $row[$columnKey] : '';
+				if (in_array($columnKey, array('pu_start_date', 'pu_end_date'))) {
+                    $colValue = $this->displayDate($colValue);
+                }
+				
+                $sheetData[] = $colValue;
+            }
+            CommonHelper::writeExportDataToCSV($this->CSVfileObj, $sheetData);
+        }
+        CommonHelper::writeExportDataToCSV($this->CSVfileObj, array(), true, $this->CSVfileName);
+	}
+	
+	public function importSellerProdRentalUnavialableDates($csvFilePointer, $post, $langId, $userId = null)
+    {
+        $rowIndex = 1;
+        $selProdArr = array();
+        $coloumArr = $this->getSelProdUnavialableDatesColoumArr($langId);
+        $this->validateCSVHeaders($csvFilePointer, $coloumArr, $langId);
+        $errInSheet = false;
+        while (($row = $this->getFileRow($csvFilePointer)) !== false) {
+            $rowIndex++;
+            $selProdUnavilDatesArr = array();
+            $errorInRow = false;
+
+            foreach ($coloumArr as $columnKey => $columnTitle) {
+                $colIndex = $this->headingIndexArr[$columnTitle];
+                $colValue = $this->getCell($row, $colIndex, '');
+                $invalid = false;
+
+                $errMsg = ProductRental::validateUnavialableDatesFields($columnKey, $columnTitle, $colValue, $langId);
+
+                if (false !== $errMsg) {
+                    $errorInRow = true;
+                    $err = array($rowIndex, ($colIndex + 1), $errMsg);
+                    CommonHelper::writeToCSVFile($this->CSVfileObj, $err);
+                } else {
+                    if ('selprod_id' == $columnKey) {
+                        $selProdId = $colValue;
+                        if ($userId) {
+                            $selProdId = $colValue = $this->getCheckAndSetSelProdIdByTempId($colValue, $userId);
+                        }
+                        if (!$selProdId) {
+                            $invalid = true;
+                        }
+                    }
+					if (in_array($columnKey, array( 'pu_start_date', 'pu_end_date'))) {
+                        $colValue = $this->getDateTime($colValue, false);
+                    }
+					
+					if (true === $invalid) {
+                        $errMsg = str_replace('{column-name}', $columnTitle, Labels::getLabel("MSG_Invalid_{column-name}.", $langId));
+                        CommonHelper::writeToCSVFile($this->CSVfileObj, array($rowIndex, ($colIndex + 1), $errMsg));
+                    } else {
+                        $selProdUnavilDatesArr[$columnKey] = $colValue;
+                    }
+                }
+            }
+            unset($selProdUnavilDatesArr['selprod_id']);
+            if (false === $errorInRow && count($selProdUnavilDatesArr)) {
+                $data = array(
+					'pu_selprod_id' => $selProdId,
+                );
+                $data = array_merge($data, $selProdUnavilDatesArr);
+
+                if (!in_array($selProdId, $selProdArr)) {
+                    $selProdArr[] = $selProdId;
+                    $where = array('smt' => 'pu_selprod_id = ?', 'vals' => array($selProdId));
+                    $this->db->deleteRecords(SellerRentalProductUnavailableDate::DB_TBL, $where);
+                }
+                $this->db->insertFromArray(SellerRentalProductUnavailableDate::DB_TBL, $data);
+            } else {
+                $errInSheet = true;
+            }
+        }
+        // Close File
+        CommonHelper::writeToCSVFile($this->CSVfileObj, array(), true);
+        if (CommonHelper::checkCSVFile($this->CSVfileName)) {
+            $success['CSVfileUrl'] = FatUtility::generateFullUrl('custom', 'downloadLogFile', array($this->CSVfileName), CONF_WEBROOT_FRONTEND);
+        }
+        if ($errInSheet) {
+            $success['msg'] = Labels::getLabel('LBL_Error!_Please_check_error_log_sheet.', $langId);
+            FatUtility::dieJsonError($success);
+        }
+        $success['msg'] = Labels::getLabel('LBL_data_imported/updated_Successfully.', $langId);
+        FatUtility::dieJsonSuccess($success);
+    }
+	
+	
+	public function exportSellerProdBuyTogther($langId, $offset = null, $noOfRows = null, $minId = null, $maxId = null, $userId = null)
     {
         $userId = FatUtility::int($userId);
         $srch = SellerProduct::getSearchObject($langId);
@@ -4819,7 +5177,189 @@ class Importexport extends ImportexportCommon
         }
         CommonHelper::writeExportDataToCSV($this->CSVfileObj, array(), true, $this->CSVfileName);
     }
+    
+    
+    
+    public function importCities($csvFilePointer, $post, $langId)
+    {
+        $useCityId = false;
+		$rowIndex = 1;
 
+        $stateCodes = $this->getStatesArr(true);
+        $stateCodesWithCountryId = $this->getStatesArrWithCountryID(true);
+		$countryCodes = $this->getCountriesArr(true);
+
+        $coloumArr = $this->getCitiesColoumArr($langId);
+        //echo "<pre>"; print_r($coloumArr); echo "</pre>"; exit;
+        $this->validateCSVHeaders($csvFilePointer, $coloumArr, $langId);
+        $errInSheet = false;
+        while (($row = $this->getFileRow($csvFilePointer)) !== false) {
+            $rowIndex++;
+			$countryId = 0;
+            $citiesArr = $citiesLangArr = array();
+            $errorInRow = false;
+			
+			if(array_key_exists('country_code', $coloumArr)) {
+				$countryTitle = $coloumArr['country_code'];
+				$contrycolIndex = $this->headingIndexArr[$countryTitle];
+				$countryCode = $this->getCell($row, $contrycolIndex, '');
+				if (array_search($countryCode, $countryCodes)) {
+                    $countryId = array_search($countryCode, $countryCodes);
+                }
+			} elseif(!array_key_exists('country_id', $coloumArr)) {
+				$countryTitle = $coloumArr['country_id'];
+				$contrycolIndex = $this->headingIndexArr[$columnTitle];
+				$countryId = $this->getCell($row, $contrycolIndex, '');
+			} 
+			
+            foreach ($coloumArr as $columnKey => $columnTitle) {
+				
+                $colIndex = $this->headingIndexArr[$columnTitle];
+                $colValue = $this->getCell($row, $colIndex, '');
+                $invalid = false;
+                $errMsg = City::validateFields($columnKey, $columnTitle, $colValue, $langId);
+
+                if (false !== $errMsg) {
+                    $errorInRow = true;
+                    $err = array($rowIndex, ($colIndex + 1), $errMsg);
+                    CommonHelper::writeToCSVFile($this->CSVfileObj, $err);
+                } else {
+                    switch ($columnKey) {
+                    
+                        case 'country_code':
+                            $columnKey = 'city_country_id';
+                            if (array_search($colValue, $countryCodes)) {
+                                $colValue = array_search($colValue, $countryCodes);
+                            } else {
+                                $colValue = '';
+                            }
+                            //$countryId = $colValue;
+                            if (!$colValue) {
+                                $invalid = true;
+                            }
+                            break;
+                         case 'country_id':
+                            $columnKey = 'city_country_id';
+                            if (!array_key_exists($colValue, $countryCodes)) {
+                                $colValue = '';
+                            }
+                            
+							//$countryId = $colValue;
+                            if (!$colValue) {
+                                $invalid = true;
+                            }
+                            
+                            break;
+                         case 'state_code':
+                            $columnKey = 'city_state_id';
+                            $stateCode = $colValue.'_CID_'.$countryId;
+                            if (array_search($stateCode, $stateCodesWithCountryId)) {
+                                $colValue = array_search($stateCode, $stateCodesWithCountryId);
+                            } else {
+                                $colValue = '';
+                            }
+
+                            if (!$colValue) {
+                                $invalid = true;
+                            }
+                            break;
+                         case 'state_id':
+                            $columnKey = 'city_state_id';
+                            if (!array_key_exists($colValue, $stateCodes)) {
+                                $colValue = '';
+                            }
+                            
+                            if (!$colValue) {
+                                $invalid = true;
+                            }
+                            break;  
+                         case 'city_active':
+                            if ($this->settings['CONF_USE_O_OR_1']) {
+                                $colValue = (FatUtility::int($colValue) == 1) ? applicationConstants::YES : applicationConstants::NO;
+                            } else {
+                                $colValue = (strtoupper($colValue) == 'YES') ? applicationConstants::YES : applicationConstants::NO;
+                            }
+                            break;
+                         case 'city_identifier':
+                            if ('' == $colValue) {
+                                $invalid = true;
+                            }
+                            break;
+                         case 'city_name':
+                            if ('' != $colValue) {
+                                $citiesLangArr[$columnKey] = $colValue;
+                            } else {
+                                $invalid = true;
+                            }
+                            break;
+                    }
+                    
+                    if (true === $invalid) {
+                        $errInSheet = true;
+                        $errMsg = str_replace('{column-name}', $columnTitle, Labels::getLabel("MSG_Invalid_{column-name}.", $langId));
+                        CommonHelper::writeToCSVFile($this->CSVfileObj, array( $rowIndex, ($colIndex + 1), $errMsg ));
+                    } else {
+                        $citiesArr[$columnKey] = $colValue;
+                        unset($citiesArr['city_name']);
+                    }
+                    
+                }
+                
+            }
+			
+			if (false === $errorInRow && count($citiesArr)) {
+                $cityData = City::getAttributesByIdentifierStateAndCountry($citiesArr['city_identifier'], $citiesArr['city_country_id'], $citiesArr['city_state_id'], array('city_id'));
+                
+                if (!empty($cityData)) {
+                    $cityId = $cityData['city_id'];
+                    $where = array('smt' => 'city_id = ?', 'vals' => array( $cityId ) );
+                    $this->db->updateFromArray(City::DB_TBL, $citiesArr, $where);
+                } else {
+                    if ($this->isDefaultSheetData($langId)) {
+                        $this->db->insertFromArray(City::DB_TBL, $citiesArr);
+                        $cityId = $this->db->getInsertId();
+                    } else {
+                        $errInSheet = true;
+                        $errMsg = Labels::getLabel("MSG_New_City_Can_be_inserted_in_default_language_first", $langId);
+                        CommonHelper::writeToCSVFile($this->CSVfileObj, array( $rowIndex, '', $errMsg ));
+                    }
+                }
+                
+                if ($cityId) {
+                    /* Lang Data [*/
+                    $langData = array(
+                    'citylang_city_id'=> $cityId,
+                    'citylang_lang_id'=> $langId,
+                    );
+
+                    $langData = array_merge($langData, $citiesLangArr);
+                    $this->db->insertFromArray(City::DB_TBL_LANG, $langData, false, array(), $langData);
+                    /* ]*/
+                }
+                
+            }  else {
+                $errInSheet = true;
+            }
+        }
+        
+        
+        CommonHelper::writeToCSVFile($this->CSVfileObj, array(), true);
+
+        if (CommonHelper::checkCSVFile($this->CSVfileName)) {
+            $success['CSVfileUrl'] = FatUtility::generateFullUrl('custom', 'downloadLogFile', array($this->CSVfileName), CONF_WEBROOT_FRONTEND);
+        }
+        
+        if ($errInSheet) {
+            $success['msg'] = Labels::getLabel('LBL_Error!_Please_check_error_log_sheet.', $langId);
+            FatUtility::dieJsonError($success);
+        }
+        
+        $success['msg'] = Labels::getLabel('LBL_data_imported/updated_Successfully.', $langId);
+        FatUtility::dieJsonSuccess($success);
+
+	}
+    
+    
     public function importStates($csvFilePointer, $post, $langId)
     {
         $rowIndex = 1;
@@ -4937,6 +5477,74 @@ class Importexport extends ImportexportCommon
         $success['msg'] = Labels::getLabel('LBL_data_imported/updated_Successfully.', $langId);
         FatUtility::dieJsonSuccess($success);
     }
+    
+    
+    public function exportCities($langId, $userId = 0)
+    {
+		$userId = FatUtility::int($userId);
+		$useStateId = false;
+		if($this->settings['CONF_USE_STATE_ID']){
+			$useStateId = true;
+		}
+
+		$srch = City::getSearchObject(false ,$langId);
+		$srch->joinTable(Countries::DB_TBL,'LEFT OUTER JOIN','ct.city_country_id = c.country_id','c');
+        $srch->joinTable(States::DB_TBL,'LEFT OUTER JOIN','ct.city_state_id = st.state_id','st');
+		$srch->addMultipleFields(array('city_id','city_country_id','city_state_id','city_identifier','city_active','country_id','country_code','city_name','state_id','state_code'));
+		$srch->doNotCalculateRecords();
+		$srch->doNotLimitRecords();
+		if($userId){
+			$srch->addCondition('city_active','=',applicationConstants::ACTIVE);
+		}
+
+		if($useStateId){
+			$srch->addOrder('city_state_id','ASC');
+			$srch->addOrder('city_id','ASC');
+		}else{
+			$srch->addOrder('country_code','ASC');
+			$srch->addOrder('city_identifier','ASC');
+		}
+
+		$rs = $srch->getResultSet();
+
+        
+        $sheetData = array();
+        /* Sheet Heading Row [ */
+        $headingsArr = $this->getCitiesColoumArr($langId, $userId);
+        CommonHelper::writeExportDataToCSV($this->CSVfileObj, $headingsArr);
+        /* ] */
+
+		while($row = $this->db->fetch($rs)) {
+			$sheetData = array();
+
+            if($this->settings['CONF_USE_COUNTRY_ID']){
+				$sheetData[] = $row['city_country_id'];
+			}else{
+				$sheetData[] = $row['country_code'];
+			}
+            
+			if($useStateId){
+				$sheetData[] = $row['state_id'];
+			}else{
+				$sheetData[] = $row['state_code'];
+			}
+
+            $sheetData[] = $row['city_identifier'];
+			$sheetData[] = $row['city_name'];
+
+			if($this->isDefaultSheetData($langId)){
+				if(!$userId){
+					if($this->settings['CONF_USE_O_OR_1']){
+						$sheetData[] = $row['city_active'];
+					}else{
+						$sheetData[] = ($row['city_active'])?'YES':'NO';
+					}
+				}
+			}
+            CommonHelper::writeExportDataToCSV($this->CSVfileObj, $sheetData);
+		}
+		CommonHelper::writeExportDataToCSV($this->CSVfileObj, array(), true, $this->CSVfileName);
+	}
 
     public function exportPolicyPoints($langId, $userId = 0)
     {

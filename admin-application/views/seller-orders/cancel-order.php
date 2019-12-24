@@ -124,6 +124,7 @@
                                 <div class="col-lg-6 col-md-6 col-sm-12">
                                     <h5><?php echo Labels::getLabel('LBL_Billing_Details', $adminLangId); ?> </h5>
                                     <p><strong><?php echo $order['billingAddress']['oua_name']; ?></strong><br>
+
                                         <?php
                                     $billingAddress = '';
                                     if ($order['billingAddress']['oua_address1']!='') {
@@ -182,6 +183,7 @@
                                         $shippingAddress.= '<br>Phone: '.$order['shippingAddress']['oua_phone'];
                                     }
 
+<<<<<<< HEAD
                                     echo $shippingAddress; ?></p>
                                 </div>
                                 <?php } ?>
@@ -213,6 +215,36 @@
                             </tr>
                             <tr>
                                 <td>#</td>
+=======
+                                    echo $shippingAddress; ?></p>
+                                </div>
+                                <?php } ?>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+
+
+                <section class="section">
+                    <div class="sectionhead">
+                        <h4><?php echo Labels::getLabel('LBL_Order_Details', $adminLangId); ?></h4>
+                    </div>
+                    <div class="sectionbody">
+                        <table class="table">
+                            <tr>
+                                <th>#</td>
+                                <th><?php echo Labels::getLabel('LBL_Product_Name', $adminLangId); ?></th>
+                                <th><?php echo Labels::getLabel('LBL_Shipping', $adminLangId); ?></th>
+                                <th><?php echo Labels::getLabel('LBL_Unit Price', $adminLangId); ?> </th>
+                                <th><?php echo Labels::getLabel('LBL_Qty', $adminLangId); ?></th>
+                                <th><?php echo Labels::getLabel('LBL_Shipping', $adminLangId); ?></th>
+                                <th><?php echo Labels::getLabel('LBL_Tax', $adminLangId); ?></th>
+                                <th><?php echo Labels::getLabel('LBL_Total', $adminLangId); ?></th>
+                            </tr>
+                            <tr>
+                                <td>#</td>
+>>>>>>> yorent_module_work
                                 <td><?php
                             $txt = '';
                             if ($order['op_selprod_title'] != '') {
@@ -230,6 +262,7 @@
                                 $txt .= '<br/>'.Labels::getLabel('LBL_Model', $adminLangId).':   ' . $order['op_product_model'];
                             }
                             echo $txt;
+<<<<<<< HEAD
                             ?></td>
                                 <td><strong><?php echo Labels::getLabel('LBL_Shipping_Class', $adminLangId); ?>: </strong><?php echo CommonHelper::displayNotApplicable($adminLangId, $order["op_shipping_duration_name"]); ?><br />
                                     <strong><?php echo Labels::getLabel('LBL_Duration', $adminLangId); ?>: </strong><?php echo CommonHelper::displayNotApplicable($adminLangId, $order["op_shipping_durations"]); ?></td>
@@ -254,6 +287,29 @@
                         <h4><?php echo Labels::getLabel('LBL_Reason_For_Cancellation', $adminLangId); ?></h4>
                     </div>
                     <div class="sectionbody space">
+=======
+                            ?></td>
+                                <td><strong><?php echo Labels::getLabel('LBL_Shipping_Class', $adminLangId); ?>: </strong><?php echo CommonHelper::displayNotApplicable($adminLangId, $order["op_shipping_duration_name"]); ?><br />
+                                    <strong><?php echo Labels::getLabel('LBL_Duration', $adminLangId); ?>: </strong><?php echo CommonHelper::displayNotApplicable($adminLangId, $order["op_shipping_durations"]); ?></td>
+                                <td><?php echo CommonHelper::displayMoneyFormat($order["op_unit_price"], true, true); ?></td>
+                                <td><?php echo $order["op_qty"]?></td>
+                                <td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($order, 'shipping'), true, true);?></td>
+                                <td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($order, 'TAX'), true, true);?></td>
+                                <td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($order), true, true);?></td>
+                            </tr>
+                        </table>
+                    </div>
+                </section>
+
+
+
+                <?php if (!$notEligible) { ?>
+                <section class="section">
+                    <div class="sectionhead">
+                        <h4><?php echo Labels::getLabel('LBL_Reason_For_Cancellation', $adminLangId); ?></h4>
+                    </div>
+                    <div class="sectionbody space">
+>>>>>>> yorent_module_work
                         <?php
                     $frm->setFormTagAttribute('onsubmit', 'cancelReason(this); return(false);');
                     $frm->setFormTagAttribute('class', 'web_form');
