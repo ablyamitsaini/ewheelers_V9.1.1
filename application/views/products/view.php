@@ -348,6 +348,7 @@ if(!empty($extendedOrderData)) {
                                         <?php if (strtotime($product['selprod_available_from']) <= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))) {
                                             echo $frmBuyProduct->getFieldHtml('btnProductBuy');
                                             echo $frmBuyProduct->getFieldHtml('btnAddToCart');
+                                            echo $frmBuyProduct->getFieldHtml('btnBookNow');
                                         }
                                        
                                         echo $frmBuyProduct->getFieldHtml('selprod_id');

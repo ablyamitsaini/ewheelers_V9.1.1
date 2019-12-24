@@ -148,14 +148,12 @@ class Cart extends FatModel
 			}
 			$key = base64_encode(serialize($key));
 			
-			/* check is buy and book same product */
 			$check	= $this->isBothBuyBook($key,$isForBooking);
 			
 			if(!$check){
 				$message = Labels::getLabel('LBL_You_Cannot_Buy_And_Book_Same_Product', $this->cart_lang_id);
 				FatUtility::dieJsonError($message);
 			}
-			/* end */
 			
             if (!isset($this->SYSTEM_ARR['cart']['products'][$key])) {
                // $this->SYSTEM_ARR['cart'][$key] = FatUtility::int($qty);
@@ -164,26 +162,10 @@ class Cart extends FatModel
             } else {
                // $this->SYSTEM_ARR['cart'][$key] += FatUtility::int($qty);
 			   $this->SYSTEM_ARR['cart']['products'][$key]['quantity'] += FatUtility::int($qty);
-			   
-			   /* if booking */
-				if($isForBooking == 1){
-					if (!isset($this->SYSTEM_ARR['shopping_cart']['booking_products'])) {
-						$this->SYSTEM_ARR['shopping_cart']['booking_products'][] = $key;
-					} else {
-						$exist = 0;
-						foreach($this->SYSTEM_ARR['shopping_cart']['booking_products'] as $val){
-							if($val == $key){
-								$exist = 1;
-								break;
-							}
-						}
-						if($exist == 0){
-							$this->SYSTEM_ARR['shopping_cart']['booking_products'][] = $key;
-						}
-					}
-				}
             }
 			$this->SYSTEM_ARR['cart']['products'][$key]['productFor'] = $productFor;
+			$this->SYSTEM_ARR['cart']['products'][$key]['isBooking'] = $isForbooking;
+			
 			//echo "<pre>"; print_r($rentalData); echo "</pre>"; exit;
 			
 			if (!empty($rentalData)) {
