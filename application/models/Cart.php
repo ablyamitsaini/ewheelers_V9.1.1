@@ -459,6 +459,13 @@ class Cart extends FatModel
                     $is_cod_enabled = false;
                 }
                 /* ] */
+				
+				/* BOOKING PRODUCT */
+				if($productFor == applicationConstants::PRODUCT_FOR_BOOKING) {					
+					$this->products[$key]['is_for_booking'] = 1;
+				}
+				/*  */
+				
 				$this->products[$key]['productFor'] = $productFor;
 				if ($productFor == applicationConstants::PRODUCT_FOR_RENT) {
 					$this->products[$key]['rentalStartDate'] = $product['rental_start_date'];
@@ -532,7 +539,7 @@ class Cart extends FatModel
         'product_dimension_unit', 'product_weight', 'product_weight_unit',
         'selprod_id','selprod_code', 'selprod_stock','selprod_user_id','IF(selprod_stock > 0, 1, 0) AS in_stock','selprod_min_order_qty',
         'special_price_found', 'theprice', 'shop_id', 'shop_free_ship_upto',
-        'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type', 'selprod_price', 'selprod_cost','case when product_seller_id=0 then IFNULL(psbs_user_id,0)   else product_seller_id end  as psbs_user_id','product_seller_id','product_cod_enabled','selprod_cod_enabled', 'sprodata_is_for_sell', 'sprodata_is_for_rent', 'sprodata_rental_price', 'sprodata_rental_security', 'sprodata_rental_type', 'sprodata_rental_stock', 'sprodata_rental_is_pickup', 'sprodata_rental_terms'));
+        'splprice_display_list_price', 'splprice_display_dis_val', 'splprice_display_dis_type', 'selprod_price', 'selprod_cost','case when product_seller_id=0 then IFNULL(psbs_user_id,0)   else product_seller_id end  as psbs_user_id','product_seller_id','product_cod_enabled','selprod_cod_enabled', 'sprodata_is_for_sell', 'sprodata_is_for_rent', 'sprodata_rental_price', 'sprodata_rental_security', 'sprodata_rental_type', 'sprodata_rental_stock', 'sprodata_rental_is_pickup', 'sprodata_rental_terms','product_book','product_book_percentage'));
 
         if ($siteLangId) {
             $prodSrch->joinBrands();
@@ -567,7 +574,7 @@ class Cart extends FatModel
         $sellerProductRow['volume_discount_percentage'] = 0;
         $sellerProductRow['volume_discount_total'] = 0;
 
-		if ($productFor == applicationConstants::PRODUCT_FOR_SALE) {
+		if ($productFor == applicationConstants::PRODUCT_FOR_SALE || $productFor == applicationConstants::PRODUCT_FOR_BOOKING) {
 			$srch = new SellerProductVolumeDiscountSearch();
 			$srch->doNotCalculateRecords();
 			$srch->addCondition('voldiscount_selprod_id', '=', $sellerProductRow['selprod_id']);
@@ -577,6 +584,25 @@ class Cart extends FatModel
 			$srch->addMultipleFields(array('voldiscount_percentage'));
 			$rs = $srch->getResultSet();
 			$volumeDiscountRow = FatApp::getDb()->fetch($rs);
+			
+			
+			
+			/* is for booking */
+			$thePrice = $sellerProductRow['theprice'];
+			$sellerProductRow['priceWithoutBooking'] = $thePrice;
+			$sellerProductRow['totalPriceWithoutBooking'] = $thePrice * $quantity; 		
+			$sellerProductRow['actualbookprice'] = 0;
+			
+			if( $productFor == applicationConstants::PRODUCT_FOR_BOOKING ){
+				$booking_per = $sellerProductRow['product_book_percentage'];
+				$thePrice = ($booking_per / 100) * $thePrice;
+				unset($sellerProductRow['theprice']);
+				
+				$sellerProductRow['theprice'] = $thePrice;
+				$sellerProductRow['actualbookprice'] = $thePrice;
+			}
+			/* ---- */
+			
 			if ($volumeDiscountRow) {
 				$volumeDiscount = $sellerProductRow['theprice'] * ($volumeDiscountRow['voldiscount_percentage'] / 100);
 				//$sellerProductRow['theprice'] = $sellerProductRow['theprice'] - $volumeDiscount;
