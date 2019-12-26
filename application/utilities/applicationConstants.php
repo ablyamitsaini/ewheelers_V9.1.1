@@ -86,6 +86,7 @@ class applicationConstants
 	const PRODUCT_FOR_SALE = 1;
 	const PRODUCT_FOR_RENT = 2; 
 	const PRODUCT_FOR_EXTEND_RENTAL = 3; 
+	const PRODUCT_FOR_BOOKING = 4; 
 	
 	const RENT_TYPE_DAY = 1;
 	const RENT_TYPE_HOUR = 2;

@@ -103,10 +103,12 @@ class CartController extends MyAppController
 		$cartObj->removeProductShippingMethod();
 		
         $post = FatApp::getPostedData();
+		$productFor = FatApp::getPostedData('product_for', FatUtility::VAR_INT, 1);
 		
 		$isForbooking = 0;
-		if(isset($post['type']) && $post['type']=='book'){
+		if(isset($post['type']) && $post['type'] == 'book'){
 			$isForbooking = 1;
+			$productFor = applicationConstants::PRODUCT_FOR_BOOKING;
 		}
 		
 		/* check request for book and buy */
@@ -145,7 +147,6 @@ class CartController extends MyAppController
         $json = array();
         //$selprod_id = FatApp::getPostedData('selprod_id', FatUtility::VAR_INT, 0);
         $quantity = FatApp::getPostedData('quantity', FatUtility::VAR_INT, 1);
-        $productFor = FatApp::getPostedData('product_for', FatUtility::VAR_INT, 1);
         $extendOrder = FatApp::getPostedData('extend_order', FatUtility::VAR_INT, 0);
 		if ($extendOrder > 0) {
 			$cartType = applicationConstants::PRODUCT_FOR_EXTEND_RENTAL;
@@ -393,7 +394,7 @@ class CartController extends MyAppController
             $selprod_code = $sellerProductRow['selprod_code'];
             $productAdd = true;
             /* cannot add, out of stock products in cart[ */
-            if ($sellerProductRow['selprod_stock'] <= 0 && $productFor == applicationConstants::PRODUCT_FOR_SALE) {
+            if ($sellerProductRow['selprod_stock'] <= 0 && ( $productFor == applicationConstants::PRODUCT_FOR_SALE || $productFor == applicationConstants::PRODUCT_FOR_BOOKING)) {
                 if ($productId!=$selprod_id) {
                     $message = Labels::getLabel('LBL_Out_of_Stock_Products_cannot_be_added_to_cart_%s', $this->siteLangId);
                     $message = sprintf($message, FatUtility::decodeHtmlEntities($sellerProductRow['product_name']));
@@ -416,7 +417,7 @@ class CartController extends MyAppController
             /* ] */
 
             /* minimum quantity check[ */
-			if($productFor == applicationConstants::PRODUCT_FOR_SALE) {
+			if($productFor == applicationConstants::PRODUCT_FOR_SALE || $productFor == applicationConstants::PRODUCT_FOR_BOOKING ) {
 				$minimum_quantity = ($sellerProductRow['selprod_min_order_qty']) ? $sellerProductRow['selprod_min_order_qty'] : 1;
 				if ($quantity < $minimum_quantity) {
 					$productAdd = false;
@@ -444,7 +445,7 @@ class CartController extends MyAppController
             $cartObj = new Cart($loggedUserId, $this->siteLangId, $this->app_user['temp_user_id']);
 
             /* cannot add quantity more than stock of the product[ */
-			if($productFor == applicationConstants::PRODUCT_FOR_SALE) {
+			if($productFor == applicationConstants::PRODUCT_FOR_SALE || $productFor == applicationConstants::PRODUCT_FOR_BOOKING) {
 				$selprod_stock = $sellerProductRow['selprod_stock'] - Product::tempHoldStockCount($productId);
 				if ($quantity > $selprod_stock) {
 					if ($productId != $selprod_id) {
@@ -475,7 +476,7 @@ class CartController extends MyAppController
 			if ($productAdd) {
 				if($isForbooking == 1){
 					$returnUserId = (true ===  MOBILE_APP_API_CALL) ? true : false;
-					$cartUserId = $cartObj->add($productId, $quantity, 0, $returnUserId, $productFor, $rentalData,$isForbooking);
+					$cartUserId = $cartObj->add($productId, $quantity, 0, $returnUserId, $productFor, $rentalData);
 					if (true ===  MOBILE_APP_API_CALL) {
 						$this->set('tempUserId', $cartUserId);
 					}

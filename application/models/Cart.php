@@ -131,7 +131,12 @@ class Cart extends FatModel
 		if (!empty($rentalData) && isset($rentalData['extendOrder']) && $rentalData['extendOrder'] > 0 ) {
 			$cartType = applicationConstants::PRODUCT_FOR_EXTEND_RENTAL;
 		} else {
-			$cartType = $rentalData['extendOrder'];
+			
+			$cartType = $productFor;
+			if($productFor == applicationConstants::PRODUCT_FOR_BOOKING) {
+				$cartType = applicationConstants::PRODUCT_FOR_SALE;
+			}
+			
 		}		
 		
         if (!isset($this->SYSTEM_ARR['cart']['cart_type']) || $this->SYSTEM_ARR['cart']['cart_type'] == null ) {
@@ -146,13 +151,15 @@ class Cart extends FatModel
 			if ($productFor == applicationConstants::PRODUCT_FOR_RENT) {
 				$key = static::CART_KEY_PREFIX_PRODUCT . $selprod_id . $rentalData['rental_start_date'].$rentalData['rental_end_date'];
 			}
+			
 			$key = base64_encode(serialize($key));
 			
-			$check	= $this->isBothBuyBook($key,$isForBooking);
-			
-			if(!$check){
-				$message = Labels::getLabel('LBL_You_Cannot_Buy_And_Book_Same_Product', $this->cart_lang_id);
-				FatUtility::dieJsonError($message);
+			if ($productFor == applicationConstants::PRODUCT_FOR_BOOKING ||  $productFor == applicationConstants::PRODUCT_FOR_SALE) {
+				
+				if(!$this->isBothBuyBook($key,$productFor)){
+					$message = Labels::getLabel('LBL_You_Cannot_Buy_And_Book_Same_Product', $this->cart_lang_id);
+					FatUtility::dieJsonError($message);
+				}
 			}
 			
             if (!isset($this->SYSTEM_ARR['cart']['products'][$key])) {
@@ -1877,24 +1884,22 @@ class Cart extends FatModel
 	
 	public function isBothBuyBook($key,$isForBooking) 
 	{
-		if(empty($this->SYSTEM_ARR['cart'])){
+		if(empty($this->SYSTEM_ARR['cart']['products'])){
 			return true;
 		}
 		
 		$exist = 0;
 		
-		if(isset($this->SYSTEM_ARR['shopping_cart']['booking_products'])){
-			foreach($this->SYSTEM_ARR['shopping_cart']['booking_products'] as $val){
-				if($val == $key){
-					$exist = 1;
-					break;
-				}
+		foreach($this->SYSTEM_ARR['cart']['products'] as $val){
+			if($val['productFor'] == applicationConstants::PRODUCT_FOR_BOOKING){
+				$exist =  1;
+				break;
 			}
 		}
-			
-		if($isForBooking == 1){
+		
+		if($isForBooking == applicationConstants::PRODUCT_FOR_BOOKING){
 
-			if (array_key_exists($key,$this->SYSTEM_ARR['cart']) && $exist == 0)
+			if (array_key_exists($key,$this->SYSTEM_ARR['cart']['products']) && $exist == 0)
 			{
 				return false;
 			}
