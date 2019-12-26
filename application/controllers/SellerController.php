@@ -184,7 +184,8 @@ class SellerController extends SellerBaseController
         $srch->addCountsOfOrderedProducts();
         $srch->joinTable('(' . $qryOtherCharges . ')', 'LEFT OUTER JOIN', 'op.op_id = opcc.opcharge_op_id', 'opcc');
         $srch->addCondition('op_selprod_user_id', '=', $userId);
-		$srch->addCondition('opd_sold_or_rented', '=', 1);
+		$cnd = $srch->addCondition('opd_sold_or_rented', '=', applicationConstants::PRODUCT_FOR_SALE);
+		$cnd->attachCondition( 'opd_sold_or_rented', '=', applicationConstants::PRODUCT_FOR_BOOKING,'OR');
         $srch->addOrder("op_id", "DESC");
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);

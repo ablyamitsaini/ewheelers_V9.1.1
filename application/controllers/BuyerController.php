@@ -455,7 +455,12 @@ class BuyerController extends BuyerBaseController
         $srch->addCondition('order_user_id', '=', $user_id);
         $srch->joinPaymentMethod();
         $srch->addOrder("op_id", "DESC");
-		$srch->addCondition('opd_sold_or_rented', '=', $orderType);
+		if($orderType == applicationConstants::PRODUCT_FOR_RENT) {
+			$srch->addCondition('opd_sold_or_rented', '=', applicationConstants::PRODUCT_FOR_RENT);
+		}else{
+			$cnd = $srch->addCondition('opd_sold_or_rented', '=', applicationConstants::PRODUCT_FOR_SALE);
+			$cnd->attachCondition( 'opd_sold_or_rented', '=', applicationConstants::PRODUCT_FOR_BOOKING,'OR');
+		}
         $srch->setPageNumber($page);
         $srch->setPageSize($pagesize);
         $srch->addMultipleFields(
@@ -477,7 +482,7 @@ class BuyerController extends BuyerBaseController
             $srch->addStatusCondition(unserialize(FatApp::getConfig("CONF_BUYER_ORDER_STATUS")));
         }
 		
-		$op_order_type = FatApp::getPostedData('order_type', null, '0');
+		$op_order_type = FatApp::getPostedData('orderProductType', null, '0');
         if($op_order_type == applicationConstants::BOOK_NOW ){
 			$srch->addCondition('op_is_booking','=',1);
 		}
@@ -2371,7 +2376,7 @@ class BuyerController extends BuyerBaseController
         $frm->addDateField('', 'date_to', '', array('placeholder' => Labels::getLabel('LBL_Date_To', $langId),'readonly'=>'readonly' ));
         $frm->addTextBox('', 'price_from', '', array('placeholder' => Labels::getLabel('LBL_Price_Min', $langId).' ['.$currencySymbol.']' ));
         $frm->addTextBox('', 'price_to', '', array('placeholder' => Labels::getLabel('LBL_Price_Max', $langId).' ['.$currencySymbol.']' ));
-		$frm->addSelectBox('', 'order_type', applicationConstants::getProductBuyBookStatusArr($langId), '', array(), Labels::getLabel('LBL_Order_Type', $langId));
+		$frm->addSelectBox('', 'orderProductType', applicationConstants::getProductBuyBookStatusArr($langId), '', array(), Labels::getLabel('LBL_Order_Type', $langId));
         $fldSubmit = $frm->addSubmitButton('', 'btn_submit', Labels::getLabel('LBL_Search', $langId));
         $fldCancel = $frm->addButton("", "btn_clear", Labels::getLabel("LBL_Clear", $langId), array('onclick'=>'clearSearch();'));
         $frm->addHiddenField('', 'page');

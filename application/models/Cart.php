@@ -986,7 +986,7 @@ class Cart extends FatModel
     {
         foreach ($this->getProducts($this->cart_lang_id) as $product) {
             if ($product['is_batch']) {
-                if ($product['has_physical_product'] && !isset($this->SYSTEM_ARR['shopping_cart']['product_shipping_methods']['group'][$product['prodgroup_id']])) {
+                if ($product['has_physical_product'] && !isset($product['is_for_booking']) && !isset($this->SYSTEM_ARR['shopping_cart']['product_shipping_methods']['group'][$product['prodgroup_id']])) {
                     return false;
                 }
                 if (isset($this->SYSTEM_ARR['shopping_cart']['product_shipping_methods']['group'][$product['prodgroup_id']]['mshipapi_id'])) {
@@ -997,7 +997,7 @@ class Cart extends FatModel
                     }
                 }
             } else {
-                if ($product['is_physical_product'] && !isset($this->SYSTEM_ARR['shopping_cart']['product_shipping_methods']['product'][$product['selprod_id']])) {
+                if ($product['is_physical_product'] && !isset($product['is_for_booking']) && !isset($this->SYSTEM_ARR['shopping_cart']['product_shipping_methods']['product'][$product['selprod_id']])) {
                     return false;
                 }
 
@@ -1033,6 +1033,7 @@ class Cart extends FatModel
         $products = $this->getProducts($langId);
 
         $cartTotal = 0;
+		$cartTotalWithoutBook = 0;
         $cartTotalNonBatch = 0;
         $cartTotalBatch = 0;
         $shippingTotal = 0;
@@ -1040,10 +1041,12 @@ class Cart extends FatModel
         $cartTotalAfterBatch = 0;
         $orderPaymentGatewayCharges = 0;
         $cartTaxTotal = 0;
+        $bookingProductTaxTotal = 0;
         $cartDiscounts = self::getCouponDiscounts();
         
         $totalSiteCommission = 0;
         $orderNetAmount = 0;
+        $orderNetAmountWithoutBook = 0;
         $cartRewardPoints = self::getCartRewardPoint();
         $cartVolumeDiscount = 0;
         $cartDurationDiscount = 0;
@@ -1064,8 +1067,10 @@ class Cart extends FatModel
                     //$cartTotalBatch += $product['prodgroup_total'];
                     $cartTotal += $product['prodgroup_total'];
                 } else {
+					$cartTotalWithoutBook += !empty($product['totalPriceWithoutBooking']) ? $product['totalPriceWithoutBooking'] : 0;
 					$cartTotal += !empty($product['total']) ? $product['total'] : 0;
 				}
+				
 				if($product['productFor'] == applicationConstants::PRODUCT_FOR_RENT) {
 					$cartDurationDiscount += $product['duration_discount_total'];
 				} else {
@@ -1078,6 +1083,10 @@ class Cart extends FatModel
                 $tax = $taxObj->calculateTaxRates($product['product_id'], $taxableProdPrice, $product['selprod_user_id'], $langId, $product['quantity']);
                 $cartTaxTotal += $tax; */
                 $cartTaxTotal +=  $product['tax'];
+				
+				if($product['productFor'] == applicationConstants::PRODUCT_FOR_BOOKING) {
+					$bookingProductTaxTotal += $product['tax'];
+				}
                 
                 $originalShipping += $product['shipping_cost'];
                 $totalSiteCommission += $product['commission'];
@@ -1102,6 +1111,10 @@ class Cart extends FatModel
 		
 
         $orderNetAmount = $orderNetAmount - CommonHelper::rewardPointDiscount($orderNetAmount, $cartRewardPoints);
+		
+		$orderNetAmountWithoutBook = (max($cartTotalWithoutBook - $cartVolumeDiscount - $totalDiscountAmount, 0)  + $shippingTotal  + $cartTaxTotal) ; 
+		$orderNetAmountWithoutBook  = $orderNetAmountWithoutBook - CommonHelper::rewardPointDiscount($orderNetAmount, $cartRewardPoints);
+		
         $WalletAmountCharge = ($this->isCartUserWalletSelected()) ? min($orderNetAmount, $userWalletBalance) : 0;
         $orderPaymentGatewayCharges = $orderNetAmount - $WalletAmountCharge;
 
@@ -1116,12 +1129,15 @@ class Cart extends FatModel
 
         $netChargeAmt = $cartTotal + $cartTaxTotal - ((0 < $cartVolumeDiscount) ? $cartVolumeDiscount: 0);
         $netChargeAmt = $cartTotal + $cartTaxTotal - ((0 < $cartDurationDiscount) ? $cartDurationDiscount: 0);
+		
+		$orderPaymentGatewayCharges = $orderPaymentGatewayCharges - $bookingProductTaxTotal;
 
         $cartSummary = array(
             'cartTotal' => $cartTotal,
             'shippingTotal' => $shippingTotal,
             'originalShipping' => $originalShipping,
             'cartTaxTotal' => $cartTaxTotal,
+            'bookingProductTaxTotal' => $bookingProductTaxTotal,
             'cartDiscounts' => $cartDiscounts,
             'cartVolumeDiscount'=> $cartVolumeDiscount,
             'cartDurationDiscount'=> $cartDurationDiscount,
@@ -1129,10 +1145,11 @@ class Cart extends FatModel
             'cartWalletSelected'=> $this->isCartUserWalletSelected(),
             'siteCommission' => $totalSiteCommission,
             'orderNetAmount' => $orderNetAmount,
+            'orderNetAmountWithoutBook' => $orderNetAmountWithoutBook,
             'WalletAmountCharge'=> $WalletAmountCharge,
             'isCodEnabled' => $isCodEnabled,
             'isCodValidForNetAmt' => $isCodValidForNetAmt,
-            'orderPaymentGatewayCharges' => $orderPaymentGatewayCharges,
+            'orderPaymentGatewayCharges' => $orderPaymentGatewayCharges > 0 ? $orderPaymentGatewayCharges : 0 ,
             'netChargeAmount' => $netChargeAmt,
         );
 		
