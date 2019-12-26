@@ -111,11 +111,13 @@ class CartController extends MyAppController
 			$productFor = applicationConstants::PRODUCT_FOR_BOOKING;
 		}
 		
-		/* check request for book and buy */
 		$selprod_id = FatApp::getPostedData('selprod_id', FatUtility::VAR_INT, 0);
-		
-		 if(false === $cartObj->validateAction($selprod_id,$isForbooking,$this->siteLangId)){
-           FatUtility::dieJsonError($cartObj->getError());
+			
+		/* check request for book and buy */
+		if($productFor == applicationConstants::PRODUCT_FOR_BOOKING || $productFor == applicationConstants::PRODUCT_FOR_SALE) {
+			if(false === $cartObj->validateAction($selprod_id,$isForbooking,$this->siteLangId)){
+				FatUtility::dieJsonError($cartObj->getError());
+			}
 		}
 		
 		/* --- */
