@@ -73,6 +73,23 @@ if ($user_is_buyer > 0 || (!UserAuthentication::isUserLogged())) { ?>
 									</div>
 									<?php } ?>
 									
+									<?php	if(isset($product['is_for_booking'])){	
+									echo '<b style="font-weight: bold;">( ' . Labels::getLabel('LBL_Booking_Product', $siteLangId) .' )</b>';
+									} 
+									if(isset($product['is_for_booking'])){
+									$shop_address = Shop::getShopAddress($product['shop_id'], true, $siteLangId);
+									$payToLabel = Labels::getLabel('LBL_Pending_Amount_to_be_paid', $siteLangId);
+									$seller_phone = $shop_address['shop_phone'];
+									//$product['seller_address']['shop_phone'];
+									$seller_address = $shop_address['shop_address_line_1'] . ' ' . $shop_address['shop_address_line_2'] . ' ' . $shop_address['shop_city'] . ' ' . $shop_address['state_identifier'];
+								?>
+									<div style="font-weight: bold;"><?php echo $payToLabel . ':-'; ?></div>
+									<div style="font-weight: bold;"><?php echo $seller_address; ?></div>
+									<div style="font-weight: bold;"><?php echo $seller_phone; ?></div>
+								<?php 	
+								}
+								?>
+									
 									
                                 </div>
                             </td>
@@ -133,8 +150,11 @@ if ($user_is_buyer > 0 || (!UserAuthentication::isUserLogged())) { ?>
                 <?php }
 				if ($product['productFor'] == applicationConstants::PRODUCT_FOR_RENT) {
 					$netChargeAmt = $cartSummary['cartTotal']+$cartSummary['cartTaxTotal'] - ((0 < $cartSummary['cartDurationDiscount'])?$cartSummary['cartDurationDiscount']:0);
+					$netPayableNow = $netChargeAmt;
 				} else  {
 					$netChargeAmt = $cartSummary['cartTotal']+$cartSummary['cartTaxTotal'] - ((0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0); 
+					$netChargeAmtWithoutBook = $cartSummary['orderNetAmountWithoutBook'] - ((0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0); 
+					$netPayableNow = $netChargeAmt - $cartSummary['bookingProductTaxTotal'];
 				}
 				
 				if ($rentalSecutityTotal > 0) { ?>
@@ -143,9 +163,20 @@ if ($user_is_buyer > 0 || (!UserAuthentication::isUserLogged())) { ?>
 					<td><?php echo CommonHelper::displayMoneyFormat($rentalSecutityTotal); ?> </td>
 				</tr>
 				<?php }?>
+				
+				<?php if(( $cartSummary['orderNetAmount'] != $cartSummary['orderNetAmountWithoutBook'] ) && $product['productFor'] != applicationConstants::PRODUCT_FOR_RENT) { ?>
                 <tr>
-                    <td class="hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
-                    <td class="hightlighted"><?php echo CommonHelper::displayMoneyFormat($netChargeAmt); ?></td>
+                    <td class=""><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
+                    <td class=""><?php echo CommonHelper::displayMoneyFormat($netChargeAmtWithoutBook); ?></td>
+                </tr>
+				<tr>
+                    <td class=""><?php echo Labels::getLabel('LBL_Pending_Amount', $siteLangId); ?></td>
+                    <td class=""><?php echo CommonHelper::displayMoneyFormat($netChargeAmtWithoutBook - $netPayableNow); ?></td>
+                </tr>
+				<?php } ?>
+                <tr>
+                    <td class="hightlighted"><?php echo Labels::getLabel('LBL_Payable_Now', $siteLangId); ?></td>
+                    <td class="hightlighted"><?php echo CommonHelper::displayMoneyFormat($netPayableNow); ?></td>
                 </tr>
                 <tr>
                     <td class=""><a href="<?php echo CommonHelper::generateUrl('cart'); ?>" class="btn btn--primary ripplelink"><?php echo Labels::getLabel('LBL_View_Bag', $siteLangId); ?> </a></td>

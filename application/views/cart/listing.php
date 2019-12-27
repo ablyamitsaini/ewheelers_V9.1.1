@@ -271,6 +271,7 @@ if (count($products)) {
 					<?php 
 					if ($product['productFor'] == applicationConstants::PRODUCT_FOR_RENT) {
 						$netChargeAmt = $cartSummary['cartTotal']+$cartSummary['cartTaxTotal'] - ((0 < $cartSummary['cartDurationDiscount'])?$cartSummary['cartDurationDiscount']:0);
+						$netPayableNow = $netChargeAmt;
 					} else {
 						
 					//$netChargeAmt = $cartSummary['cartTotal'] + $cartSummary['cartTaxTotal'] - ((0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0);
@@ -309,7 +310,7 @@ if (count($products)) {
 					
                     <tr>
                         <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_Payable_Now', $siteLangId); ?></td>
-                        <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat($netChargeAmt); ?></td>
+                        <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat($netPayableNow); ?></td>
                     </tr>
                     <tr>
                         <td colspan="2">
