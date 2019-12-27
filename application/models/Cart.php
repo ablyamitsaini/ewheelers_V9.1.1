@@ -418,7 +418,7 @@ class Cart extends FatModel
 					if ($productFor == applicationConstants::PRODUCT_FOR_RENT) {
 						$taxableProdPrice = ($sellerProductRow['sprodata_rental_price'] * $duration) - $sellerProductRow['duration_discount'];
 					} else {
-						$taxableProdPrice = $sellerProductRow['theprice'] - $sellerProductRow['volume_discount'];
+						$taxableProdPrice = $sellerProductRow['priceWithoutBooking'] - $sellerProductRow['volume_discount'];
 					}
 
                     $taxObj = new Tax();
