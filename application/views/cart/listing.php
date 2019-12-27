@@ -100,11 +100,28 @@ if (count($products)) {
                                         echo $option['option_name'].':'; ?> <span class="text--dark"><?php echo $option['optionvalue_name']; ?></span>
                                     <?php }
                                 }
+								
+								if(isset($product['is_for_booking'])){	
+									echo '<div class="item-yk-head-title"> ( ' . Labels::getLabel('LBL_Booking_Product', $siteLangId) .' )</div>';
+								} 
 
                                 $showAddToFavorite = true;
                                 if (UserAuthentication::isUserLogged() && (!User::isBuyer())) {
                                     $showAddToFavorite = false;
                                 }
+								
+								if(isset($product['is_for_booking'])){
+									$shop_address = Shop::getShopAddress($product['shop_id'], true, $siteLangId);
+									$payToLabel = Labels::getLabel('LBL_Pending_Amount_to_be_paid', $siteLangId);
+									$seller_phone = $shop_address['shop_phone'];
+									//$product['seller_address']['shop_phone'];
+									$seller_address = $shop_address['shop_address_line_1'] . ' ' . $shop_address['shop_address_line_2'] . ' ' . $shop_address['shop_city'] . ' ' . $shop_address['state_identifier'];
+								?>
+									<div><b><?php echo $payToLabel . ':-'; ?></b></div>
+									<div><b><?php echo $seller_address; ?></b></div>
+									<div><b><?php echo $seller_phone; ?></b></div>
+								<?php 	
+								}
 
                                 if ($showAddToFavorite) { ?>
                                     <br>
@@ -257,12 +274,12 @@ if (count($products)) {
 					} else {
 						
 					//$netChargeAmt = $cartSummary['cartTotal'] + $cartSummary['cartTaxTotal'] - ((0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0);
+                    $netChargeAmt = $cartSummary['cartTotal'] + $cartSummary['cartTaxTotal'] - ((0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0);
                     $netChargeAmt = $netChargeAmt - ((0 < $cartSummary['cartDiscounts']['coupon_discount_total'])?$cartSummary['cartDiscounts']['coupon_discount_total']:0);
 					$netChargeAmtWithoutBook = $cartSummary['orderNetAmountWithoutBook'] - ((0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0);
                     $netChargeAmtWithoutBook = $netChargeAmtWithoutBook - ((0 < $cartSummary['cartDiscounts']['coupon_discount_total'])?$cartSummary['cartDiscounts']['coupon_discount_total']:0);
 					$netPayableNow = $netChargeAmt - $cartSummary['bookingProductTaxTotal'];
 					
-					$netChargeAmt = $cartSummary['cartTotal']+$cartSummary['cartTaxTotal'] - ((0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0); 
 					}
 					
 					if ($cartSummary['cartTaxTotal']) { ?>
@@ -270,7 +287,18 @@ if (count($products)) {
                         <td class="text-left"><?php echo Labels::getLabel('LBL_Tax', $siteLangId); ?></td>
                         <td class="text-right"><?php echo CommonHelper::displayMoneyFormat($cartSummary['cartTaxTotal']); ?></td>
                     </tr>
-                    <?php } ?>
+                <?php } ?>
+				
+				<?php if(($cartSummary['orderNetAmount'] != $cartSummary['orderNetAmountWithoutBook']) && $cartType != applicationConstants::PRODUCT_FOR_RENT) { ?>
+					<tr>
+						<td class=""><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
+						<td class=""><?php echo CommonHelper::displayMoneyFormat($netChargeAmtWithoutBook); ?></td>
+					</tr>
+					<tr>
+						<td class=""><?php echo Labels::getLabel('LBL_Pending_Amount', $siteLangId); ?></td>
+						<td class=""><?php echo CommonHelper::displayMoneyFormat($netChargeAmtWithoutBook - $netPayableNow); ?></td>
+					</tr>
+				<?php } ?>
 					
 				<?php if ($rentalSecutityTotal > 0) { ?>
 				<tr>
@@ -280,7 +308,7 @@ if (count($products)) {
 				<?php }?>
 					
                     <tr>
-                        <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_Net_Payable', $siteLangId); ?></td>
+                        <td class="text-left hightlighted"><?php echo Labels::getLabel('LBL_Payable_Now', $siteLangId); ?></td>
                         <td class="text-right hightlighted"><?php echo CommonHelper::displayMoneyFormat($netChargeAmt); ?></td>
                     </tr>
                     <tr>
