@@ -1925,7 +1925,7 @@ class Cart extends FatModel
         }
     }
 	
-	public function isBothBuyBook($key,$isForBooking) 
+	public function isBothBuyBook($key,$productFor) 
 	{
 		if(empty($this->SYSTEM_ARR['cart']['products'])){
 			return true;
@@ -1933,32 +1933,23 @@ class Cart extends FatModel
 		
 		$exist = 0;
 		
-		foreach($this->SYSTEM_ARR['cart']['products'] as $val){
-			if($val['productFor'] == applicationConstants::PRODUCT_FOR_BOOKING){
-				$exist =  1;
-				break;
-			}
+		$existType = 0;
+		if(isset($this->SYSTEM_ARR['cart']['products'][$key])){
+			$existType =  $this->SYSTEM_ARR['cart']['products'][$key]['productFor']; 
 		}
 		
-		if($isForBooking == applicationConstants::PRODUCT_FOR_BOOKING){
-
-			if (array_key_exists($key,$this->SYSTEM_ARR['cart']['products']) && $exist == 0)
-			{
-				return false;
-			}
-			else
-			{
-				return true;
-			}
-			
-		}else{
-			
-			if ($exist == 1)
-			{
-				return false;
-			}
+		if($existType == 0){
 			return true;
 		}
+		
+		if($existType == applicationConstants::PRODUCT_FOR_BOOKING && $productFor == applicationConstants::PRODUCT_FOR_SALE) {
+			return false;
+		}else if($existType == applicationConstants::PRODUCT_FOR_SALE && $productFor == applicationConstants::PRODUCT_FOR_BOOKING) {
+			return false;
+		}else{
+			return true;
+		}
+
 	}
 	
 	public function validateAction($selprod_id,$isForbooking,$siteLangId){

@@ -173,7 +173,10 @@ class CartController extends MyAppController
 		} else {
 			$cartType = $productFor;
 		}
-	
+		
+		if($cartType == applicationConstants::PRODUCT_FOR_BOOKING){
+			$cartType = applicationConstants::PRODUCT_FOR_SALE;
+		}
 		
 		if (!$cObj->checkCartType($cartType))
 		{ //== Same type product is allowed in cart (sale or rent)
