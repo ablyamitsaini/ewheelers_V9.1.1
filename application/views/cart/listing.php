@@ -1,5 +1,17 @@
 <?php
-defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
+defined('SYSTEM_INIT') or die('Invalid Usage.'); 
+
+$is_for_booking = 0;
+if (count($products)) {
+	foreach($products as $product){
+		if(isset($product['is_for_booking'])){
+			$is_for_booking = 1;
+			break;
+		}
+	}
+}
+
+?>
 <div class="row">
     <div class="col-xl-9 col-lg-8">
 	    <div class="box box--white box--radius box--space">
@@ -9,6 +21,10 @@ defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
                         <th colspan="2"><?php echo Labels::getLabel('LBL_Item(s)_in_cart', $siteLangId).'
     '.count($products); ?></th>
                         <th><?php echo Labels::getLabel('LBL_Quantity', $siteLangId); ?></th>
+						<?php if($is_for_booking == 1){ ?>
+							<th width="10%"><?php echo Labels::getLabel('LBL_Book_Price', $siteLangId); ?></th>
+							<th width="10%"><?php echo Labels::getLabel('LBL_Pending_Amount', $siteLangId); ?></th>
+						<?php } ?>
                         <th width="12%"><?php
 						if ($cartType == applicationConstants::PRODUCT_FOR_RENT) {
 							echo Labels::getLabel('LBL_Unit_Price', $siteLangId); 
@@ -130,12 +146,31 @@ defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
                 ?>
 			</div>
         </td>
+		<?php if($is_for_booking == 1){ ?>
+			<td width="10%">
+				<?php if(isset($product['is_for_booking'])){ ?>
+					<span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['theprice']); ?></span>
+				<?php
+				}else{
+					echo "<div style='text-align:center'>-</div>";
+				}
+				?>
+			
+			</td>
+			<td width="10%"><?php if(isset($product['is_for_booking'])){ ?>
+					<span class="item__price"><?php echo CommonHelper::displayMoneyFormat($product['priceWithoutBooking'] - $product['theprice']); ?></span>
+				<?php
+				}else{
+					echo "<div style='text-align:center'>-</div>";
+				}
+				?></td>
+		<?php } ?>
 		<td>
             <span class="item__price">
 			<?php if($product['productFor'] == applicationConstants::PRODUCT_FOR_RENT) { 
 				echo CommonHelper::displayMoneyFormat($product['sprodata_rental_price']) .' '. $unit;
 			} else {
-				echo CommonHelper::displayMoneyFormat($product['theprice']);
+				echo CommonHelper::displayMoneyFormat($product['priceWithoutBooking']);
 			}?>
 			</span>
         </td>
@@ -220,7 +255,14 @@ defined('SYSTEM_INIT') or die('Invalid Usage.'); ?>
 					if ($product['productFor'] == applicationConstants::PRODUCT_FOR_RENT) {
 						$netChargeAmt = $cartSummary['cartTotal']+$cartSummary['cartTaxTotal'] - ((0 < $cartSummary['cartDurationDiscount'])?$cartSummary['cartDurationDiscount']:0);
 					} else {
-						$netChargeAmt = $cartSummary['cartTotal']+$cartSummary['cartTaxTotal'] - ((0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0); 
+						
+					//$netChargeAmt = $cartSummary['cartTotal'] + $cartSummary['cartTaxTotal'] - ((0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0);
+                    $netChargeAmt = $netChargeAmt - ((0 < $cartSummary['cartDiscounts']['coupon_discount_total'])?$cartSummary['cartDiscounts']['coupon_discount_total']:0);
+					$netChargeAmtWithoutBook = $cartSummary['orderNetAmountWithoutBook'] - ((0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0);
+                    $netChargeAmtWithoutBook = $netChargeAmtWithoutBook - ((0 < $cartSummary['cartDiscounts']['coupon_discount_total'])?$cartSummary['cartDiscounts']['coupon_discount_total']:0);
+					$netPayableNow = $netChargeAmt - $cartSummary['bookingProductTaxTotal'];
+					
+					$netChargeAmt = $cartSummary['cartTotal']+$cartSummary['cartTaxTotal'] - ((0 < $cartSummary['cartVolumeDiscount'])?$cartSummary['cartVolumeDiscount']:0); 
 					}
 					
 					if ($cartSummary['cartTaxTotal']) { ?>
