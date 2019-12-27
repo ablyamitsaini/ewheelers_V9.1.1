@@ -32,7 +32,7 @@ if (!$print) {
         <div class="content-body">
             <div class="cards">
                 <div class="cards-header p-4">
-                    <h5 class="cards-title"><?php echo Labels::getLabel('LBL_Order_Details', $siteLangId);?></h5>
+                    <h5 class="cards-title"><?php echo ($orderDetail['op_is_booking'] == 1)?Labels::getLabel('LBL_Booking_Order_Details', $siteLangId):Labels::getLabel('LBL_Order_Details', $siteLangId);?></h5>
                     <?php if (!$print) { ?>
                     <div class="">
                         <iframe src="<?php echo Fatutility::generateUrl('seller', 'viewOrder', $urlParts) . '/print'; ?>" name="frame" style="display:none"></iframe>
@@ -59,10 +59,11 @@ if (!$print) {
                                 } ?>
                                 <p><strong><?php echo Labels::getLabel('LBL_Payment_Method', $siteLangId);?>: </strong><?php echo $selected_method;?></p>
                                 <p><strong><?php echo Labels::getLabel('LBL_Status', $siteLangId);?>: </strong>
-                                <?php echo Orders::getOrderPaymentStatusArr($siteLangId)[$orderDetail['order_is_paid']];
+                                <?php echo $orderStatuses[$orderDetail['op_status_id']];
+								/* echo Orders::getOrderPaymentStatusArr($siteLangId)[$orderDetail['order_is_paid']];
                                 if ('' != $orderDetail['pmethod_name'] && 'CashOnDelivery' == $orderDetail['pmethod_code']) {
                                     echo ' ('.$orderDetail['pmethod_name'].' )';
-                                } ?>
+                                }  */?>
                                 <?php /*echo $orderStatuses[$orderDetail['op_status_id']];*/ ?></p>
                                 <p><strong><?php echo Labels::getLabel('LBL_Cart_Total', $siteLangId);?>: </strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($orderDetail, 'CART_TOTAL'));?></p>
 
@@ -84,9 +85,25 @@ if (!$print) {
                         if($rewardPointDiscount != 0){?>
                                 <p><strong><?php echo Labels::getLabel('LBL_Reward_Point_Discount',$siteLangId);?>:</strong> <?php echo CommonHelper::displayMoneyFormat($rewardPointDiscount);?></p>
                                 <?php }  */?>
-                                <p><strong><?php echo Labels::getLabel('LBL_Order_Total', $siteLangId);?>: </strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($orderDetail, 'netamount', false, USER::USER_TYPE_SELLER));?>
+                                
+								<?php 
+								if($orderDetail['op_is_booking'] == 1){ 
+								$tax = CommonHelper::orderProductAmount($orderDetail, 'TAX');
+								$netAmount = CommonHelper::orderProductAmount($orderDetail,'netamount',false,USER::USER_TYPE_SELLER);
+								$netAmount = $netAmount - $tax;
+								$netAmountWithoutBook = CommonHelper::orderProductAmount($orderDetail,'netamount',false,USER::USER_TYPE_SELLER,1);
+								
+								?>
+									<p><strong><?php echo Labels::getLabel('LBL_Booking_Total', $siteLangId);?>: </strong><?php echo $netAmount;?>
+									</p>
+									<p><strong><?php echo Labels::getLabel('LBL_Order_Total_Without_Booking', $siteLangId);?>: </strong><?php echo CommonHelper::displayMoneyFormat($netAmountWithoutBook);?>
+									</p>
+									<p><strong><?php echo Labels::getLabel('LBL_To_Be_Paid_On_Delivery', $siteLangId);?>: </strong><?php echo CommonHelper::displayMoneyFormat($netAmountWithoutBook - $netAmount);?>
+									</p>
+								<?php }else{ ?>
+									<p><strong><?php echo Labels::getLabel('LBL_Order_Total', $siteLangId);?>: </strong><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($orderDetail, 'netamount', false, USER::USER_TYPE_SELLER));?>
                                 </p>
-
+								<?php } ?>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 mb-4">
@@ -106,10 +123,14 @@ if (!$print) {
                                 <th class="no-print"></th>
                                 <?php } ?>
                                 <th><?php echo Labels::getLabel('LBL_Qty', $siteLangId);?></th>
-                                <th><?php echo Labels::getLabel('LBL_Price', $siteLangId);?></th>
-                                <?php if ($shippedBySeller) {?>
-                                <th><?php echo Labels::getLabel('LBL_Shipping_Charges', $siteLangId);?></th>
-                                <?php }?>
+								<?php if($orderDetail['op_is_booking'] == 1) { ?>
+									<th><?php echo Labels::getLabel('LBL_Booking_Price', $siteLangId);?></th>						
+								<?php }else{ ?>
+									<th><?php echo Labels::getLabel('LBL_Price', $siteLangId);?></th>
+									<?php if ($shippedBySeller) {?>
+									<th><?php echo Labels::getLabel('LBL_Shipping_Charges', $siteLangId);?></th>
+									<?php }?>
+								<?php } ?>
                                 <?php if ($volumeDiscount) { ?>
                                 <th><?php echo Labels::getLabel('LBL_Volume/Loyalty_Discount', $siteLangId);?></th>
                                 <?php } ?>
@@ -158,22 +179,36 @@ if (!$print) {
                                     </div>
                                 <?php } ?>
                                 </td>
-                                <td><?php echo $orderDetail['op_qty'];?></td>
-                                <td><?php echo CommonHelper::displayMoneyFormat($orderDetail['op_unit_price']);?></td>
-
+                                <td><?php echo $orderDetail['op_qty'];?></td>                              
+								<?php if($orderDetail['op_is_booking'] == 1) { ?>
+								 <td><?php echo CommonHelper::displayMoneyFormat($orderDetail['op_unit_price']);?></td>
+								<?php }else{ ?>
+								 <td><?php echo CommonHelper::displayMoneyFormat($orderDetail['op_unit_price']);?></td>
                                 <?php if ($shippedBySeller) {?>
                                 <td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($orderDetail, 'shipping'));?></td>
-                                <?php }?>
+                                <?php }
+								}
+								?>
 
                                 <?php if ($volumeDiscount) { ?>
                                 <td><?php echo CommonHelper::displayMoneyFormat($volumeDiscount);?></td>
                                 <?php } ?>
+								<?php if($orderDetail['op_is_booking'] == 1) { ?>
+									<td><?php echo CommonHelper::displayMoneyFormat('0');?></td>
+								<?php
+								}else{ ?>
+									<?php if ($orderDetail['op_tax_collected_by_seller']) {?>
+									<td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($orderDetail, 'tax')); ?></td>
+									<?php }?>
+								<?php } ?>
+								
+                                <?php if($orderDetail['op_is_booking'] == 1) { ?>
 
-                                <?php if ($orderDetail['op_tax_collected_by_seller']) {?>
-                                <td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($orderDetail, 'tax')); ?></td>
-                                <?php }?>
+                                <td><?php echo CommonHelper::displayMoneyFormat($netAmount);?></td>
+								<?php } else { ?>
+								<td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($orderDetail, 'netamount', false, USER::USER_TYPE_SELLER));?></td>
+								<?php } ?>
 
-                                <td><?php echo CommonHelper::displayMoneyFormat(CommonHelper::orderProductAmount($orderDetail, 'netamount', false, USER::USER_TYPE_SELLER));?></td>
                             </tr>
                         </tbody>
                     </table>
@@ -252,29 +287,32 @@ if (!$print) {
                     </div>
 
                     <?php if ($displayForm && !$print) { ?>
-                    <div class="section--repeated no-print">
-                        <h5><?php echo Labels::getLabel('LBL_Comments_on_order', $siteLangId);?></h5>
-                        <?php
-                      $frm->setFormTagAttribute('onsubmit', 'updateStatus(this); return(false);');
-                      $frm->setFormTagAttribute('class', 'form');
-                      $frm->developerTags['colClassPrefix'] = 'col-md-';
-                      $frm->developerTags['fld_default_col'] = 12;
-
-                      $fld = $frm->getField('op_status_id');
-                      $fld->developerTags['col'] = 6;
-
-                      $fld1 = $frm->getField('customer_notified');
-                      $fld1->developerTags['col'] = 6;
-
-                      $fldTracking = $frm->getField('tracking_number');
-                      $fldTracking->setWrapperAttribute('class', 'div_tracking_number');
-                      $fldTracking->developerTags['col'] = 6;
-
-                      $fldBtn = $fldTracking = $frm->getField('btn_submit');
-                      $fldBtn->developerTags['col'] = 6;
-                      echo $frm->getFormHtml();?>
-                    </div>
-                    <?php }?>
+						<?php if(($is_booking == 1 && $paidAmount != 0) || $is_booking == 0 ){ ?>
+						<div class="section--repeated no-print">
+							<h5><?php echo Labels::getLabel('LBL_Comments_on_order', $siteLangId);?></h5>
+							<?php
+						$frm->setFormTagAttribute('onsubmit', 'updateStatus(this); return(false);');
+						$frm->setFormTagAttribute('class', 'form');
+						$frm->developerTags['colClassPrefix'] = 'col-md-';
+						$frm->developerTags['fld_default_col'] = 12;
+	
+						$fld = $frm->getField('op_status_id');
+						$fld->developerTags['col'] = 6;
+	
+						$fld1 = $frm->getField('customer_notified');
+						$fld1->developerTags['col'] = 6;
+	
+						$fldTracking = $frm->getField('tracking_number');
+						$fldTracking->setWrapperAttribute('class', 'div_tracking_number');
+						$fldTracking->developerTags['col'] = 6;
+	
+						$fldBtn = $fldTracking = $frm->getField('btn_submit');
+						$fldBtn->developerTags['col'] = 6;
+						echo $frm->getFormHtml();?>
+						</div>
+						<?php
+						}
+					}?>
                     <span class="gap"></span>
                     <?php if (!empty($orderDetail['comments']) && !$print) {?>
                     <div class="section--repeated no-print">
