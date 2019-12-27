@@ -3305,7 +3305,7 @@ class SellerController extends SellerBaseController
 
     private function getInventoryUpdateForm($langId = 0)
     {
-        $frm = new Form();
+        $frm = new Form('frmInventoryUpdate');
         $frm->addHiddenField('', 'lang_id', $langId);
         $fld = $frm->addButton('', 'csvfile', Labels::getLabel('Lbl_Upload_Csv_File', $this->siteLangId), array());
         return $frm;

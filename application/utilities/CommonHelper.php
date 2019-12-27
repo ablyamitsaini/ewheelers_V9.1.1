@@ -293,13 +293,8 @@ class CommonHelper extends FatUtility
         }
 
         $shippingAmount = isset($opArr['charges'][OrderProduct::CHARGE_TYPE_SHIPPING]['opcharge_amount']) ? $opArr['charges'][OrderProduct::CHARGE_TYPE_SHIPPING]['opcharge_amount'] : 0;
-
 		if($calculateWithoutBook == 0){
-			if($opArr['opd_sold_or_rented'] == applicationConstants::PRODUCT_FOR_RENT) {
-				$cartTotal = $opArr['op_unit_price'];
-			} else {
-				$cartTotal = $opArr['op_qty'] * $opArr['op_unit_price'];
-			}
+			$cartTotal = $opArr['op_qty'] * $opArr['op_unit_price'];
 		}else{
 			$cartTotal = $opArr['op_qty'] * $opArr['op_product_amount_without_book'];
 		}
@@ -335,7 +330,7 @@ class CommonHelper extends FatUtility
                 $amount = isset($opArr['charges'][OrderProduct::CHARGE_TYPE_DISCOUNT]['opcharge_amount'])?$opArr['charges'][OrderProduct::CHARGE_TYPE_DISCOUNT]['opcharge_amount']:0;
                 break;
             case 'CART_TOTAL':
-                $amount = 000;
+                $amount = $cartTotal;
                 break;
             case 'TAX':
                 //$amount = FatUtility::convertToType($opArr['op_tax_total'] , FatUtility::VAR_FLOAT);
@@ -345,10 +340,9 @@ class CommonHelper extends FatUtility
                 $amount = isset($opArr['charges'][OrderProduct::CHARGE_TYPE_VOLUME_DISCOUNT]['opcharge_amount']) ? $opArr['charges'][OrderProduct::CHARGE_TYPE_VOLUME_DISCOUNT]['opcharge_amount'] : 0;
                 break;
 			case 'DURATION_DISCOUNT':
-                $amount = isset($opArr['charges'][OrderProduct::CHARGE_TYPE_DURATION_DISCOUNT]['opcharge_amount']) ? $opArr['charges'][OrderProduct::CHARGE_TYPE_DURATION_DISCOUNT]['opcharge_amount'] : 0;
-                break;	
+               $amount = isset($opArr['charges'][OrderProduct::CHARGE_TYPE_DURATION_DISCOUNT]['opcharge_amount']) ? $opArr['charges'][OrderProduct::CHARGE_TYPE_DURATION_DISCOUNT]['opcharge_amount'] : 0;
+               break;
         }
-		
 
         if ($pricePerItem) {
             $amount = round($amount/$opArr['op_qty'], 2);
