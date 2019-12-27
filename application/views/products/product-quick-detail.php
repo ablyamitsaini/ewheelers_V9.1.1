@@ -21,6 +21,21 @@
         <?php
     } ?>
     </div>
+	<?php
+		if($product['selprod_book_now_enable'] == applicationConstants::BOTH && $is_booking == 1 && FatApp::getConfig('CONF_ENABLE_BOOK_NOW_MODULE') == 1 && $product['selprod_test_drive_enable'] == 1){
+			$button_class = 'row-flexible4';
+		}elseif($product['selprod_book_now_enable'] == applicationConstants::BUY_NOW && $product['selprod_test_drive_enable'] == 1){
+			$button_class = 'row-flexible';
+		}elseif($product['selprod_book_now_enable'] == applicationConstants::BOTH && $is_booking == 1 && FatApp::getConfig('CONF_ENABLE_BOOK_NOW_MODULE') == 1 ){
+			$button_class = 'row-flexible';			
+		}elseif($product['selprod_test_drive_enable'] == 1 && $product['selprod_book_now_enable'] == applicationConstants::BOOK_NOW && $is_booking == 1 && FatApp::getConfig('CONF_ENABLE_BOOK_NOW_MODULE') == 1){
+			$button_class = '';
+		}elseif($product['selprod_test_drive_enable'] == 1){
+			$button_class = 'row-flexible';
+		}else{
+			$button_class = '';
+		}
+	?>
     <div class="col-lg-6 col-md-6 quick-col-2">
         <div class="product-detail product-description product-detail-quickview">
             <div>
@@ -86,6 +101,24 @@
 						</div>
 					</div>
 					<?php } ?>
+					
+					<?php if (ALLOW_SALE > 0 && $product['is_sell'] > 0) { ?>
+						<?php if($is_booking == 1 && FatApp::getConfig('CONF_ENABLE_BOOK_NOW_MODULE') == 1 && ($product['selprod_book_now_enable'] == applicationConstants::BOTH || $product['selprod_book_now_enable'] == applicationConstants::BOOK_NOW)){				
+						$bookPrice = ($booking_percentage / 100) * $product['theprice'];
+						?>	
+							<div class="row align-items-end mb-4 sale-products--js <?php echo (ALLOW_RENT > 0 && $product['is_rent'] > 0) ? 'hide-sell-section' : '';?> ">
+								<div class="col-sm-12 cms">
+									<table>
+										<tr>
+											<th><?php echo Labels::getLabel('LBL_Booking_Price', $siteLangId);?></th>
+											<td><?php echo CommonHelper::displayMoneyFormat($bookPrice); ?>
+											</td>
+										</tr>	
+									</table>
+								</div>
+							</div>
+						<?php } 
+					 } ?>
 					<!-- REntal Functionality ]-->
 					<div class="divider"></div>
                     <div class="gap"></div>
@@ -200,17 +233,48 @@
                     </div>
                 </div>
 				</div>
-				
-				<div class="buy-group">
-                <?php 
-				if (strtotime($product['selprod_available_from']) <= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))) {
-					echo $frmBuyProduct->getFieldHtml('btnProductBuy');
-                    echo $frmBuyProduct->getFieldHtml('btnAddToCart');
-                }
-				echo $frmBuyProduct->getFieldHtml('selprod_id');
-				echo $frmBuyProduct->getFieldHtml('product_for');
-				?>
-                </div>
+				<?php if ($product['is_rent'] > 0 && ALLOW_RENT > 0) { ?>
+					<div class="buy-group rental-fields--js">
+					<?php 
+					if (strtotime($product['selprod_available_from']) <= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))) {
+						echo $frmBuyProduct->getFieldHtml('btnProductBuy');
+						echo $frmBuyProduct->getFieldHtml('btnAddToCart');
+					}
+					echo $frmBuyProduct->getFieldHtml('selprod_id');
+					echo $frmBuyProduct->getFieldHtml('product_for');
+					?>
+					</div>	
+				<?php } ?>	
+				<div class="<?php echo $button_class;?>" style="margin-top:5px">
+				<?php if ($product['is_sell'] > 0 && ALLOW_SALE > 0) { ?>
+					<div class="buy-group <?php echo $button_class;?> sale-products--js <?php echo (ALLOW_RENT > 0 && $product['is_rent'] > 0) ? 'hide-sell-section' : '';?> ">
+					<?php 
+					if (strtotime($product['selprod_available_from']) <= strtotime(FatDate::nowInTimezone(FatApp::getConfig('CONF_TIMEZONE'), 'Y-m-d'))) {
+						if($product['selprod_book_now_enable'] == applicationConstants::BOTH && $is_booking == 1 && FatApp::getConfig('CONF_ENABLE_BOOK_NOW_MODULE') == 1){
+								echo $frmBuyProduct->getFieldHtml('btnAddToCart');
+								echo $frmBuyProduct->getFieldHtml('btnProductBuy');
+								echo $frmBuyProduct->getFieldHtml('btnBookNow');
+								
+							}elseif($product['selprod_book_now_enable'] == applicationConstants::BUY_NOW){
+								echo $frmBuyProduct->getFieldHtml('btnAddToCart');
+								echo $frmBuyProduct->getFieldHtml('btnProductBuy');
+							}elseif($product['selprod_book_now_enable'] == applicationConstants::BOOK_NOW && $is_booking == 1 && FatApp::getConfig('CONF_ENABLE_BOOK_NOW_MODULE') == 1){
+								echo $frmBuyProduct->getFieldHtml('btnBookNow');
+							}else{
+								echo $frmBuyProduct->getFieldHtml('btnAddToCart');
+								echo $frmBuyProduct->getFieldHtml('btnProductBuy');
+							}
+							
+							if($product['selprod_test_drive_enable']){
+								echo $frmBuyProduct->getFieldHtml('btnTestDrive');
+						}
+					}
+					echo $frmBuyProduct->getFieldHtml('selprod_id');
+					echo $frmBuyProduct->getFieldHtml('product_for');
+					?>
+					</div>
+				<?php } ?>	
+				</div>
                 </form>
 				<?php if ($product['is_rent'] > 0 && ALLOW_RENT > 0) { ?>
 				<div class="gap"></div>
@@ -251,7 +315,9 @@
 					</div>
 				</div>
 				<?php }
-				echo $frmBuyProduct->getExternalJs();
+				echo $frmBuyProduct->getExternalJs(); ?>
+				<div id="testDrivefrm"></div>
+				<?php
                 } else { ?>
 				<div class="sold">
 					<h3 class="text--normal-secondary"><?php echo Labels::getLabel('LBL_Sold_Out', $siteLangId); ?></h3>
