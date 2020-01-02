@@ -24,6 +24,11 @@ if(!isset($orderDetail)){
 	$is_have_booking = $childOrderDetail['order_have_booking'];
 }
 
+$colSpan = 8;
+if($is_have_booking == 1){
+	$colSpan = 9;	
+}
+
 ?> <?php if (!$print) {
     ?> <?php $this->includeTemplate('_partial/dashboardNavigation.php'); ?> <?php
 } ?>
@@ -257,40 +262,40 @@ if(!isset($orderDetail)){
                             <?php }
                             if (!$primaryOrder) { ?>
                                 <tr>
-                                    <td colspan="9"><?php echo Labels::getLabel('Lbl_Cart_Total', $siteLangId)?></td>
+                                    <td colspan="<?php echo $colSpan;?>"><?php echo Labels::getLabel('Lbl_Cart_Total', $siteLangId)?></td>
                                     <td><?php echo CommonHelper::displayMoneyFormat($cartTotal); ?></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="9"><?php echo Labels::getLabel('LBL_Shipping_Charges', $siteLangId)?></td>
+                                    <td colspan="<?php echo $colSpan;?>"><?php echo Labels::getLabel('LBL_Shipping_Charges', $siteLangId)?></td>
                                     <td><?php echo CommonHelper::displayMoneyFormat($shippingCharges); ?></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="9"><?php echo Labels::getLabel('LBL_Tax_Charges', $siteLangId)?></td>
+                                    <td colspan="<?php echo $colSpan;?>"><?php echo Labels::getLabel('LBL_Tax_Charges', $siteLangId)?></td>
                                     <td><?php echo CommonHelper::displayMoneyFormat($orderDetail['order_tax_charged']); ?></td>
                                 </tr>
                                 <?php if ($orderDetail['order_discount_total']) { ?>
                                 <tr>
-                                    <td colspan="9"><?php echo Labels::getLabel('LBL_Discount', $siteLangId)?></td>
+                                    <td colspan="<?php echo $colSpan;?>"><?php echo Labels::getLabel('LBL_Discount', $siteLangId)?></td>
                                     <td>-<?php echo CommonHelper::displayMoneyFormat($orderDetail['order_discount_total']); ?></td>
                                 </tr>
                                 <?php } ?>
                                 <?php if ($orderDetail['order_volume_discount_total']) { ?>
                                 <tr>
-                                    <td colspan="9"><?php echo Labels::getLabel('LBL_Volume/Loyalty_Discount', $siteLangId)?></td>
+                                    <td colspan="<?php echo $colSpan;?>"><?php echo Labels::getLabel('LBL_Volume/Loyalty_Discount', $siteLangId)?></td>
                                     <td>-<?php echo CommonHelper::displayMoneyFormat($orderDetail['order_volume_discount_total']); ?></td>
                                 </tr>
                                 <?php } ?>
                                 <tr>
-                                    <td colspan="9"><?php echo Labels::getLabel('LBL_Total', $siteLangId)?></td>
+                                    <td colspan="<?php echo $colSpan;?>"><?php echo Labels::getLabel('LBL_Total', $siteLangId)?></td>
                                     <td><?php echo CommonHelper::displayMoneyFormat($orderDetail['order_net_amount']); ?></td>
                                 </tr>
 								<?php if ($orderDetail['order_have_booking'] == 1) { ?>
 								<tr>
-                                    <td colspan="9"><?php echo Labels::getLabel('LBL_Amount_without_booking', $siteLangId)?></td>
+                                    <td colspan="<?php echo $colSpan;?>"><?php echo Labels::getLabel('LBL_Amount_without_booking', $siteLangId)?></td>
                                     <td><?php echo CommonHelper::displayMoneyFormat($orderDetail['order_actual_net_amount']); ?></td>
                                 </tr>
 								<tr>
-                                    <td colspan="9"><?php echo Labels::getLabel('LBL_Amount_to_be_paid_on_delivery', $siteLangId)?></td>
+                                    <td colspan="<?php echo $colSpan;?>"><?php echo Labels::getLabel('LBL_Amount_to_be_paid_on_delivery', $siteLangId)?></td>
                                     <td><?php echo CommonHelper::displayMoneyFormat($orderDetail['order_actual_net_amount'] - $orderDetail['order_net_amount']); ?></td>
                                 </tr>
 							<?php }?>
