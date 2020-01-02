@@ -228,6 +228,28 @@ class Cart extends FatModel
         }
         return $stock;
     }
+	
+	public function hasBookingProduct()
+    {
+        $isBooking = false;
+        foreach ($this->getProducts($this->cart_lang_id) as $product) {
+            if ($product['is_batch'] && !empty($product['products'])) {
+                foreach ($product['products'] as $pgproduct) {
+                    if (isset($pgproduct['is_for_booking'])) {
+                        $isBooking = true;
+                        break;
+                    }
+                }
+            } else {
+                if (isset($product['is_for_booking'])) {
+                    $isBooking = true;
+                    break;
+                }
+            }
+        }
+        $this->products = array();
+        return $isBooking;
+    }
 
     public function hasDigitalProduct()
     {
