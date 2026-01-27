@@ -11,7 +11,7 @@
   "keywords": ["payfort", "middle east", "payments", "online payments"],
   "require": {},
   "require-dev": {
-    "phpunit/phpunit": "4.2.*"
+    "phpunit/phpunit": "8.5.*"
   },
   "lib-curl": "*",
   "autoload": {
